@@ -2,7 +2,7 @@
 function renderLinkedService(root,id,d){
  const l=d.industryLink,p=l.payload||{};
  root.append(cell('h4','核对原项目与可预约服务'));root.append(cell('p','项目 '+l.project_id+' · 原版本 '+l.source_revision+' · '+(l.eligible?'来源当前有效':'来源或资格已失效')));root.append(cell('p',p.title));root.append(cell('p',p.detail));for(const [key,value]of Object.entries(p.fields||{}))root.append(cell('p',key+'：'+value));
- if(adminRole!=='operator'){root.append(cell('p','请由运营角色独立核对文字、原图和项目范围。'));return;}
+ if(!canRole('operator')){root.append(cell('p','请由运营角色独立核对文字、原图和项目范围。'));return;}
  const read=checks(root,[['textReviewed','已独立核对本条服务文字和原条款'],['imagesReviewed','已核对全部原图及使用权'],['scopeReviewed','已核对当前项目资质、负责商家和实际服务范围']]);
  for(const status of ['published','disabled'])root.append(button(status==='published'?'核查后开放预约':'拒绝本次供给',async()=>{const response=prompt('填写实际审核依据（至少8字）');if(!response)return;await api('/admin/api/industry-services/'+id+'/review','POST',{revision:l.revision,status,response,...read()});root.replaceChildren();await reload();}));
 }
@@ -13,7 +13,7 @@ function renderWorkflowTask(root,kind,id,d){
  const reason=()=>prompt('填写实际核查结果或给申请者的答复（至少8字，不含证件号）');
  const action=(label,url,payload,role='operator')=>{if(adminRole!==role)return;root.append(button(label,async()=>{const response=reason();if(!response)return;await api(url,'POST',{revision:d.revision,...payload(),response,reason:response,...(kind==='businesscase'?{body:response}:{})});root.replaceChildren();await reload();}));};
  if(kind==='businesscase'){
-  if(adminRole!=='operator'){root.append(cell('p','双方业务争议仅运营处理角色可读取。'));return;}
+  if(!canRole('operator')){root.append(cell('p','双方业务争议仅运营处理角色可读取。'));return;}
   root.append(cell('h4',d.snapshot?.title||'双方业务记录'));root.append(cell('p',d.snapshot?.detail||''));root.append(cell('p','原始申请：'+(d.snapshot?.request||'原预约记录')));root.append(cell('p','原答复：'+(d.snapshot?.acceptedResponse||'')));root.append(cell('p','状态：'+d.status+' · 原记录 '+d.source_id));
   for(const e of d.events||[])root.append(cell('p',e.created_at+' · '+e.action+' · '+e.body));
   if(d.status==='disputed')for(const outcome of ['completed','cancelled'])action(outcome==='completed'?'核实后记录完成':'核实后记录取消','/admin/api/business/cases/'+id,()=>{if(!confirm('已核对原记录、双方说明及相关证据，确认保存实际处理结果并同步原申请或预约？'))throw Error('已取消处理');return {outcome,confirmed:true,clientKey:'admin_'+crypto.randomUUID().replaceAll('-','')};});
@@ -23,7 +23,7 @@ function renderWorkflowTask(root,kind,id,d){
   action('实际交付后核销','/admin/api/commerce/orders/'+id,()=>{const fulfilment=prompt('填写本人可见的领取/核销凭据（至少8字，不填无关个人资料）');if(!fulfilment)throw Error('请填写实际交付凭据');if(!confirm('确认已实际交付权益，本次将消费原冻结积分？'))throw Error('已取消核销');return {status:'fulfilled',fulfilment,confirmed:true};});
   action('拒绝并退还积分','/admin/api/commerce/orders/'+id,()=>({status:'rejected'}));
  }else if(kind==='advertiser'||kind==='industrycredential'){
-  if(adminRole!=='verifier'){root.append(cell('p','请由业务核验角色读取材料并执行核验。'));return;}
+  if(!canRole('verifier')){root.append(cell('p','请由业务核验角色读取材料并执行核验。'));return;}
   root.append(cell('p',(d.subject||d.name||'')+' · 项目 '+(d.project_id||'广告主体')));root.append(cell('p','实际材料引用：'+d.evidence_reference));if(d.response)root.append(cell('p',d.response));
   for(const status of ['verified','rejected','revoked']){if(kind==='advertiser'&&status==='rejected')continue;action(status==='verified'?'记录实际核验通过':status==='rejected'?'记录未通过':'撤销原核验',kind==='advertiser'?'/admin/api/home-advertisers/'+id:'/admin/api/industry/credentials/'+id,()=>{let validUntil=null;if(status==='verified'){validUntil=prompt('实际材料有效期（YYYY-MM-DD）');if(!validUntil||!confirm('已实际核对主体、项目范围、专项资质与授权，填写的有效期属实？'))throw Error('未确认实际核验');}return {status,validUntil,manuallyVerified:status==='verified'};},'verifier');}
  }else if(kind==='promotion'){
@@ -41,11 +41,12 @@ let workflowGeneration=0;const workflowOffsets={orders:0,campaigns:0,entries:0,c
 async function loadWorkflowConsole(){
  const generation=++workflowGeneration;try{
   const root=el('workflow-lists');root.replaceChildren();
-  if(adminRole==='operator'){
+  if(canRole('operator')){
    offerEditor(null);workflowForm(el('promotion-slot-editor'),[{key:'cityCode',label:'真实城市编码（与公开信息一致）'},{key:'region',label:'已开放服务地区名称'},{key:'startsAt',label:'排期开始，带时区ISO时间'},{key:'endsAt',label:'排期结束，带时区ISO时间'},{key:'pointsCost',label:'排期积分价格',type:'number',value:100},{key:'capacity',label:'可用轮播位置（1–5）',type:'number',value:1},{key:'enabled',label:'确认排期及价格，允许用户预订',type:'checkbox'},{key:'reason',label:'排期依据（至少8字）'}],v=>api('/admin/api/commerce/slots','POST',v));
    const slots=await api('/admin/api/commerce/slots');const slotList=el('promotion-slot-list');slotList.replaceChildren();for(const slot of slots.items){const card=row(slotList,slot.city_code+' · '+slot.region,slot.starts_at+' 至 '+slot.ends_at,slot.points_cost+' 分 · 余 '+slot.remaining+' · '+(slot.enabled?'接受新预订':'已关闭新预订'));card.append(button(slot.enabled?'关闭新预订（保留已确认排期）':'重新开放预订',async()=>{const reason=prompt('填写实际调整原因（至少8字）');if(reason){await api('/admin/api/commerce/slots/'+slot.id,'POST',{revision:slot.revision,enabled:!slot.enabled,reason});await loadWorkflowConsole();}}));}const offers=await api('/admin/api/commerce/offers');if(generation!==workflowGeneration)return;const list=el('benefit-offer-list');list.replaceChildren();for(const offer of offers.items){const card=row(list,offer.title,offer.points_cost+' 分 · 余 '+offer.stock+' · '+(offer.enabled?'已开放':'未开放'),offer.terms);card.append(button('编辑权益及库存',()=>offerEditor(offer)));}
   }else{el('benefit-offer-editor').replaceChildren(cell('p','权益和排期由运营角色配置。'));el('promotion-slot-editor').replaceChildren();}
   const queues=adminRole==='verifier'?[['credentials','industrycredential','项目主体核验','/admin/api/industry/credentials']]:[['orders','benefit','权益核销','/admin/api/commerce/orders'],['campaigns','promotion','推广素材','/admin/api/commerce/campaigns'],['entries','industry','行业业务','/admin/api/industry/entries'],['reports','industryreport','项目举报','/admin/api/industry/reports']];
+  if(adminRole==='superadmin')queues.push(['credentials','industrycredential','项目主体核验','/admin/api/industry/credentials']);
   for(const [key,kind,title,url]of queues){const data=await api(url+'?offset='+workflowOffsets[key]);if(generation!==workflowGeneration)return;const section=cell('section');section.append(cell('h3',title));for(const item of data.items){const holder=cell('div','','item');holder.append(cell('strong',item.payload?.title||item.snapshot?.title||item.title||item.subject||item.reason||title));holder.append(cell('p',item.id+' · '+item.status));holder.append(button('读取并处理记录',()=>{const detail=cell('div');holder.append(detail);renderWorkflowTask(detail,kind,item.id,item);}));section.append(holder);}if(workflowOffsets[key]>0)section.append(button('上一页',()=>{workflowOffsets[key]-=20;return loadWorkflowConsole();}));if(data.hasMore)section.append(button('下一页',()=>{workflowOffsets[key]+=20;return loadWorkflowConsole();}));root.append(section);}
  }catch(e){notify('权益与行业管理读取失败：'+e.message);}
 }

@@ -4,7 +4,7 @@ const os=require('node:os'),fs=require('node:fs/promises'),path=require('node:pa
 const {createApp}=require('../src/server');const {createMemoryRepository}=require('../src/memory-repository');
 const {verifyImage,LIMIT}=require('../src/private-license');
 const png=Buffer.from('89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4890000000b49444154789c636000020000050001a5f645400000000049454e44ae426082','hex');
-async function start(t){const dir=await fs.mkdtemp(path.join(os.tmpdir(),'city-life-license-'));const repo=createMemoryRepository();const server=createApp({repo,areas:['中心街道'],allowDevLogin:true,adminPassword:'passphrase-for-tests',privateUploadDir:dir});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(async()=>{await new Promise(resolve=>server.close(resolve));await fs.rm(dir,{recursive:true,force:true});});const base=`http://127.0.0.1:${server.address().port}`;
+async function start(t){const dir=await fs.mkdtemp(path.join(os.tmpdir(),'city-life-license-'));const repo=createMemoryRepository();const server=createApp({repo,areas:['中心街道'],allowDevLogin:true,superAdminPassword:'passphrase-for-tests',privateUploadDir:dir});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));t.after(async()=>{await new Promise(resolve=>server.close(resolve));await fs.rm(dir,{recursive:true,force:true});});const base=`http://127.0.0.1:${server.address().port}`;
  async function request(route,{method='GET',data,token,cookie,csrf,raw=false,type='application/json'}={}){const res=await fetch(base+route,{method,headers:{'Content-Type':type,...(token?{Authorization:`Bearer ${token}`}:{ }),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:data===undefined?undefined:raw?data:JSON.stringify(data)});let parsed;if(res.headers.get('content-type')?.includes('application/json'))parsed=await res.json();else parsed=Buffer.from(await res.arrayBuffer());return {status:res.status,data:parsed,cookie:res.headers.get('set-cookie')?.split(';')[0]};}
  async function auth(name){const x=await request('/api/v1/dev/login',{method:'POST',data:{devUser:name}});assert.equal(x.status,200);return x.data;}
  return {request,auth,repo,dir};}
@@ -20,7 +20,7 @@ test('Private license requires ownership, correct MIME/bytes, admin auth; replac
  assert.deepEqual(await fs.readFile(path.join(dir,fileId+'.blob')),png);
  assert.equal((await request('/api/v1/merchant-applications/'+aid+'/license',{method:'GET',token:owner.token})).status,404);
  const download='/admin/api/licenses/'+fileId;assert.equal((await request(download)).status,401);assert.equal((await request(download,{token:owner.token})).status,401);
- const admin=await request('/admin/api/login',{method:'POST',data:{password:'passphrase-for-tests'}});const dl=await request(download,{cookie:admin.cookie});assert.equal(dl.status,200);assert.deepEqual(dl.data,png);
+ const admin=await request('/admin/api/login',{method:'POST',data:{role:'superadmin',password:'passphrase-for-tests'}});const dl=await request(download,{cookie:admin.cookie});assert.equal(dl.status,200);assert.deepEqual(dl.data,png);
  const newFile=await request(route,{method:'POST',token:owner.token,data:png,raw:true,type:'image/png'});assert.equal(newFile.status,201);
  assert.equal((await request(download,{cookie:admin.cookie})).status,404,'old file no longer downloadable');
  await assert.rejects(fs.access(path.join(dir,fileId+'.blob')));

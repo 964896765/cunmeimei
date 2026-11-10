@@ -65,7 +65,7 @@ test('V0.21: failure to audit service transition rolls back transaction',async()
 // HTTP regression checks role revocation through the API rather than a direct repository call.
 test('V0.21 HTTP: role revocation takes effect before service resubmission',async t=>{
  const repo=createMemoryRepository();
- const app=createApp({repo,areas:['中心街道'],allowDevLogin:true,adminPassword:'v21-offline-admin-password'});
+ const app=createApp({repo,areas:['中心街道'],allowDevLogin:true,superAdminPassword:'v21-offline-admin-password'});
  await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));
  t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base=`http://127.0.0.1:${app.address().port}`;
@@ -78,7 +78,7 @@ test('V0.21 HTTP: role revocation takes effect before service resubmission',asyn
  const application=await req('/api/v1/merchant-applications','POST',{name:'本地家电维修',category:'维修',district:'中心街道'},{token:owner.token});
  assert.equal(application.status,201);const aid=application.data.application.id;
  assert.equal((await req(`/api/v1/merchant-applications/${aid}/evidence`,'POST',{registrationCode:'LOCAL-V21-TEST-001',licenseHolder:'本地家电维修',evidenceReference:'offline-test-only'},{token:owner.token})).status,200);
- const adminLogin=await req('/admin/api/login','POST',{password:'v21-offline-admin-password'}),admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
+ const adminLogin=await req('/admin/api/login','POST',{role:'superadmin',password:'v21-offline-admin-password'}),admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
  const accepted=await req('/admin/api/approve-merchant','POST',{id:aid,manuallyVerified:true,note:'仅用于离线权限测试'},admin);
  assert.equal(accepted.status,200);const mid=accepted.data.merchant.id;
  const created=await req(`/api/v1/merchants/${mid}/services`,'POST',{title:'家电维修预约',description:'验证撤销经理角色后不能重新发布服务',price:'50'},{token:owner.token});

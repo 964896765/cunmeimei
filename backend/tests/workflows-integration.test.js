@@ -100,7 +100,7 @@ test('real PostgreSQL redemption, promotion and industry workspaces',{skip:!proc
    }
   });
   await t.test('benefits, promotions and industry data enter workbench and owner exports; ledgers still reconcile',async()=>{
-   assert.ok((await repo.reviewWorkbench({kind:'advertiser'})).counts);assert.ok((await repo.exportOwnData(owner.userId,'benefit_orders')).items.length);assert.ok((await repo.exportOwnData(owner.userId,'industry_entries')).items.length);assert.equal((await repo.exportOwnData(other.userId,'industry_entries')).items.length,0);assert.deepEqual(await repo.reconcilePoints(),[]);
+   assert.ok((await repo.reviewWorkbench({kind:'advertiser',role:'verifier'})).counts);assert.ok((await repo.exportOwnData(owner.userId,'benefit_orders')).items.length);assert.ok((await repo.exportOwnData(owner.userId,'industry_entries')).items.length);assert.equal((await repo.exportOwnData(other.userId,'industry_entries')).items.length,0);assert.deepEqual(await repo.reconcilePoints(),[]);
   });
   await t.test('production approval and category suspension cannot be bypassed by new workflow endpoints',async()=>{
    const v=fixture(project('EVENT')),pending=await repo.saveIndustryEntry(owner.userId,null,v),options={...repo.trustOptions};

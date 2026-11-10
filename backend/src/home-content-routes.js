@@ -1,4 +1,5 @@
 'use strict';
+const {hasRole}=require('./admin-permissions');
 const {ApiError,uuid}=require('./rules');
 const geography=require('./geography');
 const pageOf=url=>{const p=url.searchParams.get('page')||'1';if(!/^[1-9]\d{0,2}$/.test(p)||Number(p)>500)throw new ApiError(400,'INVALID_PAGE','页码无效');return Number(p);};
@@ -15,7 +16,7 @@ async function homeContentRoutes({req,res,p,m,url,repo,user,admin,body,json}){
  if(!p.startsWith('/admin/api/home-'))return false;
  const session=admin(req,m!=='GET');
  if(!repo.saveHomeContent)throw new ApiError(503,'DATABASE_REQUIRED','首页内容管理需要持久化数据库');
- const operator=()=>{if(session.role!=='operator')throw new ApiError(403,'OPERATOR_REQUIRED','内容编辑和审核需要运营角色');};
+ const operator=()=>{if(!hasRole(session.role,'operator'))throw new ApiError(403,'OPERATOR_REQUIRED','内容编辑和审核需要运营角色');};
  if(p==='/admin/api/home-cities'&&m==='GET'){json(res,200,{items:geography.cities.map(c=>({code:c.code,name:c.name}))});return true;}
  if(p==='/admin/api/home-targets'&&m==='GET'){json(res,200,await repo.homeTargets({q:url.searchParams.get('q')||'',cityCode:url.searchParams.get('cityCode')||'',page:pageOf(url)}));return true;}
  if(p==='/admin/api/home-content'&&m==='GET'){json(res,200,await repo.adminHomeContent(pageOf(url)));return true;}
@@ -24,9 +25,9 @@ async function homeContentRoutes({req,res,p,m,url,repo,user,admin,body,json}){
  if(/^\/admin\/api\/home-content\/[0-9a-f-]{36}\/review$/.test(p)&&m==='POST'){operator();json(res,200,await repo.reviewHomeContent(p.split('/')[4],await body(req),session.role));return true;}
  if(p==='/admin/api/home-reports'&&m==='GET'){json(res,200,await repo.homeReports(pageOf(url)));return true;}
  if(/^\/admin\/api\/home-reports\/[0-9a-f-]{36}$/.test(p)&&m==='POST'){operator();json(res,200,await repo.resolveHomeReport(p.split('/').at(-1),await body(req),session.role));return true;}
- if(p==='/admin/api/home-advertisers'&&m==='GET'){json(res,200,{items:await repo.homeAdvertisers(pageOf(url))});return true;}
+ if(p==='/admin/api/home-advertisers'&&m==='GET'){let items=await repo.homeAdvertisers(pageOf(url));if(!hasRole(session.role,'verifier'))items=items.map(({evidence_reference,...safe})=>safe);json(res,200,{items});return true;}
  if(p==='/admin/api/home-advertisers'&&m==='POST'){operator();const v=await body(req);if(!uuid(v.userId))throw new ApiError(400,'INVALID_USER','广告主账号编号无效');json(res,201,await repo.createAdvertiser(v.userId,v));return true;}
- if(/^\/admin\/api\/home-advertisers\/[0-9a-f-]{36}$/.test(p)&&m==='POST'){if(session.role!=='verifier')throw new ApiError(403,'VERIFIER_REQUIRED','广告主主体资料需要业务核验角色确认');json(res,200,await repo.verifyAdvertiser(p.split('/').at(-1),await body(req),session.role));return true;}
+ if(/^\/admin\/api\/home-advertisers\/[0-9a-f-]{36}$/.test(p)&&m==='POST'){if(!hasRole(session.role,'verifier'))throw new ApiError(403,'VERIFIER_REQUIRED','广告主主体资料需要业务核验角色确认');json(res,200,await repo.verifyAdvertiser(p.split('/').at(-1),await body(req),session.role));return true;}
  return false;
 }
 module.exports={homeContentRoutes};

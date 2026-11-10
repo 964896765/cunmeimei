@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
@@ -35,7 +36,7 @@ test('V0.13: miniprogram API login, publish, expired-token refresh, and explicit
  const [tokenA,tokenB]=await Promise.all([api.login(),api.login()]);
  assert.equal(tokenA,tokenB);assert.equal(logins,1,'concurrent login is singleflight');
  assert.ok(api.hasSession());
- const first=await api.request('POST','/api/v1/publications',{type:'used',title:'联调测试桌椅',detail:'小程序真实 HTTP 适配器写入后端',district:'中心街道',price:'50'},true);
+ const first=await api.request('POST','/api/v1/publications',{...residentFields(),type:'used',title:'联调测试桌椅',detail:'小程序真实 HTTP 适配器写入后端',district:'中心街道',price:'50'},true);
  assert.equal(first.publication.status,'pending');
  assert.equal((await api.request('GET','/api/v1/me/publications',null,true)).items.length,1);
  assert.equal((await api.request('GET','/api/v1/feed')).items.length,0,'unreviewed stays private');

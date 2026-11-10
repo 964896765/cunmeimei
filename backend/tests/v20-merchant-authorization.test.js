@@ -7,7 +7,7 @@ const {pgOperations}=require('../src/operations-pg');
 
 async function fixture(t){
  const repo=createMemoryRepository();
- const app=createApp({repo,areas:['中心街道'],allowDevLogin:true,adminPassword:'v20-test-admin-password'});
+ const app=createApp({repo,areas:['中心街道'],allowDevLogin:true,superAdminPassword:'v20-test-admin-password'});
  await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));
  t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base=`http://127.0.0.1:${app.address().port}`;
@@ -26,7 +26,7 @@ test('V0.20 HTTP: revoked staff cannot confirm or complete booking; owner can fi
  assert.equal(a.status,201);
  const aid=a.data.application.id;
  assert.equal((await req(`/api/v1/merchant-applications/${aid}/evidence`,'POST',{registrationCode:'V20-TEST-OFFLINE-123',licenseHolder:'V20本地维修站',evidenceReference:'manual-only-no-real-credentials'},{token:owner.token})).status,200);
- const adm=await req('/admin/api/login','POST',{password:'v20-test-admin-password'});
+ const adm=await req('/admin/api/login','POST',{role:'superadmin',password:'v20-test-admin-password'});
  assert.equal(adm.status,200);
  const admin={cookie:adm.cookie,csrf:adm.data.csrf};
  const mr=await req('/admin/api/approve-merchant','POST',{id:aid,manuallyVerified:true,note:'仅测试账号的模拟人工核验'},admin);

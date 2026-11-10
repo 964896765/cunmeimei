@@ -1,4 +1,5 @@
 'use strict';
+const {hasRole,permissionsFor,requirePermission,taskPermission}=require('./admin-permissions');
 const {ApiError}=require('./rules');
 const {redact}=require('./trust-policy');
 // Metadata only: private messages and qualification evidence require audited reads.
@@ -50,20 +51,21 @@ function queryOptions(params){
  return {kind,page,size};
 }
 function attachWorkbench(repo,pool){
- repo.reviewTask=async(kind,id,role)=>{
-  if(kind==='businesscase'&&role!=='operator')throw new ApiError(403,'OPERATOR_REQUIRED','双方私密业务争议仅运营处理角色可读取');
+ repo.reviewTask=async(kind,id,role,permissions=permissionsFor(role))=>{
+  requirePermission({permissions},taskPermission(kind));
+  if(kind==='businesscase'&&!hasRole(role,'operator'))throw new ApiError(403,'OPERATOR_REQUIRED','双方私密业务争议仅运营处理角色可读取');
   if(!kinds.includes(kind))throw new ApiError(400,'INVALID_TASK','待办类型无效');
   const c=await pool.connect();try{
    await c.query('BEGIN');
    const task=(await c.query(`WITH tasks AS (${tasks}) SELECT kind,id,title,user_id AS "userId",metadata FROM tasks WHERE kind=$1 AND id=$2`,[kind,id])).rows[0];
    if(!task)throw new ApiError(409,'TASK_CHANGED','任务已处理，请刷新待办');
    let detail={};
-   if(kind==='businesscase'){if(role!=='operator')detail={description:'双方私密约定和争议仅运营处理角色按需读取。'};else detail=await repo.adminBusinessCase(id);}
+   if(kind==='businesscase'){if(!hasRole(role,'operator'))detail={description:'双方私密约定和争议仅运营处理角色按需读取。'};else detail=await repo.adminBusinessCase(id);}
    if(['benefit','promotion','advertiser','industry','industrycredential','industryreport'].includes(kind)){
     const table={benefit:'benefit_orders',promotion:'ad_campaigns',advertiser:'advertisers',industry:'industry_entries',industrycredential:'industry_credentials',industryreport:'industry_reports'}[kind];
     detail=(await c.query('SELECT * FROM '+table+' WHERE id=$1',[id])).rows[0];
     if(kind==='industry')detail.workflow=require('../../miniprogram/utils/industry-workflows').workflow(detail.project_id);
-    if(['industrycredential','advertiser'].includes(kind)&&role!=='verifier')detail={revision:detail.revision,description:'主体和专项资料仅业务核验角色读取与核查。'};
+    if(['industrycredential','advertiser'].includes(kind)&&!hasRole(role,'verifier'))detail={revision:detail.revision,description:'主体和专项资料仅业务核验角色读取与核查。'};
    }
    if(kind==='homecontent'){const row=(await c.query('SELECT payload,status,revision FROM home_content WHERE id=$1',[id])).rows[0];detail={...row.payload,status:row.status,revision:row.revision};}
    if(kind==='homereport')detail=(await c.query("SELECT r.reason,r.revision,r.content_id AS \"contentId\",c.payload->>'title' title,c.revision AS \"contentRevision\",c.status AS \"contentStatus\" FROM home_content_reports r JOIN home_content c ON c.id=r.content_id WHERE r.id=$1",[id])).rows[0];
@@ -78,17 +80,19 @@ function attachWorkbench(repo,pool){
     detail.reports=(await c.query("SELECT id,reason FROM content_reports WHERE target_type='publication' AND target_id=$1 AND status='removed' ORDER BY id",[detail.publicationId])).rows;
    }
    if(kind==='qualification')detail.qualificationRevision=(await c.query('SELECT revision FROM qualification_checks WHERE user_id=$1 AND scope=$2',[task.userId,task.metadata.scope])).rows[0]?.revision||0;
-   if(kind==='merchant')detail=role==='verifier'?(await c.query('SELECT status,registration_code AS "registrationCode",license_holder AS "licenseHolder",evidence_reference AS "evidenceReference",license_file_id AS "licenseFileId" FROM merchant_applications WHERE id=$1',[id])).rows[0]:{description:'需要核验主体、经营资格和授权。请以业务资质核验角色读取私有材料。'};
+   if(kind==='merchant')detail=hasRole(role,'verifier')?(await c.query('SELECT status,registration_code AS "registrationCode",license_holder AS "licenseHolder",evidence_reference AS "evidenceReference",license_file_id AS "licenseFileId" FROM merchant_applications WHERE id=$1',[id])).rows[0]:{description:'需要核验主体、经营资格和授权。请以业务资质核验角色读取私有材料。'};
    await c.query("INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES('workbench_task_read',$1,$2,$3)",[kind,id,role]);
    await c.query('COMMIT');return {...task,detail};
   }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}
  };
- repo.reviewWorkbench=async({kind='',page=1,size=20,role='operator'})=>{
+ repo.reviewWorkbench=async({kind='',page=1,size=20,role='operator',permissions=permissionsFor(role)})=>{
+  const allowedKinds=kinds.filter(value=>permissions.includes(taskPermission(value)));
+  if(kind)requirePermission({permissions},taskPermission(kind));
   const c=await pool.connect();
   try{
    await c.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');
-   const counts=(await c.query(`WITH tasks AS (${tasks}) SELECT kind,count(*)::int count FROM tasks WHERE ($1::text='operator' OR kind<>'businesscase') GROUP BY kind`,[role])).rows;
-   const rows=(await c.query(`WITH tasks AS (${tasks}) SELECT kind,id,created_at AS "createdAt",title,user_id AS "userId",priority,metadata FROM tasks WHERE ($1='' OR kind=$1) AND ($4::text='operator' OR kind<>'businesscase') ORDER BY priority,created_at,kind,id LIMIT $2 OFFSET $3`,[kind,size,(page-1)*size,role])).rows;
+   const counts=(await c.query(`WITH tasks AS (${tasks}) SELECT kind,count(*)::int count FROM tasks WHERE kind=ANY($1::text[]) GROUP BY kind`,[allowedKinds])).rows;
+   const rows=(await c.query(`WITH tasks AS (${tasks}) SELECT kind,id,created_at AS "createdAt",title,user_id AS "userId",priority,metadata FROM tasks WHERE ($1='' OR kind=$1) AND kind=ANY($4::text[]) ORDER BY priority,created_at,kind,id LIMIT $2 OFFSET $3`,[kind,size,(page-1)*size,allowedKinds])).rows;
    await c.query('COMMIT');
    return {items:rows.map(x=>({...x,title:redact(x.title)})),counts:Object.fromEntries(counts.map(x=>[x.kind,x.count])),total:counts.filter(x=>!kind||x.kind===kind).reduce((n,x)=>n+x.count,0),page,size};
   }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}

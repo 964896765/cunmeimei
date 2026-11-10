@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');const assert=require('node:assert/strict');const crypto=require('node:crypto');
 const {publicationExtras}=require('../src/product-repository');
 test('product fields validate category-specific data and reject foreign/invalid fields',()=>{
@@ -12,12 +13,12 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
  try{
   await control.query(`CREATE SCHEMA "${schema}"`);const options='-c search_path='+schema;pool=new Pool({connectionString:dsn,options});
   await require('../src/schema-migrations').applyMigrations(pool);repo=createPgRepository(dsn,{options});await repo.seedRegions(['中心街道']);
-  app=createApp({repo,areas:['中心街道'],allowDevLogin:true,adminPassword:'local-product-test-password'});await new Promise(r=>app.listen(0,'127.0.0.1',r));
+  app=createApp({repo,areas:['中心街道'],allowDevLogin:true,superAdminPassword:'local-product-test-password'});await new Promise(r=>app.listen(0,'127.0.0.1',r));
   const base='http://127.0.0.1:'+app.address().port;
   async function req(route,method='GET',body,auth={}){const response=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(auth.token?{Authorization:'Bearer '+auth.token}:{}),...(auth.cookie?{Cookie:auth.cookie,'X-CSRF-Token':auth.csrf}:{})},body:body===undefined?undefined:JSON.stringify(body)});return {status:response.status,data:await response.json(),cookie:response.headers.get('set-cookie')?.split(';')[0]};}
   const login=async name=>(await req('/api/v1/dev/login','POST',{devUser:name})).data;
   const owner=await login('product-owner'),buyer=await login('product-buyer'),other=await login('product-other');
-  const adminLogin=await req('/admin/api/login','POST',{password:'local-product-test-password'});const admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
+  const adminLogin=await req('/admin/api/login','POST',{role:'superadmin',password:'local-product-test-password'});const admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
   const bytes=await sharp({create:{width:120,height:90,channels:3,background:'#176b5b'}}).png().toBuffer();let image,publication,community,contact,comment;
   await t.test('actual image decode, thumbnail and anonymous access denial',async()=>{
    const response=await fetch(base+'/api/v1/media',{method:'POST',headers:{Authorization:'Bearer '+owner.token,'Content-Type':'image/png'},body:bytes});assert.equal(response.status,201);image=(await response.json()).image;assert.ok(image.id);
@@ -28,7 +29,7 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    assert.equal((await fetch(base+'/api/v1/media',{method:'POST',headers:{Authorization:'Bearer '+owner.token,'Content-Type':'image/jpeg'},body:bytes})).status,415);
    assert.equal((await fetch(base+'/api/v1/media',{method:'POST',headers:{Authorization:'Bearer '+owner.token,'Content-Type':'image/png'},body:Buffer.alloc(2097153)})).status,413);
   });
-  const payload={type:'used',title:'测试专用闲置书桌',detail:'真实数据库功能验证专用内容，不是实际交易商品。',district:'中心街道',price:'80',attributes:{condition:'正常使用'},imageIds:[image.id]};
+  const payload={...residentFields(),type:'used',title:'测试专用闲置书桌',detail:'真实数据库功能验证专用内容，不是实际交易商品。',district:'中心街道',price:'80',attributes:residentFields().attributes,imageIds:[image.id]};
   await t.test('foreign image ownership cannot be used in publication',async()=>{assert.equal((await req('/api/v1/publications','POST',payload,buyer)).status,400);});
   await t.test('pending publication and its image remain private',async()=>{
    const r=await req('/api/v1/publications','POST',payload,owner);assert.equal(r.status,201);publication=r.data.publication;
@@ -68,7 +69,7 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    assert.equal((await req('/api/v1/publications','POST',{...body,title:'不能覆盖原来提交内容'},owner)).status,409);
   });
   await t.test('development data hidden normally and explicitly available only in development mode',async()=>{
-   const response=await fetch(base+'/api/v1/publications',{method:'POST',headers:{Authorization:'Bearer '+owner.token,'Content-Type':'application/json','X-Development-Test-Data':'true'},body:JSON.stringify({...payload,imageIds:[],title:'开发数据隔离验收'})});assert.equal(response.status,201);const id=(await response.json()).publication.id;
+   const response=await fetch(base+'/api/v1/publications',{method:'POST',headers:{Authorization:'Bearer '+owner.token,'Content-Type':'application/json','X-Development-Test-Data':'true'},body:JSON.stringify({...payload,title:'开发数据隔离验收'})});assert.equal(response.status,201);const id=(await response.json()).publication.id;
    await req('/admin/api/review','POST',{target:'publication',id,status:'published'},admin);
    assert.equal((await req('/api/v1/items/'+id)).status,404);assert.equal((await fetch(base+'/api/v1/items/'+id,{headers:{'X-Development-Test-Data':'true'}})).status,200);
    assert.equal((await req('/api/v1/feed')).data.items.some(x=>x.id===id),false);
@@ -114,7 +115,7 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    await req('/api/v1/me/notifications/read','POST',{id:notice.id},owner);assert.ok((await pool.query('SELECT read_at FROM user_notifications WHERE id=$1',[notice.id])).rows[0].read_at);
   });
   await t.test('community likes unique, comments hidden until authorized review',async()=>{
-   community=(await req('/api/v1/publications','POST',{...payload,type:'community',title:'测试专用邻里交流',attributes:{topic:'邻里互助'},imageIds:[]},owner)).data.publication;
+   community=(await req('/api/v1/publications','POST',{...payload,type:'community',title:'测试专用邻里交流',attributes:{...residentFields('community').attributes,topic:'邻里互助'},imageIds:[]},owner)).data.publication;
    await req('/admin/api/review','POST',{target:'publication',id:community.id,status:'published'},admin);
    for(let i=0;i<2;i++)await req('/api/v1/items/'+community.id+'/like','PUT',{},buyer);
    comment=(await req('/api/v1/items/'+community.id+'/comments','POST',{body:'这是一条友善的测试留言'},buyer)).data.comment;
@@ -220,7 +221,7 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
   await t.test('draft images cannot be deleted; submission clears only the matching draft atomically',async()=>{
    const bytes2=await sharp({create:{width:20,height:20,channels:3,background:'#176b5b'}}).png().toBuffer();
    const upload=await fetch(base+'/api/v1/media',{method:'POST',headers:{Authorization:'Bearer '+owner.token,'Content-Type':'image/png'},body:bytes2});const photo=(await upload.json()).image;
-   const draft={kind:'used',title:'跨设备草稿提交测试',detail:'真实数据库跨设备草稿提交验收专用内容。',district:'中心街道',price:'20',attributes:{},imageIds:[photo.id],clientKey:'cloud_draft_submit_key_001'};
+   const draft={kind:'used',title:'跨设备草稿提交测试',detail:'真实数据库跨设备草稿提交验收专用内容。',district:'中心街道',price:'20',attributes:residentFields().attributes,imageIds:[photo.id],clientKey:'cloud_draft_submit_key_001'};
    assert.equal((await req('/api/v1/me/draft','PUT',{expectedRevision:3,payload:draft},owner)).status,200);
    assert.equal((await req('/api/v1/me/media/'+photo.id,'DELETE',{},owner)).status,409);
    const unrelated=await req('/api/v1/publications','POST',{...draft,type:draft.kind,clientKey:'unrelated_publish_key_001'},owner);assert.equal(unrelated.status,201);
@@ -305,8 +306,8 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    assert.equal((await repo.popularSearches('441900')).some(x=>x.term==='保洁'),false);
   });
   await t.test('candidate category ID persists through draft/publication and filters before pagination without widening qualification',async()=>{
-   const common={type:'used',title:'目录闭环分类验证',detail:'真实数据库验证分类归属与审核边界。',district:'中心街道',price:'40'};
-   const make=async categoryId=>{const attributes={categoryId,categoryVersion:'2.0-audit'};const created=await req('/api/v1/publications','POST',{...common,attributes},owner);assert.equal(created.status,201);const id=created.data.publication.id;
+   const common={...residentFields('used',[image.id]),type:'used',title:'目录闭环分类验证',detail:'真实数据库验证分类归属与审核边界。',district:'中心街道',price:'40'};
+   const make=async categoryId=>{const attributes={...residentFields(common.type).attributes,categoryId,categoryVersion:'2.0-audit'};const created=await req('/api/v1/publications','POST',{...common,attributes},owner);assert.equal(created.status,201);const id=created.data.publication.id;
     assert.equal((await req('/api/v1/feed?categoryId='+categoryId+'&q=目录闭环')).data.items.length,0);
     assert.equal((await req('/admin/api/review','POST',{target:'publication',id,status:'published'},admin)).status,200);return id;};
    const phone=await make('C04G01S01');await make('C04G01S02');
@@ -320,12 +321,12 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    assert.equal((await req('/api/v1/me/draft','GET',undefined,owner)).data.payload.attributes.categoryId,'C04G01S01');
   });
   await t.test('stale account submit cannot delete a newer revision; idempotent success removes only its observed draft',async()=>{
-   const writer=await login('draft-submit-concurrency'),draft={kind:'used',title:'旧草稿提交测试',detail:'验证过期表单不能删除另一设备更新的草稿。',price:'40',district:'中心街道',attributes:{},imageIds:[],clientKey:'draft_submission_concurrency_123'};
+   const writer=await login('draft-submit-concurrency'),writerPhoto=await repo.uploadContentImage(writer.userId,bytes),draft={kind:'used',title:'旧草稿提交测试',detail:'验证过期表单不能删除另一设备更新的草稿。',price:'40',district:'中心街道',attributes:residentFields().attributes,imageIds:[writerPhoto.id],clientKey:'draft_submission_concurrency_123'};
    assert.equal((await req('/api/v1/me/draft','PUT',{expectedRevision:0,payload:draft},writer)).status,200);
    const newer={...draft,title:'另一设备更新的草稿'};assert.equal((await req('/api/v1/me/draft','PUT',{expectedRevision:1,payload:newer},writer)).status,200);
    const stale=await req('/api/v1/publications','POST',{...draft,type:'used',sourceDraftRevision:1},writer);assert.equal(stale.status,409);assert.equal(stale.data.error,'DRAFT_CONFLICT');assert.equal((await req('/api/v1/me/publications','GET',undefined,writer)).data.items.length,0);assert.equal((await req('/api/v1/me/draft','GET',undefined,writer)).data.payload.title,newer.title);
    const current={...newer,type:'used',title:'本次确认提交的修改',sourceDraftRevision:2};const submitted=await req('/api/v1/publications','POST',current,writer);assert.equal(submitted.status,201);assert.equal((await req('/api/v1/me/draft','GET',undefined,writer)).data.payload,null);const replay=await req('/api/v1/publications','POST',current,writer);assert.equal(replay.status,201);assert.equal(replay.data.publication.id,submitted.data.publication.id);
-   const independent=await login('divergent-local-draft'),copy={...draft,clientKey:'divergent_local_cloud_key_123'};assert.equal((await req('/api/v1/me/draft','PUT',{expectedRevision:0,payload:{...copy,title:'账号不同内容'}},independent)).status,200);assert.equal((await req('/api/v1/publications','POST',{...copy,type:'used'},independent)).status,201);assert.equal((await req('/api/v1/me/draft','GET',undefined,independent)).data.payload.title,'账号不同内容');
+   const independent=await login('divergent-local-draft'),independentPhoto=await repo.uploadContentImage(independent.userId,bytes),copy={...draft,imageIds:[independentPhoto.id],clientKey:'divergent_local_cloud_key_123'};assert.equal((await req('/api/v1/me/draft','PUT',{expectedRevision:0,payload:{...copy,title:'账号不同内容'}},independent)).status,200);assert.equal((await req('/api/v1/publications','POST',{...copy,type:'used'},independent)).status,201);assert.equal((await req('/api/v1/me/draft','GET',undefined,independent)).data.payload.title,'账号不同内容');
   });
   await t.test('over-limit image dimensions roll back; normal upload works after decode failure',async()=>{
    const oversized=await sharp({create:{width:5000,height:4000,channels:3,background:'white'}}).png().toBuffer();

@@ -20,8 +20,8 @@ function verify({dsn=process.env.PG_TEST_DATABASE_URL,runner=spawnSync,checkDriv
  if(!dsn)return {ok:false,reason:'PG_TEST_DATABASE_URL_REQUIRED'};
  try{assertIsolatedDatabase(dsn);}catch{return {ok:false,reason:'UNSAFE_TEST_DATABASE_URL'};}
  if(checkDriver){try{require.resolve('pg');}catch{return {ok:false,reason:'PG_DRIVER_MISSING_RUN_NPM_INSTALL'};}}
- const result=runner(process.execPath,['--test','--test-reporter=tap','tests/postgres.test.js','tests/product-capabilities.test.js','tests/trust-safety.test.js','tests/launch-foundation.test.js','tests/lifecycle-maintenance.test.js','tests/contribution-rewards.test.js','tests/reward-appeals.test.js','tests/booking-submissions.test.js','tests/project-polish.test.js','tests/workflows-integration.test.js','tests/project-journeys-integration.test.js','tests/business-progress.test.js','tests/booking-source-lifecycle.test.js'],{
-  cwd:path.resolve(__dirname,'..'),env:{...process.env,PG_TEST_DATABASE_URL:dsn},encoding:'utf8',timeout:480000,maxBuffer:2*1024*1024
+ const result=runner(process.execPath,['--test','--test-concurrency=1','--test-reporter=tap','tests/p0-security.test.js','tests/postgres.test.js','tests/product-capabilities.test.js','tests/trust-safety.test.js','tests/launch-foundation.test.js','tests/lifecycle-maintenance.test.js','tests/contribution-rewards.test.js','tests/reward-appeals.test.js','tests/booking-submissions.test.js','tests/project-polish.test.js','tests/workflows-integration.test.js','tests/project-journeys-integration.test.js','tests/business-progress.test.js','tests/booking-source-lifecycle.test.js'],{
+  cwd:path.resolve(__dirname,'..'),env:{...process.env,PG_TEST_DATABASE_URL:dsn},encoding:'utf8',timeout:1200000,maxBuffer:2*1024*1024
  });
  const evaluated=evaluateIntegrationRun(result);
  if(!evaluated.ok){

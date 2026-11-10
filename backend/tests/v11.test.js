@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test'),assert=require('node:assert/strict');
 const {createApp}=require('../src/server');
 const {createMemoryRepository}=require('../src/memory-repository');
@@ -16,8 +17,8 @@ async function setup(t){
  const admin=async()=>{const r=await call('/admin/api/login',{method:'POST',body:{password:'local-test-admin-password'}});return {cookie:r.cookie,csrf:r.data.csrf};};
  return {repo,call,login,admin};
 }
-const data={type:'used',title:'本地闲置书桌',detail:'一张九成新的实木书桌，仅用于内容编辑审核测试',price:'¥180',district:'中心街道'};
-const edit={...data,title:'本地闲置书桌已调整',detail:'重新上传的信息需要进入人工复审，不应该自动公开',price:'¥150'};
+const data={...residentFields(),type:'used',title:'本地闲置书桌',detail:'一张九成新的实木书桌，仅用于内容编辑审核测试',price:'180',district:'中心街道'};
+const edit={...data,title:'本地闲置书桌已调整',detail:'重新上传的信息需要进入人工复审，不应该自动公开',price:'150'};
 
 test('V0.11: editing a published item hides it until a fresh approval; revisions prevent stale overwrites',async t=>{
  const {call,login,admin}=await setup(t),owner=await login('v11-author'),other=await login('v11-intruder');
@@ -58,7 +59,7 @@ test('V0.11: editing respects active district, locked categories and immutable p
  const {repo,call,login}=await setup(t),owner=await login('v11-policy-author');
  const id=(await call('/api/v1/publications',{method:'POST',token:owner,body:data})).data.publication.id;
  const url='/api/v1/me/publications/'+id;
- assert.equal((await call(url,{method:'PUT',token:owner,body:{...edit,type:'housing',expectedRevision:1}})).status,404,'cannot change original category');
+ assert.equal((await call(url,{method:'PUT',token:owner,body:{...edit,type:'housing',attributes:{},imageIds:[],expectedRevision:1}})).status,404,'cannot change original category');
  await repo.setRegionEnabled('北城区',false);
  assert.equal((await call(url,{method:'PUT',token:owner,body:{...edit,district:'北城区',expectedRevision:1}})).status,400);
  await repo.setCategoryEnabled('used',false);

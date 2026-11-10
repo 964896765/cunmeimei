@@ -52,7 +52,7 @@ test('deployment gate blocks unsafe production and accepts correctly structured 
  assert.equal(report.ok,false);
  assert.ok(report.errors.includes('PROD_POSTGRES_REQUIRED'));
  assert.ok(report.errors.includes('PRIVATE_STORAGE_ABSOLUTE_PATH_REQUIRED'));
- const safe={PLATFORM_OPERATOR_NAME:'Isolated operator',PRIVACY_CONTACT_EMAIL:'privacy@example.test',NODE_ENV:'production',DATA_DRIVER:'postgres',DATABASE_URL:'postgres://api:fixture@localhost/citylife',ALLOW_DEV_LOGIN:'false',WECHAT_APPID:'wx1234567890abcdef',WECHAT_SECRET:'server-side-secret-value',ADMIN_PASSWORD:'very-long-admin-password',SERVICE_AREAS:'东城街道',PRIVATE_UPLOAD_DIR:'/var/lib/city-life-private'};
+ const safe={PHONE_ENCRYPTION_KEY:Buffer.alloc(32,1).toString('base64'),PLATFORM_OPERATOR_NAME:'Isolated operator',PRIVACY_CONTACT_EMAIL:'privacy@example.test',NODE_ENV:'production',DATA_DRIVER:'postgres',DATABASE_URL:'postgres://api:fixture@localhost/citylife',ALLOW_DEV_LOGIN:'false',WECHAT_APPID:'wx1234567890abcdef',WECHAT_SECRET:'server-side-secret-value',ADMIN_PASSWORD:'very-long-admin-password',SERVICE_AREAS:'东城街道',PRIVATE_UPLOAD_DIR:'/var/lib/city-life-private'};
  assert.deepEqual(validateDeployment(safe,root),{ok:true,errors:[]});
  for(const DATABASE_URL of ['', 'not-a-url', 'https://database.example/citylife', 'postgres://localhost/', 'postgres://localhost/citylife#fragment']){
   assert.ok(validateDeployment({...safe,DATABASE_URL},root).errors.includes('DATABASE_URL_REQUIRED'));

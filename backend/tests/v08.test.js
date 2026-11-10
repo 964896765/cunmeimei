@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const {createApp}=require('../src/server');
@@ -17,7 +18,7 @@ async function setup(t){
  };
  return {repo,call};
 }
-const publication={type:'used',title:'测试闲置桌椅',detail:'同城用户转让闲置桌椅，仅做审核回归测试',district:'中心街道',price:'¥100'};
+const publication={...residentFields(),type:'used',title:'测试闲置桌椅',detail:'同城用户转让闲置桌椅，仅做审核回归测试',district:'中心街道',price:'100'};
 async function login(call,key){return (await call('/api/v1/dev/login',{method:'POST',body:{devUser:key}})).data.token;}
 async function admin(call){const r=await call('/admin/api/login',{method:'POST',body:{password:'long-private-admin-pass'}});return {cookie:r.cookie,csrf:r.data.csrf};}
 
@@ -51,7 +52,7 @@ test('V0.8 booking calendar rejects normalized dates, including leap years',asyn
  const {repo,call}=await setup(t);
  assert.equal(validCalendarDate('2028-02-29'),true);
  for(const s of ['2027-02-29','2027-02-30','2099-04-31','2101-01-01','0000-01-01','2099-13-01','2099-00-10','hello'])assert.equal(validCalendarDate(s),false,s);
- const service=await repo.addTestService({title:'演示保洁服务',description:'用于接口回归的服务',district:'中心街道',price:'¥0'});
+ const service=await repo.addTestService({title:'演示保洁服务',description:'用于接口回归的服务',district:'中心街道',price:'0'});
  assert.equal((await call(`/api/v1/services/${service.id}/slots?date=2099-02-30`)).status,400);
  const token=await login(call,'calendar-user');
  assert.equal((await call('/api/v1/bookings',{method:'POST',body:{serviceId:service.id,date:'2099-02-30',time:'10:00'},token})).status,400);

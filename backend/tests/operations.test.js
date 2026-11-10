@@ -1,15 +1,16 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');const assert=require('node:assert/strict');
 const {createApp}=require('../src/server');const {createMemoryRepository}=require('../src/memory-repository');
 async function setup(t){
- const repo=createMemoryRepository();const app=createApp({repo,areas:['中心街道'],adminPassword:'test-strong-admin-password',allowDevLogin:true});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>app.close(resolve)));
+ const repo=createMemoryRepository();const app=createApp({repo,areas:['中心街道'],superAdminPassword:'test-strong-admin-password',allowDevLogin:true});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base='http://127.0.0.1:'+app.address().port;
  async function api(p,method='GET',payload,token='',cookie='',csrf=''){
   const r=await fetch(base+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:payload===undefined?undefined:JSON.stringify(payload)});
   return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};
  }
  async function auth(name){const r=await api('/api/v1/dev/login','POST',{devUser:name});assert.equal(r.status,200);return r.data;}
- const adminLogin=await api('/admin/api/login','POST',{password:'test-strong-admin-password'});
+ const adminLogin=await api('/admin/api/login','POST',{role:'superadmin',password:'test-strong-admin-password'});
  return {api,auth,repo,cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
 }
 test('merchant review -> scoped staff -> service moderation -> bookings and reports',async t=>{
@@ -70,7 +71,7 @@ test('cross-merchant isolation and publication reports do not leak pending conte
  assert.equal((await api(`/api/v1/merchants/${bId}/bookings`,'GET',undefined,a.token)).status,403);
  assert.equal((await api(`/api/v1/merchants/${bId}/members`,'GET',undefined,a.token)).status,403);
  assert.equal((await api(`/api/v1/merchants/${bId}/members`,'POST',{userId:visitor.userId,role:'staff'},a.token)).status,403);
- const pub=await api('/api/v1/publications','POST',{title:'出售闲置电动车',type:'used',detail:'个人用车正常，无需立即转账',district:'中心街道',price:'¥500'},a.token);assert.equal(pub.status,201);
+ const pub=await api('/api/v1/publications','POST',{...residentFields(),title:'出售闲置电动车',type:'used',detail:'个人用车正常，无需立即转账',district:'中心街道',price:'500'},a.token);assert.equal(pub.status,201);
  const pid=pub.data.publication.id;
  assert.equal((await api('/api/v1/reports','POST',{targetType:'publication',targetId:pid,reason:'spam'},visitor.token)).status,404,'no reporting invisible pending data');
  assert.equal((await api('/admin/api/review','POST',{target:'publication',id:pid,status:'published',reason:''},'',cookie,csrf)).status,200);

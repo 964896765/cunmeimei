@@ -5,6 +5,8 @@ const signalNames={duplicate_content:'重复正文',duplicate_image:'重复图�
 async function loadTasks(){
  const generation=++taskGeneration;
  try{
+  const permissionFor=kind=>['qualification','merchant','advertiser','industrycredential'].includes(kind)?'qualification':kind==='privacy'?'privacy':'operations';
+  for(const option of el('task-kind').querySelectorAll?.('option')||[])option.hidden=!!option.value&&!canAdmin(permissionFor(option.value));
   const data=await api('/admin/api/workbench?kind='+encodeURIComponent(el('task-kind').value)+'&page='+taskPage);
   if(generation!==taskGeneration)return;
   el('task-counts').replaceChildren();for(const [kind,label] of Object.entries(taskNames))el('task-counts').append(cell('span',label+' '+(data.counts[kind]||0),'badge'));
@@ -27,21 +29,21 @@ async function openTask(kind,id){
  for(const imageId of d.imageIds||[]){const image=document.createElement('img');image.src='/admin/api/media/'+imageId;image.alt='本次待审原图';image.loading='lazy';image.className='content-preview';root.append(image);}
  const finish=async(url,payload,label)=>{await process(url,payload,label);root.replaceChildren();};
  if(['homecontent','homereport'].includes(kind)&&typeof renderHomeTask==='function')renderHomeTask(root,kind,id,d);
- if(kind==='operations'&&adminRole==='operator')actions.append(button('重试维护并核对',async()=>{const results=await api('/admin/api/operations/run','POST',{});notify(Object.values(results).some(x=>x.ok===false)?'仍有维护异常，请核对待办及运行记录':'维护执行完成');await reload();}));
+ if(kind==='operations'&&canRole('operator'))actions.append(button('重试维护并核对',async()=>{const results=await api('/admin/api/operations/run','POST',{});notify(Object.values(results).some(x=>x.ok===false)?'仍有维护异常，请核对待办及运行记录':'维护执行完成');await reload();}));
  if(kind==='rewardappeal'){
   actions.append(button('读取相关账户账本（审计）',async()=>{const data=await api('/admin/api/points/users/'+task.userId);root.append(cell('p','可用 '+data.account.available+'；冻结 '+data.account.held));for(const item of data.items)root.append(cell('p',item.kind+' · '+item.amount+' · '+item.reason));}));
   root.append(cell('p','当前贡献：'+d.rewardStatus+'；积分：'+d.amount+'；原处理版本：'+d.source_reward_revision));
-  for(const report of d.reports||[]){const panel=cell('div');panel.append(cell('p','相关已处置举报：'+report.id+' · '+report.reason));panel.append(button('读取举报证据（审计）',async()=>{const evidence=await api('/admin/api/reports/'+report.id+'/evidence');panel.append(cell('p',evidence.body||evidence.description||'暂无文字证据'));}));root.append(panel);}
-  if(adminRole==='operator')for(const status of (d.sourceChanged?['rejected']:['accepted','rejected']))actions.append(button(d.sourceChanged?'归档旧版本申诉':status==='accepted'?'核实后申诉成立':'维持原处理',async()=>{const response=prompt('填写已核查的事实、处理依据和用户答复（至少8字）');if(!response)return;const historical=['reversed','reversal_pending'].includes(d.rewardStatus);if(status==='accepted'&&historical&&!confirm('已逐项核查所列举报，并确认该笔贡献当时有效；恢复只影响本笔积分，不恢复公开内容或撤销其他处置。'))return;const result=await api('/admin/api/points/appeals/'+id+'/review','POST',{status,revision:d.revision,rewardRevision:d.rewardRevision,confirmed:true,response,historicalContributionConfirmed:historical,reviewedReportIds:(d.reports||[]).map(x=>x.id)});notify(result.status==='superseded'?'贡献状态已变化，旧申诉归档，请用户按最新状态申请':'申诉处理完成：'+result.resolution);root.replaceChildren();await reload();}));
+  for(const report of d.reports||[]){const panel=cell('div');panel.append(cell('p','相关已处置举报：'+report.id+' · '+report.reason));if(canAdmin('evidence'))panel.append(button('读取举报证据（审计）',async()=>{const evidence=await api('/admin/api/reports/'+report.id+'/evidence');panel.append(cell('p',evidence.body||evidence.description||'暂无文字证据'));}));root.append(panel);}
+  if(canRole('operator'))for(const status of (d.sourceChanged?['rejected']:['accepted','rejected']))actions.append(button(d.sourceChanged?'归档旧版本申诉':status==='accepted'?'核实后申诉成立':'维持原处理',async()=>{const response=prompt('填写已核查的事实、处理依据和用户答复（至少8字）');if(!response)return;const historical=['reversed','reversal_pending'].includes(d.rewardStatus);if(status==='accepted'&&historical&&!confirm('已逐项核查所列举报，并确认该笔贡献当时有效；恢复只影响本笔积分，不恢复公开内容或撤销其他处置。'))return;const result=await api('/admin/api/points/appeals/'+id+'/review','POST',{status,revision:d.revision,rewardRevision:d.rewardRevision,confirmed:true,response,historicalContributionConfirmed:historical,reviewedReportIds:(d.reports||[]).map(x=>x.id)});notify(result.status==='superseded'?'贡献状态已变化，旧申诉归档，请用户按最新状态申请':'申诉处理完成：'+result.resolution);root.replaceChildren();await reload();}));
  }
  if(kind==='points'){
 
   root.append(cell('p','规则：'+d.ruleCode+'；积分：'+d.amount+'；状态：'+d.status+'；信息版本：'+d.publicationRevision));
   root.append(cell('p',(d.signals||[]).map(x=>signalNames[x]||x).join('、'),'muted'));
   actions.append(button('读取账户与账本（审计）',async()=>{const data=await api('/admin/api/points/users/'+task.userId);root.append(cell('p','可用 '+data.account.available+'；冻结 '+data.account.held+'；待结算 '+data.account.pending));for(const item of data.items)root.append(cell('p',item.kind+' · '+item.amount+' · '+item.reason));}));
-  if(adminRole==='operator'&&d.status==='review')for(const decision of ['approve','reject'])actions.append(button(decision==='approve'?'核实后允许结算':'拒绝本次奖励',async()=>{const reason=prompt('填写核实依据或拒绝原因（至少8字，保留证据引用，不写敏感号码）');if(reason)await finish('/admin/api/points/rewards/'+id+'/review',{decision,revision:d.revision,confirmed:true,reason},decision==='approve'?'核实风险后允许按原观察期结算':'拒绝本次贡献奖励');}));
+  if(canRole('operator')&&d.status==='review')for(const decision of ['approve','reject'])actions.append(button(decision==='approve'?'核实后允许结算':'拒绝本次奖励',async()=>{const reason=prompt('填写核实依据或拒绝原因（至少8字，保留证据引用，不写敏感号码）');if(reason)await finish('/admin/api/points/rewards/'+id+'/review',{decision,revision:d.revision,confirmed:true,reason},decision==='approve'?'核实风险后允许按原观察期结算':'拒绝本次贡献奖励');}));
   if(d.openAppealId)actions.append(button('查看关联积分申诉',()=>openTask('rewardappeal',d.openAppealId)));
-  if(adminRole==='operator'&&d.status==='reversal_pending'&&!d.openAppealId)actions.append(button('重试账本冲正',async()=>{const reason=prompt('填写已核实的重试原因');if(reason)await finish('/admin/api/points/rewards/'+id+'/reverse',{revision:d.revision,confirmed:true,reason},'重试贡献冲正；余额不足仍保留待办');}));
+  if(canRole('operator')&&d.status==='reversal_pending'&&!d.openAppealId)actions.append(button('重试账本冲正',async()=>{const reason=prompt('填写已核实的重试原因');if(reason)await finish('/admin/api/points/rewards/'+id+'/reverse',{revision:d.revision,confirmed:true,reason},'重试贡献冲正；余额不足仍保留待办');}));
  }
  if(kind==='publication'){
 
@@ -52,7 +54,7 @@ async function openTask(kind,id){
   actions.append(button('紧急下架',async()=>{const reason=prompt('填写已核实的下架原因（至少8字）');if(reason)await finish('/admin/api/emergency-remove',{id,reason},'紧急下架');},true));
  }
  if(kind==='risk'){
-  actions.append(button('读取证据（审计）',async()=>{const e=await api('/admin/api/trust/risks/'+id+'/evidence');root.append(cell('p',e.body||e.title||'无文字证据'));}));
+  if(canAdmin('evidence'))actions.append(button('读取证据（审计）',async()=>{const e=await api('/admin/api/trust/risks/'+id+'/evidence');root.append(cell('p',e.body||e.title||'无文字证据'));}));
   actions.append(button('记录复核结论',async()=>{const reason=prompt('填写核查结论，违规内容请先下架；结案不会自动公开内容');if(reason)await finish('/admin/api/trust/risks/'+id,{reason},'风险结案');}));
  }
  if(kind==='report'){
@@ -65,7 +67,7 @@ async function openTask(kind,id){
  if(kind==='service')for(const status of ['published','disabled'])actions.append(button(status==='published'?'上架服务':'驳回服务',()=>finish('/admin/api/review-service',{id,status},'审核服务')));
  if(kind==='qualification'||kind==='merchant'){
   root.append(cell('p','账号：'+task.userId+' · '+(task.metadata.scope||'商家申请：'+id),'muted'));
-  if(adminRole!=='verifier')root.append(cell('p','请使用业务资质核验账号处理此任务，当前账号不能读取私有材料或确认核验。'));
+  if(!canRole('verifier'))root.append(cell('p','请使用业务资质核验账号处理此任务，当前账号不能读取私有材料或确认核验。'));
   else if(kind==='qualification')actions.append(button('核验本条材料',async()=>{
    const reference=prompt('填写已实际核验的外部材料工单编号'),reason=prompt('填写材料核查依据和授权范围'),validUntil=prompt('材料实际有效期 YYYY-MM-DD');
    if(reference&&reason&&validUntil)await finish('/admin/api/trust/users/'+task.userId+'/qualification',{scope:task.metadata.scope,reference,reason,validUntil,status:'verified',revision:d.qualificationRevision,manuallyVerified:true},'确认本条材料核验');
@@ -79,7 +81,9 @@ async function openTask(kind,id){
  }
  root.scrollIntoView({behavior:'smooth',block:'start'});
 }
-let csrf='',adminRole='operator';
+let csrf='',adminRole='operator',adminPermissions=[];
+function canRole(role){return adminRole===role||adminRole==='superadmin';}
+function canAdmin(permission){return adminPermissions.includes(permission);}
 const el=id=>document.getElementById(id);
 function notify(s){el('message').textContent=s;}
 async function api(url,method='GET',payload){const r=await fetch(url,{method,headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},credentials:'same-origin',body:payload?JSON.stringify(payload):undefined});const data=await r.json();if(!r.ok)throw Error(data.message||'请求失败');return data;}
@@ -89,29 +93,29 @@ function row(root,title,subtitle,details){const card=cell('div','','item');card.
 function renderItems(rootId,entries,render){const root=el(rootId);root.replaceChildren();if(!entries.length){root.append(cell('p','暂无待处理记录','muted'));return;}entries.forEach(x=>render(root,x));}
 async function process(url,data,description){if(!confirm('确定执行“'+description+'”？'))return;await api(url,'POST',data);notify('处理成功');await reload();}
 async function reload(){
- if(typeof loadHomeConsole==='function')await loadHomeConsole();
+ if(canAdmin('operations')&&typeof loadHomeConsole==='function')await loadHomeConsole();
  if(typeof loadWorkflowConsole==='function')await loadWorkflowConsole();
  await loadTasks();
- await loadPointsRules();
- const [stats,queue,config,comments,privacy,trust,projectCatalog]=await Promise.all([api('/admin/api/stats'),api('/admin/api/queue'),api('/admin/api/catalog'),api('/admin/api/comments'),api('/admin/api/privacy-requests'),api('/admin/api/trust'),api('/admin/api/trust/classification')]);
+ if(canAdmin('operations'))await loadPointsRules();else el('points-rules').replaceChildren();
+ const [stats,queue,config,comments,privacy,trust,projectCatalog]=await Promise.all([api('/admin/api/stats'),api('/admin/api/queue'),api('/admin/api/catalog'),canAdmin('operations')?api('/admin/api/comments'):Promise.resolve({items:[]}),canAdmin('privacy')?api('/admin/api/privacy-requests'):Promise.resolve({items:[]}),api('/admin/api/trust'),api('/admin/api/trust/classification')]);
  renderItems('project-catalog',projectCatalog.items||[],(root,x)=>row(root,x.id+' · '+x.name,x.categoryName+' / '+x.group,(x.workflow?'行业业务流程 · '+(x.workflow.credential?'本项目主体/专项核验':'内容及来源审核'):x.publication?.enabled?'居民发布表单':'未开放')+' · '+(x.publication?.businessCodes||[]).join('/')+' · '+x.publication?.reviewPolicy));
  renderTrust(trust);
  renderItems('regions',config.regions||[],(root,x)=>{
   const r=row(root,x.name,x.enabled?'已启用 · 接受新发布':'已停用 · 不接收新发布'),actions=cell('div','','actions');
-  actions.append(button(x.enabled?'停用':'启用',()=>process('/admin/api/regions/status',{name:x.name,enabled:!x.enabled},x.enabled?'停用地区':'启用地区'),x.enabled));r.append(actions);
+  if(canAdmin('operations'))actions.append(button(x.enabled?'停用':'启用',()=>process('/admin/api/regions/status',{name:x.name,enabled:!x.enabled},x.enabled?'停用地区':'启用地区'),x.enabled));r.append(actions);
  });
  renderItems('categories',config.categories||[],(root,x)=>{
   const r=row(root,x.name,x.restricted?'受限业务 · 不可由后台解锁':(x.enabled?'允许新业务':'暂停新业务')),actions=cell('div','','actions');
-  if(!x.restricted)actions.append(button(x.enabled?'暂停':'恢复',()=>process('/admin/api/categories/status',{id:x.id,enabled:!x.enabled},x.enabled?'暂停分类':'恢复分类'),x.enabled));
+  if(canAdmin('operations')&&!x.restricted)actions.append(button(x.enabled?'暂停':'恢复',()=>process('/admin/api/categories/status',{id:x.id,enabled:!x.enabled},x.enabled?'暂停分类':'恢复分类'),x.enabled));
   r.append(actions);
  });
  el('stats').replaceChildren();for(const [title,num] of [['待审内容',stats.pendingPublications],['已公开内容',stats.published],['商家申请',stats.merchantApplications],['注册用户',stats.users]]){const c=cell('div','','card');c.append(cell('div',title,'muted'));c.append(cell('div',num,'value'));el('stats').append(c);}
  renderItems('publications',queue.publications||[],(root,x)=>{
   const r=row(root,x.title,({used:'二手闲置',housing:'房屋信息',community:'邻里社区',service:'服务需求'}[x.type]||x.type)+' · '+x.district,x.description||x.detail),actions=cell('div','','actions');
-  if(adminRole==='verifier'&&x.type==='housing')actions.append(button('核验本条房源材料',async()=>{const reference=prompt('已实际核验的外部材料工单编号'),reason=prompt('房源产权或授权核验过程'),validUntil=prompt('材料真实有效期 YYYY-MM-DD');if(!reference||!reason||!validUntil)return;const scope='publication:'+x.id,prior=(trust.qualifications||[]).find(q=>q.userId===x.userId&&q.scope===scope);await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope,reference,reason,validUntil,status:'verified',revision:prior?.revision||0,manuallyVerified:true},'核验此条房源材料');}));
+  if(canRole('verifier')&&x.type==='housing')actions.append(button('核验本条房源材料',async()=>{const reference=prompt('已实际核验的外部材料工单编号'),reason=prompt('房源产权或授权核验过程'),validUntil=prompt('材料真实有效期 YYYY-MM-DD');if(!reference||!reason||!validUntil)return;const scope='publication:'+x.id,prior=(trust.qualifications||[]).find(q=>q.userId===x.userId&&q.scope===scope);await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope,reference,reason,validUntil,status:'verified',revision:prior?.revision||0,manuallyVerified:true},'核验此条房源材料');}));
   if(x.attributes)r.append(cell('p',Object.values(x.attributes).filter(Boolean).join(' · '),'muted'));
   for(const id of x.imageIds||[]){if(!/^[a-f0-9-]{36}$/i.test(id))continue;const image=document.createElement('img');image.src='/admin/api/media/'+id+'?size=thumb';image.alt='待审核内容图片';image.className='content-preview';r.append(image);}
-  for(const [status,label] of [['published','通过发布'],['rejected','驳回']])actions.append(button(label,async()=>{const reason=prompt('审核备注')||'';if(status==='published'&&!confirm('我已实际检查文字、每张图片及适用业务材料。规则提示不等于内容已被机器判定安全，确认继续？'))return;await process('/admin/api/review',{target:'publication',id:x.id,status,reason,expectedRevision:x.revision,textReviewed:status==='published',imagesReviewed:status==='published'},label);},status==='rejected'));
+  if(canAdmin('operations'))for(const [status,label] of [['published','通过发布'],['rejected','驳回']])actions.append(button(label,async()=>{const reason=prompt('审核备注')||'';if(status==='published'&&!confirm('我已实际检查文字、每张图片及适用业务材料。规则提示不等于内容已被机器判定安全，确认继续？'))return;await process('/admin/api/review',{target:'publication',id:x.id,status,reason,expectedRevision:x.revision,textReviewed:status==='published',imagesReviewed:status==='published'},label);},status==='rejected'));
   r.append(actions);
  });
  renderItems('merchants',queue.merchantApplications||[],(root,x)=>{
@@ -119,8 +123,8 @@ async function reload(){
   if(x.licenseFileId&&/^[a-f0-9-]{36}$/i.test(x.licenseFileId)){
    const link=cell('a','下载私有证照图片（仅管理员）');link.href='/admin/api/licenses/'+x.licenseFileId;link.rel='noopener';r.append(link);
   }
-  for(const [status,label] of [['in_review','标记初审'],['needs_documents','需要补充资料'],['rejected','拒绝申请']])actions.append(button(label,async()=>{const reason=prompt('审核备注')||'';await process('/admin/api/review',{target:'merchant',id:x.id,status,reason},label);},status==='rejected'));
-  if(x.status==='in_review'&&x.registrationCode&&x.licenseHolder&&x.evidenceReference){
+  if(canAdmin('operations'))for(const [status,label] of [['in_review','标记初审'],['needs_documents','需要补充资料'],['rejected','拒绝申请']])actions.append(button(label,async()=>{const reason=prompt('审核备注')||'';await process('/admin/api/review',{target:'merchant',id:x.id,status,reason},label);},status==='rejected'));
+  if(canRole('verifier')&&x.status==='in_review'&&x.registrationCode&&x.licenseHolder&&x.evidenceReference){
    actions.append(button('人工核验后开通',async()=>{
     const note=prompt('填写线下核验依据（不少于 8 字，不得只凭编号自动开通）');if(!note)return;
     if(!confirm('我已在平台外人工检查经营主体证照和适用资质，确认真实性，并愿意留存审计记录。'))return;
@@ -150,11 +154,11 @@ async function reload(){
  });
  renderItems('reports',queue.reports||[],(root,x)=>{
   const r=row(root,`举报：${x.reason}`,x.targetType+' · '+x.targetId,x.description),actions=cell('div','','actions');
-  if(x.targetType==='message')actions.append(button('读取被举报消息（记录审计）',async()=>{const evidence=await api('/admin/api/reports/'+x.id+'/evidence');r.append(cell('p',evidence.body||'消息不可用'));}));for(const [decision,label] of [['dismissed','不予处理'],['removed',x.targetType==='user'?'确认用户举报（另行处置）':'确认违规并移除']])actions.append(button(label,async()=>{const note=prompt('处理说明（不少于 5 字）');if(!note)return;await process('/admin/api/review-report',{id:x.id,decision,note},label);},decision==='removed'));
+  if(canAdmin('evidence')&&x.targetType==='message')actions.append(button('读取被举报消息（记录审计）',async()=>{const evidence=await api('/admin/api/reports/'+x.id+'/evidence');r.append(cell('p',evidence.body||'消息不可用'));}));for(const [decision,label] of [['dismissed','不予处理'],['removed',x.targetType==='user'?'确认用户举报（另行处置）':'确认违规并移除']])actions.append(button(label,async()=>{const note=prompt('处理说明（不少于 5 字）');if(!note)return;await process('/admin/api/review-report',{id:x.id,decision,note},label);},decision==='removed'));
   r.append(actions);
  });
 }
-async function connected(){try{const result=await api('/admin/api/session');csrf=result.csrf;adminRole=result.role||'operator';el('login').hidden=true;el('dashboard').hidden=false;el('refresh').hidden=false;el('logout').hidden=false;await reload();}catch{el('login').hidden=false;el('dashboard').hidden=true;el('refresh').hidden=true;el('logout').hidden=true;}}
+async function connected(){try{const result=await api('/admin/api/session');csrf=result.csrf;adminRole=result.role||'operator';adminPermissions=result.permissions||[];taskPage=1;el('task-kind').value='';el('region-form').hidden=!canAdmin('operations');el('login').hidden=true;el('dashboard').hidden=false;el('refresh').hidden=false;el('logout').hidden=false;await reload();}catch{el('login').hidden=false;el('dashboard').hidden=true;el('refresh').hidden=true;el('logout').hidden=true;}}
 el('login-form').addEventListener('submit',async e=>{e.preventDefault();try{const result=await api('/admin/api/login','POST',{password:el('password').value,role:el('admin-role').value});csrf=result.csrf;el('password').value='';notify('登录成功');await connected();}catch(err){notify(err.message);}});
 el('refresh').addEventListener('click',()=>reload().catch(e=>notify(e.message)));connected();
 
@@ -167,7 +171,7 @@ function renderTrust(trust){
  adminRole=trust.role;
  renderItems('trust-users',trust.users||[],(root,x)=>{
   const r=row(root,x.name||'附近的街坊',x.id,`微信：${x.wechatLinked?'已关联':'未关联'}；手机号：${x.phoneVerified?'已验证 '+x.maskedPhone:'未验证'}；身份服务：未开通；内部风险：${x.riskLevel||'normal'}`),actions=cell('div','','actions');
-  if(adminRole==='verifier')actions.append(button('核验房源或分类授权',async()=>{
+  if(canRole('verifier'))actions.append(button('核验房源或分类授权',async()=>{
    const scope=prompt('填写适用范围：housing（分类发布资格）、具体分类 ID，或 publication:信息ID（仅本条材料）');if(!scope)return;
    const reference=prompt('填写实际已核验的外部材料工单编号（字母开头，不含身份证/手机号）');if(!reference)return;
    const reason=prompt('记录核验过程、授权范围及依据，不填写证件号码');if(!reason)return;const validUntil=prompt('材料实际有效期，填写 YYYY-MM-DD，不能晚于材料到期时间');if(!validUntil)return;
@@ -181,7 +185,7 @@ function renderTrust(trust){
    await process('/admin/api/trust/users/'+x.id+'/risk',{level,reason,revision:x.revision||0,until:until(7),confirmed,restrictPublish:level==='severe',restrictContact:level==='severe',removePublished:level==='severe'&&confirm('是否同时下架该账号已公开信息？')},'记录风险处置');
   }));r.append(actions);
  });
- renderItems('trust-qualifications',trust.qualifications||[],(root,x)=>{const r=row(root,x.scope,x.userId,`${x.status} · 到期 ${x.validUntil}`);if(adminRole==='verifier'&&x.status==='verified')r.append(button('撤销此项核验',async()=>{const reference=prompt('材料处理工单编号'),reason=prompt('撤销原因');if(reference&&reason)await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope:x.scope,reference,reason,status:'revoked',revision:x.revision,validUntil:until(1),manuallyVerified:true},'撤销业务核验');},true));});
+ renderItems('trust-qualifications',trust.qualifications||[],(root,x)=>{const r=row(root,x.scope,x.userId,`${x.status} · 到期 ${x.validUntil}`);if(canRole('verifier')&&x.status==='verified')r.append(button('撤销此项核验',async()=>{const reference=prompt('材料处理工单编号'),reason=prompt('撤销原因');if(reference&&reason)await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope:x.scope,reference,reason,status:'revoked',revision:x.revision,validUntil:until(1),manuallyVerified:true},'撤销业务核验');},true));});
  renderItems('trust-risks',trust.risks||[],(root,x)=>{const r=row(root,x.targetType+' · '+x.targetId,x.userId,(x.signals||[]).join(' · ')),actions=cell('div','','actions');actions.append(button('读取相关材料（记录审计）',async()=>{const evidence=await api('/admin/api/trust/risks/'+x.id+'/evidence');r.append(cell('p',evidence.body||'无可读文字'));for(const id of evidence.imageIds||[]){const img=document.createElement('img');img.src='/admin/api/media/'+id+'?size=thumb';img.className='content-preview';img.alt='需复核的图片';r.append(img);}}));actions.append(button('记录复核结果',async()=>{const reason=prompt('复核结论：说明实际检查内容和处置');if(!reason)return;await process('/admin/api/trust/risks/'+x.id,{reason},'记录人工复核');}));if(x.targetType==='message')actions.append(button('核实后放行暂缓消息',async()=>{const reason=prompt('说明实际检查消息内容后的放行依据');if(reason)await process('/admin/api/trust/risks/'+x.id,{reason,releaseMessage:true},'放行消息');}));r.append(actions);});
  renderItems('trust-appeals',trust.appeals||[],(root,x)=>{const r=row(root,x.userId,x.status,x.reason),actions=cell('div','','actions');for(const [status,label]of [['accepted','申诉通过'],['rejected','不予支持']])actions.append(button(label,async()=>{const response=prompt('实际复核结果及答复');if(response)await process('/admin/api/trust/appeals/'+x.id,{status,response,revision:x.revision},label);}));r.append(actions);});
  renderItems('trust-audit',trust.audit||[],(root,x)=>row(root,x.action,x.userId+' · '+x.actorRole,x.reason));
@@ -197,8 +201,8 @@ async function loadPointsRules(){
   const data=await api('/admin/api/points/rules');
   renderItems('points-rules',data.items,(root,r)=>{
    const card=row(root,ruleNames[r.code]||r.code,(r.enabled?'已启用':'已关闭')+' · 版本 '+r.revision),fields={};
-   for(const [key,label,value] of [['amount','每次积分',r.amount],['dailyLimit','该规则每日上限',r.dailyLimit],['publicationDailyLimit','每条信息每日上限',r.publicationDailyLimit],['settlementHours','观察期（小时）',r.settlementHours]]){const l=cell('label',label),input=document.createElement('input');input.type='number';input.min=key==='settlementHours'?24:0;input.max=key==='settlementHours'?72:20;input.value=value;input.disabled=adminRole!=='operator';l.append(input);card.append(l);fields[key]=input;}
-   if(adminRole==='operator')for(const enabled of [true,false])card.append(button(enabled?'保存并启用':'保存并关闭',async()=>{const reason=prompt('记录规则变更依据（至少8字）；旧事件保留原规则快照');if(!reason)return;const values=Object.fromEntries(Object.entries(fields).map(([k,input])=>[k,Number(input.value)]));await process('/admin/api/points/rules/'+r.code,{...values,enabled,revision:r.revision,reason},enabled?'保存并启用此贡献规则':'保存并关闭新事件采集');}));
+   for(const [key,label,value] of [['amount','每次积分',r.amount],['dailyLimit','该规则每日上限',r.dailyLimit],['publicationDailyLimit','每条信息每日上限',r.publicationDailyLimit],['settlementHours','观察期（小时）',r.settlementHours]]){const l=cell('label',label),input=document.createElement('input');input.type='number';input.min=key==='settlementHours'?24:0;input.max=key==='settlementHours'?72:20;input.value=value;input.disabled=!canRole('operator');l.append(input);card.append(l);fields[key]=input;}
+   if(canRole('operator'))for(const enabled of [true,false])card.append(button(enabled?'保存并启用':'保存并关闭',async()=>{const reason=prompt('记录规则变更依据（至少8字）；旧事件保留原规则快照');if(!reason)return;const values=Object.fromEntries(Object.entries(fields).map(([k,input])=>[k,Number(input.value)]));await process('/admin/api/points/rules/'+r.code,{...values,enabled,revision:r.revision,reason},enabled?'保存并启用此贡献规则':'保存并关闭新事件采集');}));
   });
  }catch(e){el('points-rules').replaceChildren(cell('p','积分规则读取失败：'+e.message));}
 }

@@ -8,7 +8,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 
 async function setup(t){
- const repo=createMemoryRepository(), app=createApp({repo,areas:['中心街道'],allowDevLogin:true,adminPassword:'v19-test-password'});
+ const repo=createMemoryRepository(), app=createApp({repo,areas:['中心街道'],allowDevLogin:true,superAdminPassword:'v19-test-password'});
  await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));
  t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base=`http://127.0.0.1:${app.address().port}`;
@@ -28,7 +28,7 @@ test('V0.19: owner pauses service, no new bookings; existing booking remains act
  const a=await req('/api/v1/merchant-applications','POST',{name:'邻里家电维修',category:'维修',district:'中心街道'},{token:owner.token});assert.equal(a.status,201);
  const aid=a.data.application.id;
  assert.equal((await req(`/api/v1/merchant-applications/${aid}/evidence`,'POST',{registrationCode:'OFFLINE-REVIEW-V19',licenseHolder:'邻里家电维修',evidenceReference:'v19-only-test'}, {token:owner.token})).status,200);
- const adm=await req('/admin/api/login','POST',{password:'v19-test-password'});
+ const adm=await req('/admin/api/login','POST',{role:'superadmin',password:'v19-test-password'});
  const credentials={cookie:adm.cookie,csrf:adm.data.csrf};
  const mr=await req('/admin/api/approve-merchant','POST',{id:aid,manuallyVerified:true,note:'演示环境人工核验测试，不代表真实资质审核'},credentials);
  assert.equal(mr.status,200);const mid=mr.data.merchant.id;
@@ -69,7 +69,7 @@ test('V0.19: manager may pause; role revocation blocks service action; category 
  const application=await req('/api/v1/merchant-applications','POST',{name:'社区保洁工作室',category:'保洁',district:'中心街道'},{token:owner.token});
  const aid=application.data.application.id;
  await req(`/api/v1/merchant-applications/${aid}/evidence`,'POST',{registrationCode:'V19-LOCAL-ONLY-TEST',licenseHolder:'社区保洁工作室',evidenceReference:'v19-testing-reference'},{token:owner.token});
- const admin=await req('/admin/api/login','POST',{password:'v19-test-password'}),credentials={cookie:admin.cookie,csrf:admin.data.csrf};
+ const admin=await req('/admin/api/login','POST',{role:'superadmin',password:'v19-test-password'}),credentials={cookie:admin.cookie,csrf:admin.data.csrf};
  const m=await req('/admin/api/approve-merchant','POST',{id:aid,manuallyVerified:true,note:'演示核验并非生产资质许可'},credentials);assert.equal(m.status,200);const mid=m.data.merchant.id;
  const sr=await req(`/api/v1/merchants/${mid}/services`,'POST',{title:'小时保洁服务',description:'测试按小时到家保洁预约',price:'面议'},{token:owner.token});const sid=sr.data.service.id;
  await req('/admin/api/review-service','POST',{id:sid,status:'published'},credentials);

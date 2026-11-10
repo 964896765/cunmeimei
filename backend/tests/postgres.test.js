@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 // Opt-in integration suite. ONLY uses PG_TEST_DATABASE_URL; runs in disposable isolated schema.
 const test=require('node:test'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const dsn=process.env.PG_TEST_DATABASE_URL;
@@ -69,7 +70,8 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.equal((await repo.myPublications(first)).find(x=>x.id===note.id).status,'closed');
    assert.equal(await repo.getItem(note.id),null,'withdrawn content never public');
    // V0.11: revised published content is invisible until reapproved; concurrent edits reject stale revisions.
-   const revised=await repo.createPublication(first,{type:'used',title:'公开前旧标题',description:'需要在修改后重新审核的公开帖子',district:'中心街道',price:'100'});
+   const editImage=await repo.uploadContentImage(first,await require('sharp')({create:{width:20,height:20,channels:3,background:'#33aaaa'}}).png().toBuffer());
+   const revised=await repo.createPublication(first,{...residentFields('used',[editImage.id]),type:'used',title:'公开前旧标题',description:'需要在修改后重新审核的公开帖子',district:'中心街道',price:'100'});
    assert.equal(revised.revision,1);
    assert.equal(await repo.reviewPublication(revised.id,'published',''),true);
    assert.ok(await repo.getItem(revised.id));

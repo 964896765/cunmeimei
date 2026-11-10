@@ -11,11 +11,11 @@ function get(kind){return Object.hasOwnProperty.call(schemas,kind)?schemas[kind]
 function keys(kind){return [...(get(kind)?.fields||[]).map(x=>x.key),...(kind==='used'?['brand','model']:[]),...(['used','housing','service'].includes(kind)?['priceMode']:[])];}
 function fieldsFor(kind,attributes={}){const fields=(get(kind)?.fields||[]).filter(x=>x.render!==false).map(x=>['2','3'].includes(attributes.templateVersion)&&['condition','intent','area','layout'].includes(x.key)?{...x,label:x.label+' *'}:x);return kind==='used'&&attributes.categoryId==='C04G01S01'&&attributes.templateVersion!=='3'?[{key:'brand',label:'品牌 *',type:'text',placeholder:'如 Apple、华为、小米'},{key:'model',label:'型号 *',type:'text',placeholder:'如 iPhone 15 Pro 256G'},...fields]:fields;}
 function versionMatches(kind,attributes){const schema=get(kind);return !attributes.templateCode&&!attributes.templateVersion||!!schema&&attributes.templateCode===schema.businessCode&&['1','2','3'].includes(attributes.templateVersion);}
-function formError(kind,value){
+function formError(kind,value,{enforceCurrent=false}={}){
  const a=value.attributes||{};
  if((value.title||'').trim().length<4)return '标题至少填写4个字。';
  if((value.detail||'').trim().length<10)return '详细描述至少填写10个字。';
- if(!['2','3'].includes(a.templateVersion))return '';
+ if(!enforceCurrent&&!['2','3'].includes(a.templateVersion))return '';
  if(!a.cityCode||!a.districtCode)return '请选择这条信息所属的城市与区县或镇街。';
  if(kind!=='community'){
   if(!['amount','negotiable'].includes(a.priceMode))return '请选择填写金额或面议。';

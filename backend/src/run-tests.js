@@ -6,5 +6,5 @@ const {spawnSync} = require('node:child_process');
 const cwd = path.resolve(__dirname, '..');
 const files = fs.readdirSync(path.join(cwd, 'tests')).filter(f => f.endsWith('.test.js')).sort().map(f => path.join('tests', f));
 if (!files.length) throw new Error('No tests discovered');
-const result = spawnSync(process.execPath, ['--test', ...files], {cwd, stdio: 'inherit', env: process.env});
+const result = spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...files], {cwd, stdio: 'inherit', env: process.env});
 process.exitCode = result.error || result.signal ? 1 : result.status ?? 1;

@@ -17,7 +17,15 @@ async function trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerif
   if(m==='POST'&&action==='block'){if(!await repo.blockContact(uid,id,true))fail('CHAT_UNAVAILABLE','会话不可用',404);return json(res,200,{ok:true}),true;}
  }
  if(p==='/admin/api/trust/classification'&&m==='GET'){admin(req);const catalog=require('../../miniprogram/utils/classification-contract');return json(res,200,{version:catalog.source.version,items:catalog.projects.map(x=>({id:x.id,name:x.name,categoryName:x.categoryName,group:x.group,publication:catalog.publicationFor(x.id),workflow:require('../../miniprogram/utils/industry-workflows').workflow(x.id)}))}),true;}
- if(p==='/admin/api/trust'&&m==='GET'){const s=admin(req);return json(res,200,{...await repo.trustDashboard(),role:s.role||'operator',imageCheck:'manual_review_required',textCheck:'rule_signals_and_manual_review'}),true;}
+ if(p==='/admin/api/trust'&&m==='GET'){
+  const s=admin(req),dashboard=await repo.trustDashboard();
+  if(!s.permissions.includes('operations')){
+   dashboard.users=dashboard.users.map(({riskLevel,riskUntil,restrictPublish,restrictContact,...safe})=>safe);
+   dashboard.risks=[];dashboard.appeals=[];dashboard.audit=[];
+  }
+  return json(res,200,{...dashboard,role:s.role,permissions:s.permissions,imageCheck:'manual_review_required',textCheck:'rule_signals_and_manual_review'}),true;
+ }
+
  if(/^\/admin\/api\/trust\/users\/[0-9a-f-]{36}\/(identity|phone|qualification|risk)$/i.test(p)&&m==='POST'){
   const uid=p.split('/')[5],kind=p.split('/')[6],session=admin(req,true,kind==='risk'?'operator':'verifier'),v=await body(req);if(!uuid(uid))fail('INVALID_USER','账号标识无效');
   if(kind==='identity'){if(!['verified','revoked'].includes(v.status)||!Number.isInteger(v.revision)||v.revision<0)fail('INVALID_REVIEW','核验参数无效');await repo.reviewIdentity(uid,v,session.role);}

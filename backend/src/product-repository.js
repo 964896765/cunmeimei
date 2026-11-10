@@ -1,7 +1,7 @@
 'use strict';
 const {ApiError,text,uuid}=require('./rules');
-function publicationExtras(input){
- const attributes=input.attributes||{};
+function publicationExtras(input,{validateForm=true}={}){
+ const attributes=input.attributes===undefined?{}:input.attributes;
  if(!attributes||typeof attributes!=='object'||Array.isArray(attributes))throw new ApiError(400,'INVALID_ATTRIBUTES','补充信息格式无效');
  const allowed=require('../../miniprogram/utils/publication-schemas').keys(input.type);
  const clean={};
@@ -18,10 +18,27 @@ function publicationExtras(input){
  if(!require('../../miniprogram/utils/publication-schemas').versionMatches(input.type,clean))throw new ApiError(400,'INVALID_TEMPLATE_VERSION','发布模板或版本不匹配');
  if((clean.categoryId||clean.categoryVersion)&&!require('../../miniprogram/utils/classification-contract').validateReference(clean.categoryId,clean.categoryVersion,input.type))throw new ApiError(400,'CATEGORY_NOT_READY','该分类的发布映射或目录版本尚未开放');
  require('./geography').cityReference(clean.cityCode,clean.districtCode);
- const images=input.imageIds||[];
+ const images=input.imageIds===undefined?[]:input.imageIds;
  if(!Array.isArray(images)||images.length>6||images.some(x=>!uuid(x))||new Set(images).size!==images.length)throw new ApiError(400,'INVALID_IMAGES','最多添加六张不同图片');
- if(['2','3'].includes(clean.templateVersion)){const error=require('../../miniprogram/utils/publication-schemas').formError(input.type,{...input,attributes:clean,imageIds:images});if(error)throw new ApiError(400,'INVALID_FORM',error);}
+ if(validateForm&&['2','3'].includes(clean.templateVersion)){const error=require('../../miniprogram/utils/publication-schemas').formError(input.type,{...input,attributes:clean,imageIds:images});if(error)throw new ApiError(400,'INVALID_FORM',error);}
  return {attributes:clean,imageIds:images,clientKey:input.clientKey,...(input.contactSettings===undefined?{}:{contactSettings:require('./trust-policy').contactSettings(input.contactSettings)}),...(input.sourceDraftRevision===undefined?{}:{sourceDraftRevision:input.sourceDraftRevision})};
+}
+function validatePublicationSubmission(input,{existingAttributes}={}){
+ const extras=publicationExtras(input,{validateForm:false});
+ const mustClassify=existingAttributes===undefined||!!existingAttributes.categoryId;
+ if(mustClassify&&!extras.attributes.categoryId)throw new ApiError(400,'CATEGORY_REQUIRED','请选择发布项目，已有分类关联不可清空');
+ const error=require('../../miniprogram/utils/publication-schemas').formError(input.type,{
+  ...input,detail:input.detail??input.description,attributes:extras.attributes,imageIds:extras.imageIds
+ },{enforceCurrent:true});
+ if(error)throw new ApiError(400,'INVALID_FORM',error);
+ return extras;
+}
+function publicationEditExtras(current,value){
+ return validatePublicationSubmission({
+  ...value,
+  attributes:(value.replaceAttributes??value.replaceExtras)?value.attributes:current.attributes,
+  imageIds:(value.replaceImages??value.replaceExtras)?value.imageIds:(current.image_ids??current.imageIds??[])
+ },{existingAttributes:current.attributes||{}});
 }
 function attachProductRepository(repo,pool){
  const query=(s,a=[])=>pool.query(s,a);
@@ -65,16 +82,18 @@ function attachProductRepository(repo,pool){
  });
  // Updating structured fields, photos and moderation state is one owner-locked transaction.
  repo.updatePublication=async(uid,id,v,revision)=>tx(async c=>{
-  await require('./trust-repository').guard(c,uid,'publish',v,repo.trustOptions||{});
-  if(require('./trust-policy').signals(v.title+' '+v.description+' '+JSON.stringify(v.attributes||{})).includes('contact_in_content'))throw new ApiError(400,'CONTACT_IN_CONTENT','公开正文不能填写手机号');
+  // Match account lifecycle lock order before locking the publication.
+  await c.query('SELECT id FROM app_users WHERE id=$1 FOR NO KEY UPDATE',[uid]);
   const current=(await c.query('SELECT * FROM publications WHERE id=$1 AND user_id=$2 FOR UPDATE',[id,uid])).rows[0];
   if(!current||!['pending','published','rejected'].includes(current.status)||current.type!==v.type)return false;
   if(current.revision!==revision)return {error:'revision_conflict'};
-  const ids=v.replaceExtras?v.imageIds:current.image_ids;
+  const extras=publicationEditExtras(current,v),ids=extras.imageIds;
+  await require('./trust-repository').guard(c,uid,'publish',{...v,attributes:extras.attributes},repo.trustOptions||{});
+  if(require('./trust-policy').signals(v.title+' '+v.description+' '+JSON.stringify(extras.attributes)).includes('contact_in_content'))throw new ApiError(400,'CONTACT_IN_CONTENT','公开正文不能填写手机号');
   const photos=await c.query('SELECT id FROM content_images WHERE user_id=$1 AND id=ANY($2::uuid[]) FOR SHARE',[uid,ids]);
   if(photos.rows.length!==ids.length)throw new ApiError(400,'IMAGE_NOT_OWNED','图片无效或不属于当前用户');
-  const row=(await c.query(`UPDATE publications SET title=$3,description=$4,district=$5,price=$6,attributes=$7,image_ids=$8,status='pending',moderation_reason='',reviewed_at=NULL,revision=revision+1,updated_at=now(),expires_at=now()+interval '60 days' WHERE id=$1 AND user_id=$2 RETURNING *`,[id,uid,v.title,v.description,v.district,v.price,v.replaceExtras?v.attributes:current.attributes,ids])).rows[0];
-  const signals=require('./trust-policy').signals(v.title+' '+v.description+' '+JSON.stringify(v.attributes||{}));
+  const row=(await c.query(`UPDATE publications SET title=$3,description=$4,district=$5,price=$6,attributes=$7,image_ids=$8,status='pending',moderation_reason='',reviewed_at=NULL,revision=revision+1,updated_at=now(),expires_at=now()+interval '60 days' WHERE id=$1 AND user_id=$2 RETURNING *`,[id,uid,v.title,v.description,v.district,v.price,extras.attributes,ids])).rows[0];
+  const signals=require('./trust-policy').signals(v.title+' '+v.description+' '+JSON.stringify(extras.attributes));
   if((await c.query("SELECT 1 FROM publications WHERE id<>$1 AND title=$2 AND description=$3 AND created_at>now()-interval '7 days' LIMIT 1",[id,v.title,v.description])).rows.length)signals.push('duplicate_content');
   if(ids.length)signals.push('image_manual_review_required');
   if(signals.length)await c.query("INSERT INTO risk_cases(user_id,target_type,target_id,signals) VALUES($1,'publication',$2,$3)",[uid,id,JSON.stringify(signals)]);
@@ -126,7 +145,7 @@ function attachProductRepository(repo,pool){
    const x=(await c.query('INSERT INTO content_images(user_id,data,thumbnail,width,height,content_sha256) VALUES($1,$2,$3,$4,$5,$6) RETURNING id,width,height',[uid,image,thumb,info.width,info.height,require('node:crypto').createHash('sha256').update(image).digest('hex')])).rows[0];
    return {...x,url:'/api/v1/media/'+x.id};
  }));
- repo.contentImageForAdmin=async id=>one('SELECT data,thumbnail FROM content_images WHERE id=$1',[id]);
+ repo.contentImageForAdmin=async(id,{qualificationOnly=false}={})=>one("SELECT data,thumbnail FROM content_images WHERE id=$1 AND (NOT $2::boolean OR EXISTS(SELECT 1 FROM publications p WHERE content_images.id=ANY(p.image_ids) AND p.type='housing' AND p.status='pending'))",[id,qualificationOnly]);
  repo.readContentImage=async(id,uid,includeTest=false)=>one(`SELECT i.data,i.thumbnail FROM content_images i WHERE i.id=$1 AND (
   i.user_id=$2 OR EXISTS(SELECT 1 FROM publications p WHERE i.id=ANY(p.image_ids) AND (NOT p.is_test OR $3::boolean) AND ${visible})
   OR EXISTS(SELECT 1 FROM service_catalog s JOIN verified_merchants m ON m.id=s.merchant_id
@@ -194,4 +213,4 @@ function attachProductRepository(repo,pool){
  require('./privacy-repository').attachPrivacyRepository(repo,pool);
  return require('./expiry-reminders').attachExpiryReminders(repo,pool);
 }
-module.exports={attachProductRepository,publicationExtras};
+module.exports={validatePublicationSubmission,publicationEditExtras,attachProductRepository,publicationExtras};

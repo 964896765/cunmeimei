@@ -22,7 +22,7 @@ test('real PostgreSQL launch foundation: workbench, immutable consent, points co
    await pool.query("INSERT INTO risk_cases(user_id,target_type,target_id,signals) VALUES($1,'publication',$2,'[\"duplicate_content\"]')",[owner,pubs[1]]);
    await pool.query("UPDATE publications SET type='housing' WHERE id=$1",[pubs[2]]);
    await pool.query("INSERT INTO contact_requests(publication_id,requester_id,owner_id,message,created_at) VALUES($1,$2,$3,'联系测试',now()-interval '3 days')",[pubs[1],reader,owner]);
-   const q=await repo.reviewWorkbench({page:1,size:50});assert.equal(q.counts.risk,1);assert.equal(q.counts.qualification,1);assert.equal(q.counts.contact,1);assert.equal(q.items[0].kind,'risk');assert.ok(!JSON.stringify(q).includes('联系测试'));
+   const q=await repo.reviewWorkbench({page:1,size:50,role:'superadmin'});assert.equal((await repo.reviewWorkbench({role:'operator'})).counts.qualification,undefined);assert.equal((await repo.reviewWorkbench({role:'verifier'})).counts.risk,undefined);assert.equal(q.counts.risk,1);assert.equal(q.counts.qualification,1);assert.equal(q.counts.contact,1);assert.equal(q.items[0].kind,'risk');assert.ok(!JSON.stringify(q).includes('联系测试'));
   });
   await t.test('public details never decrypt; phone access is rate limited, blocked and withdrawn with retained consent evidence',async()=>{
    const key=crypto.randomBytes(32).toString('base64');repo.configureTrust({phoneKey:key,enabled:false});

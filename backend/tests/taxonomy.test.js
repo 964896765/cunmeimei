@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test'),assert=require('node:assert/strict');
 const {createApp}=require('../src/server');
 const {createMemoryRepository}=require('../src/memory-repository');
@@ -17,7 +18,7 @@ test('V0.6: administrator changes survive API reads, affect submissions, protect
  assert.equal((await req('/admin/api/regions','POST',{name:'A'},auth)).status,400);
  assert.equal((await req('/admin/api/categories/status','POST',{id:'job',enabled:true},auth)).status,403);
  const credentials=await req('/api/v1/dev/login','POST',{devUser:'test-local-user'});const token=credentials.data.token;
- const valid={type:'used',district:'东城街道',title:'闲置小台灯出售',detail:'这是一个测试闲置物品发布信息，不是实际交易',price:'¥20'};
+ const valid={...residentFields(),type:'used',district:'东城街道',title:'闲置小台灯出售',detail:'这是一个测试闲置物品发布信息，不是实际交易',price:'20'};
  assert.equal((await req('/api/v1/publications','POST',valid,{token})).status,201);
  assert.equal((await req('/admin/api/categories/status','POST',{id:'used',enabled:false},auth)).status,200);
  const stopType=await req('/api/v1/publications','POST',valid,{token});assert.equal(stopType.status,403);assert.equal(stopType.data.error,'CATEGORY_CLOSED');

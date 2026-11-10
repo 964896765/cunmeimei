@@ -1,4 +1,5 @@
 'use strict';
+const {residentFields}=require('./helpers/resident-fields');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {createApp} = require('../src/server');
@@ -7,7 +8,7 @@ const {createGracefulShutdown} = require('../src/graceful-shutdown');
 
 async function fixture(t) {
   const repo = createMemoryRepository();
-  const server = createApp({repo,areas:['中心街道','北城区'],allowDevLogin:true,adminPassword:'local-end-to-end-password'});
+  const server = createApp({repo,areas:['中心街道','北城区'],allowDevLogin:true,superAdminPassword:'local-end-to-end-password'});
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const {stop} = createGracefulShutdown(server, repo);
   t.after(stop);
@@ -32,13 +33,13 @@ test('V0.18 real HTTP rehearsal: publication moderation, CSRF, report removal an
   const {request,login}=await fixture(t);
   const owner=await login('v18-publisher');
   const other=await login('v18-other');
-  const create={type:'used',district:'北城区',title:'二手书桌和椅子',detail:'保存完好的桌椅，同城自取，欢迎咨询',price:'90'};
+  const create={...residentFields(),type:'used',district:'北城区',title:'二手书桌和椅子',detail:'保存完好的桌椅，同城自取，欢迎咨询',price:'90'};
   assert.equal((await request('/api/v1/publications','POST',create)).status,401);
   const pub=await request('/api/v1/publications','POST',create,owner);
   assert.equal(pub.status,201);
   const id=pub.data.publication.id;
   assert.equal((await request('/api/v1/items/'+id)).status,404);
-  const adminLogin=await request('/admin/api/login','POST',{password:'local-end-to-end-password'});
+  const adminLogin=await request('/admin/api/login','POST',{role:'superadmin',password:'local-end-to-end-password'});
   assert.equal(adminLogin.status,200);
   const admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
   assert.equal((await request('/admin/api/review','POST',{target:'publication',id,status:'published'},{cookie:admin.cookie})).status,403);
@@ -63,7 +64,7 @@ test('V0.18 real HTTP rehearsal: verified merchant, service review, concurrent b
   const created=await request('/api/v1/merchant-applications','POST',{name:'街坊维修服务部',category:'家电维修',district:'中心街道'},owner);
   assert.equal(created.status,201);
   const aid=created.data.application.id;
-  const adminLogin=await request('/admin/api/login','POST',{password:'local-end-to-end-password'});
+  const adminLogin=await request('/admin/api/login','POST',{role:'superadmin',password:'local-end-to-end-password'});
   const admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};
   assert.equal((await request('/admin/api/approve-merchant','POST',{id:aid,manuallyVerified:true,note:'模拟人工核验已完成'},admin)).status,409);
   assert.equal((await request('/api/v1/merchant-applications/'+aid+'/evidence','POST',{registrationCode:'TEST-CODE-2026-88888888',licenseHolder:'街坊维修服务部',evidenceReference:'local-manual-review-only'},owner)).status,200);

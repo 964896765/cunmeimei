@@ -1,4 +1,5 @@
 'use strict';
+const {hasRole}=require('./admin-permissions');
 const {ApiError,uuid}=require('./rules');
 const fail=(code,message,status=400)=>{throw new ApiError(status,code,message);};
 const offset=url=>{const v=Number(url.searchParams.get('offset')||0);if(!Number.isSafeInteger(v)||v<0||v>100000)fail('INVALID_PAGE','分页无效');return v;};
@@ -33,7 +34,7 @@ async function workflowRoutes({req,res,p,m,url,repo,user,admin,body,json}){
  if((match=/^\/api\/v1\/industry\/responses\/([0-9a-f-]{36})$/i.exec(p))&&m==='POST')return send(200,await repo.resolveIndustryResponse(await auth(),match[1],await body(req)));
  if(!p.startsWith('/admin/api/commerce/')&&!p.startsWith('/admin/api/industry/'))return false;
  const session=admin(req,m!=='GET');if(!repo.saveIndustryEntry)fail('DATABASE_REQUIRED','此业务需要PostgreSQL',503);
- const operator=()=>{if(session.role!=='operator')fail('OPERATOR_REQUIRED','需要运营角色',403);};
+ const operator=()=>{if(!hasRole(session.role,'operator'))fail('OPERATOR_REQUIRED','需要运营角色',403);};
  if(p==='/admin/api/commerce/offers'&&m==='GET')return send(200,{items:await repo.benefitOffers(true)});
  if(p==='/admin/api/commerce/offers'&&m==='POST'){operator();return send(201,await repo.saveBenefitOffer(null,await body(req),session.role));}
  if((match=/^\/admin\/api\/commerce\/offers\/([0-9a-f-]{36})$/.exec(p))&&m==='PUT'){operator();return send(200,await repo.saveBenefitOffer(match[1],await body(req),session.role));}
@@ -44,10 +45,10 @@ async function workflowRoutes({req,res,p,m,url,repo,user,admin,body,json}){
  if((match=/^\/admin\/api\/commerce\/slots\/([0-9a-f-]{36})$/.exec(p))&&m==='POST'){operator();return send(200,await repo.setPromotionSlot(match[1],await body(req),session.role));}
  if(p==='/admin/api/commerce/campaigns'&&m==='GET'){operator();return send(200,page(await repo.promotionCampaigns(null,offset(url))));}
  if((match=/^\/admin\/api\/commerce\/campaigns\/([0-9a-f-]{36})\/(review|status)$/.exec(p))&&m==='POST'){operator();return send(200,await (match[2]==='review'?repo.reviewAd(match[1],await body(req),session.role):repo.setAdStatus(match[1],await body(req),session.role)));}
- if((match=/^\/admin\/api\/industry\/(entries|credentials|reports)$/.exec(p))&&m==='GET'){if(match[1]==='credentials'&&session.role!=='verifier')fail('VERIFIER_REQUIRED','主体资料仅业务核验角色可读',403);if(match[1]!=='credentials')operator();return send(200,page(await repo.industryAdmin(match[1],offset(url))));}
+ if((match=/^\/admin\/api\/industry\/(entries|credentials|reports)$/.exec(p))&&m==='GET'){if(match[1]==='credentials'&&!hasRole(session.role,'verifier'))fail('VERIFIER_REQUIRED','主体资料仅业务核验角色可读',403);if(match[1]!=='credentials')operator();return send(200,page(await repo.industryAdmin(match[1],offset(url))));}
  if((match=/^\/admin\/api\/industry\/entries\/([0-9a-f-]{36})$/.exec(p))&&m==='GET'){operator();const entry=await repo.industryAdminEntry(match[1]);if(!entry)fail('NOT_FOUND','业务不存在',404);return send(200,{entry});}
  if((match=/^\/admin\/api\/industry\/(entries|credentials|reports)\/([0-9a-f-]{36})$/.exec(p))&&m==='POST'){
-  if(match[1]==='credentials'){if(session.role!=='verifier')fail('VERIFIER_REQUIRED','主体材料需要业务核验角色',403);}else operator();
+  if(match[1]==='credentials'){if(!hasRole(session.role,'verifier'))fail('VERIFIER_REQUIRED','主体材料需要业务核验角色',403);}else operator();
   return send(200,await ({entries:repo.reviewIndustryEntry,credentials:repo.reviewIndustryCredential,reports:repo.resolveIndustryReport}[match[1]])(match[2],await body(req),session.role));
  }
  return false;

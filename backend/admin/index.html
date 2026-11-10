@@ -3,7 +3,7 @@
 <body><main class="shell">
  <div class="top"><div><h1>青方睐村美美 · 运营后台</h1><p>内容审核、业务核验、风险管理与举报申诉</p></div><div class="actions"><button id="refresh" class="secondary" hidden>刷新</button><button id="logout" class="secondary" hidden>退出后台</button></div></div>
  <div id="message" role="status"></div>
- <section id="login" class="card"><h2>管理员登录</h2><form id="login-form"><label for="admin-role">管理角色</label><select id="admin-role"><option value="operator">运营审核</option><option value="verifier">业务资质核验</option></select><label for="password">后台密码（仅由服务端环境变量配置）</label><input id="password" type="password" autocomplete="current-password" required><button type="submit">登录后台</button></form></section>
+ <section id="login" class="card"><h2>管理员登录</h2><form id="login-form"><label for="admin-role">管理角色</label><select id="admin-role"><option value="operator">运营审核</option><option value="superadmin">平台超级管理员</option><option value="verifier">业务资质核验</option></select><label for="password">后台密码（仅由服务端环境变量配置）</label><input id="password" type="password" autocomplete="current-password" required><button type="submit">登录后台</button></form></section>
  <div id="dashboard" hidden>
 
   <nav class="admin-nav"><a href="#review-workbench">统一待办</a><a href="#workflow-console">权益、推广与行业业务</a><a href="#home-console">首页轮播与资讯</a><a href="#trust-users">用户管理</a><a href="#publications">内容审核</a><a href="#trust-qualifications">业务资质</a><a href="#trust-risks">风险管理</a><a href="#reports">举报处理</a><a href="#categories">分类管理</a><a href="#trust-audit">操作日志</a></nav><div id="stats" class="grid"></div>

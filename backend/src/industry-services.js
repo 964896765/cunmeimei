@@ -1,4 +1,5 @@
 'use strict';
+const {hasRole}=require('./admin-permissions');
 const {ApiError,text,uuid}=require('./rules'),{transaction}=require('./points-repository');
 const fail=(code,message,status=409)=>{throw new ApiError(status,code,message);};
 function attachIndustryServices(repo,pool){
@@ -27,7 +28,7 @@ function attachIndustryServices(repo,pool){
   return {...link,service_status:'pending_review',eligible:true};
  });
  repo.reviewIndustryService=(sid,v,role)=>transaction(pool,async c=>{
-  if(role!=='operator')fail('OPERATOR_REQUIRED','需要运营审核角色',403);
+  if(!hasRole(role,'operator'))fail('OPERATOR_REQUIRED','需要运营审核角色',403);
   const l=(await c.query('SELECT * FROM industry_service_links WHERE service_id=$1',[sid])).rows[0];
   if(!l||l.revision!==v.revision||!['published','disabled'].includes(v.status))fail('SERVICE_LINK_CHANGED','供给审核版本已变化');
   await c.query('SELECT id FROM app_users WHERE id=$1 FOR SHARE',[l.owner_id]);

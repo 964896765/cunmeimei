@@ -9,7 +9,7 @@ function homeField(root,label,key,value='',type='text'){
 }
 function homePager(id,page,total,change){const root=el(id);root.replaceChildren(cell('span','第 '+page+' 页'+(total===null?'':' · 共 '+total+' 条')));if(page>1)root.append(button('上一页',()=>change(page-1)));if(total===null||page*20<total)root.append(button('下一页',()=>change(page+1)));}
 function homeEditor(entry,cities){
- const root=el('home-editor');root.replaceChildren();if(adminRole!=='operator'){root.append(cell('p','业务核验角色可查看内容；创建和发布需运营角色。','muted'));return;}
+ const root=el('home-editor');root.replaceChildren();if(!canRole('operator')){root.append(cell('p','业务核验角色可查看内容；创建和发布需运营角色。','muted'));return;}
  const form=document.createElement('form');form.className='home-editor-grid';const fields={};
  const kind=fields.kind=homeField(form,'内容类型','kind','','select');for(const [value,name]of Object.entries(homeKinds)){const option=cell('option',name);option.value=value;kind.append(option);}kind.value=entry?.kind||'news';
  const city=fields.cityCode=homeField(form,'浏览城市（资讯可选全平台）','cityCode','','select');for(const c of [{code:'',name:'全平台通用'},...cities]){const option=cell('option',c.name+' '+c.code);option.value=c.code;city.append(option);}city.value=entry?.cityCode||'';
@@ -39,17 +39,17 @@ async function loadHomeConsole(){
   homeEditor(null,cities.items||[]);
   renderItems('home-content-list',data.items,(root,entry)=>{
    const card=row(root,homeKinds[entry.kind]+' · '+entry.title,entry.id+' · '+entry.status+' · 版本 '+entry.revision,entry.startsAt+' 至 '+entry.endsAt+' · '+(entry.sourceName||entry.summary||''));
-   if(adminRole!=='operator')return;
+   if(!canRole('operator'))return;
    card.append(button('编辑草稿',()=>{homeEditor(entry,cities.items);el('home-editor').scrollIntoView({block:'start',behavior:'auto'});}));
    const checks={};for(const [key,label]of [['textReviewed','已核查正文及内容规则'],['imagesReviewed','已检查原始图片和使用权'],['sourceReviewed','已核查资讯来源、日期与引用范围'],['advertisingReviewed','已核查本条广告内容与证明']]){const labelNode=cell('label',label),input=document.createElement('input');input.type='checkbox';labelNode.prepend(input);card.append(labelNode);checks[key]=input;}
    card.append(button('核查后发布',async()=>{const reason=prompt('填写实际审核依据（至少8字，不含敏感证件号）');if(!reason)return;await api('/admin/api/home-content/'+entry.id+'/review','POST',{revision:entry.revision,status:'published',reason,...Object.fromEntries(Object.entries(checks).map(([key,input])=>[key,input.checked]))});notify('内容已审核，按排期展示。');await loadHomeConsole();}));
    card.append(button('立即停止展示',async()=>{const reason=prompt('填写停止展示的原因（至少8字）');if(!reason)return;await api('/admin/api/home-content/'+entry.id+'/review','POST',{revision:entry.revision,status:'disabled',reason});await loadHomeConsole();},true));
   });
   homePager('home-content-pages',homePage,data.total,page=>{homePage=page;return loadHomeConsole();});
-  renderItems('home-report-list',reports.items,(root,report)=>{const card=row(root,report.title,report.id+' · '+report.status,report.reason);if(report.response)card.append(cell('p',report.response));if(adminRole==='operator'&&report.status==='pending')for(const status of ['resolved','rejected'])card.append(button(status==='resolved'?'记录已处理答复':'记录不予处理说明',async()=>{const response=prompt('先完成核查或下架，再填写实际处理范围和用户答复（至少8字）');if(response){await api('/admin/api/home-reports/'+report.id,'POST',{revision:report.revision,status,response});await loadHomeConsole();}}));});
+  renderItems('home-report-list',reports.items,(root,report)=>{const card=row(root,report.title,report.id+' · '+report.status,report.reason);if(report.response)card.append(cell('p',report.response));if(canRole('operator')&&report.status==='pending')for(const status of ['resolved','rejected'])card.append(button(status==='resolved'?'记录已处理答复':'记录不予处理说明',async()=>{const response=prompt('先完成核查或下架，再填写实际处理范围和用户答复（至少8字）');if(response){await api('/admin/api/home-reports/'+report.id,'POST',{revision:report.revision,status,response});await loadHomeConsole();}}));});
   homePager('home-report-pages',homeReportPage,reports.total,page=>{homeReportPage=page;return loadHomeConsole();});
-  const advertiserRoot=el('home-advertiser-editor');advertiserRoot.replaceChildren();if(adminRole==='operator')advertiserRoot.append(button('创建待核验广告主档案',async()=>{const userId=prompt('广告主本人账号ID'),name=prompt('主体名称'),reference=prompt('实际材料工单引用（不填证件号）');if(userId&&name&&reference){await api('/admin/api/home-advertisers','POST',{userId,name,reference});await loadHomeConsole();}}));
-  renderItems('home-advertiser-list',advertisers.items,(root,a)=>{const card=row(root,a.name,a.id+' · '+a.status+' · 账号 '+a.user_id,'材料引用 '+a.evidence_reference+' · 核验到期 '+(a.valid_until||'尚未核验'));if(adminRole==='verifier')for(const status of ['verified','revoked'])card.append(button(status==='verified'?'完成主体核验':'撤销主体核验',async()=>{const reason=prompt('填写实际核查依据（至少8字）'),validUntil=prompt('材料真实有效期 YYYY-MM-DD');if(reason&&validUntil&&confirm('已实际核验主体与材料，确认记录本次结果？')){await api('/admin/api/home-advertisers/'+a.id,'POST',{revision:a.revision,status,reason,validUntil,manuallyVerified:true});await loadHomeConsole();}},status==='revoked'));});
+  const advertiserRoot=el('home-advertiser-editor');advertiserRoot.replaceChildren();if(canRole('operator'))advertiserRoot.append(button('创建待核验广告主档案',async()=>{const userId=prompt('广告主本人账号ID'),name=prompt('主体名称'),reference=prompt('实际材料工单引用（不填证件号）');if(userId&&name&&reference){await api('/admin/api/home-advertisers','POST',{userId,name,reference});await loadHomeConsole();}}));
+  renderItems('home-advertiser-list',advertisers.items,(root,a)=>{const card=row(root,a.name,a.id+' · '+a.status+' · 账号 '+a.user_id,'材料引用 '+a.evidence_reference+' · 核验到期 '+(a.valid_until||'尚未核验'));if(canRole('verifier'))for(const status of ['verified','revoked'])card.append(button(status==='verified'?'完成主体核验':'撤销主体核验',async()=>{const reason=prompt('填写实际核查依据（至少8字）'),validUntil=prompt('材料真实有效期 YYYY-MM-DD');if(reason&&validUntil&&confirm('已实际核验主体与材料，确认记录本次结果？')){await api('/admin/api/home-advertisers/'+a.id,'POST',{revision:a.revision,status,reason,validUntil,manuallyVerified:true});await loadHomeConsole();}},status==='revoked'));});
   homePager('home-advertiser-pages',homeAdvertiserPage,advertisers.items.length===20?null:(homeAdvertiserPage-1)*20+advertisers.items.length,page=>{homeAdvertiserPage=page;return loadHomeConsole();});
  }catch(error){el('home-content-list').replaceChildren(cell('p','首页管理读取失败：'+error.message));}
 }
@@ -57,12 +57,12 @@ if(!el('dashboard').hidden)loadHomeConsole();
 function renderHomeTask(root,kind,id,d){
  if(kind==='homecontent'){
   root.append(cell('p',homeKinds[d.kind]+' · '+(d.cityCode||'全平台')+' · '+d.startsAt+' 至 '+d.endsAt));root.append(cell('p',d.summary));root.append(cell('p',d.body));if(d.sourceUrl){const link=cell('a','打开原始来源：'+d.sourceName);link.href=d.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';root.append(link);}if(d.imageId){const image=document.createElement('img');image.src='/admin/api/media/'+d.imageId;image.alt='待核查原始图片';image.className='content-preview';root.append(image);}
-  if(adminRole!=='operator')return;
+  if(!canRole('operator'))return;
   const checks={};for(const [key,label]of [['textReviewed','已核查正文与业务规则'],['imagesReviewed','已核查原图与使用权'],['sourceReviewed','已核查原始来源和日期'],['advertisingReviewed','已核查本条广告证明']]){const wrapper=cell('label',label),input=document.createElement('input');input.type='checkbox';wrapper.prepend(input);root.append(wrapper);checks[key]=input;}
   root.append(button('核查后发布首页内容',async()=>{const reason=prompt('实际审核依据（至少8字）');if(!reason)return;await api('/admin/api/home-content/'+id+'/review','POST',{status:'published',revision:d.revision,reason,...Object.fromEntries(Object.entries(checks).map(([key,input])=>[key,input.checked]))});root.replaceChildren();await reload();}));
  }else{
   root.append(cell('p',d.title+' · '+d.contentStatus));
-  if(adminRole!=='operator')return;
+  if(!canRole('operator'))return;
   root.append(button('先停止相关首页内容',async()=>{const reason=prompt('已核实的停止展示原因（至少8字）');if(!reason)return;await api('/admin/api/home-content/'+d.contentId+'/review','POST',{status:'disabled',revision:d.contentRevision,reason});await openTask(kind,id);await loadHomeConsole();},true));
   for(const status of ['resolved','rejected'])root.append(button(status==='resolved'?'记录已处理答复':'记录不予处理说明',async()=>{const response=prompt('填写实际处理范围和用户答复（至少8字）');if(!response)return;await api('/admin/api/home-reports/'+id,'POST',{status,revision:d.revision,response});root.replaceChildren();await reload();}));
  }

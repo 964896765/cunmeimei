@@ -7,14 +7,18 @@ const {createMemoryRepository}=require('./memory-repository');
 const {validRegionName}=require('./taxonomy');
 const {createAdminLoginLimiter,pruneExpired}=require('./admin-login-limiter');
 const {makeClientAddress}=require('./client-address');
+const adminPolicy=require('./admin-permissions');
+const {hasRole}=adminPolicy;
 const sha256=s=>crypto.createHash('sha256').update(s).digest('hex');
 const enc=body=>JSON.stringify(body);
-function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId='',wechatSecret='',production=false,fetchWechat=global.fetch,privateUploadDir=path.join(__dirname,'../../private-data'),trustedProxyIps=[],tencentMapKey='',fetchGeography=global.fetch,verificationAdminPassword='',phoneEncryptionKey='',platformPublishApproved=false,platformContactApproved=false,legalConfig={}}){
+function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPassword='',operatorPermissions=[],verifierPermissions=[],wechatAppId='',wechatSecret='',production=false,fetchWechat=global.fetch,privateUploadDir=path.join(__dirname,'../../private-data'),trustedProxyIps=[],tencentMapKey='',fetchGeography=global.fetch,verificationAdminPassword='',phoneEncryptionKey='',platformPublishApproved=false,platformContactApproved=false,legalConfig={}}){
  if(!repo)throw Error('repository required');if(!Array.isArray(areas)||!areas.length||!areas.every(validRegionName))throw Error('SERVICE_AREAS must contain valid 2–40 character region names');
  repo.configureTrust?.({enabled:true,allowLocalTest:!production&&allowDevLogin,production,publishApproved:platformPublishApproved,contactApproved:platformContactApproved,phoneKey:phoneEncryptionKey});
  const legalDocs=require('./legal-documents').documents(legalConfig),wechatAuthenticate=require('./wechat-login').provider(wechatAppId,wechatSecret,fetchWechat);
  const phoneVerifier=require('./wechat-phone').createPhoneVerifier(wechatAppId,wechatSecret,fetchWechat);
  const phoneConfigured=!!wechatAppId&&!!wechatSecret&&Buffer.from(phoneEncryptionKey,'base64').length===32;
+ const roleGrants={operator:operatorPermissions,verifier:verifierPermissions,superadmin:[]};
+ for(const role of Object.keys(roleGrants))adminPolicy.permissionsFor(role,roleGrants[role]);
  const adminSessions=new Map();const adminLoginLimiter=createAdminLoginLimiter();const uploadLimits=new Map();
  const clientAddress=makeClientAddress(trustedProxyIps);
  const testData=req=>!production&&req.headers['x-development-test-data']==='true';
@@ -45,11 +49,27 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId=
  async function user(req){const auth=req.headers.authorization||'';if(!/^Bearer [A-Za-z0-9_-]{32,100}$/.test(auth))fail(401,'LOGIN_REQUIRED','请先登录');const uid=await repo.authenticate(sha256(auth.slice(7)));if(!uid)fail(401,'SESSION_EXPIRED','登录已过期');return uid;}
 
  function cookie(req){return (req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('citylife_admin='))?.slice(15)||'';}
- function admin(req,unsafe=false,scope){const key=cookie(req),session=adminSessions.get(key);if(!session||session.exp<=Date.now()){adminSessions.delete(key);fail(401,'ADMIN_REQUIRED','请登录后台');}if(unsafe&&req.headers['x-csrf-token']!==session.csrf)fail(403,'CSRF_REQUIRED','后台安全校验失败');if(scope==='verifier'&&session.role!=='verifier')fail(403,'VERIFIER_REQUIRED','仅独立的身份核验管理员可操作');return session;}
+ function admin(req,unsafe=false,scope){
+  const key=cookie(req),session=adminSessions.get(key);
+  if(!session||session.exp<=Date.now()){adminSessions.delete(key);fail(401,'ADMIN_REQUIRED','请登录后台');}
+  adminPolicy.authorizeRoute(session,req.method,new URL(req.url,'http://localhost').pathname);
+  if(scope)adminPolicy.requirePermission(session,scope==='verifier'?'qualification':'operations');
+  if((unsafe||!['GET','HEAD'].includes(req.method))&&req.headers['x-csrf-token']!==session.csrf)fail(403,'CSRF_REQUIRED','后台安全校验失败');
+  return session;
+ }
  function adminHtml(res){const file=path.join(__dirname,'../admin/index.html');res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'"});res.end(fs.readFileSync(file));}
  function adminScript(res){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(fs.readFileSync(path.join(__dirname,'../admin/app.js')));}
  async function handler(req,res){try{
   const url=new URL(req.url||'/',`http://${req.headers.host||'localhost'}`),p=url.pathname,m=req.method;
+  if(p.startsWith('/admin/api/')&&!(m==='POST'&&p==='/admin/api/login')){
+   let principal;
+   try{principal=admin(req);}catch(error){
+    const session=adminSessions.get(cookie(req));
+    if(session&&session.exp>Date.now())await repo.recordAdminAccess({sessionId:session.auditId,role:session.role,method:m,path:p,outcome:'denied',code:error.code});
+    throw error;
+   }
+   await repo.recordAdminAccess({sessionId:principal.auditId,role:principal.role,method:m,path:p,outcome:'authorized'});
+  }
   if(m==='GET'&&p==='/admin'){return adminHtml(res);}
   if(m==='GET'&&p==='/admin/app.js'){return adminScript(res);}
   if(m==='GET'&&p==='/admin/workflows.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/workflows.js')));}
@@ -137,7 +157,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId=
   }
   if(p==='/api/v1/me/account-closure'&&m==='GET'){const uid=await user(req);if(!repo.closureReadiness)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.closureReadiness(uid));}
   if(p==='/api/v1/me/data-export'&&m==='GET'){const uid=await user(req);if(!repo.exportOwnData)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.exportOwnData(uid,url.searchParams.get('section')||'profile',url.searchParams.get('cursor')||null));}
-  if(/^\/admin\/api\/privacy-requests\/[0-9a-f-]{36}\/execute-closure$/i.test(p)&&m==='POST'){const session=admin(req,true);if(session.role!=='operator')fail(403,'OPERATOR_REQUIRED','注销执行需要运营审核权限');if(!repo.executeAccountClosure)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.executeAccountClosure(p.split('/')[4],await body(req),session.role));}
+  if(/^\/admin\/api\/privacy-requests\/[0-9a-f-]{36}\/execute-closure$/i.test(p)&&m==='POST'){const session=admin(req,true);if(!hasRole(session.role,'operator'))fail(403,'OPERATOR_REQUIRED','注销执行需要运营审核权限');if(!repo.executeAccountClosure)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.executeAccountClosure(p.split('/')[4],await body(req),session.role));}
   if(p==='/api/v1/me/privacy-requests'&&['GET','POST'].includes(m)){
    const uid=await user(req);if(!repo.privacyRequests)fail(503,'NOT_AVAILABLE','隐私请求暂不可用');
    if(m==='GET')return json(res,200,{items:await repo.privacyRequests(uid)});
@@ -228,7 +248,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId=
    if(!await repo.deleteComment?.(await user(req),p.split('/')[5]))fail(404,'NOT_FOUND','评论不存在或无权删除');return json(res,200,{ok:true});
   }
   if(/^\/admin\/api\/media\/[0-9a-f-]{36}$/i.test(p)&&m==='GET'){
-   admin(req);const image=await repo.contentImageForAdmin?.(p.split('/')[4]);if(!image)fail(404,'NOT_FOUND','图片不存在');
+   const session=admin(req);const image=await repo.contentImageForAdmin?.(p.split('/')[4],{qualificationOnly:!session.permissions.includes('operations')});if(!image)fail(404,'NOT_FOUND','图片不存在或当前角色无权读取');
    res.writeHead(200,{'Content-Type':'image/jpeg','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});return res.end(url.searchParams.get('size')==='thumb'?image.thumbnail:image.data);
   }
   if(p==='/admin/api/comments'&&m==='GET'){admin(req);return json(res,200,{items:await repo.commentQueue?.()||[]});}
@@ -238,14 +258,14 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId=
   }
   if(m==='GET'&&p==='/api/v1/me'){return json(res,200,{userId:await user(req)});}
   if(m==='POST'&&p==='/api/v1/auth/logout'){await user(req);await repo.revokeSession(sha256(req.headers.authorization.slice(7)));return json(res,200,{ok:true});}
-  if(m==='POST'&&p==='/api/v1/publications'){const uid=await user(req);const input=await body(req);const v={...publication(input,await activeAreas()),...require('./product-repository').publicationExtras(input),isTest:testData(req)};if(!await canSubmit(v.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放发布');return json(res,201,{publication:await repo.createPublication(uid,v)});}
+  if(m==='POST'&&p==='/api/v1/publications'){const uid=await user(req);const input=await body(req);const v={...publication(input,await activeAreas()),...require('./product-repository').validatePublicationSubmission(input),isTest:testData(req)};if(!await canSubmit(v.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放发布');return json(res,201,{publication:await repo.createPublication(uid,v)});}
   if(m==='GET'&&p==='/api/v1/me/publications'){return json(res,200,{items:await repo.myPublications(await user(req))});}
   if(m==='PUT'&&/^\/api\/v1\/me\/publications\/[0-9a-f-]{36}$/i.test(p)){
    const uid=await user(req),id=p.split('/')[5],input=await body(req);
    if(!uuid(id))fail(400,'INVALID_ID','信息编号无效');
    if(!Number.isSafeInteger(input.expectedRevision)||input.expectedRevision<1||input.expectedRevision>1000000)
     fail(400,'INVALID_REVISION','编辑版本号无效');
-   const value={...publication(input,await activeAreas()),...require('./product-repository').publicationExtras(input),replaceExtras:Object.hasOwn(input,'attributes')||Object.hasOwn(input,'imageIds')};
+   const value={...publication(input,await activeAreas()),...require('./product-repository').publicationExtras(input,{validateForm:false}),replaceAttributes:Object.hasOwn(input,'attributes'),replaceImages:Object.hasOwn(input,'imageIds')};
    if(!await canSubmit(value.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放编辑');
    const result=await repo.updatePublication(uid,id,value,input.expectedRevision);
    if(result?.error==='revision_conflict')fail(409,'PUBLICATION_CHANGED','内容已被其他操作更新，请重新打开编辑');
@@ -350,21 +370,34 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId=
   if(m==='GET'&&p==='/api/v1/me/bookings'){return json(res,200,{items:await repo.myBookings(await user(req))});}
   if(m==='POST'&&/^\/api\/v1\/bookings\/[0-9a-f-]{36}\/cancel$/i.test(p)){const uid=await user(req);const ok=await repo.cancelBooking(uid,p.split('/')[4]);if(!ok)fail(409,'CANNOT_CANCEL','不可取消或记录不存在');return json(res,200,{ok:true});}
   if(m==='POST'&&p==='/admin/api/login'){
-   if(!adminPassword&&!verificationAdminPassword)fail(503,'ADMIN_NOT_CONFIGURED','未配置后台管理员');const key=clientAddress(req);
+   if(!adminPassword&&!verificationAdminPassword&&!superAdminPassword)fail(503,'ADMIN_NOT_CONFIGURED','未配置后台管理员');const key=clientAddress(req);
    if(adminLoginLimiter.blocked(key))fail(429,'TOO_MANY_ATTEMPTS','登录尝试过多');
-   const v=await body(req);const submitted=typeof v.password==='string'?v.password:'';const role=v.role==='verifier'?'verifier':'operator',password=role==='verifier'?verificationAdminPassword:adminPassword;if(!password)fail(503,'ADMIN_ROLE_NOT_CONFIGURED','该管理角色尚未配置');const actual=crypto.createHash('sha256').update(submitted).digest();const expected=crypto.createHash('sha256').update(password).digest();if(!crypto.timingSafeEqual(actual,expected)){adminLoginLimiter.failure(key);fail(401,'WRONG_PASSWORD','管理员密码错误');}
+   const v=await body(req),submitted=typeof v.password==='string'?v.password:'',role=v.role===undefined?'operator':v.role;
+   if(!Object.hasOwn(adminPolicy.roles,role))fail(400,'INVALID_ADMIN_ROLE','管理角色无效');
+   const password={operator:adminPassword,verifier:verificationAdminPassword,superadmin:superAdminPassword}[role];
+   if(!password)fail(503,'ADMIN_ROLE_NOT_CONFIGURED','该管理角色尚未配置');
+   const actual=crypto.createHash('sha256').update(submitted).digest(),expected=crypto.createHash('sha256').update(password).digest();
+   if(!crypto.timingSafeEqual(actual,expected)){adminLoginLimiter.failure(key);fail(401,'WRONG_PASSWORD','管理员密码错误');}
    // Enforce a bounded session map and prune expired sessions first.
    pruneExpired(adminSessions,'exp');if(adminSessions.size>=2048)fail(429,'TOO_MANY_SESSIONS','管理会话数量已达上限');
-   adminLoginLimiter.success(key);const token=crypto.randomBytes(32).toString('base64url'),csrf=crypto.randomBytes(24).toString('base64url');adminSessions.set(token,{csrf,role,exp:Date.now()+2*3600e3});return json(res,200,{ok:true,csrf,role},{'Set-Cookie':`citylife_admin=${token}; HttpOnly; SameSite=Strict; Path=/admin; Max-Age=7200${production?'; Secure':''}`});
+   adminLoginLimiter.success(key);const token=crypto.randomBytes(32).toString('base64url'),csrf=crypto.randomBytes(24).toString('base64url');adminSessions.set(token,{csrf,role,permissions:adminPolicy.permissionsFor(role,roleGrants[role]),auditId:crypto.randomUUID(),exp:Date.now()+2*3600e3});return json(res,200,{ok:true,csrf,role},{'Set-Cookie':`citylife_admin=${token}; HttpOnly; SameSite=Strict; Path=/admin; Max-Age=7200${production?'; Secure':''}`});
   }
-  if(m==='GET'&&p==='/admin/api/session'){const s=admin(req);return json(res,200,{ok:true,csrf:s.csrf,role:s.role});}
+  if(m==='GET'&&p==='/admin/api/session'){const s=admin(req);return json(res,200,{ok:true,csrf:s.csrf,role:s.role,permissions:s.permissions});}
   if(m==='POST'&&p==='/admin/api/logout'){admin(req,true);adminSessions.delete(cookie(req));return json(res,200,{ok:true},{'Set-Cookie':`citylife_admin=; HttpOnly; SameSite=Strict; Path=/admin; Max-Age=0${production?'; Secure':''}`});}
-  if(m==='GET'&&/^\/admin\/api\/workbench\/[a-z]+\/[0-9a-f-]{36}$/i.test(p)){const session=admin(req);return json(res,200,await repo.reviewTask(p.split('/')[4],p.split('/')[5],session.role));}
-  if(m==='POST'&&p==='/admin/api/operations/run'){const session=admin(req,true);if(session.role!=='operator')fail(403,'OPERATOR_REQUIRED','重试维护需要运营审核权限');if(!repo.runMaintenance)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.runMaintenance());}
+  if(m==='GET'&&/^\/admin\/api\/workbench\/[a-z]+\/[0-9a-f-]{36}$/i.test(p)){const session=admin(req);return json(res,200,await repo.reviewTask(p.split('/')[4],p.split('/')[5],session.role,session.permissions));}
+  if(m==='POST'&&p==='/admin/api/operations/run'){const session=admin(req,true);if(!hasRole(session.role,'operator'))fail(403,'OPERATOR_REQUIRED','重试维护需要运营审核权限');if(!repo.runMaintenance)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.runMaintenance());}
   if(m==='GET'&&p==='/admin/api/operations/health'){admin(req);if(!repo.operationsHealth)fail(503,'DATABASE_REQUIRED','此功能需要持久化数据库');return json(res,200,await repo.operationsHealth());}
-  if(m==='GET'&&p==='/admin/api/workbench'){admin(req);if(!repo.reviewWorkbench)fail(503,'DATABASE_REQUIRED','统一待办需要持久化数据库');return json(res,200,await repo.reviewWorkbench({...require('./review-workbench').queryOptions(url.searchParams),role:admin(req).role}));}
+  if(m==='GET'&&p==='/admin/api/workbench'){admin(req);if(!repo.reviewWorkbench)fail(503,'DATABASE_REQUIRED','统一待办需要持久化数据库');return json(res,200,await repo.reviewWorkbench({...require('./review-workbench').queryOptions(url.searchParams),role:admin(req).role,permissions:admin(req).permissions}));}
   if(m==='POST'&&p==='/admin/api/emergency-remove'){const session=admin(req,true),v=await body(req);if(!uuid(v.id))fail(400,'INVALID_ID','信息编号无效');const reason=require('./trust-policy').note(v.reason);return json(res,200,await repo.emergencyRemove(v.id,reason,session.role));}
-  if(m==='GET'&&p==='/admin/api/queue'){const session=admin(req);const r=await repo.queue();if(repo.maskMerchantQueue)r.merchantApplications=await repo.maskMerchantQueue(r.merchantApplications||[],session.role);return json(res,200,{...r,services:await repo.serviceQueue(),reports:await repo.reportsQueue()});}
+  if(m==='GET'&&p==='/admin/api/queue'){
+   const session=admin(req),r=await repo.queue(),operator=session.permissions.includes('operations');
+   if(repo.maskMerchantQueue)r.merchantApplications=await repo.maskMerchantQueue(r.merchantApplications||[],session.role);
+   else if(!session.permissions.includes('qualification'))r.merchantApplications=(r.merchantApplications||[]).map(({registrationCode,licenseHolder,evidenceReference,licenseFileId,...safe})=>({...safe,evidenceRestricted:true}));
+   if(!operator)r.publications=(r.publications||[]).filter(x=>x.type==='housing');
+   let reports=operator?await repo.reportsQueue():[];
+   if(!session.permissions.includes('evidence'))reports=reports.map(({description,...safe})=>safe);
+   return json(res,200,{...r,services:operator?await repo.serviceQueue():[],reports});
+  }
   if(m==='GET'&&/^\/admin\/api\/licenses\/[0-9a-f-]{36}$/i.test(p)){
    admin(req);const fileId=p.split('/')[4],meta=await repo.merchantLicenseForAdmin(fileId);
    if(!meta)fail(404,'NOT_FOUND','没有该材料');await repo.assertMerchantVerifier?.(meta.applicationId,admin(req).role);
@@ -415,12 +448,12 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',wechatAppId=
 if(require.main===module){
  const production=process.env.NODE_ENV==='production',driver=process.env.DATA_DRIVER||'postgres';
  const {validateDeployment}=require('./deployment-check');
- const deployment=validateDeployment(process.env);
+ const deployment=validateDeployment(process.env,undefined,{requireProduction:process.argv.includes('--production')});
  if(!deployment.ok){console.error('Deployment configuration blocked:',deployment.errors.join(','));process.exit(1);}
  const repo=driver==='memory'?createMemoryRepository():require('./pg-repository').createPgRepository(process.env.DATABASE_URL);
  const areas=(process.env.SERVICE_AREAS||'').split(',').map(x=>x.trim()).filter(Boolean);
  const host=process.env.HOST||'127.0.0.1',port=Number(process.env.PORT||3100);
- const app=createApp({repo,areas,allowDevLogin:process.env.ALLOW_DEV_LOGIN==='true',adminPassword:process.env.ADMIN_PASSWORD||'',wechatAppId:process.env.WECHAT_APPID||'',wechatSecret:process.env.WECHAT_SECRET||'',privateUploadDir:process.env.PRIVATE_UPLOAD_DIR||path.resolve(__dirname,'../../private-data'),verificationAdminPassword:process.env.VERIFICATION_ADMIN_PASSWORD||'',phoneEncryptionKey:process.env.PHONE_ENCRYPTION_KEY||'',platformPublishApproved:process.env.PLATFORM_PUBLISH_APPROVED==='true',platformContactApproved:process.env.PLATFORM_CONTACT_APPROVED==='true',trustedProxyIps:process.env.TRUSTED_PROXY_IPS||'',tencentMapKey:process.env.TENCENT_MAP_KEY||'',production});
+ const app=createApp({repo,areas,allowDevLogin:process.env.ALLOW_DEV_LOGIN==='true',adminPassword:process.env.ADMIN_PASSWORD||'',wechatAppId:process.env.WECHAT_APPID||'',wechatSecret:process.env.WECHAT_SECRET||'',privateUploadDir:process.env.PRIVATE_UPLOAD_DIR||path.resolve(__dirname,'../../private-data'),verificationAdminPassword:process.env.VERIFICATION_ADMIN_PASSWORD||'',superAdminPassword:process.env.SUPER_ADMIN_PASSWORD||'',operatorPermissions:(process.env.OPERATOR_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),verifierPermissions:(process.env.VERIFIER_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),phoneEncryptionKey:process.env.PHONE_ENCRYPTION_KEY||'',platformPublishApproved:process.env.PLATFORM_PUBLISH_APPROVED==='true',platformContactApproved:process.env.PLATFORM_CONTACT_APPROVED==='true',trustedProxyIps:process.env.TRUSTED_PROXY_IPS||'',tencentMapKey:process.env.TENCENT_MAP_KEY||'',legalConfig:{operatorName:process.env.PLATFORM_OPERATOR_NAME,contactEmail:process.env.PRIVACY_CONTACT_EMAIL},production});
  let stopReminders=async()=>{},stopMaintenance=async()=>{};
  (async()=>{if(driver==='postgres')await repo.verifySchema();await repo.seedRegions(areas);
   app.listen(port,host,()=>{

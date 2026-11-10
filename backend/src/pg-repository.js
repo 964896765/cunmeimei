@@ -17,6 +17,7 @@ function createPgRepository(connectionString, options={}){
  function application(x){return x&&{id:x.id,userId:x.user_id,name:x.name,category:x.category,district:x.district,status:x.status,registrationCode:x.registration_code,licenseHolder:x.license_holder,evidenceReference:x.evidence_reference,reviewerNote:x.reviewer_note,createdAt:x.created_at,licenseFileId:x.license_file_id};}
  function book(x){return x&&{id:x.id,userId:x.user_id,serviceId:x.service_id,serviceTitle:x.service_title,requestedAt:x.requested_at,status:x.status,cancellationReason:x.system_cancellation_reason||'',remark:x.remark,holdExpiresAt:x.hold_expires_at,createdAt:x.created_at};}
  const repository = {
+ async recordAdminAccess(event){await pool.query("INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES('admin_access','admin_session',$1,$2)",[event.sessionId,JSON.stringify(event)]);},
  ...require('./search-popularity').pgSearchPopularity(pool),
  ...pgOperations(pool),
  // Bootstrap once only on an empty region table; later edits persist independently of env changes.

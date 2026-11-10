@@ -51,7 +51,8 @@ function createMemoryRepository(){
   const x=pubs.find(x=>x.id===pid&&x.userId===uid&&['pending','published','rejected'].includes(x.status)&&x.type===v.type);
   if(!x)return false;
   if(x.revision!==expectedRevision)return {error:'revision_conflict'};
-  Object.assign(x,{title:v.title,description:v.description,detail:v.description,price:v.price,district:v.district,status:'pending',moderationReason:'',updatedAt:when(),revision:x.revision+1});
+  const extras=require('./product-repository').publicationEditExtras(x,v);
+  Object.assign(x,{attributes:extras.attributes,imageIds:extras.imageIds,title:v.title,description:v.description,detail:v.description,price:v.price,district:v.district,status:'pending',moderationReason:'',updatedAt:when(),revision:x.revision+1});
   audits.push({action:'user_edit_resubmitted',id:pid,revision:x.revision,time:when()});
   return clone(x);
  },
@@ -77,6 +78,7 @@ function createMemoryRepository(){
  async reviewMerchant(pid,status,note){const x=apps.find(x=>x.id===pid&&['pending','in_review','needs_documents'].includes(x.status));if(!x)return false;x.status=status;x.reviewerNote=note;audits.push({action:status,id:pid,time:when()});return true;},
  async stats(){return {pendingPublications:pubs.filter(x=>x.status==='pending').length,published:pubs.filter(x=>x.status==='published').length,merchantApplications:apps.length,users:users.size};},
  async addTestService(v){const x={id:id(),status:'published',...v};services.push(x);return x;},
+ async recordAdminAccess(event){audits.push({action:'admin_access',...clone(event),time:when()});},
  async close(){}
  };
  return require('./booking-submissions').attachMemoryBookingSubmissions(repository);
