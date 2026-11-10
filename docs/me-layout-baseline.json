@@ -1,0 +1,10 @@
+{
+  "miniprogram/utils/palettes.js": "a31cab75b78bf8de57d35c3bb58d8099ab6c4ee5e2f74f5affc618b09935effa",
+  "scripts/prism-color-baseline.json": "82ee6604e049749c5e42679c9c01addf9cba3a8e0159409f9f93fbde2e0c6db8",
+  "miniprogram/app.json": "50c9bde15dcccb2b49c39ae1747f05651776233d32087c06fc1dc4c72be4f5ea",
+  "miniprogram/app.wxss": "7655e5b61c67c3cbedec74ff7cbc1f47578e2dbc9e38ddf9191a2cea14d455ef",
+  "miniprogram/utils/theme.js": "3a76e4ec96db49bbf5ea30a9e4766cbcb6a3c9d767f529d1b21a13806ecb8fb1",
+  "miniprogram/custom-tab-bar/index.js": "e0939f75290247ea3e717237932028c0952741b6a56f61c5dc994d7bc050ffee",
+  "miniprogram/custom-tab-bar/index.wxml": "42448ef4a3ac714bd26a003ed7204e173c29410a647256dfc1c3b89ff8bb1668",
+  "miniprogram/custom-tab-bar/index.wxss": "d39559f5994e0ecfa8585afbf34c74743887bcc59b31bdee0e4546ab5e0d58b6"
+}

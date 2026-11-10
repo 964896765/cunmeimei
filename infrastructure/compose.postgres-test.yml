@@ -1,0 +1,24 @@
+# V0.25 isolated PostgreSQL. Docker allocates a random loopback host port to avoid clashes.
+# Do not attach a production volume. Port reachable only on loopback.
+services:
+  pgtest:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: citylife_test
+      POSTGRES_PASSWORD: ${PG_LOCAL_PASSWORD:?PG_LOCAL_PASSWORD must be supplied}
+      POSTGRES_DB: citylife_test
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "127.0.0.1::5432"
+    volumes:
+      - pgtest-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U citylife_test -d citylife_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: "no"
+
+# No explicit name or external flag: Compose scopes this disposable volume to its project.
+volumes:
+  pgtest-data:

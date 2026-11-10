@@ -1,0 +1,28 @@
+{
+  "checks": [
+    "native points view preserves actual zero",
+    "native points view renders multiple fixture rewards",
+    "native points view shows Beijing time",
+    "native WXML include binds appeal control",
+    "appeal form is rendered inside its selected reward",
+    "first reward appeal form precedes the second reward, not the end of the list",
+    "selected appeal form is visible below the measured header",
+    "native appeal submission shows pending record",
+    "native ledger shows debit and hold separately",
+    "native error state does not show fake reward data",
+    "native retry restores fixture reward",
+    "no captured native runtime exceptions"
+  ],
+  "passed": 12,
+  "failed": 0,
+  "errors": [],
+  "tool": {
+    "version": "2.02.2608080",
+    "SDKVersion": "3.17.4"
+  },
+  "registeredRoutes": 21,
+  "source": "real WeChat compiler and renderer, all request responses are explicit in-memory UI fixtures",
+  "realBackend": false,
+  "physicalDevice": false,
+  "checkedAt": "2026-11-01T15:20:05.793Z"
+}

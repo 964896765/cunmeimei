@@ -1,0 +1,39 @@
+<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
+<view class="container">
+ <view class="top-row"><view><view class="title">商家工作台</view><view class="subtitle">一个账号，管理所属门店</view></view><text class="tag">{{online?'商家中心':'本地演示'}}</text></view>
+ <view wx:if="{{mode==='apply'}}">
+  <view class="section card"><view class="section-title">申请入驻</view><view class="list-desc">提交基本资料，经后台人工核验后才可管理门店。</view></view>
+  <text class="field-label">商家名称</text><input class="field" maxlength="60" value="{{name}}" placeholder="门店或主体名称" data-field="name" bindinput="input"/>
+  <text class="field-label">经营类型</text><picker mode="selector" range="{{categories}}" bindchange="chooseCategory"><view class="field picker">{{category}} ⌄</view></picker>
+  <text class="field-label">所属地区</text><picker mode="selector" range="{{districts}}" bindchange="chooseDistrict"><view class="field picker">{{district||'请选择区域'}} ⌄</view></picker>
+  <button class="btn" disabled="{{submitting}}" bindtap="submit">{{submitting?'提交中…':'提交入驻申请'}}</button>
+ </view>
+ <view wx:elif="{{mode==='status'}}">
+  <view class="section card"><view class="section-title">{{request.name}}</view><view class="list-desc">{{request.category}} · {{request.district}}</view><view class="status request-status">{{online?request.statusText:request.status}}</view>
+    <view class="notice">商家资格需要线下核验。填写编号不会自动开通商家权限。</view></view>
+  <view wx:if="{{online && request.status!=='rejected' && request.status!=='approved' && licenseEnabled}}">
+   <text class="field-label">统一社会信用代码 / 注册编号</text><input class="field" maxlength="40" value="{{registrationCode}}" data-field="registrationCode" placeholder="经营主体登记编号" bindinput="input"/>
+   <text class="field-label">登记主体名称</text><input class="field" maxlength="120" value="{{licenseHolder}}" data-field="licenseHolder" placeholder="与线下证照一致" bindinput="input"/>
+   <text class="field-label">线下核验材料编号</text><input class="field" maxlength="200" value="{{evidenceReference}}" data-field="evidenceReference" placeholder="由运营人员提供的核验编号" bindinput="input"/>
+   <button class="btn" bindtap="submitEvidence">提交人工核验资料</button>
+   <view class="section card"><view class="section-title">营业执照材料</view>
+    <view class="list-desc">{{licenseUploaded?'已上传，等待人工核验':'可上传 JPG/PNG，最大 2MB，仅授权运营审核人员可下载。'}}</view>
+    <button class="btn light" disabled="{{uploading}}" bindtap="chooseLicense">{{uploading?'上传中…':licenseUploaded?'重新上传材料':'选择并上传执照图片'}}</button>
+   </view>
+   <view class="notice">请只提交经营主体证照，勿上传身份证或其他无关资料。上传不等于认证通过。开发版尚未进行自动图片安全检测与真实证照鉴伪。</view>
+  </view>
+  <view wx:elif="{{online && !licenseEnabled}}" class="notice">正式环境暂不收集营业执照图片或注册编号，请通过平台公布的线下核验渠道办理。</view>
+ </view>
+ <view wx:elif="{{mode==='operate'}}">
+  <view class="section-head section"><text class="section-title">我的门店</text><text class="more">{{merchants.length}} 家</text></view>
+  <view class="card" wx:for="{{merchants}}" wx:key="id">
+   <view class="section-title">{{item.name}}</view><view class="list-desc">{{item.category}} · {{item.district}} · {{item.role==='owner'?'店主':item.role==='manager'?'经理':'员工'}}</view><view class="list-desc">服务 {{item.servicesCount||0}} · 待确认 {{item.pendingBookings||0}} · 已完成 {{item.completedBookings||0}}</view>
+   <view class="merchant-actions"><button wx:if="{{item.role==='owner'||item.role==='manager'}}" class="btn light" data-kind="services" data-id="{{item.id}}" bindtap="goPanel">服务管理</button><button class="btn light" data-kind="bookings" data-id="{{item.id}}" bindtap="goPanel">预约处理</button><button wx:if="{{item.role==='owner'}}" class="btn light" data-kind="team" data-id="{{item.id}}" bindtap="goPanel">员工权限</button></view>
+  </view>
+  <view class="notice">服务先提交后台审核，通过后才对外展示。预约只是业务意向，不涉及收款或资金结算。</view>
+ </view>
+ <view wx:else=""><view class="section card"><view class="section-title">演示经营面板</view><view class="list-desc">本地示例门店 · {{demoBookings}} 条本机演示预约</view></view><text class="field-label">门店公告</text><textarea class="field-area" maxlength="200" value="{{notice}}" data-field="notice" bindinput="input"/><button class="btn" bindtap="saveNotice">保存演示公告</button><view class="preview-link" bindtap="back">返回申请状态</view></view>
+ <view wx:if="{{!online && mode!=='demo'}}" class="preview-link" bindtap="demo">查看演示经营面板 →</view>
+</view>
+
+</view>

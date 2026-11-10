@@ -1,0 +1,183 @@
+{
+  "status": "pass_for_verified_local_scope",
+  "checkedAt": "2026-11-06T02:58:29.218Z",
+  "projects": 418,
+  "resident": 43,
+  "industry": 375,
+  "bookable": 198,
+  "informationMaintenance": 67,
+  "perProjectPassed": 418,
+  "sources": {
+    "fullLogFile": "docs/prelaunch-followup-full-verification.log",
+    "clientLogFile": "docs/information-design-client-regression.log",
+    "nativeLogFile": "docs/information-design-final-native-verification.log",
+    "perProjectCheckedAt": "2026-11-06T01:56:32.842Z"
+  },
+  "suites": {
+    "main": {
+      "tests": 1001,
+      "passed": 1001,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "strictPostgres": {
+      "tests": 582,
+      "passed": 582,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "latestClient": {
+      "tests": 452,
+      "passed": 439,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 13,
+      "skipReason": "PostgreSQL connection absent in client run; database suites verified separately"
+    },
+    "e2e": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "permissions": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "merchant": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "countsOverlap": true,
+  "recovery": {
+    "verification": "backup_restore_drill",
+    "ok": true,
+    "tables": 72,
+    "nonemptyTables": 47,
+    "checks": [
+      "custom-format backup",
+      "SHA256 integrity",
+      "transactional restore to empty drill database",
+      "all table contents match",
+      "existing database refused",
+      "corrupt backup refused"
+    ]
+  },
+  "native": {
+    "business": {
+      "passed": 46,
+      "physicalDevice": false,
+      "checkedAt": "2026-11-06T02:52:02.409Z",
+      "screenshots": [
+        "admin-service-review.png",
+        "business-scheduled.png",
+        "business-completed.png",
+        "admin-case-review.png",
+        "business-prism-large.png",
+        "business-dark-large.png",
+        "customer-source-cancelled.png",
+        "merchant-source-cancelled.png"
+      ]
+    },
+    "login": {
+      "passed": 34,
+      "physicalDevice": false,
+      "checkedAt": "2026-11-06T02:16:36.473Z",
+      "screenshots": [
+        "login-prism.png",
+        "login-dark.png"
+      ]
+    },
+    "workflows": {
+      "passed": 60,
+      "physicalDevice": false,
+      "checkedAt": "2026-11-06T02:49:27.258Z",
+      "screenshots": [
+        "admin-home-content.png",
+        "admin-ad-picker.png",
+        "design-home.png",
+        "design-discover.png",
+        "design-publish.png",
+        "design-messages.png",
+        "design-me.png",
+        "native-commerce.png",
+        "native-industry.png"
+      ]
+    },
+    "privacy": {
+      "passed": 13,
+      "physicalDevice": false,
+      "checkedAt": "2026-11-06T02:22:00.673Z",
+      "screenshots": [
+        "commerce-access-gate.png",
+        "industry-access-gate.png"
+      ]
+    },
+    "centers": {
+      "passed": 39,
+      "physicalDevice": false,
+      "checkedAt": "2026-11-06T02:55:58.709Z",
+      "screenshots": [
+        "personal.png",
+        "points.png",
+        "service.png",
+        "home-guidance.png",
+        "discovery.png",
+        "map.png",
+        "map-search.png",
+        "publishing-density.png",
+        "service-dark-large.png"
+      ]
+    },
+    "navigation": {
+      "passed": 27,
+      "physicalDevice": false,
+      "checkedAt": "2026-11-06T02:58:18.596Z",
+      "screenshots": [
+        "category-directory.png",
+        "discovery-conditions.png",
+        "map-search-conditions.png",
+        "search-prism-large.png",
+        "search-dark-large.png"
+      ]
+    }
+  },
+  "density": {
+    "checkedAt": "2026-11-06T02:53:50.335Z",
+    "normalFilterHeight": 45,
+    "scope": "native WeChat developer-tool measurement",
+    "physicalDevice": false
+  },
+  "guidanceLayout": {
+    "guideHeight": 116,
+    "contentBottom": 212.28125,
+    "cardBottom": 225,
+    "checkedAt": "2026-11-06T02:53:45.218Z"
+  },
+  "pages": 27,
+  "migrations": 32,
+  "newMigrationsAppliedToOriginalDevelopment": false,
+  "developmentApiReady": false,
+  "physicalDevice": false,
+  "productionAccessed": false,
+  "productionDeployed": false,
+  "paymentScope": "excluded_by_user_information_platform",
+  "pending": [
+    "physical WeChat device acceptance deferred by user",
+    "real operator, privacy email, retention policy and platform privacy guide",
+    "real WeChat identity/phone permissions, server credentials and HTTPS domain",
+    "actual project qualifications, merchant verification, benefit supply and advertisement review",
+    "original Docker development database recovery, backup and migrations 030-032",
+    "production infrastructure, performance and release gates"
+  ]
+}

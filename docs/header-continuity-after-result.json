@@ -1,0 +1,152 @@
+{
+  "passed": 26,
+  "images": [
+    {
+      "name": "publish-prism",
+      "file": "header-continuity-after-publish-prism.png",
+      "seamDelta": [
+        3,
+        3
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-prism",
+      "file": "header-continuity-after-me-prism.png",
+      "seamDelta": [
+        4,
+        2
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-scrolled",
+      "file": "header-continuity-after-me-scrolled.png",
+      "seamDelta": [
+        4,
+        2
+      ],
+      "continuous": true
+    },
+    {
+      "name": "publish-dark",
+      "file": "header-continuity-after-publish-dark.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-dark",
+      "file": "header-continuity-after-me-dark.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "publish-clear",
+      "file": "header-continuity-after-publish-clear.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-clear",
+      "file": "header-continuity-after-me-clear.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "publish-quiet",
+      "file": "header-continuity-after-publish-quiet.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-quiet",
+      "file": "header-continuity-after-me-quiet.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "publish-warm",
+      "file": "header-continuity-after-publish-warm.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-warm",
+      "file": "header-continuity-after-me-warm.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "publish-gentle",
+      "file": "header-continuity-after-publish-gentle.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    },
+    {
+      "name": "me-gentle",
+      "file": "header-continuity-after-me-gentle.png",
+      "seamDelta": [
+        0,
+        0
+      ],
+      "continuous": true
+    }
+  ],
+  "checks": [
+    "publish-prism header/background seam is continuous (RGB delta 3,3)",
+    "one selected industry in prism",
+    "text-only draft entry retained in prism",
+    "me-prism header/background seam is continuous (RGB delta 4,2)",
+    "me-scrolled header/background seam is continuous (RGB delta 4,2)",
+    "publish-dark header/background seam is continuous (RGB delta 0,0)",
+    "one selected industry in dark",
+    "text-only draft entry retained in dark",
+    "me-dark header/background seam is continuous (RGB delta 0,0)",
+    "publish-clear header/background seam is continuous (RGB delta 0,0)",
+    "one selected industry in clear",
+    "text-only draft entry retained in clear",
+    "me-clear header/background seam is continuous (RGB delta 0,0)",
+    "publish-quiet header/background seam is continuous (RGB delta 0,0)",
+    "one selected industry in quiet",
+    "text-only draft entry retained in quiet",
+    "me-quiet header/background seam is continuous (RGB delta 0,0)",
+    "publish-warm header/background seam is continuous (RGB delta 0,0)",
+    "one selected industry in warm",
+    "text-only draft entry retained in warm",
+    "me-warm header/background seam is continuous (RGB delta 0,0)",
+    "publish-gentle header/background seam is continuous (RGB delta 0,0)",
+    "one selected industry in gentle",
+    "text-only draft entry retained in gentle",
+    "me-gentle header/background seam is continuous (RGB delta 0,0)",
+    "no captured WeChat runtime exceptions"
+  ],
+  "physicalDevice": false,
+  "checkedAt": "2026-10-20T06:56:02.954Z"
+}

@@ -1,0 +1,10 @@
+{
+  "page": "pages/home/index",
+  "contactHook": false,
+  "otherFixtureHooks": false,
+  "fixtureIdentity": false,
+  "hasLoginToken": false,
+  "onlyOwnTestCacheKeysRemoved": true,
+  "originalLoginRestoration": "not_verified_after_tool_recompile",
+  "checkedAt": "2026-11-01T16:44:49.585Z"
+}

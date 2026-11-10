@@ -1,0 +1,54 @@
+'use strict';
+// Shared by runtime and asset builders. Stable keys preserve existing preferences.
+// brand is identity, action is the near-brand solid button, link is small text.
+const palettes = {
+ prism: {brand:'#895D78',action:'#70465F',link:'#744E68',background:'#FAF8FB',surface:'#FFFFFF',soft:'#F3E8F0','soft-alt':'#E6F0F2',ink:'#302735',text:'#493E4C',muted:'#62545F',border:'#EADFE7','control-border':'#96818F','on-action':'#FFFFFF',danger:'#9B343D','danger-soft':'#FCEDEE',price:'#50354F','glow-start':'#E7D8EF','glow-rose':'#F7D8DF',glow:'#DAEDF0'},
+ dark: {brand:'#C9B8FF',action:'#C9B8FF',link:'#C9B8FF',background:'#191A2B',surface:'#25263A',soft:'#302D49','soft-alt':'#302D49',ink:'#F0EDFF',text:'#DED9EB',muted:'#BBB6CF',border:'#4C485F','control-border':'#8D87A0','on-action':'#191A2B',danger:'#FFB4AA','danger-soft':'#432F39',price:'#DED9EB','glow-start':'#302D49','glow-rose':'#302D49',glow:'#302D49'},
+ clear: {brand:'#243955',action:'#243955',link:'#243955',background:'#FFFFFF',surface:'#FFFFFF',soft:'#EAF0F6','soft-alt':'#EAF0F6',ink:'#18283A',text:'#243955',muted:'#39495E',border:'#6E7784','control-border':'#6E7784','on-action':'#FFFFFF',danger:'#92312E','danger-soft':'#FCEDEB',price:'#243955','glow-start':'#EAF0F6','glow-rose':'#EAF0F6',glow:'#EAF0F6'},
+ quiet: {brand:'#555B61',action:'#555B61',link:'#555B61',background:'#EAE9E7',surface:'#F8F7F5',soft:'#DFDEDB','soft-alt':'#DFDEDB',ink:'#303238',text:'#41454B',muted:'#5A5E62',border:'#C9C8C4','control-border':'#7F8185','on-action':'#FFFFFF',danger:'#923B38','danger-soft':'#F2E5E2',price:'#41454B','glow-start':'#DFDEDB','glow-rose':'#DFDEDB',glow:'#EAE9E7'},
+ warm: {brand:'#B87887',action:'#8F5263',link:'#8F5263',background:'#FFF8F4',surface:'#FFFFFF',soft:'#F5E7EB','soft-alt':'#F5E7EB',ink:'#3E3037',text:'#57424D',muted:'#745B65',border:'#DDC9CE','control-border':'#A0848E','on-action':'#FFFFFF',danger:'#9D3534','danger-soft':'#FCEDEB',price:'#57424D','glow-start':'#F5E7EB','glow-rose':'#F5E7EB',glow:'#FFF1E4'},
+ gentle: {brand:'#487E6C',action:'#386B59',link:'#386B59',background:'#F1F8F4',surface:'#FFFFFF',soft:'#E2EEE7','soft-alt':'#E2EEE7',ink:'#243A31',text:'#365246',muted:'#4E6258',border:'#CCDCD3','control-border':'#7A9084','on-action':'#FFFFFF',danger:'#9A3735','danger-soft':'#FCEDEB',price:'#365246','glow-start':'#E2EEE7','glow-rose':'#E2EEE7',glow:'#ECF4E9'}
+};
+// Surface gradients remain static, with solid, readable form surfaces.
+for (const [name, c] of Object.entries(palettes)) {
+ c['action-end'] = name === 'prism' ? '#68588B' : c.action;
+ c['wash-rose'] = name === 'prism' ? '#F8DCE4' : c.background;
+ c['wash-blue'] = name === 'prism' ? '#DBEFF4' : c.background;
+ c['wash-lilac'] = name === 'prism' ? '#E8DDF5' : c.background;
+}
+// Page accents are presentation only; the user's six saved theme choices remain stable.
+const families = {
+ home: {},
+ discover: {brand:'#457F8A',action:'#366873','action-end':'#506D8B',link:'#376775',soft:'#E4F0F1','soft-alt':'#E9EAF7','glow-start':'#DCEEF0','glow-rose':'#E5F3EC',glow:'#E3E7F7'},
+ publish: {brand:'#8263A0',action:'#73568C','action-end':'#8A597A',link:'#705287',soft:'#EFE8F7','soft-alt':'#F9E9E4','glow-start':'#E8DDF5','glow-rose':'#F7E0EB',glow:'#E1E9FA'},
+ messages: {brand:'#586D9A',action:'#4E648C','action-end':'#526E81',link:'#4D628E',soft:'#E7EDF8','soft-alt':'#E5F3F1','glow-start':'#E1E9FA','glow-rose':'#EAE3F5',glow:'#DFF1F3'},
+ me: {brand:'#A05E77',action:'#875365','action-end':'#7B5E83',link:'#875165',soft:'#F8E7ED','soft-alt':'#F6EDE4','glow-start':'#F6E4E7','glow-rose':'#F9E8D8',glow:'#EAE3F5'}
+};
+// Each actual route has its own three-color mix, within five shared accent families.
+const pageProfiles = {
+ home: {family:'home',mix:['#F8DCE4','#DBEFF4','#E8DDF5']},
+ discover: {family:'discover',mix:['#DDF3EC','#D4E9F4','#EAE2F4']},
+ publish: {family:'publish',mix:['#FBE4D7','#E2E5FC','#F4D9EA']},
+ messages: {family:'messages',mix:['#E7DFF5','#DEF4F2','#DDE8FC']},
+ me: {family:'me',mix:['#F8E5D5','#EAE2F2','#F7DCE6']},
+ regions: {family:'discover',mix:['#E5F2DF','#DBEBF7','#E7E2F4']},
+ detail: {family:'home',mix:['#F8E8D9','#E1F0EF','#EEE0F1']},
+ booking: {family:'discover',mix:['#E0F1E9','#E4E7F8','#F6E8D9']},
+ 'my-posts': {family:'home',mix:['#F8E1E4','#EEE6F5','#F7EEDD']},
+ 'my-bookings': {family:'me',mix:['#E2EDF7','#F8E6DA','#EEE3F3']},
+ merchant: {family:'publish',mix:['#EAE1F5','#E1EEF1','#F4E8E0']},
+ chat: {family:'messages',mix:['#E5E7FA','#E1F0F2','#F3E6F4']},
+ 'merchant-services': {family:'discover',mix:['#DFF2EC','#EAE2F5','#DFEAF8']},
+ 'merchant-bookings': {family:'messages',mix:['#E1E9F9','#F0E2EF','#E3F1EB']},
+ 'merchant-team': {family:'publish',mix:['#EEE1F4','#E3EAF8','#F8E8DF']}
+};
+function profileFor(route='') { return pageProfiles[String(route).replace(/^\//,'').split('/')[1]] || pageProfiles.home; }
+function resolvePalette(theme='prism',route='') {
+ const base = palettes[theme] || palettes.prism;
+ if (theme !== 'prism') return base;
+ const profile = profileFor(route);
+ return {...base,...families[profile.family], 'wash-rose':profile.mix[0], 'wash-blue':profile.mix[1], 'wash-lilac':profile.mix[2]};
+}
+const iconPalettes = {...palettes};
+for (const name of Object.keys(families)) iconPalettes['prism-'+name] = resolvePalette('prism','pages/'+name+'/index');
+module.exports = {palettes,pageProfiles,profileFor,resolvePalette,iconPalettes};

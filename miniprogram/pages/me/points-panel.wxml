@@ -1,0 +1,29 @@
+<view class="hub-intro"><view class="body-copy">查看积分，选择权益，管理每一笔推广与兑换。</view></view>
+<view class="hub-actions points-center-actions"><button id="points-redeem" data-tab="offers" bindtap="openCommerce">权益兑换<text>规则 · 库存 · 确认</text></button><button id="points-orders" data-tab="orders" bindtap="openCommerce">兑换记录<text>核销 · 取消 · 退还</text></button><button id="points-promotion" data-tab="promotion" bindtap="openCommerce">自助推广<text>主体 · 素材 · 排期</text></button></view>
+<view class="section-card">
+ <view class="section-title">积分概览</view>
+ <view wx:if="{{pointsAccount}}" class="points-balances"><view><text class="points-number">{{pointsAccount.available}}</text><text>可用</text></view><view><text class="points-number">{{pointsAccount.held}}</text><text>冻结</text></view><view><text class="points-number">{{pointsAccount.pending}}</text><text>待结算或复核</text></view></view>
+ <view class="notice">积分是内部贡献权益，不能充值、提现、转让或兑换现金。兑换前核对权益规则，推广前核对主体、素材、排期及积分价格。</view>
+ <view wx:if="{{pointsAccount&&!pointsRulesEnabled}}" class="notice">贡献奖励当前未启用，已有记录仍可查询和申诉。</view>
+ <button class="center-link" disabled="{{pointsBusy}}" bindtap="retryPoints">刷新积分明细</button>
+</view>
+<picker range="{{pointsViewNames}}" value="{{pointsViewIndex}}" bindchange="selectPointsView"><view class="field">{{pointsViewNames[pointsViewIndex]}} ⌄</view></picker>
+<view class="notice">时间按北京时间显示；待结算包含人工复核，观察期结束不代表立即到账。</view>
+<view wx:if="{{pointsError}}" class="settings-error" role="alert">{{pointsError}}<button class="center-link" bindtap="retryPoints">重新读取</button></view>
+<view wx:if="{{pointsBusy}}" class="notice">正在读取或处理…</view>
+<block wx:if="{{pointsView==='rules'}}">
+ <view class="section-card" wx:for="{{pointsRules}}" wx:key="code"><view class="row"><text class="section-title">{{item.title}}</text><text class="badge">{{item.enabled?'已启用':'未启用'}}</text></view><view class="body-copy">每次 {{item.amount}} 分，规则每日上限 {{item.dailyLimit}} 分；每条信息每日上限 {{item.publicationDailyLimit}} 分。</view><view class="notice">观察期 {{item.settlementHours}} 小时 · 规则版本 {{item.revision}}</view></view>
+ <view class="notice">普通贡献每天合计最多20分，按事件采集时的规则与北京时间日期计算。自互动、重复收藏、未接受联系、浏览和广告点击不奖励。规则关闭后，旧事件仍按原快照及风控检查处理。</view>
+</block>
+<block wx:else>
+ <view class="section-card points-record {{pointsFocusId===item.id?'points-focused':''}}" id="points-record-{{item.id}}" wx:for="{{pointsRows}}" wx:key="id">
+  <view class="row"><text class="section-title">{{item.title}}</text><text wx:if="{{item.statusLabel}}" class="badge">{{item.statusLabel}}</text></view>
+  <block wx:if="{{pointsView==='ledger'}}"><view class="body-copy">{{item.subtitle}}</view><view class="notice">变动后可用 {{item.available_after}} · 冻结 {{item.held_after}}</view></block>
+  <block wx:elif="{{pointsView==='rewards'}}"><view class="body-copy">{{item.amount}} 分 · 规则版本 {{item.rule_revision}}</view><view wx:if="{{item.status==='pending'||item.status==='review'}}" class="notice">观察期至 {{item.dueLabel}}</view><view class="notice">{{item.reason||'贡献已记录，等待观察期和有效性检查。'}}</view><view wx:if="{{item.open_appeal_id}}" class="notice">该笔记录的申诉正在处理中。</view><button wx:if="{{item.canAppeal}}" class="center-link" data-id="{{item.id}}" disabled="{{pointsBusy}}" bindtap="beginRewardAppeal">申请积分复核</button></block>
+  <block wx:else><view class="body-copy">{{item.reason}}</view><view wx:if="{{item.response}}" class="notice">复核答复：{{item.response}}</view><view wx:if="{{item.resolutionLabel}}" class="notice">{{item.resolutionLabel}}</view><view wx:if="{{item.status==='pending'&&item.source_changed}}" class="notice">贡献状态已更新，可刷新奖励记录后按最新状态补充申请。</view><button wx:if="{{item.status==='pending'}}" class="center-link" data-id="{{item.id}}" disabled="{{pointsBusy}}" bindtap="withdrawRewardAppeal">撤回这次申诉</button></block>
+  <view class="notice">{{item.dateLabel}}</view>
+  <view wx:if="{{pointsDraft&&pointsDraft.id===item.id}}" id="reward-appeal-{{item.id}}" class="points-appeal-form"><view class="section-title">申请积分复核</view><view class="notice">请说明事实及材料引用，8–500字，不填写手机号或证件号。处理中暂停本笔自动冲正；申诉不会直接加分。相同处理版本复核后不重复受理，补充事项可在帮助入口引用申诉编号。</view><textarea class="field-area" value="{{pointsDraft.reason}}" maxlength="500" bindinput="rewardAppealReason" disabled="{{pointsBusy}}" placeholder="说明需要复核的原因与依据" aria-label="积分申诉原因"/><button class="btn" disabled="{{pointsBusy}}" bindtap="submitRewardAppeal">提交申诉</button><button class="center-link" disabled="{{pointsBusy}}" bindtap="cancelRewardAppeal">取消填写</button></view>
+ </view>
+ <view wx:if="{{!pointsBusy&&!pointsError&&!pointsRows.length}}" class="state-panel">暂无相关记录。</view>
+ <button wx:if="{{pointsHasMore}}" class="btn light" disabled="{{pointsBusy}}" bindtap="loadPoints">继续加载</button>
+</block>

@@ -1,0 +1,1 @@
+.legal-copy{font-size:30rpx;line-height:1.9;white-space:pre-wrap;word-break:break-all;color:var(--text);padding:16rpx 0 40rpx}.large-text .legal-copy{font-size:36rpx}

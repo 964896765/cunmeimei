@@ -1,0 +1,10 @@
+function discover(type,categoryId='',options={}){const app=getApp(),value=require('./browse-query').common({...options,type,categoryId});app.globalData.exploreTarget=value.type;app.globalData.exploreCategoryTarget={id:value.categoryId};app.globalData.browseEntry={...value,fresh:true,hasRegion:!!options.cityCode};wx.switchTab({url:'/pages/discover/index'});}
+function discoverIndustry(id){if(!require('./classification').categories.some(x=>x.id===id))return;discover('all',id);}
+function detail(id){wx.navigateTo({url:'/pages/detail/index?id='+encodeURIComponent(id)});}
+function chat(id,title){wx.navigateTo({url:'/pages/chat/index?id='+encodeURIComponent(id)+'&title='+encodeURIComponent(title)});}
+function search(type='all',q='',categoryId='',options={}){const browse=require('./browse-query'),value={...browse.common({...options,type,q,categoryId})};if(options.publicOnly)value.publicOnly=1;if(options.fromDiscover)value.fromDiscover=1;const origin=browse.origin(options);if(!options.fromMap&&origin&&(value.sort==='distance'||Number(options.radiusKm)>0)){Object.assign(value,origin);if(Number(options.radiusKm)>0)value.radiusKm=Number(options.radiusKm);}if(options.fromMap){value.fromMap=1;value.publisher=options.publisher==='verified'?'verified':'all';const box=browse.bounds(options.bounds);if(box)Object.assign(value,box);}wx.navigateTo({url:'/pages/search/index?'+Object.entries(value).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&'),...(options.events?{events:options.events}:{})});}
+function publish(projectId=''){const node=require('./classification').find(projectId);getApp().globalData.publishTarget=node?{id:node.id}:null;wx.switchTab({url:'/pages/publish/index'});}
+
+function categories(edit=false){wx.navigateTo({url:'/pages/categories/index'+(edit?'?mode=edit':'')});}
+function personalCenter(section='main'){getApp().globalData.personalCenterSection=['service','points'].includes(section)?section:'main';getApp().globalData.openPersonalCenter=true;wx.switchTab({url:'/pages/me/index'});}
+module.exports={publish,discover,discoverIndustry,detail,chat,search,categories,personalCenter};

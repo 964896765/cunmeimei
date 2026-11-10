@@ -1,0 +1,20 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-11-04T05:40:41.079Z",
+  "scope": "persistent loopback development service only",
+  "port": 3101,
+  "ready": true,
+  "brand": "青方睐村美美",
+  "legalConfigured": false,
+  "wechatAvailable": false,
+  "industryWorkflows": true,
+  "benefitRedemption": true,
+  "selfPromotion": true,
+  "checks": [
+    "anonymous request denied: /api/v1/points/account",
+    "anonymous request denied: /api/v1/me/trust",
+    "anonymous request denied: /api/v1/industry/me/credentials"
+  ],
+  "fixtureDataImported": false,
+  "productionAccessed": false
+}

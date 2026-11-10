@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "storage quota notice does not block an actual wx.request search",
+    "search history failure has a visible local-only notice",
+    "delayed earlier HTTP results cannot replace the newer submitted query",
+    "failed next page retains current search results",
+    "retry appends the failed page without discarding the first page",
+    "pagination limit suggests narrowing the query instead of claiming all results were shown",
+    "invalid GPS keeps previous discovery rows and the sorting sheet",
+    "booking slot displays Beijing time",
+    "missing booking time is shown without a fabricated epoch date",
+    "cancel action is locked while confirmation is pending",
+    "uncertain cancellation issues one mutation",
+    "uncertain cancellation cannot be blindly resubmitted",
+    "refresh reconciles a committed cancellation without sending it again",
+    "booking read failure preserves existing rows",
+    "booking error is distinct from a successful empty list",
+    "booking retry preserves the confirmed server state",
+    "no captured native runtime exceptions"
+  ],
+  "passed": 17,
+  "failed": 0,
+  "errors": [],
+  "tool": {
+    "version": "2.02.2608080",
+    "SDKVersion": "3.17.4"
+  },
+  "source": "real WeChat controls and wx.request to a loopback fixture server; GPS, storage quota and modal confirmation are simulated",
+  "httpFixtureServer": true,
+  "realBackend": false,
+  "physicalDevice": false,
+  "checkedAt": "2026-11-01T15:47:00.731Z"
+}

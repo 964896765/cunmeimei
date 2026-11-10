@@ -1,0 +1,116 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@jimp/core": {
+      "name": "@jimp/core",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "file-type"
+      ],
+      "effects": [
+        "@jimp/custom"
+      ],
+      "range": "0.16.3-canary.993.1592.0 - 1.6.0",
+      "nodes": [
+        "node_modules/@jimp/core"
+      ],
+      "fixAvailable": true
+    },
+    "@jimp/custom": {
+      "name": "@jimp/custom",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@jimp/core"
+      ],
+      "effects": [
+        "jimp"
+      ],
+      "range": ">=0.16.3-canary.993.1592.0",
+      "nodes": [
+        "node_modules/@jimp/custom"
+      ],
+      "fixAvailable": true
+    },
+    "file-type": {
+      "name": "file-type",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1114301,
+          "name": "file-type",
+          "dependency": "file-type",
+          "title": "file-type affected by infinite loop in ASF parser on malformed input with zero-size sub-header",
+          "url": "https://github.com/advisories/GHSA-5v7r-6r5c-r473",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-835"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=13.0.0 <21.3.1"
+        }
+      ],
+      "effects": [
+        "@jimp/core"
+      ],
+      "range": "13.0.0 - 21.3.0",
+      "nodes": [
+        "node_modules/file-type"
+      ],
+      "fixAvailable": true
+    },
+    "jimp": {
+      "name": "jimp",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@jimp/custom"
+      ],
+      "effects": [
+        "miniprogram-automator"
+      ],
+      "range": "0.16.3-canary.993.1592.0 - 0.22.12",
+      "nodes": [
+        "node_modules/jimp"
+      ],
+      "fixAvailable": true
+    },
+    "miniprogram-automator": {
+      "name": "miniprogram-automator",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "jimp"
+      ],
+      "effects": [],
+      "range": "",
+      "nodes": [
+        "node_modules/miniprogram-automator"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 5,
+      "high": 0,
+      "critical": 0,
+      "total": 5
+    },
+    "dependencies": {
+      "prod": 18,
+      "dev": 99,
+      "optional": 29,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 145
+    }
+  }
+}

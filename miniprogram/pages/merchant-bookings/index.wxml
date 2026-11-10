@@ -1,0 +1,12 @@
+<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
+<view class="container"><view class="title">预约处理</view><view class="subtitle">待确认 → 已确认 → 已完成，不能跳过前置状态。</view>
+ <view wx:if="{{loading}}" class="notice" role="status">正在读取商家预约…</view>
+ <view wx:if="{{error}}" class="state-panel merchant-booking-error" role="alert"><view>{{error}}</view><view wx:if="{{items.length}}" class="notice">保留上次记录，读取成功后可继续处理。</view><button class="btn light" bindtap="load" disabled="{{loading||busyId}}">重新读取预约</button></view>
+ <view wx:if="{{actionError}}" class="state-panel merchant-booking-action-error" role="alert"><view>{{actionError}}</view><button class="btn light" bindtap="load" disabled="{{loading||busyId}}">核对预约状态</button></view>
+ <view wx:if="{{actionNotice}}" class="notice" role="status">{{actionNotice}}</view>
+ <view wx:for="{{items}}" wx:key="id" class="section card"><view class="row"><view class="list-title">{{item.serviceTitle}}</view><view class="status">{{item.statusText}}</view></view><view class="list-desc">期望服务时间：{{item.requestedLabel}}</view><view wx:if="{{item.cancellationText}}" class="notice booking-cancellation-reason">{{item.cancellationText}}</view><view class="list-desc">客户备注：{{item.remark||'无'}}</view>
+  <view wx:if="{{item.canConfirm}}" class="row booking-actions"><button class="btn light" disabled="{{!canAct||loading||busyId||actionError}}" data-id="{{item.id}}" data-action="decline" bindtap="action">拒绝</button><button class="btn" loading="{{busyId===item.id}}" disabled="{{!canAct||loading||busyId||actionError}}" data-id="{{item.id}}" data-action="confirm" bindtap="action">确认预约</button></view>
+  <button wx:if="{{item.businessCaseId||item.businessEligible}}" class="btn light" data-id="{{item.id}}" bindtap="openBusiness">双方业务进度</button><button wx:if="{{item.canComplete}}" class="btn" disabled="{{!canAct||loading||busyId||actionError}}" data-id="{{item.id}}" data-action="complete" bindtap="action">标记服务已完成</button>
+ </view><view wx:if="{{!items.length&&!loading&&!error}}" class="empty section">暂无预约</view><view class="notice">请按实际服务进度处理预约。已结束记录可用于核对原申请与取消原因。</view></view>
+
+</view>

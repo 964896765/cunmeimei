@@ -1,0 +1,10 @@
+<view class="template-fields {{appearance==='quiet'?'quiet-fields':''}}">
+ <view wx:for="{{fields}}" wx:key="key" class="template-field">
+  <text class="field-label">{{item.label}}</text>
+  <view wx:if="{{readOnly}}" class="template-value">{{item.value||'未填写'}}</view>
+  <picker wx:elif="{{item.type==='select'}}" disabled="{{disabled}}" range="{{item.options}}" data-field="{{item.key}}" bindchange="selectField"><view class="field">{{item.value||item.placeholder}} ⌄</view></picker>
+  <picker wx:elif="{{item.type==='date'}}" disabled="{{disabled}}" mode="date" value="{{item.value}}" data-field="{{item.key}}" bindchange="inputField"><view class="field">{{item.value||item.placeholder}} ⌄</view></picker>
+  <input wx:else class="field {{focusedField===item.key?'is-focused':''}}" bindfocus="focusField" bindblur="blurField" disabled="{{disabled}}" maxlength="{{item.maxLength}}" type="{{item.inputType||'text'}}" value="{{item.value}}" data-field="{{item.key}}" bindinput="inputField" placeholder="{{item.placeholder}}" aria-label="{{item.label}}"/>
+ </view>
+ <view wx:if="{{notice&&!readOnly}}" class="notice">{{notice}}</view>
+</view>

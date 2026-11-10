@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "地图",
+  "navigationStyle": "custom",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "usingComponents": {
+    "channel-tabs": "/components/channel-tabs/index",
+    "page-header": "/components/page-header/index",
+    "browse-filters": "/components/browse-filters/index",
+    "active-conditions": "/components/active-conditions/index"
+  }
+}

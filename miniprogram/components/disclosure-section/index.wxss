@@ -1,0 +1,30 @@
+:host { display:block; }
+.disclosure {
+ margin:16rpx 0;
+ border-top:1rpx solid var(--border);
+ border-bottom:1rpx solid var(--border);
+}
+.disclosure-toggle {
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:16rpx;
+ width:100%;
+ min-height:96rpx;
+ margin:0;
+ padding:20rpx 0;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ color:var(--ink);
+ line-height:1.5;
+ text-align:left;
+}
+.disclosure-toggle::after { border:0; }
+.disclosure-heading { display:flex; flex-direction:column; min-width:0; gap:4rpx; }
+.disclosure-title { font-size:28rpx; font-weight:550; }
+.disclosure-summary { font-size:23rpx; color:var(--muted); font-weight:400; }
+.disclosure-label { flex-shrink:0; font-size:24rpx; color:var(--link); font-weight:400; }
+.disclosure-body { padding:0 0 20rpx; }
+.large .disclosure-title { font-size:33rpx; }
+.large .disclosure-summary,.large .disclosure-label { font-size:28rpx; }

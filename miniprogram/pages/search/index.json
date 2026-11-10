@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "搜索",
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "usingComponents": {
+    "page-header": "/components/page-header/index",
+    "content-card": "/components/content-card/index",
+    "browse-filters": "/components/browse-filters/index",
+    "active-conditions": "/components/active-conditions/index"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "tabBar": {
+    "color": "#62545F",
+    "selectedColor": "#744E68",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现",
+        "iconPath": "assets/icons/discover.png",
+        "selectedIconPath": "assets/icons/discover-active.png"
+      },
+      {
+        "pagePath": "pages/publish/index",
+        "text": "发布",
+        "iconPath": "assets/icons/publish.png",
+        "selectedIconPath": "assets/icons/publish-active.png"
+      },
+      {
+        "pagePath": "pages/messages/index",
+        "text": "消息",
+        "iconPath": "assets/icons/messages.png",
+        "selectedIconPath": "assets/icons/messages-active.png"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的",
+        "iconPath": "assets/icons/me.png",
+        "selectedIconPath": "assets/icons/me-active.png"
+      }
+    ]
+  },
+  "hashes": {
+    "miniprogram/utils/palettes.js": "a31cab75b78bf8de57d35c3bb58d8099ab6c4ee5e2f74f5affc618b09935effa",
+    "scripts/prism-color-baseline.json": "82ee6604e049749c5e42679c9c01addf9cba3a8e0159409f9f93fbde2e0c6db8"
+  }
+}

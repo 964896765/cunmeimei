@@ -1,0 +1,17 @@
+{
+  "passed": 8,
+  "failed": 0,
+  "panels": [
+    "个人资料",
+    "我的收藏",
+    "浏览记录",
+    "账号与安全",
+    "隐私与显示",
+    "通知设置",
+    "个人数据",
+    "帮助与申诉"
+  ],
+  "layout": "left subtitle; right return to personal center; one shared header",
+  "physicalDevice": false,
+  "checkedAt": "2026-10-19T15:52:15.892Z"
+}

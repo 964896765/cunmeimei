@@ -1,0 +1,10 @@
+<view class="disclosure {{largeText?'large':''}}">
+  <button class="disclosure-toggle" bindtap="toggle" aria-expanded="{{expanded}}" aria-label="{{title}}，{{expanded?'收起':'展开'}}">
+    <view class="disclosure-heading">
+      <text class="disclosure-title">{{title}}</text>
+      <text wx:if="{{summary}}" class="disclosure-summary">{{summary}}</text>
+    </view>
+    <text class="disclosure-label">{{expanded?'收起':'展开'}}</text>
+  </button>
+  <view wx:if="{{expanded}}" class="disclosure-body"><slot/></view>
+</view>

@@ -1,0 +1,98 @@
+{
+  "checkedAt": "2026-11-04T05:43:46.716Z",
+  "status": "pass_for_local_scope",
+  "brand": "青方睐村美美",
+  "log": "docs/workflow-privacy-full-verification.log",
+  "source": "docs/LOGIN_V1_FOLLOWUP_20261104.md",
+  "suites": {
+    "main": {
+      "tests": 533,
+      "passed": 533,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "strictPostgres": {
+      "tests": 140,
+      "passed": 140,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "e2e": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "permissions": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "merchant": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "countsOverlap": true,
+  "newClientTests": 10,
+  "localService": {
+    "ready": true,
+    "legalConfigured": false,
+    "wechatAvailable": false,
+    "fixtureDataImported": false
+  },
+  "privacyUi": {
+    "passed": 13,
+    "fixtures": "runtime-only fixtures; no real authorization",
+    "screenshots": [
+      "commerce-access-gate.png",
+      "industry-access-gate.png"
+    ],
+    "cleanup": {
+      "authStorageUnchanged": true,
+      "runtimeOverlayRemoved": true
+    }
+  },
+  "loginUi": {
+    "passed": 34,
+    "identity": "runtime callback and server provider fixtures",
+    "phone": "runtime callback and server provider fixtures"
+  },
+  "businessUi": {
+    "passed": 58
+  },
+  "recovery": {
+    "verification": "backup_restore_drill",
+    "ok": true,
+    "tables": 69,
+    "nonemptyTables": 40,
+    "checks": [
+      "custom-format backup",
+      "SHA256 integrity",
+      "transactional restore to empty drill database",
+      "all table contents match",
+      "existing database refused",
+      "corrupt backup refused"
+    ]
+  },
+  "pages": 26,
+  "migrations": 29,
+  "newMigrationsApplied": false,
+  "physicalDevice": false,
+  "productionAccessed": false,
+  "productionDeployed": false,
+  "pending": [
+    "physical WeChat device acceptance deferred by user",
+    "real operator and privacy email deferred by user",
+    "HTTPS and actual WeChat identity/phone capabilities",
+    "platform privacy guide and production release gates"
+  ]
+}

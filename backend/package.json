@@ -1,0 +1,41 @@
+{
+  "name": "city-life-api",
+  "version": "0.25.0",
+  "private": true,
+  "description": "City Life API - region/category operations, moderated business and safe migrations",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node src/run-tests.js",
+    "migrate": "node src/migrate.js",
+    "db:check": "node src/migrate.js --check",
+    "test:client": "node --test tests/v13-client.test.js",
+    "test:pg": "node --test tests/postgres.test.js",
+    "preflight": "node src/preflight.js",
+    "check:wx-release": "node ../scripts/check_wx_release.js",
+    "check:prelaunch": "node ../scripts/check_prelaunch.js",
+    "verify:release": "node ../scripts/check_v16_release.js",
+    "verify:pg": "node src/verify-postgres-integration.js",
+    "test:e2e": "node --test tests/v18-end-to-end.test.js tests/v19-service-lifecycle.test.js tests/v20-merchant-authorization.test.js tests/v21-service-revocation.test.js",
+    "test:merchant-application": "node --test tests/v23-merchant-applications.test.js",
+    "test:permissions": "node --test tests/v20-merchant-authorization.test.js tests/v21-service-revocation.test.js"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "pg": "^8.13.0",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "miniprogram-automator": "^0.13.0",
+    "pinyin-pro": "3.28.1"
+  },
+  "overrides": {
+    "miniprogram-automator": {
+      "debug": "4.4.3",
+      "jimp": "1.6.1"
+    },
+    "zod": "4.6.6"
+  }
+}

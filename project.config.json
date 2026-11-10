@@ -1,0 +1,52 @@
+{
+  "description": "同城生活独立微信小程序 · 本地演示开发版",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "file",
+        "value": "data/city-catalog.json"
+      },
+      {
+        "type": "file",
+        "value": "data/city-centers.json"
+      },
+      {
+        "type": "file",
+        "value": "data/industry-catalog.json"
+      }
+    ],
+    "include": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "compileHotReLoad": true,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.0",
+  "appid": "wxc712b3b1674c8d88",
+  "projectname": "city-life-miniapp",
+  "miniprogramRoot": "miniprogram/",
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}

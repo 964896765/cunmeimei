@@ -1,0 +1,18 @@
+<view class="theme-root drafts-page {{themeClass}}" style="{{themeStyle}}">
+ <page-header id="navigation-header" title="草稿箱" back="{{true}}" back-label="返回发布分类" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
+ <view class="drafts-content">
+  <view wx:if="{{requiresLogin}}" id="draft-access-gate" class="draft-state"><view>登录后查看该账号保存的草稿</view><button class="empty-return" bindtap="signin" disabled="{{loading}}">微信登录并继续</button></view>
+  <view wx:if="{{error}}" class="draft-feedback" role="alert">{{error}}<button class="retry" bindtap="refresh" disabled="{{deleting}}">重新读取</button></view>
+  <view wx:if="{{cloudError}}" class="draft-feedback" role="alert">{{cloudError}}<button class="retry" bindtap="refresh" disabled="{{deleting}}">重试账号草稿</button></view>
+  <view wx:if="{{loading}}" class="draft-state" aria-live="polite">正在读取草稿…</view>
+  <view wx:for="{{items}}" wx:key="id" class="draft-row">
+   <view class="draft-main" data-id="{{item.id}}" bindtap="openDraft" role="button" aria-label="继续编辑{{item.title}}，{{item.sourceText}}">
+    <view class="draft-cover"><image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" mode="aspectFill"/><view wx:else class="draft-edit-icon" aria-hidden="true"><view class="draft-edit-pen"></view></view></view>
+    <view class="draft-copy"><view class="draft-title">{{item.title}}</view><view class="draft-category">{{item.legacy?'历史本机草稿 · 待检查内容':item.category}}</view><view wx:if="{{item.savedAt>0||!item.legacy}}" class="draft-time">{{item.sourceText}} · {{item.savedText}}</view></view>
+    <view class="draft-chevron" aria-hidden="true"></view>
+   </view>
+   <view class="draft-footer"><text class="draft-hint">点击上方继续编辑</text><button class="draft-delete" data-id="{{item.id}}" bindtap="deleteDraft" disabled="{{deleting}}" aria-label="删除{{item.title}}"><view class="trash-icon" aria-hidden="true"><view></view><view></view></view><text>删除</text></button></view>
+  </view>
+  <view wx:if="{{!requiresLogin&&!loading&&!hasItems&&!error&&!cloudError}}" class="draft-empty"><view class="empty-title">暂无草稿</view><view>主动保存的内容会显示在这里</view><button class="empty-return" bindtap="goBack">返回发布页</button></view>
+ </view>
+</view>

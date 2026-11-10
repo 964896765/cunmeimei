@@ -1,0 +1,40 @@
+{
+  "themes": [
+    {
+      "theme": "prism",
+      "largeText": false,
+      "targetHeight": 45
+    },
+    {
+      "theme": "dark",
+      "largeText": false,
+      "targetHeight": 45
+    },
+    {
+      "theme": "clear",
+      "largeText": true,
+      "targetHeight": 45
+    },
+    {
+      "theme": "quiet",
+      "largeText": false,
+      "targetHeight": 45
+    },
+    {
+      "theme": "warm",
+      "largeText": false,
+      "targetHeight": 45
+    },
+    {
+      "theme": "gentle",
+      "largeText": false,
+      "targetHeight": 45
+    }
+  ],
+  "cityChooserOpened": true,
+  "cityPreserved": true,
+  "runtimeExceptions": 0,
+  "physicalDevice": false,
+  "interaction": "native city chooser invoked through unchanged showArea handler; finger tapping pending device acceptance",
+  "checkedAt": "2026-10-18T13:04:13.577Z"
+}

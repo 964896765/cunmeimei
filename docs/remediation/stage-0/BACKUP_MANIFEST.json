@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-10",
+  "migrationsUnchanged": true,
+  "gitMigrationBaselineMatches": true,
+  "backups": [
+    {
+      "name": "original-project.zip",
+      "bytes": 58445284,
+      "sha256": "792da99b0d787398b2d617aee39cbf1ec5e931a8651303f83b38a094d0a0bd2e"
+    },
+    {
+      "name": "citylife_dev.dump",
+      "bytes": 397546,
+      "sha256": "e995a1ca47d90aaaba808d18735d3457fd1b634f75c4634a5b2175cd1aac57bc"
+    }
+  ]
+}

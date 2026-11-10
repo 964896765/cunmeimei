@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-10",
+  "target": "isolated task-owned PostgreSQL database",
+  "migrationHistoryMatches": true,
+  "appliedMigrations": 29,
+  "counts": [
+    {
+      "table": "app_users",
+      "source": 137,
+      "restored": 137,
+      "match": true
+    },
+    {
+      "table": "publications",
+      "source": 97,
+      "restored": 97,
+      "match": true
+    },
+    {
+      "table": "merchant_applications",
+      "source": 16,
+      "restored": 16,
+      "match": true
+    },
+    {
+      "table": "service_catalog",
+      "source": 16,
+      "restored": 16,
+      "match": true
+    },
+    {
+      "table": "booking_requests",
+      "source": 13,
+      "restored": 13,
+      "match": true
+    },
+    {
+      "table": "content_images",
+      "source": 21,
+      "restored": 21,
+      "match": true
+    },
+    {
+      "table": "schema_migrations",
+      "source": 29,
+      "restored": 29,
+      "match": true
+    }
+  ],
+  "ok": true
+}

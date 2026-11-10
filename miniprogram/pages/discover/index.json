@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "发现同城",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "content-card": "/components/content-card/index",
+    "channel-tabs": "/components/channel-tabs/index",
+    "page-header": "/components/page-header/index",
+    "browse-filters": "/components/browse-filters/index",
+    "active-conditions": "/components/active-conditions/index"
+  },
+  "enablePullDownRefresh": true
+}

@@ -1,0 +1,7 @@
+<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
+<view class="container"><view class="title">员工权限</view><view class="subtitle">只有店主可以增删员工。店员仅能处理预约。</view>
+ <view class="section"><view wx:for="{{items}}" wx:key="id" class="card staff-item"><view class="row"><view><view class="list-title">{{item.role==='owner'?'店主':(item.role==='manager'?'经理':'店员')}}</view><view class="list-desc">{{item.userId}}</view></view><button wx:if="{{item.role!=='owner' && item.status==='active'}}" class="btn light" data-user="{{item.userId}}" bindtap="remove">移除</button></view></view></view>
+ <view class="section"><view class="section-title">添加员工</view><text class="field-label">员工用户 ID</text><input class="field" value="{{targetUser}}" placeholder="请员工在个人中心复制用户 ID" bindinput="setUser"/><text class="field-label">角色权限</text><picker mode="selector" range="{{roleNames}}" value="{{roleIndex}}" bindchange="chooseRole"><view class="field picker">{{roleNames[roleIndex]}} ⌄</view></picker><button class="btn" bindtap="add">添加或更新员工</button></view>
+ <view class="notice">开发版按用户 ID 绑定员工；正式运营前应改为经过本人确认的邀请流程。</view></view>
+
+</view>

@@ -1,0 +1,35 @@
+{
+  "status": "pass",
+  "passed": 18,
+  "checks": [
+    "disabled button uses prism surface",
+    "enabled button uses prism action color",
+    "capsule remains clear prism",
+    "disabled button uses dark surface",
+    "enabled button uses dark action color",
+    "capsule remains clear dark",
+    "disabled button uses clear surface",
+    "enabled button uses clear action color",
+    "capsule remains clear clear",
+    "disabled button uses quiet surface",
+    "enabled button uses quiet action color",
+    "capsule remains clear quiet",
+    "disabled button uses warm surface",
+    "enabled button uses warm action color",
+    "capsule remains clear warm",
+    "disabled button uses gentle surface",
+    "enabled button uses gentle action color",
+    "capsule remains clear gentle"
+  ],
+  "screenshots": [
+    "login-prism.png",
+    "login-dark.png"
+  ],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "physicalDevice": false,
+  "authorization": "not performed; agreement callback fixture",
+  "checkedAt": "2026-11-03T11:32:44.298Z"
+}

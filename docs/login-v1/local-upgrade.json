@@ -1,0 +1,19 @@
+{
+  "scope": "local development only",
+  "database": "citylife_dev",
+  "status": "pass",
+  "checkedAt": "2026-11-03T11:10:27.939Z",
+  "backupFile": "C:\\Users\\chejun\\.codex\\backups\\city-life-miniapp\\citylife_dev_2026-11-03T11-10-27-938Z_46ad46a9.dump",
+  "originalTables": 67,
+  "originalRows": 1334,
+  "backupSha256": "f92bb9f02a7fb8bfa963c0daad0807bb687ac60cb6059e4830bcd79c921ce0b6",
+  "backupContentsMatch": true,
+  "rehearsalOriginalDataUnchanged": true,
+  "appliedNow": [
+    "029_login_consent_audit.sql"
+  ],
+  "developmentOriginalDataUnchanged": true,
+  "totalMigrations": 29,
+  "finalTables": 69,
+  "drillDatabaseRemoved": true
+}

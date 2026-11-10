@@ -1,0 +1,30 @@
+:host { display:block; }
+.channel-tabs { box-sizing:border-box; height:50px; padding:4px 0 2px; }
+.channel-scroll { width:100%; height:44px; white-space:nowrap; }
+.channel-row { display:inline-flex; align-items:center; gap:4px; height:44px; }
+.channel-tab {
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ flex-shrink:0;
+ gap:5px;
+ box-sizing:border-box;
+ height:44px;
+ min-height:44px;
+ margin:0;
+ padding:0 12px;
+ border:1px solid transparent;
+ border-radius:14px;
+ background:transparent;
+ color:var(--muted);
+ font-size:14px;
+ font-weight:400;
+ line-height:42px;
+ white-space:nowrap;
+}
+.channel-tab::after { border:0; }
+.channel-tab.is-selected { background:var(--soft); color:var(--link); font-weight:600; }
+.channel-icon { width:16px; height:16px; flex-shrink:0; }
+.channel-edge { width:8px; height:1px; flex-shrink:0; }
+.large-text .channel-tab { font-size:16px; }
+.large-text .channel-icon { width:17px; height:17px; }

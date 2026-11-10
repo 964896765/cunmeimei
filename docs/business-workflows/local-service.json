@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-11-03T05:47:42.077Z",
+  "scope": "persistent loopback development service only",
+  "port": 3101,
+  "migrations": 28,
+  "checks": [
+    "local API health",
+    "all migration checks ready",
+    "persistent home content API",
+    "five contribution rules remain disabled",
+    "admin and owned data require authentication",
+    "industry, redemption and self-promotion routes connected"
+  ],
+  "homeNewsCount": 0,
+  "homeBannerCount": 0,
+  "seededLiveContent": false
+}

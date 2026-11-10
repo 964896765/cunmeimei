@@ -1,0 +1,21 @@
+# Persistent development database for this project only. No automatic volume removal.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: citylife_dev
+      POSTGRES_PASSWORD: ${PG_LOCAL_PASSWORD:?Local development password required}
+      POSTGRES_DB: citylife_dev
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "127.0.0.1::5432"
+    volumes:
+      - development-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U citylife_dev -d citylife_dev"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+volumes:
+  development-data:

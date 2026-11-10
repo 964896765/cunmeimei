@@ -1,0 +1,15 @@
+<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
+<page-header id="navigation-header" title="管理我的预约" back="{{true}}" large-text="{{displayPreferences.largeText}}" bind:back="returnToMe"/>
+<view class="container"><view class="subtitle">{{online?'预约意向与确认状态。':'演示预约记录与状态。'}}</view>
+<view wx:if="{{recoveryError}}" class="state-panel booking-recovery-error" role="alert"><view>{{recoveryError}}</view><button class="btn light" bindtap="loadRecoveries">重新读取待核对申请</button></view>
+<view wx:for="{{pendingItems}}" wx:key="clientKey" class="state-panel booking-pending-entry" role="status"><view class="list-title">{{item.title}} · 待核对</view><view class="list-desc">{{item.date}} {{item.time}}（北京时间）</view><view class="notice">上次申请结果尚未确认，请先核对。</view><button class="btn light" bindtap="resumePending" data-id="{{item.serviceId}}">继续核对原申请</button></view>
+<view wx:if="{{loading}}" class="notice" role="status">正在读取预约记录…</view>
+<view wx:if="{{error}}" class="state-panel booking-error" role="alert"><view>{{error}}</view><view wx:if="{{items.length}}" class="notice">下方保留上次读取的预约记录。</view><button class="btn light" bindtap="refresh" disabled="{{loading}}">重新读取预约</button></view>
+<view wx:if="{{actionError}}" class="state-panel booking-action-error" role="alert"><view>{{actionError}}</view><button class="btn light" bindtap="refresh" disabled="{{loading}}">刷新预约状态</button></view>
+<view class="section" wx:if="{{items.length}}"><view class="card booking" wx:for="{{items}}" wx:key="id"><view class="row"><text class="list-title">{{item.serviceTitle}}</text><text class="status">{{online?item.statusText:item.status}}</text></view><view class="list-desc">期望时间：{{item.date}} {{item.time}}{{online?'（北京时间）':''}}</view><view wx:if="{{item.cancellationText}}" class="notice booking-cancellation-reason">{{item.cancellationText}}</view><view class="list-desc">备注：{{item.remark||'无'}}</view><button wx:if="{{online&&(item.businessCaseId||item.businessEligible)}}" class="btn light" data-id="{{item.id}}" bindtap="openBusiness">约定、完成与争议处理</button><button wx:if="{{online?item.canCancel:item.status!=='已取消'}}" class="btn light cancel" data-id="{{item.id}}" bindtap="cancel" loading="{{cancelingId===item.id}}" disabled="{{cancelingId||loading||actionError}}">{{online?'取消申请':'取消演示预约'}}</button></view></view>
+<view class="empty" wx:if="{{!items.length&&!pendingItems.length&&!recoveryError&&!loading&&!error}}">还没有预约记录。
+前往「发现 → 生活服务」查看可以预约的服务。</view>
+<view class="notice">{{online?'待确认申请可以取消。原服务变化导致的系统取消会发送站内通知，处理原因保留在原记录中。':'演示预约没有发生真实服务、金钱支付和服务商通知。'}}</view>
+</view>
+
+</view>

@@ -1,0 +1,1 @@
+<view wx:if="{{chips.length||hasFilters}}" class="conditions {{largeText?'large':''}}"><button wx:for="{{chips}}" wx:key="key" class="condition" data-key="{{item.key}}" bindtap="remove" aria-label="移除{{item.label}}"><text>{{item.label}}</text><text aria-hidden="true">×</text></button><button wx:if="{{hasFilters}}" class="reset" bindtap="reset">重置筛选</button></view>

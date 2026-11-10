@@ -1,0 +1,16 @@
+{
+  "ratio": 0.2799920550847458,
+  "gap": 8,
+  "rowHeight": 50,
+  "groupFont": "15px",
+  "groupWeight": "600",
+  "itemFont": "15px",
+  "itemWeight": "400",
+  "rowBackground": "rgba(0, 0, 0, 0)",
+  "groupsMargin": "18px",
+  "largeRowHeight": 74,
+  "largeLineHeight": "23px",
+  "categorySwitch": "PASS C03 -> C04",
+  "noDuplicateHeadings": true,
+  "largeText": "PASS"
+}

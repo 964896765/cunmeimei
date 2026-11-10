@@ -1,0 +1,107 @@
+<view class="theme-root continuous-page {{themeClass}}" style="{{themeStyle}}">
+<page-header id="navigation-header" continuous="{{true}}" title="{{mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='saved'?'管理我的收藏':'个人中心'}}" back="{{mode==='saved'||mode==='points'||mode==='service'}}" large-text="{{displayPreferences.largeText}}" bind:back="back"/> 
+<view class="container me-page">
+ <view wx:if="{{mode!=='main'&&mode!=='saved'&&mode!=='points'&&mode!=='service'}}" class="subpage-heading">
+  <view class="section-title">{{mode==='profile'?'个人资料':mode==='account'?'账号与安全':mode==='saved'?'管理我的收藏':mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='history'?'浏览记录':mode==='help'?'帮助与申诉':settingsTitle}}</view>
+  <button wx:if="{{mode!=='saved'}}" class="center-link subpage-return" bindtap="back">返回个人中心</button>
+ </view>
+ <block wx:if="{{mode==='privacy'}}">
+ <view wx:if="{{settingsError}}" class="settings-error" role="alert">{{settingsError}}<button class="center-link" bindtap="reloadSettings">重新读取</button></view>
+ <view wx:if="{{settingsBusy}}" class="notice">正在处理…</view>
+ <block wx:if="{{settingsSection==='privacy'}}">
+ <view class="section-card preference-panel"><view class="settings-row"><view><text class="settings-label">显示主题</text><text class="notice">保留你的选择，不按个人生活状态推断</text></view><picker disabled="{{settingsBusy}}" range="{{themeNames}}" bindchange="selectTheme"><view class="link">选择 ›</view></picker></view>
+ <view class="notice">当前：{{preferences.theme==='prism'?'珍珠虹彩':preferences.theme==='dark'?'深海夜色':preferences.theme==='clear'?'清晰高对比':preferences.theme==='quiet'?'静谧灰墨':preferences.theme==='warm'?'温暖关怀':'柔和青绿'}}</view>
+ <view class="settings-row"><text class="settings-label">大字阅读</text><switch color="{{themeColor}}" disabled="{{settingsBusy}}" checked="{{preferences.largeText}}" data-field="largeText" bindchange="changePreference" aria-label="大字阅读"/></view>
+ <view class="settings-row"><text class="settings-label">减少动态效果</text><switch color="{{themeColor}}" disabled="{{settingsBusy}}" checked="{{preferences.reduceMotion}}" data-field="reduceMotion" bindchange="changePreference" aria-label="减少动态效果"/></view>
+ <button class="btn" loading="{{settingsBusy}}" disabled="{{settingsBusy||!!settingsError}}" bindtap="savePreferences">保存显示设置</button></view>
+ <view class="section-card"><view class="section-title">公开范围</view><view class="notice">个人简介与所在城市仅在本账号资料页使用，不自动生成公开主页或地图点位。发布内容和联系方式继续按原有审核与联系授权规则展示。</view></view>
+ <view class="section-card"><view class="section-title">黑名单</view><view class="notice">已屏蔽的用户无法再向你发起联系申请。</view><view wx:if="{{!settingsBusy&&!settingsError&&!blockedItems.length}}" class="notice">暂无屏蔽记录</view><view class="settings-row" wx:for="{{blockedItems}}" wx:key="id"><view><text class="settings-label">{{item.label}}</text><text class="notice">{{item.dateLabel}}</text></view><button class="center-link" disabled="{{settingsBusy}}" bindtap="unblockUser" data-id="{{item.id}}">解除屏蔽</button></view></view>
+ </block>
+ <block wx:elif="{{settingsSection==='notifications'}}">
+ <view class="section-card"><view class="settings-row"><view><text class="settings-label">接收新的联系申请</text><text class="notice">关闭不影响处理已有申请</text></view><switch color="{{themeColor}}" disabled="{{settingsBusy}}" checked="{{preferences.allowContacts}}" data-field="allowContacts" bindchange="changePreference" aria-label="接收新的联系申请"/></view>
+ <view class="settings-row"><view><text class="settings-label">显示通知摘要</text><text class="notice">关闭后，服务器隐藏站内通知标题与摘要</text></view><switch color="{{themeColor}}" disabled="{{settingsBusy}}" checked="{{preferences.notificationPreview}}" data-field="notificationPreview" bindchange="changePreference" aria-label="显示通知摘要"/></view>
+ <view class="settings-row"><view><text class="settings-label">预约与审核通知</text><text class="notice">保留必要的站内业务通知，暂不支持单独关闭</text></view></view>
+ <view class="settings-row"><view><text class="settings-label">微信订阅提醒</text><text class="notice">暂未接通，不会自动申请微信订阅授权</text></view><text class="center-subtitle">未开放</text></view>
+ <button class="btn" loading="{{settingsBusy}}" disabled="{{settingsBusy||!!settingsError}}" bindtap="savePreferences">保存通知设置</button></view>
+ </block>
+ <block wx:elif="{{settingsSection==='data'}}"> <view class="section-card"><view class="section-title">数据申请与处理记录</view><view class="notice">可导出本人资料和本人创作内容，或申请更正、删除与账号注销。注销需单独确认并人工执行；必要账本、审核与业务证据仍保留。不要填写身份证、病历或其他无关敏感资料。</view><button class="btn light" bindtap="exportPersonalData" disabled="{{settingsBusy}}">导出我的数据</button><view class="notice">导出文件临时生成，由你选择保存方式；完成或取消后清理临时文件。</view><picker range="{{requestNames}}" value="{{requestKindIndex}}" bindchange="requestKind"><view class="field">{{requestNames[requestKindIndex]}} ⌄</view></picker><textarea class="field-area" maxlength="500" value="{{requestText}}" bindinput="requestReason" placeholder="请说明请求范围，8–500字；无需提交证件或健康资料" aria-label="个人数据请求范围"/><button class="btn light" bindtap="submitPrivacyRequest" disabled="{{settingsBusy}}">提交请求</button>
+ <view class="privacy-record" wx:for="{{privacyItems}}" wx:key="id"><view class="row"><text class="section-title">{{item.kindLabel}}</text><text class="badge">{{item.statusLabel}}</text></view><view class="body-copy">{{item.reason}}</view><view wx:if="{{item.response}}" class="notice">处理答复：{{item.response}}</view><text wx:if="{{item.status==='pending'||item.status==='reviewing'}}" class="link" data-id="{{item.id}}" bindtap="cancelPrivacyRequest">撤回请求</text></view></view>
+ </block>
+ </block><block wx:elif="{{mode==='saved'}}"><view class="notice">已结束或暂不可见的内容不会公开展示。</view><content-card icon-palette="{{iconPalette}}" theme="{{displayPreferences.theme}}" wx:for="{{items}}" wx:key="id" item="{{item}}" bind:open="openSaved"/><view wx:if="{{loading}}" class="state-panel">正在加载收藏…</view><view wx:elif="{{error}}" class="state-panel"><text>{{error}}</text><button class="btn light" bindtap="loadSaved">重试</button></view><view wx:elif="{{!items.length}}" class="state-panel">还没有可查看的收藏，去发现页逛逛吧。</view><button wx:if="{{hasMore}}" class="btn light" bindtap="loadSaved">继续加载</button></block>
+ <block wx:elif="{{mode==='points'}}"><include src="./points-panel.wxml"/></block>
+ <block wx:elif="{{mode==='history'}}"><view class="notice">记录只保存在当前账号的本机，最多30条。已下架内容不会展示。</view><content-card theme="{{displayPreferences.theme}}" icon-palette="{{iconPalette}}" wx:for="{{items}}" wx:key="id" item="{{item}}" bind:open="openSaved"/><view wx:if="{{loading}}" class="state-panel">正在读取…</view><view wx:elif="{{error}}" class="state-panel"><text>{{error}}</text><button class="btn light" bindtap="showHistory">重试</button></view><view wx:elif="{{!items.length}}" class="state-panel">暂无可查看的浏览记录。</view><button class="btn light" bindtap="clearHistory">清空本机记录</button></block>
+
+ <block wx:elif="{{mode==='profile'}}">
+ <button class="avatar-editor" open-type="chooseAvatar" bindchooseavatar="chooseAvatar" disabled="{{profileBusy||summaryLoading||!!summaryError}}" aria-label="更换头像"><view class="profile-avatar avatar-large"><image wx:if="{{avatarSrc}}" src="{{avatarSrc}}" mode="aspectFill"/><image wx:else class="avatar-placeholder" src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/></view><text>{{profileBusy?'正在保存…':'更换头像'}}</text></button>
+ <view wx:if="{{summaryError||profileError}}" class="settings-error" role="alert">{{profileError||summaryError}}<button wx:if="{{summaryError}}" class="center-link" bindtap="refresh">重新读取资料</button></view>
+ <button wx:if="{{avatarError}}" class="center-link" bindtap="retryAvatar">{{avatarError}}</button>
+ <view class="profile-fields">
+ <button class="profile-field" open-type="chooseAvatar" bindchooseavatar="chooseAvatar" disabled="{{profileBusy||summaryLoading||!!summaryError}}"><text class="profile-field-label">头像</text><view class="profile-avatar avatar-small"><image wx:if="{{avatarSrc}}" src="{{avatarSrc}}" mode="aspectFill"/><image wx:else class="avatar-placeholder" src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/></view><text class="center-chevron">›</text></button>
+ <button class="profile-field" bindtap="editProfileField" data-field="displayName" disabled="{{profileBusy||summaryLoading||!!summaryError}}"><text class="profile-field-label">昵称</text><text class="profile-field-value">{{displayName}}</text><text class="center-chevron">›</text></button>
+ <button class="profile-field" bindtap="editProfileField" data-field="bio" disabled="{{profileBusy||summaryLoading||!!summaryError}}"><text class="profile-field-label">个人简介</text><text class="profile-field-value">{{bio||'未填写'}}</text><text class="center-chevron">›</text></button>
+ <button class="profile-field" bindtap="selectProfileCity" disabled="{{profileBusy||summaryLoading||!!summaryError}}"><text class="profile-field-label">所在城市</text><text class="profile-field-value">{{profileCityName||'未设置'}}</text><text class="center-chevron">›</text></button>
+ </view>
+ <view class="profile-footnote">个人资料不会自动公开；所在城市不影响浏览城市与发布地址。</view>
+ </block>
+ <block wx:elif="{{mode==='service'}}">
+  <view class="hub-intro"><view class="body-copy">商家资料、行业核验与沟通事项，集中查看和管理。</view></view>
+  <view class="hub-section"><view class="section-title">经营与服务</view><view class="notice">{{hasSession?merchantLabel:'登录后查看本人入驻和业务状态'}}</view>
+   <button id="service-merchant" class="hub-row" data-section="merchant" bindtap="openServiceSection"><view><view class="hub-row-title">商家入驻与管理</view><view class="center-subtitle">主体材料、服务管理、预约处理与团队权限</view></view><text class="center-chevron">›</text></button>
+   <button id="service-credentials" class="hub-row" data-section="credentials" bindtap="openServiceSection"><view><view class="hub-row-title">行业核验</view><view class="center-subtitle">逐项目资质、核验进度与补充材料</view></view><text class="center-chevron">›</text></button>
+   <button class="hub-row" data-section="verification" bindtap="openServiceSection"><view><view class="hub-row-title">登录与手机号状态</view><view class="center-subtitle">独立授权、撤回验证与处置申诉</view></view><text class="center-chevron">›</text></button>
+  </view>
+  <view class="hub-section"><view class="section-title">业务与申请</view><view class="hub-actions">
+   <button id="service-cases" data-section="cases" bindtap="openServiceSection">业务进度<text>约定 · 完成 · 争议</text></button><button id="service-business" data-section="mine" bindtap="openServiceSection">我的业务<text>草稿 · 审核 · 展示</text></button><button data-section="sent" bindtap="openServiceSection">我的申请<text>咨询 · 报名 · 岗位</text></button><button data-section="received" bindtap="openServiceSection">收到的申请<text>处理 · 答复 · 会话</text></button><button data-section="reports" bindtap="openServiceSection">举报与答复<text>问题核查 · 处理结果</text></button>
+  </view></view>
+  <button class="btn" bindtap="goPublish">发布新内容</button><view class="notice">主体与行业资质按具体项目核验；发布、修改及推广继续接受内容审核。</view>
+ </block>
+ <block wx:elif="{{mode==='account'}}">
+ <view class="section-card account-panel"><button class="center-menu-row" bindtap="openVerification"><text>登录、手机号与认证状态</text><text class="center-chevron">›</text></button>
+ <button wx:if="{{hasSession}}" class="center-menu-row" bindtap="copyId"><view class="center-menu-copy"><text>账号编号</text><text class="account-id">{{myUserId||'正在读取…'}}</text><text class="center-subtitle">点击复制，仅向可信的主体管理员提供</text></view><text class="center-chevron">›</text></button>
+ <view class="settings-row"><text class="settings-label">登录身份</text><text class="center-subtitle">{{hasSession?loginIdentity:'未登录'}}</text></view>
+ <button class="center-menu-row" bindtap="openVerification"><view class="center-menu-copy"><text class="settings-label">手机号验证与撤回</text><text class="center-subtitle">单独授权，默认不公开；可查看状态或解除验证</text></view><text class="center-chevron">›</text></button>
+ <button class="center-menu-row" bindtap="openPersonalData"><view class="center-menu-copy"><text class="settings-label">申请注销账号</text><text class="center-subtitle">在个人数据中提交，先处理未完成业务；退出登录不会注销</text></view><text class="center-chevron">›</text></button>
+ </view>
+ <button wx:if="{{!hasSession}}" class="btn" bindtap="signin">登录并开始使用</button>
+ </block>
+ <block wx:elif="{{mode==='help'}}">
+  <view class="section-card"><view class="section-title">信息与联系安全</view><view class="body-copy">内容审核不代表质量保证。请核实信息、商品、房源和服务，不向陌生人提前付款。</view><view class="notice">发现失实或违规信息，请从对应信息详情提交举报；联系申请可在消息页屏蔽。处置申诉可从账号与安全的认证状态中提交，积分问题可从积分明细中申诉。</view><button class="btn light" bindtap="goMessages">查看通知与联系处理结果</button></view>
+  <view class="section-card"><view class="section-title">个人数据问题</view><view class="notice">数据访问、更正和删除请求可通过“个人数据”提交，处理进度与答复保存在账号中。</view><button class="btn light" bindtap="openPersonalData">管理个人数据</button></view>
+  <button class="center-menu-row about-action" bindtap="showAbout"><text>关于与使用提示</text><text class="center-chevron">›</text></button>
+  <button class="center-menu-row" data-kind="terms" bindtap="openLegal"><text>用户协议</text><text class="center-chevron">›</text></button>
+  <button class="center-menu-row" data-kind="privacy" bindtap="openLegal"><text>隐私政策与微信隐私保护指引</text><text class="center-chevron">›</text></button>
+ </block>
+ <block wx:else>
+  <button class="profile-entry" bindtap="openProfile" aria-label="查看和编辑个人资料">
+   <view class="profile-avatar"><image wx:if="{{avatarSrc}}" src="{{avatarSrc}}" mode="aspectFill"/><image wx:else class="avatar-placeholder" src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/></view>
+   <view class="profile-copy"><view class="profile-name">{{hasSession?displayName:'欢迎来到青方睐村美美'}}</view><view class="profile-subtitle">{{hasSession?'查看和编辑个人资料':'登录后查看和编辑个人资料'}}</view></view><text class="center-chevron">›</text>
+  </button>
+  <button wx:if="{{!hasSession}}" class="btn guest-signin" bindtap="signin">登录并开始使用</button>
+  <view wx:if="{{summaryError}}" class="summary-error" role="alert"><text>{{summaryError}}</text><button class="center-link" bindtap="refresh">重试</button></view>
+  <view class="workspace-heading"><text class="section-title">我的事务</text><text class="center-subtitle">发布 · 收藏 · 预约</text></view>
+  <view class="workspace-grid">
+   <view class="workspace-item posts-entry" role="button" bindtap="goPosts" aria-label="我的发布"><image src="/assets/icons/center-posts-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的发布</text><text class="workspace-count">{{postCount===null?'—':postCount}}</text></view>
+   <view class="workspace-item saved-entry" role="button" bindtap="showFavorites" aria-label="我的收藏"><image src="/assets/icons/center-saved-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的收藏</text><text class="workspace-count">{{favCount===null?'—':favCount}}</text></view>
+   <view class="workspace-item bookings-entry" role="button" bindtap="goBookings" aria-label="我的预约"><image src="/assets/icons/center-booking-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的预约</text><text class="workspace-count">{{bookingCount===null?'—':bookingCount}}</text></view>
+  </view>
+  <view class="menu-group-title">我的中心</view>
+  <button id="points-center-entry" class="points-entry" bindtap="showPoints" aria-label="进入积分中心"><view class="points-icon"><image src="/assets/icons/center-points-{{iconPalette||displayPreferences.theme||'prism'}}.png"/></view><view class="center-entry-copy"><view class="center-entry-title">积分中心</view><view class="center-subtitle">积分记录 · 权益兑换 · 自助推广</view></view><text class="center-chevron">›</text></button>
+  <button id="service-center-entry" class="merchant-entry" bindtap="openServiceCenter" aria-label="进入服务中心"><image src="/assets/icons/center-merchant-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><view class="center-entry-copy"><view class="center-entry-title">服务中心</view><view class="center-subtitle">商家资料 · 行业核验 · 沟通记录</view></view><text class="center-chevron">›</text></button>
+  <view class="menu-group-title">账户与偏好</view>
+  <view class="center-menu">
+   <button class="center-menu-row account-entry" bindtap="openAccount"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">账号与安全</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row privacy-entry" bindtap="openPrivacy"><image src="/assets/icons/center-settings-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">隐私与显示</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row notifications-entry" bindtap="openNotifications"><image src="/assets/icons/center-notifications-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">通知设置</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row data-entry" bindtap="openPersonalData"><image src="/assets/icons/center-data-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">个人数据</text><text class="center-chevron">›</text></button>
+  </view>
+  <view class="menu-group-title">其他服务</view>
+  <view class="center-menu">
+   <button class="center-menu-row history-entry" bindtap="showHistory"><image src="/assets/icons/center-history-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">浏览记录</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row help-entry" bindtap="openHelp"><image src="/assets/icons/center-help-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">帮助与申诉</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row about-entry" bindtap="showAbout"><image src="/assets/icons/center-about-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">关于小程序</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row cache-entry" bindtap="inspectCache"><image src="/assets/icons/center-trash-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">清理缓存</text><text class="center-chevron">›</text></button>
+  </view>
+  <button wx:if="{{hasSession}}" class="signout-action" bindtap="signout">退出登录</button>
+ </block>
+</view>
+</view>

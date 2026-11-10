@@ -1,0 +1,2 @@
+.booking-item{display:flex;gap:22rpx;align-items:center;margin-top:48rpx}.picker{display:flex;align-items:center;justify-content:space-between;line-height:88rpx}
+.booking-recovery-error,.booking-pending-check,.booking-success,.booking-rejected{margin:24rpx 28rpx}

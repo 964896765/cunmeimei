@@ -1,0 +1,86 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/discover/index",
+    "pages/publish/index",
+    "pages/messages/index",
+    "pages/me/index",
+    "pages/regions/index",
+    "pages/detail/index",
+    "pages/booking/index",
+    "pages/my-posts/index",
+    "pages/my-bookings/index",
+    "pages/merchant/index",
+    "pages/chat/index",
+    "pages/merchant-services/index",
+    "pages/merchant-bookings/index",
+    "pages/merchant-team/index",
+    "pages/search/index",
+    "pages/categories/index",
+    "pages/map/index",
+    "pages/publish-form/index",
+    "pages/drafts/index",
+    "pages/verification/index",
+    "pages/information/index",
+    "pages/commerce/index",
+    "pages/industry/index",
+    "pages/login/index",
+    "pages/legal/index",
+    "pages/business/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "青方睐村美美",
+    "navigationBarBackgroundColor": "#FAF8FB",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF8FB"
+  },
+  "tabBar": {
+    "color": "#62545F",
+    "selectedColor": "#744E68",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现",
+        "iconPath": "assets/icons/discover.png",
+        "selectedIconPath": "assets/icons/discover-active.png"
+      },
+      {
+        "pagePath": "pages/publish/index",
+        "text": "发布",
+        "iconPath": "assets/icons/publish.png",
+        "selectedIconPath": "assets/icons/publish-active.png"
+      },
+      {
+        "pagePath": "pages/messages/index",
+        "text": "消息",
+        "iconPath": "assets/icons/messages.png",
+        "selectedIconPath": "assets/icons/messages-active.png"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的",
+        "iconPath": "assets/icons/me.png",
+        "selectedIconPath": "assets/icons/me-active.png"
+      }
+    ],
+    "custom": true
+  },
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于定位当前城市及地图位置"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "__usePrivacyCheck__": true
+}

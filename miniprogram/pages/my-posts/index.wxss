@@ -1,0 +1,8 @@
+.published{margin-bottom:18rpx}.published .list-desc{margin-top:18rpx}.published .list-title{flex:1;min-width:0;margin-right:14rpx}.published .row{align-items:flex-start}.status{white-space:nowrap}
+
+.post-actions{display:flex;justify-content:flex-end;margin-top:20rpx;border-top:1rpx solid var(--border);padding-top:16rpx}
+.withdraw-btn{margin:0;background:var(--surface);color:var(--muted);border:1rpx solid var(--border);border-radius:20rpx;font-size:24rpx}
+
+.post-actions{gap:16rpx;flex-wrap:wrap}.edit-panel .field-label{display:block;margin-top:18rpx}.edit-panel .btn{margin-top:30rpx}.picker-field{display:flex;align-items:center;justify-content:space-between}
+
+.edit-photos{display:flex;gap:16rpx;flex-wrap:wrap;margin:20rpx 0}.edit-photos image{width:160rpx;height:160rpx;border-radius:14rpx}.edit-photos text{display:block}.published{margin-bottom:20rpx}

@@ -1,0 +1,273 @@
+{
+  "passed": 20,
+  "failed": 0,
+  "checks": [
+    "discovery renders the exact eight shared business tabs",
+    "all discovery tabs use 38px height / 14px text / 12px padding / 19px radius",
+    "all eight tabs have coordinated line icons",
+    "tab text uses the lighter 500 weight at the same 14px size",
+    "scroll viewport reaches both physical page edges instead of clipping inside 20px gutters",
+    "horizontal movement continues beyond the former left clipping boundary",
+    "unopened channels keep their honest empty state and recommended-return action",
+    "map uses the same eight tabs including recruitment",
+    "entering map from discovery property retains the property selection",
+    "map and discovery tabs have identical native size and position",
+    "map has no search strip or old header overlay",
+    "native map fills behind the transparent header and floating shared tabs",
+    "result header has one filter action and no city/range/sort dropdown strip",
+    "city, map range and sort appear as a read-only summary",
+    "map has only city-centre and expand-results floating tools",
+    "all detailed controls live in the separate filter sheet without repeating business tabs",
+    "expanded results retain the shared tabs and the single filter header",
+    "moving the map reveals the explicit area-search action",
+    "adding the recruitment tab does not open an unsupported map backend",
+    "no captured WeChat runtime exceptions"
+  ],
+  "physicalDevice": false,
+  "source": "real WeChat simulator and native map / actual local API; no invented public points",
+  "discovery": [
+    {
+      "text": "推荐",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 16,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "招聘",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 99,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "房产",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 182,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "闲置",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 265,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "商家",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 348,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "服务",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 431,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "活动",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 514,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "便民",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 597,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    }
+  ],
+  "map": [
+    {
+      "text": "推荐",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": -166,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "招聘",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": -83,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "房产",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 0,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "闲置",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 83,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "商家",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 166,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "服务",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 249,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "活动",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 332,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    },
+    {
+      "text": "便民",
+      "size": {
+        "width": 75,
+        "height": 38
+      },
+      "offset": {
+        "left": 415,
+        "top": 102
+      },
+      "font": "14px",
+      "padding": "12px",
+      "radius": "19px",
+      "weight": "500"
+    }
+  ],
+  "checkedAt": "2026-10-20T15:23:08.602Z"
+}

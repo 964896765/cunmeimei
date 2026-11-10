@@ -1,0 +1,39 @@
+{
+  "version": "0.25.0",
+  "checkedAt": "2026-10-18T08:41:04.019Z",
+  "postgres": {
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0
+  },
+  "main": {
+    "passed": 153,
+    "failed": 0,
+    "skipped": 0
+  },
+  "e2e": {
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0
+  },
+  "permissions": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "merchantApplication": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0
+  },
+  "geoUI": 28,
+  "pageStructureUI": 28,
+  "businessUI": 26,
+  "renderedPages": 18,
+  "themeSamples": 10,
+  "physicalDevice": false,
+  "tencentKeyConfigured": false,
+  "syntheticMapLocationsWithdrawn": true,
+  "productionDeployment": false,
+  "colorContractChanged": false
+}

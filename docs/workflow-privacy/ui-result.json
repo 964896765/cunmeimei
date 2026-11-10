@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "passed": 13,
+  "checks": [
+    "cancelled commerce login clears old balance and owned rows",
+    "unsaved promotion is preserved internally and hidden until login",
+    "commerce has explicit login retry and return controls",
+    "cancelling commerce login does not open another login page",
+    "same-account session recovery retains unsaved promotion input",
+    "cancelled industry login removes private applications and shows retry",
+    "expired owner form is masked without deleting its input",
+    "refusing form login keeps input hidden and recoverable",
+    "expired account local drafts are hidden after refusal",
+    "refusing login leaves the original local draft intact",
+    "same-account recovery restores the original local draft",
+    "no owned-data request is dispatched while client session is expired",
+    "no captured native runtime exceptions"
+  ],
+  "screenshots": [
+    "commerce-access-gate.png",
+    "industry-access-gate.png"
+  ],
+  "exceptions": [],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "physicalDevice": false,
+  "ownedDataAndSession": "runtime-only fixtures; no real authorization",
+  "checkedAt": "2026-11-06T02:22:00.673Z"
+}

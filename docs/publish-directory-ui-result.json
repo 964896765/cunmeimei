@@ -1,0 +1,31 @@
+{
+  "passed": 18,
+  "failed": 0,
+  "checks": [
+    "industry/project columns use 28:72 ratio",
+    "columns have 6–8px gap",
+    "search sits immediately before drafts in top toolbar",
+    "right list has no outer card or rounded frame",
+    "all 27 industries, 83 groups and 418 projects render with synchronized headers and uniform rows",
+    "project rows indent 6–8px from group title",
+    "group headings have stronger weight",
+    "cross-industry search keeps stable existing project ID",
+    "search keeps group name clean and shows industry separately",
+    "project still opens the existing form with original category and restrictions",
+    "draft toolbar retains real local/account draft management",
+    "directory renders prism",
+    "directory renders dark",
+    "directory renders clear with two-line large-text rows",
+    "directory renders quiet",
+    "directory renders warm",
+    "directory renders gentle",
+    "no captured runtime exceptions"
+  ],
+  "industries": 27,
+  "groups": 83,
+  "projects": 418,
+  "rowHeight": 60,
+  "physicalDevice": false,
+  "dataSource": "actual registry and local API config; guest display preferences temporarily varied; guest draft backed up and restored",
+  "checkedAt": "2026-10-18T14:06:48.849Z"
+}

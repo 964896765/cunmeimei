@@ -1,0 +1,45 @@
+{
+  "status": "pass",
+  "checks": [
+    "old date response cannot overwrite the current slot",
+    "failed slot read shows retry and retains the remark",
+    "available selection survives a same-day refresh",
+    "unknown response sends one POST and does not retry automatically",
+    "unknown create result freezes the original date and rendered remark",
+    "my bookings exposes the saved pending request without submitting again",
+    "page recreation restores the original date, remark and request key without a POST",
+    "no matching record keeps the result uncertain without a new POST",
+    "paused public service retains the independent booking reconciliation controls",
+    "matching active booking acknowledges the original creation without resubmission",
+    "explicit retry preserves the exact original payload and fixture replays it",
+    "recorded rejection releases uncertainty without creating or retrying a booking",
+    "merchant appointment shows Beijing time",
+    "repeated confirm taps open one modal and send no premature mutation",
+    "unknown merchant mutation blocks repeat processing until a successful refresh",
+    "refresh reads the acknowledged server state without repeating the mutation",
+    "completion updates the row after a matching server acknowledgment",
+    "failed permission read retains rows and pauses processing",
+    "explicit permission denial removes private customer rows",
+    "no captured native runtime exceptions",
+    "runtime fixture removed and original authentication storage unchanged"
+  ],
+  "passed": 21,
+  "failed": 0,
+  "errors": [],
+  "tool": {
+    "version": "2.02.2608080",
+    "SDKVersion": "3.17.4"
+  },
+  "screenshots": false,
+  "recoveryScreenshots": false,
+  "source": "real WeChat controls and wx.request to a loopback HTTP fixture; modal callbacks simulated",
+  "httpFixtureServer": true,
+  "realBackend": false,
+  "physicalDevice": false,
+  "persistentFixtureIdentity": false,
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "checkedAt": "2026-11-02T15:19:16.232Z"
+}

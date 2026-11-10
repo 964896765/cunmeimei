@@ -1,0 +1,55 @@
+<view class="theme-root search-root {{themeClass}}" style="{{themeStyle}}">
+ <page-header id="navigation-header" title="搜索" transparent="{{true}}" back="{{true}}" back-label="返回上一页" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
+ <view class="search-fixed-header">
+  <view class="search search-box">
+   <view class="search-dot" aria-hidden="true"></view>
+   <input class="search-placeholder" value="{{q}}" maxlength="80" placeholder="搜索房源、招聘、商家、服务" aria-label="搜索关键词" bindinput="input" bindconfirm="search" confirm-type="search"/>
+   <button wx:if="{{q}}" class="clear-query" bindtap="clearQuery" aria-label="清空关键词">×</button>
+   <button class="search-submit" bindtap="search">搜索</button>
+  </view>
+  <view class="query-filters">
+   <button class="city-filter" bindtap="chooseCity" aria-label="切换浏览城市"><text>{{cityCode?cityLabel:'选择城市'}}</text><view class="filter-chevron"></view></button>
+   <picker range="{{types}}" range-key="name" value="{{typeIndex}}" bindchange="changeType"><view class="filter"><text>{{type==='all'?'全部频道':type==='community'?'历史社区':types[typeIndex].name}}</text><view class="filter-chevron"></view></view></picker>
+   <picker range="{{sortNames}}" value="{{sortIndex}}" bindchange="chooseSort"><view class="filter"><text>{{sortNames[sortIndex]}}</text><view class="filter-chevron"></view></view></picker>
+   <button class="advanced-button {{days||radiusKm||images!=='all'||publisher==='verified'?'filtered':''}}" bindtap="toggleAdvanced" aria-label="高级筛选" aria-expanded="{{advancedOpen}}"><view class="sliders" aria-hidden="true"><view></view><view></view><view></view></view></button>
+  </view>
+ </view>
+ <scroll-view class="search-content" scroll-y="true" enhanced="true" show-scrollbar="{{false}}" scroll-into-view="{{scrollAnchor}}" scroll-with-animation="{{false}}" lower-threshold="120" bindscrolltolower="more">
+  <view id="{{scrollAnchor}}" class="scroll-origin"></view>
+  <view class="search-body">
+   <browse-filters id="browse-refinements" category-id="{{categoryId}}" city-code="{{cityCode}}" district-code="{{districtCode}}" large-text="{{displayPreferences.largeText}}" bind:category="categoryChanged" bind:district="districtChanged"/>
+   <view wx:if="{{historyNotice}}" class="notice history-notice" role="status">{{historyNotice}}</view>
+   <block wx:if="{{!searched}}">
+    <view class="landing-section"><view class="landing-heading"><text class="section-title">最近搜索</text><button class="clear-recent" wx:if="{{recentTerms.length}}" bindtap="clearHistory" aria-label="清空最近搜索"><view class="trash-mark" aria-hidden="true"></view></button></view><view class="recent-list" wx:if="{{recentTerms.length}}"><button wx:for="{{recentTerms}}" wx:key="*this" data-term="{{item}}" bindtap="chooseTerm">{{item}}</button></view><view wx:else class="landing-empty">暂无搜索记录</view></view>
+    <view class="landing-section"><view class="landing-heading"><text class="section-title">热门搜索</text><text class="section-caption">本地热门</text></view><view wx:if="{{popularTerms.length}}" class="popular-list"><button wx:for="{{popularTerms}}" wx:key="term" data-term="{{item.term}}" bindtap="chooseTerm"><text class="popular-rank">{{index<9?'0':''}}{{index+1}}</text><text>{{item.term}}</text></button></view><view wx:else class="landing-empty">{{landingLoading?'正在加载真实搜索数据…':cityCode?'暂无足够的本地热搜数据':'暂无本地热搜数据'}}</view></view>
+    <view wx:if="{{landingError||error}}" class="landing-retry" role="alert"><text>{{landingError||error}}</text><button bindtap="retryLanding">重试</button></view>
+   </block>
+   <block wx:else>
+    <active-conditions id="active-conditions" keyword="{{submittedQ}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{days}}" images="{{images}}" radius-km="{{radiusKm}}" publisher="{{publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="clear"/>
+    <view wx:if="{{publicOnly}}" class="notice">{{mapScoped?'当前地图视野内 · 仅展示可公开定位的商家与服务':'公开位置范围 · 仅展示可公开定位的商家与服务'}}</view>
+    <view wx:if="{{filterNotice}}" class="notice">{{filterNotice}}</view>
+    <view wx:if="{{queryDirty}}" class="state-panel" role="status"><text>关键词已修改，点击搜索或选择条件查看结果。</text><button class="btn light" bindtap="search">搜索当前条件</button></view>
+    <view wx:elif="{{loading&&!items.length}}" class="state-panel search-loading" role="status"><view class="skeleton"></view><text>正在查找相关信息…</text></view>
+    <view wx:elif="{{error&&!items.length}}" class="state-panel search-error" role="alert"><view class="section-title">搜索暂时无法完成</view><text>{{error}}</text><button class="btn light" bindtap="retry">重新加载</button></view>
+    <view wx:elif="{{!items.length}}" class="state-panel search-empty"><view class="search-empty-mark" aria-hidden="true"><view class="search-dot"></view><text>×</text></view><view class="section-title">暂未找到相关内容</view><text>可移除上方条件，或更换关键词与地区。</text><button wx:if="{{!mapScoped}}" class="btn light" bindtap="browseAll">浏览当前城市全部信息</button></view>
+    <block wx:else>
+     <view class="result-heading">搜索结果</view>
+     <content-card id="search-result-{{item.id}}" theme="{{displayPreferences.theme}}" icon-palette="{{iconPalette}}" wx:for="{{items}}" wx:key="id" item="{{item}}" bind:open="open"/>
+     <view wx:if="{{error}}" class="pagination-error" role="alert"><text>{{error}}</text><button class="btn light" bindtap="retry">重试加载</button></view>
+     <button wx:elif="{{hasMore}}" class="btn light load-more" loading="{{loading}}" disabled="{{loading}}" bindtap="more">{{loading?'正在加载…':'继续加载'}}</button><view wx:else class="list-end">{{limitReached?'结果较多，请缩小地区或筛选条件继续查找。':'已显示全部匹配信息'}}</view>
+    </block>
+   </block>
+  </view>
+ </scroll-view>
+ <view wx:if="{{advancedOpen&&searched}}" class="advanced-layer" catchtouchmove="preventScroll"><view class="advanced-mask" bindtap="closeAdvanced"></view><view class="advanced-sheet" role="dialog" aria-label="高级筛选">
+  <view class="landing-heading"><text class="section-title">高级筛选</text><button class="sheet-close" bindtap="closeAdvanced" aria-label="关闭高级筛选">关闭</button></view>
+  <scroll-view class="advanced-scroll" scroll-y="true" enhanced="true" show-scrollbar="{{false}}">
+   <view class="filter-section"><view class="field-label">发布时间</view><view class="filter-options"><button wx:for="{{dateOptions}}" wx:key="value" class="filter-chip {{draftDays===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseDate" disabled="{{filterBusy}}" aria-pressed="{{draftDays===item.value}}">{{item.label}}</button></view></view>
+   <view class="filter-section"><view class="field-label">图片条件</view><view class="filter-options"><button wx:for="{{imageOptions}}" wx:key="value" class="filter-chip {{draftImages===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseImages" disabled="{{filterBusy}}" aria-pressed="{{draftImages===item.value}}">{{item.label}}</button></view></view>
+   <view wx:if="{{mapScoped}}" class="filter-section"><view class="field-label">发布者</view><view class="filter-options"><button class="filter-chip {{draftPublisher==='all'?'selected':''}}" data-value="all" bindtap="choosePublisher">全部</button><button class="filter-chip {{draftPublisher==='verified'?'selected':''}}" data-value="verified" bindtap="choosePublisher">已核验主体</button></view></view>
+   <view wx:if="{{!mapScoped&&canFilterDistance}}" class="filter-section"><view class="field-label">距离范围</view><view class="filter-options"><button wx:for="{{radiusOptions}}" wx:key="value" class="filter-chip {{draftRadius===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseRadius" disabled="{{filterBusy}}" aria-pressed="{{draftRadius===item.value}}">{{item.label}}</button></view><view class="notice">以授权定位为中心，仅筛选所选地区内具有公开位置的商家与可预约服务。</view></view>
+   <view wx:if="{{filterError}}" class="filter-error" role="alert">{{filterError}}</view>
+  </scroll-view>
+  <view class="filter-actions"><button class="btn light" bindtap="resetAdvanced" disabled="{{filterBusy}}">重置</button><button class="btn" bindtap="applyAdvanced" loading="{{filterBusy}}" disabled="{{filterBusy}}">{{filterBusy?'正在定位…':'查看结果'}}</button></view>
+ </view></view>
+</view>

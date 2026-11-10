@@ -1,0 +1,19 @@
+<view class="theme-root continuous-page {{themeClass}}" style="{{themeStyle}}">
+ <page-header id="navigation-header" continuous="{{true}}" title="手机号验证" back="{{true}}" back-label="返回刚才的页面" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
+ <view class="container verification-page">
+  <view class="verify-title">{{status.phoneVerified?'手机号已验证':'验证手机号后继续'}}</view><view class="notice">{{hasProject?'当前发布项目：'+projectName:'身份与联系方式分别记录，不自动继承认证。'}}</view>
+  <view wx:if="{{error}}" class="inline-feedback" role="alert">{{error}}</view><view wx:if="{{loading}}" class="notice">正在读取认证状态…</view>
+  <view wx:else class="section-card"><view class="verify-copy">{{purpose||'用于发布和联系等需要验证的业务，不会自动公开号码。'}}</view><view wx:if="{{status.phoneVerified}}" class="verify-number">{{status.maskedPhone}}</view>
+   <button wx:if="{{!status.phoneVerified}}" class="btn" open-type="getPhoneNumber" bindgetphonenumber="authorizePhone" loading="{{busy}}" disabled="{{busy||!status.phoneProviderAvailable}}">{{status.phoneProviderAvailable?'微信授权手机号':'微信授权手机号（未开通）'}}</button>
+   <button wx:elif="{{status.phoneVerified&&(hasProject||permissionResume)}}" class="btn" bindtap="finish">{{hasProject?'继续发布'+projectName:'返回并继续'}}</button>
+   <view wx:if="{{!status.phoneProviderAvailable&&!status.phoneVerified}}" class="notice">手机号验证服务未开通，暂不能授权。仍可浏览和搜索公开信息。</view>
+   <view class="notice">号码默认不向其他用户公开。每条信息需单独确认才能公开电话，且可随时撤回。</view>
+  </view>
+  <view class="section-card"><view class="verify-state"><text>微信关联账号</text><text>{{status.wechatLinked?'微信已登录':'未关联微信'}}</text></view><view class="verify-state"><text>手机号</text><text>{{status.phoneVerified?'已验证':'未验证'}}</text></view><view class="verify-state"><text>身份核验</text><text>未开通</text></view><view class="verify-state"><text>业务资质</text><text>{{status.validQualificationCount>0?status.validQualificationCount+'项有效核验':'未核验'}}</text></view><view class="notice">微信登录和手机号验证不等于身份证实名核验；业务资质按具体分类另行审核。</view></view>
+  <button wx:if="{{permissionResume}}" class="btn light" bindtap="goBack">取消验证，返回浏览</button>
+  <button wx:if="{{status.phoneVerified}}" class="btn light" bindtap="revoke">解除手机号验证</button>
+  <view wx:if="{{status.localTestOnly}}" class="notice">本机开发账号仅用于隔离测试，不代表任何认证通过。</view>
+  <view wx:if="{{actions.length}}" class="section-card"><view class="section-title">处置与申诉</view><view wx:for="{{actions}}" wx:key="id" class="appeal-row"><view>{{item.reason}}</view><button class="btn light" data-id="{{item.id}}" bindtap="appeal">提交申诉</button></view></view>
+  <view wx:for="{{appeals}}" wx:key="id" class="section-card"><view>{{item.reason}}</view><view class="notice">{{item.status==='pending'?'处理中':item.status==='accepted'?'申诉已受理':'申诉未通过'}} {{item.response}}</view></view>
+ </view>
+</view>

@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-11-03T11:33:14.093Z",
+  "status": "pass_for_local_scope",
+  "brand": "青方睐村美美",
+  "pages": 26,
+  "apiSuiteLog": "docs/login-v1-complete.log",
+  "nativeLog": "docs/login-v1-ui-verified.log",
+  "earlierUiAttemptsRetained": true,
+  "suites": {
+    "main": {
+      "tests": 523,
+      "passed": 523,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "strictPostgres": {
+      "tests": 140,
+      "passed": 140,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "e2e": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "permissions": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "merchant": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "countsOverlap": true,
+  "uniqueMainTests": 523,
+  "recovery": {
+    "verification": "backup_restore_drill",
+    "ok": true,
+    "tables": 69,
+    "nonemptyTables": 40,
+    "checks": [
+      "custom-format backup",
+      "SHA256 integrity",
+      "transactional restore to empty drill database",
+      "all table contents match",
+      "existing database refused",
+      "corrupt backup refused"
+    ]
+  },
+  "native": {
+    "passed": 34,
+    "physicalDevice": false,
+    "identity": "runtime callback and server provider fixtures",
+    "phone": "runtime callback and server provider fixtures",
+    "platformPrivacyDialog": "not verified",
+    "screenshots": [
+      "login-prism.png",
+      "login-dark.png"
+    ]
+  },
+  "nativeVisual": {
+    "passed": 18,
+    "physicalDevice": false,
+    "checks": [
+      "disabled button uses prism surface",
+      "enabled button uses prism action color",
+      "capsule remains clear prism",
+      "disabled button uses dark surface",
+      "enabled button uses dark action color",
+      "capsule remains clear dark",
+      "disabled button uses clear surface",
+      "enabled button uses clear action color",
+      "capsule remains clear clear",
+      "disabled button uses quiet surface",
+      "enabled button uses quiet action color",
+      "capsule remains clear quiet",
+      "disabled button uses warm surface",
+      "enabled button uses warm action color",
+      "capsule remains clear warm",
+      "disabled button uses gentle surface",
+      "enabled button uses gentle action color",
+      "capsule remains clear gentle"
+    ]
+  },
+  "businessUi": {
+    "passed": 58,
+    "physicalDevice": false
+  },
+  "persistentLocal": {
+    "migrations": 29,
+    "tables": 69,
+    "originalTables": 67,
+    "originalRows": 1334,
+    "originalDataUnchanged": true,
+    "backupAndRehearsal": true
+  },
+  "pending": [
+    "physical WeChat Android/iPhone acceptance deferred by user",
+    "real operator and privacy contact deferred by user",
+    "real server WeChat credentials, HTTPS domain and platform capabilities",
+    "WeChat platform privacy guide and real retention policy",
+    "production release gates"
+  ],
+  "productionAccessed": false,
+  "productionDeployed": false
+}

@@ -1,0 +1,35 @@
+<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
+<page-header id="navigation-header" title="管理我的发布" back="{{true}}" large-text="{{displayPreferences.largeText}}" bind:back="returnToMe"/>
+<view class="container">
+ <view wx:if="{{loadError}}" class="state-panel" role="alert"><view>{{loadError}}</view><view wx:if="{{items.length}}" class="notice">下方保留上次读取的记录。</view><button class="btn light" bindtap="refresh" disabled="{{loading}}">重新读取发布记录</button></view>
+ <view wx:if="{{loading}}" class="notice" role="status">正在读取发布记录…</view>
+ 
+ <view wx:if="{{editing}}" class="section edit-panel">
+  <view class="row"><text class="section-title">修改发布内容</text><text class="more" bindtap="cancelEdit">取消</text></view>
+  <view class="notice">修改后需要重新审核。已公开的信息将暂时从发现页下架。</view>
+  <text class="field-label">标题 *</text><input class="field" maxlength="100" value="{{editForm.title}}" data-field="title" bindinput="changeEdit"/>
+  <text class="field-label">详细内容 *</text><textarea class="field-area" maxlength="5000" value="{{editForm.detail}}" data-field="detail" bindinput="changeEdit"/>
+  <text class="field-label">价格 / 预算</text><input class="field" maxlength="30" value="{{editForm.price}}" data-field="price" bindinput="changeEdit"/>
+  <publication-fields id="edit-publication-fields" kind="{{editForm.type}}" attributes="{{editForm.attributes}}" disabled="{{busy}}" bind:change="editTemplateField"/>
+  <text class="field-label">内容照片</text><view class="edit-photos"><view wx:for="{{editForm.photos}}" wx:key="id"><image wx:if="{{item.path}}" src="{{item.path}}" mode="aspectFill"/><text wx:else>照片已保存</text><text class="link" data-index="{{index}}" bindtap="removePhoto">移除</text></view><button wx:if="{{editForm.photos.length<6}}" class="btn light" disabled="{{busy}}" bindtap="addPhoto">添加照片</button></view>
+  <text class="field-label">平台发布范围</text>
+  <picker mode="selector" range="{{editDistricts}}" bindchange="changeEditDistrict"><view class="field picker-field">{{editForm.district}} <text>⌄</text></view></picker>
+  <button class="btn" bindtap="saveEdit" loading="{{busy}}" disabled="{{busy}}">保存并重新提交审核</button>
+ </view>
+ <view wx:if="{{!editing&&items.length>0}}" class="section">
+  <view class="card published" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="showItem">
+   <view class="row"><text class="list-title">{{item.title}}</text><text class="status">{{item.statusLabel||item.status}}</text></view>
+   <view class="list-desc">{{item.district}} · {{item.dateText}}</view>
+   <view class="list-desc">{{item.detail}}</view>
+   <view wx:if="{{item.expiryText}}" class="notice">{{item.expiryText}}</view>
+   <view wx:if="{{item.canWithdraw||item.canEdit}}" class="post-actions"><button class="withdraw-btn" size="mini" catchtap="contactSettings" data-id="{{item.id}}">联系设置</button>
+    <button wx:if="{{item.canEdit}}" class="withdraw-btn" size="mini" disabled="{{busy}}" catchtap="startEdit" data-id="{{item.id}}">修改内容</button>
+    <button wx:if="{{item.canWithdraw}}" class="withdraw-btn" size="mini" loading="{{busy}}" disabled="{{busy}}" catchtap="withdraw" data-id="{{item.id}}">结束展示</button>
+   </view>
+  </view>
+ </view>
+ <view class="empty" wx:if="{{!editing&&!items.length&&!loading&&!loadError}}">暂时没有发布记录。可前往「发布」创建第一条内容。</view>
+ <view class="notice">{{online?'结束展示后，其他人将无法继续查看或发起新的联系。':'当前是本地演示记录。'}}</view>
+</view>
+
+</view>

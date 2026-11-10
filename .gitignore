@@ -1,0 +1,14 @@
+backend/.env
+backend/node_modules/
+node_modules/
+.DS_Store
+__pycache__/
+*.log
+
+private-data/
+.env
+
+backend/.env.local
+backend/.local-server.json
+backend/.local-*.json
+project.private.config.json

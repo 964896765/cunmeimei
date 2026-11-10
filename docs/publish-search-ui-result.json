@@ -1,0 +1,30 @@
+{
+  "passed": 20,
+  "failed": 0,
+  "checks": [
+    "expanded input spans the page while empty query retains two-column directory",
+    "alias search switches to full-width results and hides the industry sidebar",
+    "cancel restores original category and measured scroll offsets",
+    "unmatched input produces a real empty result",
+    "clear restores the selected directory without closing input",
+    "unimplemented regulated result cannot open a fallback form",
+    "server rejects a directly forged regulated-category publication",
+    "selected housing result loads its actual reusable field schema",
+    "real account draft retains template version, category and dynamic field values",
+    "restoring account draft recovers the version and dynamic field values",
+    "preview uses the same schema with saved field values",
+    "real submission preserves versioned attributes and enters existing review instead of becoming public",
+    "matching account draft is cleared by the existing publication transaction",
+    "full-width search preserves prism palette and correct ranking",
+    "full-width search preserves dark palette and correct ranking",
+    "full-width search preserves clear palette and correct ranking",
+    "full-width search preserves quiet palette and correct ranking",
+    "full-width search preserves warm palette and correct ranking",
+    "full-width search preserves gentle palette and correct ranking",
+    "no captured WeChat runtime exceptions"
+  ],
+  "physicalDevice": false,
+  "nativeInput": "event handlers invoked through SDK; keyboard/finger/IME acceptance pending device",
+  "source": "real isolated local PostgreSQL account and rendered WeChat components",
+  "checkedAt": "2026-10-20T06:28:38.408Z"
+}

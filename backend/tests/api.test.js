@@ -1,0 +1,46 @@
+'use strict';
+const legalConfig={operatorName:'Isolated operator',contactEmail:'privacy@example.test'},legal=require('../src/legal-documents').documents(legalConfig),accepted={consent:true,termsVersion:legal.termsVersion,privacyVersion:legal.privacyVersion,legalHash:legal.hash};
+const test=require('node:test');const assert=require('node:assert/strict');
+const {createApp}=require('../src/server');const {createMemoryRepository}=require('../src/memory-repository');
+async function setup(t){const repo=createMemoryRepository();const server=createApp({legalConfig,repo,areas:['中心街道','北城区'],allowDevLogin:true,adminPassword:'super-secret-admin-password',wechatAppId:'test-appid',wechatSecret:'only-server-secret',fetchWechat:async()=>({ok:true,json:async()=>({openid:'openid-12345678'})})});await new Promise(ok=>server.listen(0,'127.0.0.1',ok));t.after(()=>new Promise(ok=>server.close(ok)));const url='http://127.0.0.1:'+server.address().port;
+ const http=async(p,method='GET',body,token='',cookie='',csrf='')=>{const res=await fetch(url+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body?JSON.stringify(body):undefined});return {status:res.status,data:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};};
+ return {repo,http};}
+test('health, auth, moderation isolation, merchant and booking security',async t=>{
+ const {repo,http}=await setup(t);
+ assert.equal((await http('/api/v1/health')).status,200);
+ const config=await http('/api/v1/config');assert.deepEqual(config.data.areas,['中心街道','北城区']);
+ assert.equal((await http('/api/v1/publications','POST',{type:'used'})).status,401);
+ const signin=await http('/api/v1/auth/wechat','POST',{...accepted,code:'we-chat-temporary-code'});assert.equal(signin.status,200);const token=signin.data.token;
+ assert.ok(token.length>=32);assert.equal((await http('/api/v1/me','GET',null,token)).status,200);
+ const illegal=await http('/api/v1/publications','POST',{type:'job',title:'合法工作',detail:'这是招聘内容测试，不允许通过',district:'中心街道'},token);assert.equal(illegal.status,400);assert.equal(illegal.data.error,'CATEGORY_CLOSED');
+ const badArea=await http('/api/v1/publications','POST',{type:'used',title:'二手家具桌椅',detail:'保养很好，使用一年，现在需要转让',district:'其他城市'},token);assert.equal(badArea.status,400);
+ const pub=await http('/api/v1/publications','POST',{type:'used',title:'二手家具桌椅',detail:'保养很好，使用一年，现在需要转让',district:'中心街道',price:'¥190'},token);assert.equal(pub.status,201);assert.equal(pub.data.publication.status,'pending');const pid=pub.data.publication.id;
+ assert.equal((await http('/api/v1/feed')).data.items.length,0,'pending content must not be visible');
+ assert.equal((await http('/api/v1/items/'+pid)).status,404,'direct pending detail must be hidden');
+ const own=await http('/api/v1/me/publications','GET',null,token);assert.equal(own.data.items.length,1);
+ const login=await http('/admin/api/login','POST',{password:'super-secret-admin-password'});assert.equal(login.status,200);const cookie=login.cookie,csrf=login.data.csrf;assert.ok(cookie.startsWith('citylife_admin='));
+ assert.equal((await http('/admin/api/queue','GET')).status,401);
+ assert.equal((await http('/admin/api/queue','GET',null,'',cookie)).data.publications.length,1);
+ assert.equal((await http('/admin/api/review','POST',{target:'publication',id:pid,status:'published'},'',cookie)).status,403,'reject missing csrf');
+ assert.equal((await http('/admin/api/review','POST',{target:'publication',id:pid,status:'published',reason:'符合发布规则'},'',cookie,csrf)).status,200);
+ assert.equal((await http('/api/v1/feed')).data.items.length,1);
+ assert.equal((await http('/api/v1/feed?type=housing')).data.items.length,0);
+ assert.equal((await http('/api/v1/items/'+pid)).status,200);
+ assert.equal((await http('/admin/api/review','POST',{target:'publication',id:pid,status:'rejected'},'',cookie,csrf)).status,409,'cannot review twice');
+ const merchant=await http('/api/v1/merchant-applications','POST',{name:'测试店铺',category:'家政',district:'中心街道'},token);assert.equal(merchant.status,201);
+ const merchantId=merchant.data.application.id;
+ assert.equal((await http('/admin/api/review','POST',{target:'merchant',id:merchantId,status:'approved'},'',cookie,csrf)).status,400,'cannot grant unverified merchant privilege');
+ assert.equal((await http('/admin/api/review','POST',{target:'merchant',id:merchantId,status:'needs_documents'},'',cookie,csrf)).status,200);
+ const other=await http('/api/v1/dev/login','POST',{devUser:'another-test-user'});assert.equal(other.status,200);
+ assert.equal((await http('/api/v1/me/publications','GET',null,other.data.token)).data.items.length,0,'cross-user privacy');
+ assert.equal((await http('/api/v1/me/merchant-application','GET',null,other.data.token)).data.application,null);
+ const svc=await repo.addTestService({title:'保洁测试服务',description:'在本地测试环境预约意向',district:'中心街道',price:'¥0'});
+ const book=await http('/api/v1/bookings','POST',{serviceId:svc.id,date:'2099-11-01',time:'10:00',remark:'测试预约'},token);assert.equal(book.status,201);const bid=book.data.booking.id;
+ assert.equal((await http('/api/v1/me/bookings','GET',null,other.data.token)).data.items.length,0);
+ assert.equal((await http('/api/v1/bookings/'+bid+'/cancel','POST',{},other.data.token)).status,409);
+ assert.equal((await http('/api/v1/bookings/'+bid+'/cancel','POST',{},token)).status,200);
+ assert.equal((await http('/api/v1/bookings/'+bid+'/cancel','POST',{},token)).status,409);
+});
+test('dev login reachable only from loopback in explicitly opted-in development',async t=>{
+ const {http}=await setup(t);const out=await http('/api/v1/dev/login','POST',{devUser:'dev-test'});assert.equal(out.status,200);
+});

@@ -1,0 +1,126 @@
+{
+  "checkedAt": "2026-11-05T02:20:17.496Z",
+  "status": "pass_for_isolated_scope",
+  "brand": "青方睐村美美",
+  "plan": "docs/NAVIGATION_FILTER_PLAN_20261105.md",
+  "implementation": "docs/NAVIGATION_FILTER_IMPLEMENTATION_20261105.md",
+  "log": "docs/navigation-portable-acceptance.log",
+  "environment": "official portable PostgreSQL 16.9 on random loopback ports; Docker IPC startup failed",
+  "postgresArtifact": {
+    "source": "https://get.enterprisedb.com/postgresql/postgresql-16.9-1-windows-x64-binaries.zip",
+    "version": "16.9-1",
+    "directory": "C:\\Users\\chejun\\AppData\\Local\\Temp\\citylife-navigation-pg-azOPn3",
+    "archiveBytes": 314500604,
+    "sha256": "304eb7dab70717015c4fd09986122e470d53a57a3a2b443d31e2c1d83d88db88",
+    "downloadedAt": "2026-11-05T01:59:09.368Z"
+  },
+  "suites": {
+    "main": {
+      "tests": 559,
+      "passed": 559,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "strictPostgres": {
+      "tests": 142,
+      "passed": 142,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "e2e": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "permissions": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "merchant": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "countsOverlap": true,
+  "navigationUi": {
+    "passed": 27,
+    "screenshots": [
+      "category-directory.png",
+      "discovery-conditions.png",
+      "map-search-conditions.png",
+      "search-prism-large.png",
+      "search-dark-large.png"
+    ],
+    "cleanup": {
+      "authStorageUnchanged": true,
+      "runtimeOverlayRemoved": true
+    },
+    "identity": "runtime fixture session",
+    "pickerSelection": "explicit component callback fixture; rendered buttons tapped"
+  },
+  "centersUi": {
+    "passed": 37,
+    "cleanup": {
+      "authStorageUnchanged": true,
+      "runtimeOverlayRemoved": true
+    }
+  },
+  "recovery": {
+    "verification": "backup_restore_drill",
+    "ok": true,
+    "tables": 69,
+    "nonemptyTables": 40,
+    "checks": [
+      "custom-format backup",
+      "SHA256 integrity",
+      "transactional restore to empty drill database",
+      "all table contents match",
+      "existing database refused",
+      "corrupt backup refused"
+    ]
+  },
+  "pages": 26,
+  "migrations": 29,
+  "newMigrationsApplied": false,
+  "localService": {
+    "port": 3101,
+    "ready": false,
+    "restarted": false,
+    "fixtureDataImported": false
+  },
+  "physicalDevice": false,
+  "productionAccessed": false,
+  "productionDeployed": false,
+  "releaseConfiguration": {
+    "ok": false,
+    "errors": [
+      "DOMAIN_CHECK_MUST_BE_ENABLED",
+      "PRIVATE_DOMAIN_CHECK_MUST_BE_ENABLED",
+      "HTTPS_PUBLIC_API_REQUIRED"
+    ]
+  },
+  "pending": [
+    "恢复现有Docker开发数据库连接；本轮未切换持久开发库到夹具数据库",
+    "用户暂缓的微信真机、真实微信身份与手机号能力验收",
+    "HTTPS和合法域名、真实运营主体/隐私联系及平台隐私指引",
+    "实际业务资格、供给、审核及生产运营门禁"
+  ],
+  "uiLog": "docs/navigation-ui-final.log",
+  "recoveryLog": "docs/navigation-portable-recovery.log",
+  "backendLogNote": "Backend suites passed; earlier SDK state-read timing failures remain in the full log. Final native UI pass and cleanup are verified separately.",
+  "retainedStartupCluster": {
+    "running": false,
+    "path": "C:/Users/chejun/AppData/Local/Temp/citylife-navigation-cluster-ea40b6f67f974522b8ee349657ee8e09",
+    "cleanup": "Automatic safety review blocked recursive deletion; initial failed-start cluster retained. Successful test clusters were stopped and removed by their harness."
+  }
+}

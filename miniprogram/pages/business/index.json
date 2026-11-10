@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "业务进度",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "/components/page-header/index",
+    "disclosure-section": "/components/disclosure-section/index"
+  },
+  "enablePullDownRefresh": true
+}

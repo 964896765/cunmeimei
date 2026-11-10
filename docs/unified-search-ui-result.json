@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "27 industries render exactly once",
+    "shortcut editor has no search, duplicate selected list or More",
+    "toggling does not duplicate or move the category list",
+    "homepage opens the single search route",
+    "search starts in an honest empty recent-search state",
+    "local picks match the real published city feed",
+    "no local-picks module when there is no approved content",
+    "city, category, sort and advanced filters stay on one row",
+    "explicit real search is retained in account-scoped local history",
+    "search results replace landing sections on the same page",
+    "no-result state is rendered on the same search page",
+    "advanced filter opens actual region controls",
+    "discovery uses two matching line icons with no Emoji",
+    "discovery icons have visible boundaries and targets of at least 44px",
+    "discovery opens the same search route",
+    "message center uses one centered native header",
+    "unified search renders theme prism",
+    "unified search renders theme dark",
+    "unified search renders theme clear with large text",
+    "unified search renders theme quiet",
+    "unified search renders theme warm",
+    "unified search renders theme gentle",
+    "no mini-program runtime exception during these checks"
+  ],
+  "exceptions": [],
+  "device": "WeChat developer-tools simulator",
+  "realLocalFeedCount": 0,
+  "physicalDevice": "not tested"
+}

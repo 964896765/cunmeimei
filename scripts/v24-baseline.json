@@ -1,0 +1,8 @@
+{
+  "backend/migrations/001_init.sql": "5386683eaef991d7549584c63bf8c374a5cebe186ea2246c782db3a94b48700f",
+  "backend/migrations/002_merchant_ops.sql": "88a1a745d5ec5545b0f3f092edd82603bdd18fa6d3b39e0b42bf5525306926ed",
+  "backend/migrations/003_private_licenses_slots.sql": "f2e6a4ca78e53c4f2ce7e15c42b045ad6f4ad60e0a1f9404d4def84ad092bcf7",
+  "backend/migrations/004_region_taxonomy.sql": "969f453e3f148883a022dc3489814fea68b3bbc70cef802a51bfe9dc7516aa20",
+  "backend/migrations/005_publication_revision.sql": "5b9f1b18f5e11f32cbca72aa94fd4241f4faabb5854084530781f8764d15ac1e",
+  "miniprogram/app.json": "a2bb8d44ed8d9ac951e17109f88fa1ad3ab5756f4a4b754482da45b743b5c0b5"
+}

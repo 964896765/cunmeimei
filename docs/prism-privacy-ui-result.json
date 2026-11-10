@@ -1,0 +1,21 @@
+{
+  "passed": 10,
+  "failed": 0,
+  "checks": [
+    "actual settings controls persist dark theme and privacy switches",
+    "server returns neutral notification summaries",
+    "server blocks new contact requests after switch is disabled",
+    "dark theme remains consistent across the four other main tabs",
+    "dark theme also renders a real approved detail",
+    "high contrast, larger text and reduced motion are saved and applied",
+    "actual form creates a private data-access request",
+    "authorized admin response appears in the actual user request history",
+    "all six palettes are selectable and returning to Prism restores the shared appearance",
+    "no captured simulator runtime exceptions"
+  ],
+  "ownerUserId": "f31bdf1f-3518-4536-907f-1ccb2c921979",
+  "ownerDevUser": "prism-owner-1792302204246",
+  "publicationId": "ce14e954-413f-4758-a5f6-814ad3ac1cdc",
+  "requestId": "788a4c48-7daa-4802-9024-47430c0f8df7",
+  "physicalDevice": false
+}

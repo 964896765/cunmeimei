@@ -1,0 +1,22 @@
+{
+  "passed": 12,
+  "failed": 0,
+  "checks": [
+    "bio is stored by the authenticated backend",
+    "profile city persists independently of the browsing city",
+    "avatar uses real upload, owner binding and authorized download",
+    "avatar remains unavailable to anonymous visitors",
+    "profile and avatar survive page recreation",
+    "cache reports actual saved avatar bytes",
+    "cancelled cache cleanup retains files",
+    "confirmed cleanup removes the current-account avatar cache",
+    "cleanup preserves all storage keys including drafts and preferences",
+    "notification setting persists to the existing server policy",
+    "personal data submits a real owner-scoped request and displays its processing record",
+    "request withdrawal retains its actual processing history"
+  ],
+  "physicalDevice": false,
+  "nativeAvatarChooser": false,
+  "avatarInput": "generated isolated fixture passed to real chooseAvatar event handler",
+  "checkedAt": "2026-10-19T15:44:22.766Z"
+}

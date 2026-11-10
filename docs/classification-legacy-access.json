@@ -1,0 +1,174 @@
+[
+  {
+    "categoryId": "C03G01S01",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G01S02",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G01S03",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G01S04",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G01S05",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G01S06",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G02S01",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G02S02",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G02S03",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G02S04",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G02S05",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G02S06",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G03S01",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G03S02",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G03S03",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G03S04",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C03G03S05",
+    "kind": "service"
+  },
+  {
+    "categoryId": "C04G01S01",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G01S02",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G01S03",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G01S04",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G02S01",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G02S02",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G02S03",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G02S04",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S01",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S02",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S03",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S04",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S05",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S06",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C04G03S07",
+    "kind": "used"
+  },
+  {
+    "categoryId": "C05G01S03",
+    "kind": "housing"
+  },
+  {
+    "categoryId": "C05G01S04",
+    "kind": "housing"
+  },
+  {
+    "categoryId": "C05G01S05",
+    "kind": "housing"
+  },
+  {
+    "categoryId": "C05G02S01",
+    "kind": "housing"
+  },
+  {
+    "categoryId": "C05G02S02",
+    "kind": "housing"
+  },
+  {
+    "categoryId": "C05G02S03",
+    "kind": "housing"
+  },
+  {
+    "categoryId": "C08G01S01",
+    "kind": "community"
+  },
+  {
+    "categoryId": "C08G01S02",
+    "kind": "community"
+  },
+  {
+    "categoryId": "C08G01S03",
+    "kind": "community"
+  },
+  {
+    "categoryId": "C08G02S05",
+    "kind": "community"
+  },
+  {
+    "categoryId": "C08G03S04",
+    "kind": "community"
+  }
+]

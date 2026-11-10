@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-11-02T17:22:04.247Z",
+  "status": "local_implementation_verified_production_blocked",
+  "main": {
+    "tests": 490,
+    "passed": 490,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "strictPostgres": {
+    "passed": 122,
+    "failed": 0,
+    "skipped": 0
+  },
+  "endToEnd": {
+    "tests": 15,
+    "passed": 15,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "permissions": {
+    "tests": 9,
+    "passed": 9,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "merchantApplication": {
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "uiPassed": 44,
+  "restoreTables": 61,
+  "devMigrations": 26,
+  "isolatedResourcesRemoved": true,
+  "productionAccessed": false,
+  "physicalDevicesTested": false,
+  "currentScreenshots": [
+    "admin-home-content.png",
+    "admin-ad-picker.png",
+    "native-home.png",
+    "native-me.png"
+  ],
+  "screenshotFailures": [
+    "discover",
+    "publish",
+    "messages"
+  ],
+  "releaseConfigurationBlocked": [
+    "DOMAIN_CHECK_MUST_BE_ENABLED",
+    "PRIVATE_DOMAIN_CHECK_MUST_BE_ENABLED",
+    "DEV_LOGIN_MUST_BE_DISABLED",
+    "HTTPS_PUBLIC_API_REQUIRED"
+  ]
+}

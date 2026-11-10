@@ -1,0 +1,30 @@
+{
+  "passed": 20,
+  "failed": 0,
+  "checks": [
+    "draft box is an independent secondary route without the five-tab bar",
+    "local, account and untitled legacy drafts are ordered by last save",
+    "centered title and management action fit before the native capsule",
+    "source labels distinguish device-only and existing account storage",
+    "photo-only untitled legacy record restores its content and real owned photo",
+    "unchanged legacy back exits directly and preserves original bytes",
+    "legacy editing uses the same single exit dialog",
+    "explicit save migrates legacy data into the normal collection",
+    "cancelled deletion retains every saved draft",
+    "confirmed deletion removes only the selected local draft",
+    "stale account delete cannot erase a newer server revision",
+    "draft box preserves prism display preference",
+    "draft box preserves dark display preference",
+    "draft box preserves clear display preference",
+    "draft box preserves quiet display preference",
+    "draft box preserves warm display preference",
+    "draft box preserves gentle display preference",
+    "empty box appears after confirmed deletions of remaining local/account records",
+    "draft box back always returns to publishing categories",
+    "no captured WeChat runtime exceptions"
+  ],
+  "checkedAt": "2026-10-20T06:24:54.519Z",
+  "physicalDevice": false,
+  "nativeModal": "automation mocked confirm/cancel; touch acceptance pending",
+  "source": "actual rendered WeChat simulator and isolated PostgreSQL APIs"
+}

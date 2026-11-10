@@ -1,0 +1,4 @@
+.workspace-tab{flex:1;background:var(--surface);color:var(--muted);font-size:28rpx;min-height:88rpx;padding:14rpx 8rpx;border:1rpx solid var(--border);border-radius:18rpx;margin:0 8rpx 0 0}.workspace-tab.selected{background:var(--soft);color:var(--link);border-color:var(--link);font-weight:600}.material-preview{width:100%;height:280rpx;border-radius:20rpx}.fulfilment{padding:24rpx;background:var(--soft);color:var(--ink);word-break:break-all;font-size:var(--card-meta)}.large-text .workspace-tab{font-size:34rpx}.field{box-sizing:border-box;width:100%;margin:16rpx 0}.section-card .btn{margin-top:18rpx}
+.focused-record{border:2rpx solid var(--link);box-shadow:0 0 0 4rpx var(--soft)}
+
+.workspace-tab{box-sizing:border-box;line-height:1.5}.center-link{background:transparent;color:var(--link);font-size:var(--card-meta,25rpx);line-height:1.5;min-height:88rpx;padding:16rpx;margin:8rpx 0}.center-link::after{border:0}

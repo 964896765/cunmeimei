@@ -1,0 +1,15 @@
+{
+  "passed": 6,
+  "failed": 0,
+  "checks": [
+    "operator: actual admin script renders the 418-item registry using authorized API",
+    "operator: business verification controls follow role and no manual identity certification control exists",
+    "operator: existing and new admin queues load together, credential input is cleared",
+    "verifier: actual admin script renders the 418-item registry using authorized API",
+    "verifier: business verification controls follow role and no manual identity certification control exists",
+    "verifier: existing and new admin queues load together, credential input is cleared"
+  ],
+  "visualScreenshot": false,
+  "source": "actual admin script, DOM adapter and real local PostgreSQL API; browser launch blocked by tool policy",
+  "checkedAt": "2026-10-20T11:04:50.224Z"
+}

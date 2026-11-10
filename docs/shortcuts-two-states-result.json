@@ -1,0 +1,18 @@
+{
+  "choices": 27,
+  "uniqueChoices": 27,
+  "noSearch": true,
+  "noDuplicateList": true,
+  "noMoreButtonInEditor": true,
+  "states": [
+    "selected minus",
+    "unselected plus"
+  ],
+  "toggle": true,
+  "allSelected": true,
+  "allRemoved": true,
+  "saveHandler": true,
+  "saveReturnsHome": true,
+  "homeMorePreserved": true,
+  "physicalTouch": "pending"
+}

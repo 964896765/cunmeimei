@@ -1,0 +1,93 @@
+'use strict';
+// Invoked only inside the project-scoped disposable PostgreSQL test environment.
+const {Pool}=require('../backend/node_modules/pg'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),crypto=require('node:crypto');
+const {backup,restoreDrill}=require('../backend/src/database-recovery');
+(async()=>{
+ const dsn=process.env.PG_TEST_DATABASE_URL;require('../backend/src/test-database-guard').assertIsolatedDatabase(dsn);
+ const container=process.env.PG_TEST_TOOL_CONTAINER||'',nativeTools=process.env.PG_TEST_NATIVE_TOOLS==='1';if(container?!/^[a-f0-9]{64}$/.test(container):!nativeTools)throw Error('An isolated test container or explicit native test tools are required');
+ const pool=new Pool({connectionString:dsn}),name='restore_drill_'+crypto.randomBytes(8).toString('hex'),file=path.join(os.tmpdir(),name+'.dump');let restored,created=false,repo;
+ const toolUrl=new URL(dsn);if(container)toolUrl.port='5432';const targetUrl=new URL(dsn);targetUrl.pathname='/'+name;const restoreToolUrl=new URL(toolUrl);restoreToolUrl.pathname='/'+name;
+ const fingerprint=async client=>{
+  const tables=(await client.query("SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename")).rows.map(x=>x.tablename),result={};
+  for(const table of tables){if(!/^[a-z_]+$/.test(table))throw Error('Unexpected table name');const rows=(await client.query('SELECT to_jsonb(t)::text value FROM "'+table+'" t ORDER BY to_jsonb(t)::text')).rows;result[table]={count:rows.length,hash:crypto.createHash('sha256').update(JSON.stringify(rows)).digest('hex')};}
+  return result;
+ };
+ try{
+  await require('../backend/src/schema-migrations').applyMigrations(pool);
+  repo=require('../backend/src/pg-repository').createPgRepository(dsn);await repo.seedRegions(['恢复演练区域']);
+  const uid=(await pool.query("INSERT INTO app_users(display_name) VALUES('隔离恢复演练账号') RETURNING id")).rows[0].id;
+  const news=await repo.saveHomeContent(null,{kind:'news',cityCode:'441900',title:'隔离恢复演练资讯',summary:'核对首页内容和纠错记录的完整恢复',body:'恢复演练原始正文\n保留段落和来源。',sourceName:'隔离演练来源',sourceUrl:'https://example.org/recovery',startsAt:new Date(Date.now()-3600000).toISOString(),endsAt:new Date(Date.now()+86400000).toISOString(),priority:1},'recovery_drill');
+  await repo.reviewHomeContent(news.id,{revision:1,status:'published',textReviewed:true,sourceReviewed:true,reason:'隔离恢复演练已核对测试来源和文字'},'recovery_drill');
+  const homeReport=await repo.reportHomeContent(uid,news.id,'隔离恢复演练纠错：核对来源发布时间');
+  await repo.resolveHomeReport(homeReport.id,{revision:1,status:'resolved',response:'隔离演练保留已处理纠错记录和答复'},'recovery_drill');
+  const sid=(await pool.query("INSERT INTO service_catalog(title,description,district,price,status) VALUES('隔离预约恢复服务','验证预约申请编号与原记录联合恢复','恢复演练区域','100','published') RETURNING id")).rows[0].id;
+  const bookingPayload={serviceId:sid,requestedAt:'2099-12-01T02:00:00.000Z',remark:'恢复演练原始申请',clientKey:'recovery_booking_submission_001'};
+  const booking=await repo.createBooking(uid,bookingPayload);if(!booking.id)throw Error('Booking recovery fixture was not created');
+  const rejectedKey='recovery_rejected_booking_001';if((await repo.createBooking(uid,{...bookingPayload,remark:'另一份需求',clientKey:rejectedKey})).error!=='existing_booking_different')throw Error('Rejected booking fixture was not persisted');
+  await repo.postPoints(uid,{kind:'earn',amount:10,key:'recovery_drill_reward_001',source:'recovery-ticket:CASE-001',reason:'恢复演练核对不可变积分账本',actor:'recovery_drill'});
+  const offer=await repo.saveBenefitOffer(null,{title:'隔离恢复核销权益',description:'只用于核对恢复后的实际库存与交付快照',terms:'隔离演练72小时核销记录，核销前可以取消并退还积分',pointsCost:1,stock:2,enabled:true,reason:'隔离恢复演练配置测试权益与库存'},'recovery_drill');
+  await repo.redeemBenefit(uid,{offerId:offer.id,offerRevision:1,expectedCost:1,clientKey:'recovery_benefit_pending_0001'});
+  const fulfilled=await repo.redeemBenefit(uid,{offerId:offer.id,offerRevision:2,expectedCost:1,clientKey:'recovery_benefit_fulfil_0001'});await repo.resolveBenefit(null,fulfilled.id,{status:'fulfilled',revision:1,response:'隔离恢复测试保留已核销状态',fulfilment:'隔离恢复演练本人核销凭据 TEST-ONLY',confirmed:true},'recovery_drill');
+  const photo=await require('../backend/node_modules/sharp')({create:{width:240,height:160,channels:3,background:'#eeeeee'}}).jpeg().toBuffer(),imageId=(await repo.uploadContentImage(uid,photo)).id;
+  const adTarget=(await pool.query("INSERT INTO publications(user_id,type,title,description,district,status,attributes,image_ids,expires_at) VALUES($1,'used','隔离恢复推广目标','验证广告价格与原素材关联恢复','恢复演练区域','published',$2,$3,now()+interval '7 days') RETURNING id",[uid,{cityCode:'441900'},[imageId]])).rows[0].id;
+  const advertiser=await repo.applyAdvertiser(uid,{name:'隔离恢复广告主体',reference:'recovery:AD-EVIDENCE',clientKey:'recovery_advertiser_00001'});await repo.verifyAdvertiser(advertiser.id,{revision:1,status:'verified',validUntil:new Date(Date.now()+7*86400000).toISOString(),reason:'隔离恢复演练主体材料核查记录',manuallyVerified:true},'recovery_drill');
+  const campaign=await repo.applyPromotion(uid,{advertiserId:advertiser.id,publicationId:adTarget,imageId,title:'隔离恢复推广素材',clientKey:'recovery_campaign_00001'});await repo.reviewAd(campaign.id,{revision:1,status:'approved',reason:'隔离恢复原图文字和材料核查记录',textReviewed:true,imagesReviewed:true,documentsReviewed:true},'recovery_drill');
+  const slot=await repo.createPromotionSlot({cityCode:'441900',region:'恢复演练区域',startsAt:new Date(Date.now()+3600000).toISOString(),endsAt:new Date(Date.now()+7200000).toISOString(),pointsCost:1,capacity:1,enabled:true,reason:'隔离恢复演练实际排期价格快照'},'recovery_drill');await repo.purchasePromotion(uid,campaign.id,{slotId:slot.id,slotRevision:1,expectedCost:1});
+  const industryCatalog=require('../miniprogram/utils/classification-contract'),merchantProject=industryCatalog.projects.find(p=>p.publication.policy==='MERCHANT'),eventProject=industryCatalog.projects.find(p=>p.publication.policy==='EVENT');
+  const credential=await repo.applyIndustryCredential(uid,{projectId:merchantProject.id,subject:'隔离恢复项目主体',evidenceReference:'recovery:INDUSTRY-PROOF'});await repo.reviewIndustryCredential(credential.id,{revision:1,status:'verified',validUntil:new Date(Date.now()+7*86400000).toISOString(),response:'隔离恢复演练本项目主体与范围核查记录',manuallyVerified:true},'recovery_drill');
+  const participant=(await pool.query("INSERT INTO app_users(display_name) VALUES('隔离恢复报名账号') RETURNING id")).rows[0].id;
+  const event=await repo.saveIndustryEntry(uid,null,{projectId:eventProject.id,title:'隔离恢复免费活动',detail:'只用于核对恢复后的报名、举报和业务原始内容关联',cityCode:'441900',districtCode:require('../backend/src/geography').findCity('441900').districts[0].code,district:'恢复演练区域',price:'',imageIds:[],clientKey:'recovery_industry_event_001',action:'submit',fields:{organizer:'隔离恢复组织者',venue:'隔离恢复公开场所',startsAt:new Date(Date.now()+2*86400000).toISOString(),endsAt:new Date(Date.now()+2*86400000+3600000).toISOString(),capacity:'2',safety:'仅隔离恢复测试，核对安全说明与退出规则',cancellation:'可撤回报名，测试活动不收取任何费用',free:true}});await repo.reviewIndustryEntry(event.id,{revision:1,status:'published',response:'隔离恢复活动内容与规则核对记录',textReviewed:true},'recovery_drill');
+  await repo.createIndustryResponse(participant,event.id,{body:'隔离恢复报名申请，已阅读安全和退出规则',clientKey:'recovery_industry_response_001'});await repo.reportIndustry(participant,event.id,'隔离恢复举报核查：需要补充活动场所说明');
+  const response=(await repo.industryResponses(participant,false,0)).find(x=>x.entry_id===event.id);await repo.resolveIndustryResponse(uid,response.id,{revision:response.revision,status:'accepted',response:'隔离恢复演练确认接受本次报名申请'});const progress=await repo.createBusinessCase(participant,{sourceKind:'contact',sourceId:response.id,agreed:true,clientKey:'recovery_business_case_001'});await repo.actBusinessCase(uid,progress.id,{action:'note',revision:progress.revision,body:'隔离恢复演练保留双方业务进度与不可变处理历史',clientKey:'recovery_business_note_001'});
+  const serviceProject=industryCatalog.projects.find(p=>p.publication.policy==='MERCHANT_SERVICE');const serviceCredential=await repo.applyIndustryCredential(uid,{projectId:serviceProject.id,subject:'隔离恢复服务主体',evidenceReference:'recovery:SERVICE-PROOF'});await repo.reviewIndustryCredential(serviceCredential.id,{revision:1,status:'verified',validUntil:new Date(Date.now()+7*86400000).toISOString(),response:'隔离恢复服务范围与专项材料核查夹具',manuallyVerified:true},'recovery_drill');
+  const serviceFields=Object.fromEntries(require('../miniprogram/utils/industry-workflows').workflow(serviceProject.id).fields.map(f=>[f.key,'隔离恢复服务说明与原始条款'])),serviceEntry=await repo.saveIndustryEntry(uid,null,{projectId:serviceProject.id,title:'隔离恢复可预约服务',detail:'核对源业务、商家和服务目录的关联恢复',cityCode:'441900',districtCode:require('../backend/src/geography').findCity('441900').districts[0].code,district:'恢复演练区域',price:'80',imageIds:[],fields:serviceFields,clientKey:'recovery_linked_service_001',action:'submit'});await repo.reviewIndustryEntry(serviceEntry.id,{revision:1,status:'published',textReviewed:true,scopeReviewed:true,response:'隔离恢复原服务内容和范围复核记录'},'recovery_drill');
+  const merchantApplication=await repo.createMerchant(uid,{name:'隔离恢复负责商家',category:'隔离服务',district:'恢复演练区域'});await repo.submitMerchantEvidence(uid,merchantApplication.id,{registrationCode:'TESTONLY000000000001',licenseHolder:'隔离恢复主体',evidenceReference:'recovery:MERCHANT-PROOF'});const linkedMerchant=await repo.approveMerchantApplication(merchantApplication.id,'隔离恢复商家资质夹具，不代表真实核验',true);const linkedSupply=await repo.connectIndustryService(uid,serviceEntry.id,{merchantId:linkedMerchant.id,revision:2,confirmed:true});
+  await repo.reviewIndustryService(linkedSupply.service_id,{revision:1,status:'published',textReviewed:true,imagesReviewed:true,scopeReviewed:true,response:'隔离恢复服务复核，保留供给原始范围'},'operator');
+  const sourceCancelledBooking=await repo.createBooking(participant,{serviceId:linkedSupply.service_id,requestedAt:'2099-12-02T02:00:00.000Z',remark:'恢复来源失效的原始预约记录',clientKey:'recovery_source_cancel_001'});
+  await repo.closeIndustryEntry(uid,serviceEntry.id,{revision:2,response:'隔离恢复演练原服务结束，核对系统取消记录'});await repo.endUnavailableIndustryBookings();
+  if((await repo.myBookings(participant)).find(item=>item.id===sourceCancelledBooking.id)?.cancellationReason!=='industry_source_unavailable')throw Error('Source cancellation fixture was not persisted');
+  await repo.configureContributionRule('publication_approved',{revision:1,enabled:true,amount:5,dailyLimit:10,publicationDailyLimit:5,settlementHours:48,reason:'隔离恢复演练核对贡献规则和待结算事件'},'recovery_drill');
+  const publication=(await pool.query("INSERT INTO publications(user_id,type,title,description,district) VALUES($1,'used','隔离恢复演练信息','仅用于核对备份内真实的贡献事件数据','恢复演练区域') RETURNING id",[uid])).rows[0].id;
+  await repo.reviewPublication(publication,'published','恢复演练隔离审核记录',1);
+  await repo.runMaintenance();
+  if((await pool.query('SELECT 1 FROM points_reward_events WHERE publication_id=$1',[publication])).rows.length!==1)throw Error('Contribution fixture was not captured');
+  await repo.processContributionRewards({asOf:new Date(Date.now()+73*3600e3)});
+  let reward=(await pool.query('SELECT id,status,revision FROM points_reward_events WHERE publication_id=$1',[publication])).rows[0];
+  if(reward.status!=='review')throw Error('Reward review fixture was not created');
+  await repo.reviewContributionReward(reward.id,{decision:'reject',revision:reward.revision,confirmed:true,reason:'恢复演练保留原始风险处理和后续申诉记录'},'recovery_drill');
+  reward=(await pool.query('SELECT id,revision FROM points_reward_events WHERE id=$1',[reward.id])).rows[0];
+  await repo.createRewardAppeal(uid,reward.id,{clientKey:'recovery_reward_appeal_001',rewardRevision:reward.revision,reason:'恢复演练申诉：核对原始贡献材料与处理版本'});
+  const pendingPublication=(await pool.query("INSERT INTO publications(user_id,type,title,description,district) VALUES($1,'used','隔离恢复待结算信息','核对恢复库内尚未结算的贡献事件','恢复演练区域') RETURNING id",[uid])).rows[0].id;
+  await repo.reviewPublication(pendingPublication,'published','恢复演练保留待结算事件',1);
+  await repo.processContributionRewards({asOf:new Date(Date.now()+73*3600e3)});
+  let restoredReward=(await pool.query('SELECT * FROM points_reward_events WHERE publication_id=$1',[pendingPublication])).rows[0];
+  await repo.reviewContributionReward(restoredReward.id,{decision:'approve',revision:restoredReward.revision,confirmed:true,reason:'隔离演练人工核对测试贡献，仅用于验证恢复记录'},'recovery_drill');
+  await repo.processContributionRewards({asOf:new Date(Date.now()+73*3600e3)});
+  restoredReward=(await pool.query('SELECT * FROM points_reward_events WHERE id=$1',[restoredReward.id])).rows[0];
+  await repo.reverseContributionReward(restoredReward.id,{revision:restoredReward.revision,confirmed:true,reason:'隔离演练追加测试冲正，验证申诉后恢复账本'},'recovery_drill');
+  restoredReward=(await pool.query('SELECT * FROM points_reward_events WHERE id=$1',[restoredReward.id])).rows[0];
+  const resolvedAppeal=await repo.createRewardAppeal(uid,restoredReward.id,{clientKey:'recovery_resolved_appeal_001',rewardRevision:restoredReward.revision,reason:'隔离演练复核历史贡献并验证恢复账本关联'});
+  await repo.reviewRewardAppeal(resolvedAppeal.id,{status:'accepted',revision:1,rewardRevision:restoredReward.revision,confirmed:true,historicalContributionConfirmed:true,reviewedReportIds:[],response:'隔离演练已核对原贡献和测试冲正，恢复原积分'},'recovery_drill');
+  const legal=require('../backend/src/legal-documents').documents({operatorName:'Isolated recovery operator',contactEmail:'privacy@example.test'});
+  await repo.newSession(uid,crypto.createHash('sha256').update('recovery-only-session').digest('hex'),new Date(Date.now()+3600000).toISOString(),{termsVersion:legal.termsVersion,privacyVersion:legal.privacyVersion,hash:legal.hash});
+  repo.configureTrust({enabled:false,phoneKey:crypto.randomBytes(32).toString('base64')});await repo.verifyPhone(uid,'13900000001','wechat_phone','isolated-recovery-provider');await repo.revokePhone(uid);if(!(await pool.query('SELECT 1 FROM phone_authorization_events')).rows.length)throw Error('Missing phone audit recovery fixture');
+  const before=await fingerprint(pool);backup(toolUrl.toString(),file,{container});await pool.query('CREATE DATABASE "'+name+'"');created=true;
+  for(const table of ['login_consent_events','phone_authorization_events','benefit_offers','benefit_orders','industry_credentials','industry_entries','industry_responses','industry_reports','ad_campaigns','ad_reservations'])if(!before[table]?.count)throw Error('Missing nonempty workflow recovery fixture');
+  restoreDrill(restoreToolUrl.toString(),file,{container});restored=new Pool({connectionString:targetUrl.toString()});
+  require('node:assert/strict').deepEqual(await fingerprint(restored),before);
+  require('node:assert/strict').equal(before.home_content.count,1);
+  require('node:assert/strict').equal(before.home_content_reports.count,1);
+  require('node:assert/strict').equal((await restored.query('SELECT id FROM industry_public_eligibility WHERE id=$1',[event.id])).rows.length,1);
+  require('node:assert/strict').equal((await restored.query('SELECT price_snapshot FROM ad_reservations WHERE campaign_id=$1',[campaign.id])).rows[0].price_snapshot,1);
+  const mapping=(await restored.query('SELECT booking_id FROM booking_submissions WHERE user_id=$1 AND client_key=$2',[uid,bookingPayload.clientKey])).rows[0];
+  require('node:assert/strict').equal(mapping?.booking_id,booking.id);
+  require('node:assert/strict').equal((await restored.query('SELECT failure_code FROM booking_submissions WHERE user_id=$1 AND client_key=$2',[uid,rejectedKey])).rows[0]?.failure_code,'EXISTING_BOOKING_DIFFERENT');
+  // A second restore is refused before any mutation; corruption is refused as well.
+  require('node:assert/strict').throws(()=>restoreDrill(restoreToolUrl.toString(),file,{container}),/must be empty/);
+  fs.writeFileSync(file+'.sha256','0'.repeat(64));require('node:assert/strict').throws(()=>restoreDrill(restoreToolUrl.toString(),file,{container}),/checksum mismatch/);
+  console.log(JSON.stringify({verification:'backup_restore_drill',ok:true,tables:Object.keys(before).length,nonemptyTables:Object.values(before).filter(x=>x.count).length,checks:['custom-format backup','SHA256 integrity','transactional restore to empty drill database','all table contents match','existing database refused','corrupt backup refused']}));
+ }finally{
+  if(repo)await repo.close();if(restored)await restored.end();if(created)await pool.query('DROP DATABASE "'+name+'"');await pool.end();
+  for(const f of [file,file+'.sha256'])if(fs.existsSync(f))fs.unlinkSync(f);
+ }
+})().catch(()=>{console.error('Recovery drill failed; credentials and SQL diagnostics withheld.');process.exitCode=1;});

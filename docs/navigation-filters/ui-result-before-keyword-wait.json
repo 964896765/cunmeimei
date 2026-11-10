@@ -1,0 +1,21 @@
+{
+  "status": "fail",
+  "reason": "clearing the visible keyword also clears the actual request keyword",
+  "stage": "keyword-reset",
+  "checks": [
+    "complete category directory shows 27 direct browse entrances",
+    "shortcut editor is an explicit separate mode",
+    "leaving shortcut editing discards unsaved choices without changing directory navigation",
+    "directed category entry clears previous keyword and refinements",
+    "directed entry keeps the explicit browsing city and district",
+    "channel and sort controls are available before any keyword",
+    "blank-keyword refinement queries the real scoped API"
+  ],
+  "passed": 7,
+  "screenshots": [
+    "category-directory.png"
+  ],
+  "exceptions": [],
+  "physicalDevice": false,
+  "checkedAt": "2026-11-05T02:12:06.107Z"
+}

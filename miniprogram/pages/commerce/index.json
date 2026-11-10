@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "/components/page-header/index",
+    "disclosure-section": "/components/disclosure-section/index"
+  }
+}

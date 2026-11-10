@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-11-04T05:43:46.815Z",
+  "total": 26,
+  "routes": [
+    {
+      "route": "pages/home/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/discover/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/publish/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/messages/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/me/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/regions/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/detail/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/booking/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/my-posts/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/my-bookings/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/merchant/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/chat/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/merchant-services/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/merchant-bookings/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/merchant-team/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/search/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/categories/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/map/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/publish-form/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/drafts/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/verification/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/information/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/commerce/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/industry/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/login/index",
+      "rendered": true
+    },
+    {
+      "route": "pages/legal/index",
+      "rendered": true
+    }
+  ]
+}
