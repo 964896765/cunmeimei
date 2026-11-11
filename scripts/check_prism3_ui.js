@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const { Pool } = require('../backend/node_modules/pg');
 const { residentFields } = require('../backend/tests/helpers/resident-fields');
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const output = path.resolve(__dirname, '../docs/remediation/stage-2/visual');
+const output = process.env.UI_AUDIT_OUTPUT ? path.resolve(process.env.UI_AUDIT_OUTPUT) : path.resolve(__dirname, '../docs/remediation/stage-2/visual');
 
 async function main() {
   const dsn = process.env.PG_TEST_DATABASE_URL;
@@ -326,7 +326,8 @@ async function main() {
       'publish-form': '?categoryId=C04G01S01',
       industry: '?projectId=C22G01S01'
     };
-    for (const route of app.pages) {
+    const routes = process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
+    for (const route of routes) {
       if (checks.some(check => check.route === route)) continue;
       const name = route.split('/')[1];
       for (let attempt=0;attempt<3;attempt++) {
@@ -361,56 +362,58 @@ async function main() {
     // Re-capture variants on resume using this run's fresh API fixtures.
     const normalShots = screenshots.filter(shot => ['normal', 'middle', 'bottom'].includes(shot.variant));
     screenshots.splice(0, screenshots.length, ...normalShots);
-    let page = await routeTo('/pages/discover/index');
-    await page.setData({ error: '界面验收状态，网络连接暂时中断。', loading: false });
-    await pause(100);
-    await capture('discover', page.path, 'error');
-    await page.setData({ error: '', loading: true, filtered: [] });
-    await pause(100);
-    await capture('discover', page.path, 'loading');
-    await page.setData({ loading: false, filtered: [], hasMore: false });
-    await pause(100);
-    await capture('discover', page.path, 'empty');
-    page = await routeTo('/pages/publish-form/index?categoryId=C04G01S01');
-    assert.equal((await page.data()).showForm, true);
-    await mini.evaluate(() => {
-      const current = getCurrentPages().slice(-1)[0];
-      current.setField({ currentTarget: { dataset: { field: 'title' } }, detail: { value: '界面验收退出确认' } });
-      current.goBack();
-      return true;
-    });
-    await pause(150);
-    assert.equal((await page.data()).showExitDialog, true);
-    await capture('publish-form', page.path, 'dialog');
-    await mini.evaluate(() => {
-      const current = getCurrentPages().slice(-1)[0];
-      current.continueEditing();
-      current.cancelPublish();
-      return true;
-    });
-    await pause(300);
-    await mini.callWxMethod('setStorageSync', 'city_life_user_id', reader.userId);
-    await mini.callWxMethod('setStorageSync', 'city_life_v2_auth_token', reader.token);
-    page = await routeTo('/pages/merchant-team/index?merchantId=' + merchant.id);
-    assert.ok((await page.data()).error);
-    assert.equal((await page.data()).canManage, false);
-    await capture('merchant-team', page.path, 'permission');
-    await mini.callWxMethod('removeStorageSync', 'city_life_v2_auth_token');
-    await mini.callWxMethod('removeStorageSync', 'city_life_user_id');
-    page = await routeTo('/pages/messages/index');
-    assert.equal((await page.data()).hasSession, false);
-    await capture('messages', page.path, 'guest');
-    await mini.callWxMethod('setStorageSync', 'city_life_user_id', owner.userId);
-    await mini.callWxMethod('setStorageSync', 'city_life_v2_auth_token', owner.token);
-    await mini.callWxMethod('setStorageSync', 'city_life_preferences_' + owner.userId, {
-      theme: 'clear',
-      largeText: true,
-      reduceMotion: true
-    });
-    for (const name of ['home', 'discover', 'publish', 'messages', 'me', 'publish-form']) {
-      page = await routeTo('/pages/' + name + '/index' + (queries[name] || ''));
-      assert.ok((await page.data()).themeClass.includes('large-text'));
-      await capture(name, page.path, 'accessible');
+    if (process.env.UI_AUDIT_STATES !== '0') {
+      let page = await routeTo('/pages/discover/index');
+      await page.setData({ error: '界面验收状态，网络连接暂时中断。', loading: false });
+      await pause(100);
+      await capture('discover', page.path, 'error');
+      await page.setData({ error: '', loading: true, filtered: [] });
+      await pause(100);
+      await capture('discover', page.path, 'loading');
+      await page.setData({ loading: false, filtered: [], hasMore: false });
+      await pause(100);
+      await capture('discover', page.path, 'empty');
+      page = await routeTo('/pages/publish-form/index?categoryId=C04G01S01');
+      assert.equal((await page.data()).showForm, true);
+      await mini.evaluate(() => {
+        const current = getCurrentPages().slice(-1)[0];
+        current.setField({ currentTarget: { dataset: { field: 'title' } }, detail: { value: '界面验收退出确认' } });
+        current.goBack();
+        return true;
+      });
+      await pause(150);
+      assert.equal((await page.data()).showExitDialog, true);
+      await capture('publish-form', page.path, 'dialog');
+      await mini.evaluate(() => {
+        const current = getCurrentPages().slice(-1)[0];
+        current.continueEditing();
+        current.cancelPublish();
+        return true;
+      });
+      await pause(300);
+      await mini.callWxMethod('setStorageSync', 'city_life_user_id', reader.userId);
+      await mini.callWxMethod('setStorageSync', 'city_life_v2_auth_token', reader.token);
+      page = await routeTo('/pages/merchant-team/index?merchantId=' + merchant.id);
+      assert.ok((await page.data()).error);
+      assert.equal((await page.data()).canManage, false);
+      await capture('merchant-team', page.path, 'permission');
+      await mini.callWxMethod('removeStorageSync', 'city_life_v2_auth_token');
+      await mini.callWxMethod('removeStorageSync', 'city_life_user_id');
+      page = await routeTo('/pages/messages/index');
+      assert.equal((await page.data()).hasSession, false);
+      await capture('messages', page.path, 'guest');
+      await mini.callWxMethod('setStorageSync', 'city_life_user_id', owner.userId);
+      await mini.callWxMethod('setStorageSync', 'city_life_v2_auth_token', owner.token);
+      await mini.callWxMethod('setStorageSync', 'city_life_preferences_' + owner.userId, {
+        theme: 'clear',
+        largeText: true,
+        reduceMotion: true
+      });
+      for (const name of ['home', 'discover', 'publish', 'messages', 'me', 'publish-form']) {
+        page = await routeTo('/pages/' + name + '/index' + (queries[name] || ''));
+        assert.ok((await page.data()).themeClass.includes('large-text'));
+        await capture(name, page.path, 'accessible');
+      }
     }
     assert.equal(errors.length, 0, 'Simulator runtime exceptions');
     const restored = await session.restore();
