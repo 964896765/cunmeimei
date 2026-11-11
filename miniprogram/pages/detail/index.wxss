@@ -8,3 +8,15 @@
 
 /* PRISM GLASS 3.0 page composition. */
 .detail-page{padding-top:24rpx}.detail-title{line-height:1.45;letter-spacing:-.5rpx}.detail-price{color:var(--price)}.gallery{border-radius:30rpx;overflow:hidden}.detail-page .section-card{margin:24rpx 0}
+
+/* VM page composition. */
+.detail-page .detail-summary { margin:0; padding:28rpx 0; border:0; border-radius:0; background:transparent; }
+.detail-title { font-size:44rpx; font-weight:650; line-height:1.35; }
+.detail-price { font-size:44rpx; }
+.detail-page .detail-facts { padding:24rpx 0; border-width:1rpx 0; border-radius:0; }
+.detail-page .detail-description { padding:12rpx 0 28rpx; border:0; border-radius:0; background:transparent; }
+.detail-attribute { min-height:96rpx; align-items:center; font-size:30rpx; }
+.metadata { padding:14rpx 0; border-radius:0; background:transparent; color:var(--muted); font-size:26rpx; }
+.gallery { border-radius:20rpx; }
+.share { min-height:88rpx; font-size:26rpx; }
+.detail-buttons .btn { min-height:96rpx; }

@@ -1,1 +1,4 @@
 .login-main{max-width:720rpx;margin:0 auto;padding:0 24rpx calc(48rpx + env(safe-area-inset-bottom));box-sizing:border-box;min-height:calc(100vh - 100px)}
+
+/* VM page composition. */
+.login-main { max-width:680rpx; padding:0 32rpx calc(40rpx + env(safe-area-inset-bottom)); }

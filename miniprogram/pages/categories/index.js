@@ -5,7 +5,7 @@ Page({
  open(e){if(this.data.editing)return this.toggle(e);require('../../utils/navigation').discoverIndustry(e.currentTarget.dataset.id);},
  edit(){this.setData({editing:true});},back(){if(this.data.editing){this.refresh(shortcuts.load());this.setData({editing:false});return;}wx.navigateBack({fail:()=>wx.switchTab({url:'/pages/home/index'})});},
  refresh(ids){const selectedIds=shortcuts.normalize(ids);this.setData({selectedIds,options:registry.categoryItems().map(x=>({...x,selected:selectedIds.includes(x.id)}))});},
- toggle(e){const id=e.currentTarget.dataset.id,ids=this.data.selectedIds;if(!this.data.options.some(x=>x.id===id))return;this.refresh(ids.includes(id)?ids.filter(x=>x!==id):[...ids,id]);},
+ toggle(e){const id=e.currentTarget.dataset.id,ids=this.data.selectedIds;if(!this.data.options.some(x=>x.id===id))return;if(!ids.includes(id)&&ids.length>=shortcuts.max){wx.showToast({title:'请先移除一个常用分类',icon:'none'});return;}this.refresh(ids.includes(id)?ids.filter(x=>x!==id):[...ids,id]);},
  reset(){this.refresh(shortcuts.defaults);},
  save(){shortcuts.save(this.data.selectedIds);this.setData({editing:false});}
 });

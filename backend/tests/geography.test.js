@@ -23,11 +23,10 @@ test('manual browsing city survives GPS and validates town ancestry; history is 
  assert.equal(c.current().label,'东莞市 · 南城街道');assert.throws(()=>c.select('440100','441900004'));
  for(const city of geo.cities.slice(0,9))c.select(city.code);assert.equal(c.history().length,6);
 });
-test('shortcut pages retain all industries, put item nine on page two and More at the last page corner',()=>{
+test('home shortcut grid exposes seven saved industries and keeps More in the fixed corner',()=>{
  const shortcuts=require('../../miniprogram/utils/shortcuts'),ids=require('../../miniprogram/utils/classification').categories.map(x=>x.id);
- assert.equal(shortcuts.normalize([...ids,...ids,'more','unknown']).length,27);
- for(const count of [0,1,7,8,9,15,16,23,24,27]){const slots=shortcuts.items(ids.slice(0,count)),pages=shortcuts.pages(slots);assert.equal(slots.length,Math.ceil((count+1)/8)*8);assert.equal(slots.at(-1).id,'more');assert.equal(slots.filter(x=>x.id==='more').length,1);assert.equal(slots.filter(x=>!x.empty&&x.id!=='more').length,count);assert.ok(pages.every(p=>p.items.length===8));assert.deepEqual(slots.filter(x=>!x.empty&&x.id!=='more').map(x=>x.id),ids.slice(0,count));}
- const pages=shortcuts.pages(shortcuts.items(ids.slice(0,9)));assert.equal(pages[1].items[0].id,ids[8]);assert.equal(pages[1].items[7].id,'more');
+ assert.equal(shortcuts.normalize([...ids,...ids,'more','unknown']).length,7);
+ for(const count of [0,1,7,8,9,15,16,23,24,27]){const visible=Math.min(count,7),slots=shortcuts.items(ids.slice(0,count)),pages=shortcuts.pages(slots);assert.equal(slots.length,8);assert.equal(slots.at(-1).id,'more');assert.equal(slots.filter(x=>x.id==='more').length,1);assert.equal(slots.filter(x=>!x.empty&&x.id!=='more').length,visible);assert.equal(pages.length,1);assert.deepEqual(slots.filter(x=>!x.empty&&x.id!=='more').map(x=>x.id),ids.slice(0,visible));}
 });
 test('geo query rejects malformed bounds/city ancestry and rounds approximate points before storage',()=>{
  for(const v of ['',null,true,'NaN','Infinity'])assert.throws(()=>geo.number(v,-90,90));

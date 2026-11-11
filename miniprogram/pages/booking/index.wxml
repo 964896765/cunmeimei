@@ -7,8 +7,8 @@
 <view wx:if="{{loadingItem}}" class="state-panel" role="status">正在读取可预约服务…</view>
 <feedback-state wx:if="{{itemError}}" kind="error" description="{{itemError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新读取服务" bind:action="load"/>
 <view class="container" wx:if="{{item}}">
-  <view class="title">预约服务</view><view class="subtitle">{{online?'提交预约申请，由服务方进一步确认。':'选择期望时间，创建本地预约演示。'}}</view>
-  <view class="card booking-item"><view class="list-art"><image src="/assets/icons/type-service-{{iconPalette||displayPreferences.theme||'prism'}}.png" style="width:56rpx;height:56rpx"/></view><view class="list-text"><view class="list-title">{{item.title}}</view><view class="list-desc">{{item.district}}</view><view class="list-price">{{item.priceText||item.price}}</view></view></view>
+  <view class="subtitle">{{online?'提交预约申请，由服务方进一步确认。':'选择期望时间，创建本地预约演示。'}}</view>
+  <view class="card booking-item service-summary"><view class="list-art"><image src="/assets/icons/type-service-{{iconPalette||displayPreferences.theme||'prism'}}.png" style="width:56rpx;height:56rpx"/></view><view class="list-text"><view class="list-title">{{item.title}}</view><view class="list-desc">{{item.district}}</view><view class="list-price">{{item.priceText||item.price}}</view></view></view>
   <text class="field-label">服务日期（北京时间）</text><picker mode="date" value="{{date}}" start="{{minDate}}" end="2100-12-31" bindchange="chooseDate" disabled="{{submitting||checking||pendingCheck||submitted}}"><view class="field picker">{{date}} <text>⌄</text></view></picker>
   <text class="field-label">期望时间</text>
   <picker wx:if="{{online}}" mode="selector" range="{{slotLabels}}" value="{{slotIndex}}" bindchange="chooseSlot" disabled="{{loadingSlots||!openSlots.length||slotError||submitting||checking||pendingCheck||submitted}}"><view class="field picker">{{loadingSlots?'正在查询时段':slotError?'时段暂未读取成功':time||'当天已无可预约时段'}} <text>⌄</text></view></picker>

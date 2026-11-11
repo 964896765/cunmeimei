@@ -35,9 +35,10 @@ async function main() {
     assert.equal(previous.sourceHash, sourceHash, 'Resume requires unchanged miniapp sources');
     checks.push(...previous.routes);
     screenshots.push(...previous.screenshots);
+    layoutChecks.push(...(previous.layoutChecks || []));
   }
   function saveProgress() {
-    fs.writeFileSync(checkpoint, JSON.stringify({ sourceHash, routes: checks, screenshots }, null, 2) + '\n');
+    fs.writeFileSync(checkpoint, JSON.stringify({ sourceHash, routes: checks, screenshots, layoutChecks }, null, 2) + '\n');
   }
   fs.mkdirSync(output, { recursive: true });
   fs.rmSync(path.join(output, 'RESULTS.json'), { force: true });
@@ -317,7 +318,10 @@ async function main() {
         assert.ok(bounds.publish.top >= bounds.navigation.top, 'Publish icon stays inside navigation ' + route);
         assert.ok(bounds.publish.bottom <= bounds.navigation.top + 57, 'Publish icon clears bottom safe area ' + route);
       }
-      layoutChecks.push({route, variant, passed:true, bounds});
+      const existing = layoutChecks.findIndex(item => item.route === route && item.variant === variant);
+      const record = {route, variant, passed:true, bounds};
+      if (existing < 0) layoutChecks.push(record);
+      else layoutChecks[existing] = record;
     }
     async function capturePositions(page, name, route) {
       const selector = {publish:'.industry-sidebar',regions:'.city-scroll',search:'.search-content',map:'.map-results'}[name];
@@ -406,6 +410,49 @@ async function main() {
     screenshots.splice(0, screenshots.length, ...normalShots);
     if (process.env.UI_AUDIT_STATES !== '0') {
       let page = await routeTo('/pages/discover/index');
+      await mini.evaluate(() => { getCurrentPages().slice(-1)[0].openSort(); return true; });
+      await pause(200);
+      assert.equal((await page.data()).sortOpen, true);
+      await capture('discover', page.path, 'sort');
+      await mini.evaluate(() => { getCurrentPages().slice(-1)[0].closeSort(); return true; });
+      page = await routeTo('/pages/map/index');
+      await mini.evaluate(() => { getCurrentPages().slice(-1)[0].openFilters(); return true; });
+      await pause(200);
+      assert.equal((await page.data()).filterOpen, true);
+      await capture('map', page.path, 'filters');
+      const mapSheet = await page.$('#map-filter-sheet');
+      const mapSheetContent = await mapSheet.$('.sheet-content');
+      await mapSheetContent.scrollTo(0, 999999);
+      await pause(350);
+      const mapApplyBounds = await mini.evaluate(() => new Promise(resolve => {
+        const current = getCurrentPages().slice(-1)[0];
+        current.createSelectorQuery().select('.filter-apply').boundingClientRect().exec(values =>
+          resolve({button:values[0], window:wx.getWindowInfo()})
+        );
+      }));
+      assert.ok(mapApplyBounds.button?.height > 0, 'Map apply action rendered');
+      assert.ok(mapApplyBounds.button.top >= 0, 'Map apply action scrolls into view');
+      assert.ok(mapApplyBounds.button.bottom <= mapApplyBounds.window.windowHeight, 'Map apply action clears viewport bottom');
+      await capture('map', page.path, 'filters-bottom');
+      await (await page.$('.filter-apply')).tap();
+      await pause(200);
+      assert.equal((await page.data()).filterOpen, false, 'Map filter apply closes sheet');
+      page = await routeTo('/pages/search/index?q=' + encodeURIComponent('书桌'));
+      await mini.evaluate(() => { getCurrentPages().slice(-1)[0].toggleAdvanced(); return true; });
+      await pause(200);
+      assert.equal((await page.data()).advancedOpen, true);
+      await capture('search', page.path, 'filters');
+      await mini.evaluate(() => { getCurrentPages().slice(-1)[0].closeAdvanced(); return true; });
+      page = await routeTo('/pages/regions/index');
+      await mini.evaluate(() => {
+        getCurrentPages().slice(-1)[0].expandDistrict({currentTarget:{dataset:{code:'310100'}}});
+        return true;
+      });
+      await pause(200);
+      assert.equal((await page.data()).districtCity?.code, '310100');
+      await capture('regions', page.path, 'districts');
+      await mini.evaluate(() => { getCurrentPages().slice(-1)[0].closeDistricts(); return true; });
+      page = await routeTo('/pages/discover/index');
       await page.setData({ error: '界面验收状态，网络连接暂时中断。', loading: false });
       await pause(100);
       await capture('discover', page.path, 'error');

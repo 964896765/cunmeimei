@@ -1,1 +1,8 @@
 .staff-item{margin-top:12rpx}.staff-item .btn{width:auto;min-width:110rpx}.staff-item .list-desc{max-width:450rpx;overflow-wrap:anywhere}
+
+/* VM page composition. */
+.staff-item { margin:24rpx 0; }
+.staff-item .list-title { font-size:32rpx; font-weight:600; }
+.staff-item .list-desc { font-size:24rpx; word-break:break-all; }
+.container>.section { margin-top:40rpx; }
+.field-label { margin-top:28rpx; }

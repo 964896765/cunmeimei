@@ -1,6 +1,7 @@
 const api=require('../../utils/api'),geo=require('../../utils/geography'),context=require('../../utils/geo-context');
 const HOT=['310100','110100','440100','330100','510100','440300','320500','320100','500100','610100','430100','420100'];
-Page({data:{q:'',groups:[],letters:[],history:[],nearby:[],nearbyExpanded:false,hot:HOT.map(geo.findCity).filter(Boolean),currentLabel:'选择城市',gpsLabel:'尚未定位',locating:false,error:'',anchor:'',districtCity:null,districts:[]},
+Page({
+ headerMeasured(event){this.setData({headerHeight:event.detail.height});},data:{q:'',groups:[],letters:[],history:[],nearby:[],nearbyExpanded:false,hot:HOT.map(geo.findCity).filter(Boolean),currentLabel:'选择城市',gpsLabel:'尚未定位',locating:false,error:'',anchor:'',districtCity:null,districts:[]},
  onLoad(opts={}){this.profileOnly=opts.purpose==='profile';this.returnToPrevious=opts.returnTo==='previous';this.setData({sourceVersion:geo.source.version});this.filter();},onShow(){require('../../utils/theme').apply(this);this.setData({currentLabel:context.current().label,history:context.history()});},
  input(e){this.setData({q:e.detail.value});this.filter();},
  filter(){const groups=[];for(const city of geo.search(this.data.q)){let group=groups.find(x=>x.letter===city.letter);if(!group){group={letter:city.letter,cities:[]};groups.push(group);}group.cities.push(city);}this.setData({groups,letters:groups.map(x=>x.letter)});},

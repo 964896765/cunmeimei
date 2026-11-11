@@ -3,3 +3,9 @@
 .center-link{background:transparent;color:var(--link);font-size:var(--card-meta,25rpx);line-height:1.5;min-height:88rpx;padding:16rpx;margin:8rpx 0}.center-link::after{border:0}.snapshot-field{margin-top:20rpx;padding-top:16rpx;border-top:1rpx solid var(--border)}.snapshot-field .body-copy{overflow-wrap:anywhere}.business-page .field-area{box-sizing:border-box}
 
 .case-primary{margin-top:20rpx}.business-page .case-note{height:176rpx;min-height:176rpx}.large-text .business-page .case-note{height:220rpx;min-height:220rpx}
+
+/* VM page composition. */
+.case-filters button { min-height:88rpx; font-size:28rpx; }
+.case-event { position:relative; margin-left:10rpx; padding:24rpx 0 24rpx 24rpx; border-left:2rpx solid var(--border); border-bottom:0; }
+.case-event::before { content:''; position:absolute; left:-7rpx; top:34rpx; width:12rpx; height:12rpx; border-radius:50%; background:var(--brand); }
+.schedule-fields { gap:20rpx; }

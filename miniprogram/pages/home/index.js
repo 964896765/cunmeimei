@@ -40,7 +40,7 @@ Page({
     const savedFeed = cache.read('home-feed:' + context, wx);
     const sameContext = context === this.contentContext;
     this.contentContext = context;
-    this.setData({loading:true, error:'', cached:false, bannerIndex:0, ...(!sameContext ? {banners:[], news:stored.news || [], feed:(savedFeed?.items || []).map(present.item), hero:null, featured:[]} : {})});
+    this.setData({loading:true, error:'', cached:false, bannerIndex:0, ...(!sameContext ? {banners:[], news:stored.news || [], feed:(Array.isArray(savedFeed?.items) ? savedFeed.items : []).map(present.item), hero:null, featured:[]} : {})});
     const results = await Promise.allSettled([
       api.request('GET','/api/v1/config'),
       api.request('GET','/api/v1/home?cityCode=' + encodeURIComponent(city.cityCode || '')),

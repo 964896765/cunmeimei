@@ -1,1 +1,8 @@
 .merchant-actions{display:flex;flex-wrap:wrap;gap:12rpx;margin-top:22rpx}.merchant-actions .btn{width:auto;min-width:150rpx;padding:0 18rpx;font-size:23rpx}.card+.card{margin-top:18rpx}
+
+/* VM page composition. */
+.merchant-context { padding:0 0 20rpx; }
+.merchant-actions { display:flex; flex-wrap:wrap; gap:16rpx; margin-top:24rpx; }
+.merchant-actions .btn { flex:1; min-width:160rpx; margin:0; padding:20rpx 12rpx; font-size:26rpx; }
+.container>.field-label { margin-top:28rpx; }
+.request-status { display:inline-block; margin-top:20rpx; padding:8rpx 16rpx; border-radius:8rpx; background:var(--soft); font-size:26rpx; }

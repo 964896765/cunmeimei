@@ -2,3 +2,9 @@
 .focused-record{border:2rpx solid var(--link);box-shadow:0 0 0 4rpx var(--soft)}
 
 .workspace-tab{box-sizing:border-box;line-height:1.5}.center-link{background:transparent;color:var(--link);font-size:var(--card-meta,25rpx);line-height:1.5;min-height:88rpx;padding:16rpx;margin:8rpx 0}.center-link::after{border:0}
+
+/* VM page composition. */
+.workspace-tab { min-height:96rpx; padding:18rpx; border-radius:14rpx; font-size:28rpx; }
+.section-card { margin-top:32rpx; }
+.section-card .field { margin-top:20rpx; }
+.section-card .btn { margin-top:24rpx; }

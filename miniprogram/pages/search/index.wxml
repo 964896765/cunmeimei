@@ -1,12 +1,7 @@
 <view class="theme-root search-root {{themeClass}}" style="{{themeStyle}}">
  <page-header id="navigation-header" title="搜索" transparent="{{true}}" back="{{true}}" back-label="返回上一页" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
  <view class="search-fixed-header">
-  <view class="search search-box">
-   <view class="search-dot" aria-hidden="true"></view>
-   <input class="search-placeholder" value="{{q}}" maxlength="80" placeholder="搜索房源、招聘、商家、服务" aria-label="搜索关键词" bindinput="input" bindconfirm="search" confirm-type="search"/>
-   <button wx:if="{{q}}" class="clear-query" bindtap="clearQuery" aria-label="清空关键词">×</button>
-   <button class="search-submit" bindtap="search">搜索</button>
-  </view>
+  <search-bar value="{{q}}" placeholder="搜索房源、招聘、商家、服务" bind:input="input" bind:clear="clearQuery" bind:search="search"/>
   <view class="query-filters">
    <button class="city-filter" bindtap="chooseCity" aria-label="切换浏览城市"><text>{{cityCode?cityLabel:'选择城市'}}</text><view class="filter-chevron"></view></button>
    <picker range="{{types}}" range-key="name" value="{{typeIndex}}" bindchange="changeType"><view class="filter"><text>{{type==='all'?'全部频道':type==='community'?'历史社区':types[typeIndex].name}}</text><view class="filter-chevron"></view></view></picker>
@@ -29,9 +24,9 @@
     <view wx:if="{{publicOnly}}" class="notice">{{mapScoped?'当前地图视野内 · 仅展示可公开定位的商家与服务':'公开位置范围 · 仅展示可公开定位的商家与服务'}}</view>
     <view wx:if="{{filterNotice}}" class="notice">{{filterNotice}}</view>
     <view wx:if="{{queryDirty}}" class="state-panel" role="status"><text>关键词已修改，点击搜索或选择条件查看结果。</text><button class="btn light" bindtap="search">搜索当前条件</button></view>
-    <view wx:elif="{{loading&&!items.length}}" class="state-panel search-loading" role="status"><view class="skeleton"></view><text>正在查找相关信息…</text></view>
-    <view wx:elif="{{error&&!items.length}}" class="state-panel search-error" role="alert"><view class="section-title">搜索暂时无法完成</view><text>{{error}}</text><button class="btn light" bindtap="retry">重新加载</button></view>
-    <feedback-state wx:elif="{{!items.length}}" kind="empty" title="暂未找到相关内容" description="×可移除上方条件，或更换关键词与地区。" compact="{{false}}" large-text="{{displayPreferences.largeText}}" action-text="浏览当前城市全部信息" bind:action="browseAll"/>
+    <feedback-state wx:elif="{{loading&&!items.length}}" kind="loading" description="正在查找相关信息…"/>
+    <feedback-state wx:elif="{{error&&!items.length}}" kind="error" title="搜索暂时无法完成" description="{{error}}" action-text="重新加载" bind:action="retry"/>
+    <feedback-state wx:elif="{{!items.length}}" kind="empty" title="暂未找到相关内容" description="可移除上方条件，或更换关键词与地区。" compact="{{false}}" large-text="{{displayPreferences.largeText}}" action-text="浏览当前城市全部信息" bind:action="browseAll"/>
     <block wx:else>
      <view class="result-heading">搜索结果</view>
      <content-card id="search-result-{{item.id}}" theme="{{displayPreferences.theme}}" icon-palette="{{iconPalette}}" wx:for="{{items}}" wx:key="id" item="{{item}}" bind:open="open"/>
@@ -41,15 +36,15 @@
    </block>
   </view>
  </scroll-view>
- <view wx:if="{{advancedOpen&&searched}}" class="advanced-layer" catchtouchmove="preventScroll"><view class="advanced-mask" bindtap="closeAdvanced"></view><view class="advanced-sheet" role="dialog" aria-label="高级筛选">
+ <bottom-sheet open="{{advancedOpen&&searched}}" label="高级筛选" dismissible="{{true}}" bind:close="closeAdvanced">
   <view class="landing-heading"><text class="section-title">高级筛选</text><button class="sheet-close" bindtap="closeAdvanced" aria-label="关闭高级筛选">关闭</button></view>
-  <scroll-view class="advanced-scroll" scroll-y="true" enhanced="true" show-scrollbar="{{false}}">
+  <view class="advanced-scroll">
    <view class="filter-section"><view class="field-label">发布时间</view><view class="filter-options"><button wx:for="{{dateOptions}}" wx:key="value" class="filter-chip {{draftDays===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseDate" disabled="{{filterBusy}}" aria-pressed="{{draftDays===item.value}}">{{item.label}}</button></view></view>
    <view class="filter-section"><view class="field-label">图片条件</view><view class="filter-options"><button wx:for="{{imageOptions}}" wx:key="value" class="filter-chip {{draftImages===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseImages" disabled="{{filterBusy}}" aria-pressed="{{draftImages===item.value}}">{{item.label}}</button></view></view>
    <view wx:if="{{mapScoped}}" class="filter-section"><view class="field-label">发布者</view><view class="filter-options"><button class="filter-chip {{draftPublisher==='all'?'selected':''}}" data-value="all" bindtap="choosePublisher">全部</button><button class="filter-chip {{draftPublisher==='verified'?'selected':''}}" data-value="verified" bindtap="choosePublisher">已核验主体</button></view></view>
    <view wx:if="{{!mapScoped&&canFilterDistance}}" class="filter-section"><view class="field-label">距离范围</view><view class="filter-options"><button wx:for="{{radiusOptions}}" wx:key="value" class="filter-chip {{draftRadius===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseRadius" disabled="{{filterBusy}}" aria-pressed="{{draftRadius===item.value}}">{{item.label}}</button></view><view class="notice">以授权定位为中心，仅筛选所选地区内具有公开位置的商家与可预约服务。</view></view>
    <feedback-state wx:if="{{filterError}}" kind="error" description="{{filterError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
-  </scroll-view>
+  </view>
   <view class="filter-actions"><button class="btn light" bindtap="resetAdvanced" disabled="{{filterBusy}}">重置</button><button class="btn" bindtap="applyAdvanced" loading="{{filterBusy}}" disabled="{{filterBusy}}">{{filterBusy?'正在定位…':'查看结果'}}</button></view>
- </view></view>
+ </bottom-sheet>
 </view>

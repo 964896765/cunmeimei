@@ -1,1 +1,6 @@
 .booking{margin-bottom:18rpx}.booking .list-desc{margin-top:16rpx}.booking .row{align-items:flex-start}.booking .status{white-space:nowrap}.cancel{margin-top:22rpx;font-size:23rpx;padding:15rpx}
+
+/* VM page composition. */
+.booking { margin-bottom:28rpx; }
+.booking .list-title { font-size:32rpx; font-weight:600; line-height:1.5; }
+.booking .cancel { min-height:88rpx; font-size:28rpx; border-radius:14rpx; }

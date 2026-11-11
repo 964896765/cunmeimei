@@ -1,3 +1,10 @@
 .workspace-tabs{white-space:nowrap;width:100%;height:100rpx}.workspace-tab{display:inline-flex;align-items:center;justify-content:center;margin:0 12rpx 0 0;padding:16rpx 20rpx;min-height:88rpx;font-size:28rpx;color:var(--muted);background:var(--surface);border:1rpx solid var(--border);border-radius:18rpx}.workspace-tab.selected{color:var(--link);background:var(--soft);border-color:var(--link);font-weight:600}.field{box-sizing:border-box;width:100%;margin:16rpx 0}.business-field,.public-field{margin-top:28rpx}.public-field{border-top:1rpx solid var(--border);padding-top:18rpx}.gallery{height:380rpx}.gallery image{width:100%;height:100%}.photo-row{display:flex;align-items:center;gap:20rpx;margin:18rpx 0}.photo-row image{width:160rpx;height:160rpx;border-radius:16rpx}.section-card .btn{margin-top:20rpx}.large-text .workspace-tab{font-size:34rpx}.body-copy{word-break:break-all}
 
 .workspace-tab{box-sizing:border-box;line-height:1.5}.center-link{background:transparent;color:var(--link);font-size:var(--card-meta,25rpx);line-height:1.5;min-height:88rpx;padding:16rpx;margin:8rpx 0}.center-link::after{border:0}
+
+/* VM page composition. */
+.section-card.industry-form { border:0; border-radius:0; padding:0; background:transparent; }
+.industry-form .field-label { margin-top:28rpx; }
+.business-field { margin-top:32rpx; padding-top:24rpx; border-top:1rpx solid var(--border); }
+.industry-form .field-area { min-height:220rpx; }
+.industry-form>.btn { margin-top:24rpx; }

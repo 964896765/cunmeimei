@@ -1,7 +1,7 @@
 'use strict';
 const registry=require('./classification');
 const legacy={merchant:'C01',job:'C02',service:'C03',used:'C04',housing:'C05',community:'C08'};
-const max=27;
+const max=7;
 const defaults=['C02','C05','C04','C03','C01','C08','C07'];
 const key=()=> 'city_life_shortcuts_'+(wx.getStorageSync('city_life_user_id')||'guest');
 function normalize(ids){return [...new Set((Array.isArray(ids)?ids:defaults).map(id=>legacy[id]||id))].filter(id=>registry.categories.some(x=>x.id===id)).slice(0,max);}

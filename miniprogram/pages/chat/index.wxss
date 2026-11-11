@@ -3,3 +3,12 @@ page{height:100%}.chat-page{min-height:100vh;display:flex;flex-direction:column}
 .chat-context{display:flex;align-items:center;justify-content:space-between;gap:20rpx;background:var(--surface);padding:24rpx}.chat-safety,.report-message{background:transparent;color:var(--muted);font-size:24rpx;margin:0;padding:10rpx;min-height:44px}.chat-safety::after,.report-message::after{border:0}.initial-contact{padding:20rpx 28rpx;color:var(--muted);font-size:24rpx;line-height:1.8}.chat-held{color:var(--danger);font-size:22rpx;margin-top:12rpx}.chat-line{margin:12rpx 0}.chat-line .report-message{margin-top:-18rpx}.chat-compose{position:sticky;bottom:0;padding-bottom:calc(24rpx + env(safe-area-inset-bottom))}
 
 .large-text .chat-input{height:100rpx;min-height:100rpx;font-size:32rpx}.large-text .chat-bubble{font-size:32rpx}
+
+/* VM page composition. */
+.chat-note { font-size:24rpx; line-height:1.7; }
+.chat-history { padding:28rpx 32rpx; }
+.chat-bubble { font-size:30rpx; line-height:1.75; padding:22rpx 26rpx; }
+.chat-compose { gap:20rpx; padding:20rpx 32rpx calc(24rpx + env(safe-area-inset-bottom)); }
+.chat-input { height:96rpx; min-height:96rpx; font-size:30rpx; border-radius:14rpx; }
+.send { min-height:96rpx; padding:18rpx 24rpx; font-size:28rpx; border-radius:14rpx; }
+.initial-contact { padding:24rpx 32rpx; font-size:26rpx; }

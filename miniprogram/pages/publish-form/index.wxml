@@ -7,7 +7,7 @@
   <block wx:if="{{showForm&&!loading}}">
    <view wx:if="{{preview}}" class="publication-preview">
     <view class="preview-notice">仅预览 · 当前内容尚未发布</view>
-    <swiper wx:if="{{photoCount>0}}" class="preview-gallery" indicator-dots="{{photoCount>1}}"><swiper-item wx:for="{{photos}}" wx:key="id"><image class="preview-image" src="{{item.path}}" mode="aspectFit" data-path="{{item.path}}" bindtap="previewPhoto" aria-label="查看信息照片"/></swiper-item></swiper>
+    <swiper duration="{{displayPreferences.reduceMotion?0:250}}" wx:if="{{photoCount>0}}" class="preview-gallery" indicator-dots="{{photoCount>1}}"><swiper-item wx:for="{{photos}}" wx:key="id"><image class="preview-image" src="{{item.path}}" mode="aspectFit" data-path="{{item.path}}" bindtap="previewPhoto" aria-label="查看信息照片"/></swiper-item></swiper>
     <view class="preview-summary"><view wx:if="{{kind!=='community'}}" class="preview-price">{{previewPrice}}</view><view class="preview-title">{{title}}</view><view class="preview-path">{{breadcrumb}}</view></view>
     <view wx:if="{{previewFieldCount>0}}" class="preview-section"><view class="preview-heading">{{kind==='used'?'商品信息':kind==='housing'?'房源信息':'补充信息'}}</view><view wx:for="{{previewFields}}" wx:key="key" class="preview-attribute"><text class="attribute-label">{{item.label}}</text><text class="attribute-value">{{item.value}}</text></view></view>
     <view class="preview-section"><view class="preview-heading">详细描述</view><view class="preview-description">{{detail}}</view></view>

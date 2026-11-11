@@ -15,3 +15,9 @@
 .draft-delete::after,.retry::after,.empty-return::after{border:0}
 .draft-state,.draft-empty{text-align:center;color:var(--muted);padding:100rpx 20rpx;font-size:27rpx;line-height:1.7}.empty-title{color:var(--ink);font-size:32rpx;font-weight:600;margin-bottom:12rpx}.empty-return{margin-top:28rpx;background:transparent;color:var(--ink);font-size:28rpx;min-height:44px}.draft-feedback{padding:20rpx;margin-bottom:16rpx;font-size:26rpx;line-height:1.6;background:var(--surface);color:var(--danger);border-radius:12rpx}.retry{background:transparent;color:var(--ink);font-size:26rpx;margin:10rpx 0 0;padding:0;min-height:44px}
 .large-text .draft-row{padding:24rpx 18rpx}.large-text .draft-main{gap:16rpx}.large-text .draft-hint{font-size:28rpx}.large-text .draft-delete{font-size:32rpx}.large-text .draft-title{font-size:36rpx;white-space:normal}.large-text .draft-category{font-size:30rpx}.large-text .draft-time,.large-text .draft-source{font-size:27rpx}.large-text .draft-cover{width:96rpx;height:116rpx}
+
+/* VM page composition. */
+.drafts-content { padding:28rpx 32rpx calc(40rpx + env(safe-area-inset-bottom)); }
+.draft-row { border:1rpx solid var(--border); margin-bottom:28rpx; }
+.draft-title { font-size:32rpx; font-weight:600; }
+.draft-category,.draft-time { font-size:24rpx; line-height:1.6; }

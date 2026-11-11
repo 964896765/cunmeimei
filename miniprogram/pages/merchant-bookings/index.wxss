@@ -1,1 +1,7 @@
 .booking-actions{gap:12rpx;margin-top:15rpx}.booking-actions .btn{flex:1}
+
+/* VM page composition. */
+.booking-actions { gap:20rpx; margin-top:24rpx; }
+.booking-actions .btn { flex:1; margin:0; }
+.card { margin:24rpx 0; }
+.list-title { font-size:32rpx; font-weight:600; line-height:1.5; }

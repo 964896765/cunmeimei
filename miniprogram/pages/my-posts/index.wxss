@@ -6,3 +6,9 @@
 .post-actions{gap:16rpx;flex-wrap:wrap}.edit-panel .field-label{display:block;margin-top:18rpx}.edit-panel .btn{margin-top:30rpx}.picker-field{display:flex;align-items:center;justify-content:space-between}
 
 .edit-photos{display:flex;gap:16rpx;flex-wrap:wrap;margin:20rpx 0}.edit-photos image{width:160rpx;height:160rpx;border-radius:14rpx}.edit-photos text{display:block}.published{margin-bottom:20rpx}
+
+/* VM page composition. */
+.published { padding:28rpx; margin-bottom:28rpx; }
+.published .list-title { font-size:32rpx; font-weight:600; line-height:1.5; }
+.post-actions { justify-content:flex-start; gap:16rpx; padding-top:24rpx; }
+.post-actions .btn { flex:1; min-width:160rpx; min-height:88rpx; padding:16rpx 12rpx; font-size:26rpx; margin:0; }

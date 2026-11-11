@@ -1,1 +1,5 @@
 .legal-copy{font-size:30rpx;line-height:1.9;white-space:pre-wrap;word-break:break-all;color:var(--text);padding:16rpx 0 40rpx}.large-text .legal-copy{font-size:36rpx}
+
+/* VM page composition. */
+.legal-copy { padding:24rpx 0 36rpx; font-size:30rpx; line-height:1.85; word-break:normal; overflow-wrap:anywhere; }
+.container>.notice { padding-bottom:24rpx; border-bottom:1rpx solid var(--border); }
