@@ -1,1 +1,10 @@
-<view wx:if="{{open}}" class="dialog-overlay" catchtouchmove="preventScroll"><view class="dialog-panel" role="dialog" aria-modal="true" aria-label="{{title}}"><view class="dialog-handle" aria-hidden="true"></view><view class="dialog-title">{{title}}</view><text wx:if="{{description}}" class="dialog-description">{{description}}</text><text wx:if="{{error}}" class="dialog-error" role="alert">{{error}}</text><button class="dialog-confirm" bindtap="confirm" loading="{{busy}}" disabled="{{busy}}">{{confirmText}}</button><button wx:if="{{secondaryText}}" class="dialog-secondary" bindtap="secondary" disabled="{{busy}}">{{secondaryText}}</button><button class="dialog-cancel" bindtap="cancel" disabled="{{busy}}">{{cancelText}}</button></view></view>
+<bottom-sheet open="{{open}}" label="{{title}}">
+ <view class="dialog-panel">
+  <view class="dialog-title">{{title}}</view>
+  <text wx:if="{{description}}" class="dialog-description">{{description}}</text>
+  <text wx:if="{{error}}" class="dialog-error" role="alert">{{error}}</text>
+  <button class="dialog-confirm" bindtap="confirm" loading="{{busy}}" disabled="{{busy}}">{{confirmText}}</button>
+  <button wx:if="{{secondaryText}}" class="dialog-secondary" bindtap="secondary" disabled="{{busy}}">{{secondaryText}}</button>
+  <button class="dialog-cancel" bindtap="cancel" disabled="{{busy}}">{{cancelText}}</button>
+ </view>
+</bottom-sheet>

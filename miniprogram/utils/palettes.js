@@ -1,191 +1,288 @@
 'use strict';
-// Shared by runtime and asset builders. Stable keys preserve existing preferences.
-// Pearl Sunset uses coral button surfaces and darker accents for readable small controls.
+// VM Design System 1.0. Saved theme identifiers remain readable across upgrades.
 const palettes = {
- prism: {
-   "brand": "#875D55",
-   "action": "#EFCBC2",
-   "link": "#76524C",
-   "background": "#FAF8F6",
-   "surface": "#FFFFFF",
-   "soft": "#F8EAE5",
-   "soft-alt": "#F2E7EB",
-   "ink": "#302D33",
-   "text": "#49434B",
-   "muted": "#655C65",
-   "border": "#E9E6E2",
-   "control-border": "#95878D",
-   "on-action": "#332D31",
-   "danger": "#973F4F",
-   "danger-soft": "#F8EAE5",
-   "price": "#704D47",
-   "glow-start": "#F8EAE5",
-   "glow-rose": "#F2E7EB",
-   "glow": "#E9E5EF"
- },
- dark: {brand:'#C9B8FF',action:'#C9B8FF',link:'#C9B8FF',background:'#191A2B',surface:'#25263A',soft:'#302D49','soft-alt':'#302D49',ink:'#F0EDFF',text:'#DED9EB',muted:'#BBB6CF',border:'#4C485F','control-border':'#8D87A0','on-action':'#191A2B',danger:'#FFB4AA','danger-soft':'#432F39',price:'#DED9EB','glow-start':'#302D49','glow-rose':'#302D49',glow:'#302D49'},
- clear: {brand:'#243955',action:'#243955',link:'#243955',background:'#FFFFFF',surface:'#FFFFFF',soft:'#EAF0F6','soft-alt':'#EAF0F6',ink:'#18283A',text:'#243955',muted:'#39495E',border:'#6E7784','control-border':'#6E7784','on-action':'#FFFFFF',danger:'#92312E','danger-soft':'#FCEDEB',price:'#243955','glow-start':'#EAF0F6','glow-rose':'#EAF0F6',glow:'#EAF0F6'},
- quiet: {brand:'#555B61',action:'#555B61',link:'#555B61',background:'#EAE9E7',surface:'#F8F7F5',soft:'#DFDEDB','soft-alt':'#DFDEDB',ink:'#303238',text:'#41454B',muted:'#5A5E62',border:'#C9C8C4','control-border':'#7F8185','on-action':'#FFFFFF',danger:'#923B38','danger-soft':'#F2E5E2',price:'#41454B','glow-start':'#DFDEDB','glow-rose':'#DFDEDB',glow:'#EAE9E7'},
- warm: {brand:'#B87887',action:'#8F5263',link:'#8F5263',background:'#FFF8F4',surface:'#FFFFFF',soft:'#F5E7EB','soft-alt':'#F5E7EB',ink:'#3E3037',text:'#57424D',muted:'#745B65',border:'#DDC9CE','control-border':'#A0848E','on-action':'#FFFFFF',danger:'#9D3534','danger-soft':'#FCEDEB',price:'#57424D','glow-start':'#F5E7EB','glow-rose':'#F5E7EB',glow:'#FFF1E4'},
- gentle: {brand:'#487E6C',action:'#386B59',link:'#386B59',background:'#F1F8F4',surface:'#FFFFFF',soft:'#E2EEE7','soft-alt':'#E2EEE7',ink:'#243A31',text:'#365246',muted:'#4E6258',border:'#CCDCD3','control-border':'#7A9084','on-action':'#FFFFFF',danger:'#9A3735','danger-soft':'#FCEDEB',price:'#365246','glow-start':'#E2EEE7','glow-rose':'#E2EEE7',glow:'#ECF4E9'}
-};
-// Surface gradients remain static, with solid, readable form surfaces.
-for (const [name, c] of Object.entries(palettes)) {
- c['action-end'] = name === 'prism' ? '#EFCBC2' : c.action;
- c['wash-rose'] = name === 'prism' ? '#F8EAE5' : c.background;
- c['wash-blue'] = name === 'prism' ? '#F2E7EB' : c.background;
- c['wash-lilac'] = name === 'prism' ? '#E9E5EF' : c.background;
-}
-// Page accents are presentation only; the user's six saved theme choices remain stable.
-const families = {
-  "home": {},
-  "discover": {
-    "soft": "#F2E7EB",
-    "soft-alt": "#E9E5EF"
+  "prism": {
+    "brand": "#A67E91",
+    "action": "#A67E91",
+    "link": "#745269",
+    "background": "#FAF9F8",
+    "surface": "#FFFFFF",
+    "soft": "#F4EBF0",
+    "soft-alt": "#EEEAF4",
+    "ink": "#242329",
+    "text": "#3F3B44",
+    "muted": "#66616B",
+    "border": "#EAE6E9",
+    "control-border": "#938A96",
+    "on-action": "#17151B",
+    "danger": "#8D3D51",
+    "danger-soft": "#F4EBF0",
+    "price": "#62465A",
+    "glow-start": "#F4EBF0",
+    "glow-rose": "#F4EBF0",
+    "glow": "#EEEAF4",
+    "action-end": "#A67E91",
+    "wash-rose": "#FAF9F8",
+    "wash-blue": "#FAF9F8",
+    "wash-lilac": "#FAF9F8"
   },
-  "publish": {
-    "soft": "#F8EAE5",
-    "soft-alt": "#FAF8F6"
+  "dark": {
+    "brand": "#C9B8FF",
+    "action": "#C9B8FF",
+    "link": "#C9B8FF",
+    "background": "#191A2B",
+    "surface": "#25263A",
+    "soft": "#302D49",
+    "soft-alt": "#302D49",
+    "ink": "#F0EDFF",
+    "text": "#DED9EB",
+    "muted": "#BBB6CF",
+    "border": "#4C485F",
+    "control-border": "#8D87A0",
+    "on-action": "#191A2B",
+    "danger": "#FFB4AA",
+    "danger-soft": "#432F39",
+    "price": "#DED9EB",
+    "glow-start": "#302D49",
+    "glow-rose": "#302D49",
+    "glow": "#302D49",
+    "action-end": "#C9B8FF",
+    "wash-rose": "#191A2B",
+    "wash-blue": "#191A2B",
+    "wash-lilac": "#191A2B"
   },
-  "messages": {
-    "soft": "#F2E7EB",
-    "soft-alt": "#FAF8F6"
+  "clear": {
+    "brand": "#594457",
+    "action": "#594457",
+    "link": "#594457",
+    "background": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "soft": "#F4EBF0",
+    "soft-alt": "#EEEAF4",
+    "ink": "#242329",
+    "text": "#3F3B44",
+    "muted": "#66616B",
+    "border": "#827985",
+    "control-border": "#827985",
+    "on-action": "#FFFFFF",
+    "danger": "#8D3D51",
+    "danger-soft": "#F4EBF0",
+    "price": "#62465A",
+    "glow-start": "#F4EBF0",
+    "glow-rose": "#F4EBF0",
+    "glow": "#EEEAF4",
+    "action-end": "#594457",
+    "wash-rose": "#FFFFFF",
+    "wash-blue": "#FFFFFF",
+    "wash-lilac": "#FFFFFF"
   },
-  "me": {
-    "soft": "#E9E5EF",
-    "soft-alt": "#F2E7EB"
+  "quiet": {
+    "brand": "#555B61",
+    "action": "#555B61",
+    "link": "#555B61",
+    "background": "#EAE9E7",
+    "surface": "#F8F7F5",
+    "soft": "#DFDEDB",
+    "soft-alt": "#DFDEDB",
+    "ink": "#303238",
+    "text": "#41454B",
+    "muted": "#5A5E62",
+    "border": "#C9C8C4",
+    "control-border": "#7F8185",
+    "on-action": "#FFFFFF",
+    "danger": "#923B38",
+    "danger-soft": "#F2E5E2",
+    "price": "#41454B",
+    "glow-start": "#DFDEDB",
+    "glow-rose": "#DFDEDB",
+    "glow": "#EAE9E7",
+    "action-end": "#555B61",
+    "wash-rose": "#EAE9E7",
+    "wash-blue": "#EAE9E7",
+    "wash-lilac": "#EAE9E7"
+  },
+  "warm": {
+    "brand": "#B87887",
+    "action": "#8F5263",
+    "link": "#8F5263",
+    "background": "#FFF8F4",
+    "surface": "#FFFFFF",
+    "soft": "#F5E7EB",
+    "soft-alt": "#F5E7EB",
+    "ink": "#3E3037",
+    "text": "#57424D",
+    "muted": "#745B65",
+    "border": "#DDC9CE",
+    "control-border": "#A0848E",
+    "on-action": "#FFFFFF",
+    "danger": "#9D3534",
+    "danger-soft": "#FCEDEB",
+    "price": "#57424D",
+    "glow-start": "#F5E7EB",
+    "glow-rose": "#F5E7EB",
+    "glow": "#FFF1E4",
+    "action-end": "#8F5263",
+    "wash-rose": "#FFF8F4",
+    "wash-blue": "#FFF8F4",
+    "wash-lilac": "#FFF8F4"
+  },
+  "gentle": {
+    "brand": "#8E768D",
+    "action": "#D8CAD8",
+    "link": "#685267",
+    "background": "#FAF9F8",
+    "surface": "#FFFFFF",
+    "soft": "#F4EBF0",
+    "soft-alt": "#EEEAF4",
+    "ink": "#242329",
+    "text": "#3F3B44",
+    "muted": "#66616B",
+    "border": "#EAE6E9",
+    "control-border": "#938A96",
+    "on-action": "#242329",
+    "danger": "#8D3D51",
+    "danger-soft": "#F4EBF0",
+    "price": "#62465A",
+    "glow-start": "#F4EBF0",
+    "glow-rose": "#F4EBF0",
+    "glow": "#EEEAF4",
+    "action-end": "#D8CAD8",
+    "wash-rose": "#FAF9F8",
+    "wash-blue": "#FAF9F8",
+    "wash-lilac": "#FAF9F8"
   }
 };
-// Each actual route has its own three-color mix, within five shared accent families.
 const pageProfiles = {
   "home": {
     "family": "home",
     "mix": [
-      "#F8EAE5",
-      "#F2E7EB",
-      "#E9E5EF"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "discover": {
     "family": "discover",
     "mix": [
-      "#FAF8F6",
-      "#E9E5EF",
-      "#F2E7EB"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "publish": {
     "family": "publish",
     "mix": [
-      "#F8EAE5",
-      "#FAF8F6",
-      "#F2E7EB"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "messages": {
     "family": "messages",
     "mix": [
-      "#E9E5EF",
-      "#F2E7EB",
-      "#FAF8F6"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "me": {
     "family": "me",
     "mix": [
-      "#F2E7EB",
-      "#F8EAE5",
-      "#E9E5EF"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "regions": {
     "family": "discover",
     "mix": [
-      "#FAF8F6",
-      "#F8EAE5",
-      "#E9E5EF"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "detail": {
     "family": "home",
     "mix": [
-      "#F8EAE5",
-      "#E9E5EF",
-      "#FAF8F6"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "booking": {
     "family": "discover",
     "mix": [
-      "#F2E7EB",
-      "#FAF8F6",
-      "#F8EAE5"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "my-posts": {
     "family": "home",
     "mix": [
-      "#FAF8F6",
-      "#F2E7EB",
-      "#E9E5EF"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "my-bookings": {
     "family": "me",
     "mix": [
-      "#E9E5EF",
-      "#FAF8F6",
-      "#F8EAE5"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "merchant": {
     "family": "publish",
     "mix": [
-      "#F8EAE5",
-      "#F2E7EB",
-      "#FAF8F6"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "chat": {
     "family": "messages",
     "mix": [
-      "#F2E7EB",
-      "#E9E5EF",
-      "#FAF8F6"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "merchant-services": {
     "family": "discover",
     "mix": [
-      "#FAF8F6",
-      "#E9E5EF",
-      "#F8EAE5"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "merchant-bookings": {
     "family": "messages",
     "mix": [
-      "#E9E5EF",
-      "#F8EAE5",
-      "#FAF8F6"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   },
   "merchant-team": {
     "family": "publish",
     "mix": [
-      "#F8EAE5",
-      "#E9E5EF",
-      "#F2E7EB"
+      "#FAF9F8",
+      "#FAF9F8",
+      "#FAF9F8"
     ]
   }
 };
-function profileFor(route='') { return pageProfiles[String(route).replace(/^\//,'').split('/')[1]] || pageProfiles.home; }
-function resolvePalette(theme='prism',route='') {
- const base = palettes[theme] || palettes.prism;
- if (theme !== 'prism') return base;
- const profile = profileFor(route);
- return {...base,...families[profile.family], 'wash-rose':profile.mix[0], 'wash-blue':profile.mix[1], 'wash-lilac':profile.mix[2]};
+function profileFor(route = '') {
+  const name = String(route).replace(/^\//, '').split('/')[1];
+  return pageProfiles[name] || pageProfiles.home;
+}
+function resolvePalette(theme = 'prism') {
+  return palettes[theme] || palettes.prism;
 }
 const iconPalettes = {...palettes};
-for (const name of Object.keys(families)) iconPalettes['prism-'+name] = resolvePalette('prism','pages/'+name+'/index');
-module.exports = {palettes,pageProfiles,profileFor,resolvePalette,iconPalettes};
+for (const name of ['home','discover','publish','messages','me']) {
+  iconPalettes['prism-' + name] = palettes.prism;
+}
+module.exports = {palettes, pageProfiles, profileFor, resolvePalette, iconPalettes};

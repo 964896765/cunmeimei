@@ -1,3 +1,4 @@
 {
-  "component": true
+  "component": true,
+  "usingComponents": {"bottom-sheet":"/components/bottom-sheet/index"}
 }

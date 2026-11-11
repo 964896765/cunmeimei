@@ -3,7 +3,7 @@
 
 .quiet-fields .template-field{margin-top:28rpx}
 .quiet-fields .field-label{font-size:28rpx;color:var(--ink);font-weight:500;margin:0 0 14rpx}
-.quiet-fields .field{background:var(--form-fill);border:2rpx solid transparent;border-radius:16rpx;color:var(--ink);min-height:96rpx;box-sizing:border-box;padding:22rpx 24rpx;margin:0;font-size:29rpx;line-height:1.6;box-shadow:none}
+.quiet-fields .field{background:var(--form-fill);border:1rpx solid var(--control-border);border-radius:14rpx;color:var(--ink);min-height:96rpx;box-sizing:border-box;padding:22rpx 24rpx;margin:0;font-size:29rpx;line-height:1.6;box-shadow:none}
 .quiet-fields .field.is-focused{border-color:var(--form-focus)}
 
 .quiet-fields input.field{height:100rpx;line-height:100rpx;padding:0 24rpx}

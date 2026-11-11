@@ -1,0 +1,7 @@
+<view wx:if="{{open}}" class="sheet-overlay">
+ <view class="sheet-scrim" bindtap="close" catchtouchmove="preventScroll"></view>
+ <view class="sheet-panel" role="dialog" aria-modal="true" aria-label="{{label}}">
+  <view class="sheet-handle" aria-hidden="true"></view>
+  <scroll-view class="sheet-content" scroll-y="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}"><slot/></scroll-view>
+ </view>
+</view>

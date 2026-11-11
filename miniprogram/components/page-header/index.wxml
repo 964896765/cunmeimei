@@ -2,7 +2,7 @@
 <view class="page-header {{continuous?'continuous-header':''}} {{transparent?'transparent-header':''}} {{largeText?'header-large-text':''}}" style="padding-top:{{statusHeight}}px">
  <view class="nav-row" style="height:{{rowHeight}}px">
   <button wx:if="{{back}}" class="nav-back" bindtap="goBack" aria-label="{{backLabel}}"><view class="nav-back-icon" aria-hidden="true"></view></button>
-  <view class="nav-title" style="left:{{titleInset}}px;right:{{titleInset+(actionText?44:0)}}px">{{title}}</view>
+  <view class="nav-title {{align==='start'?'title-start':''}}" style="left:{{align==='start'&&!back?16:titleInset}}px;right:{{titleInset+(actionText?44:0)}}px">{{title}}</view>
   <button wx:if="{{actionText}}" class="nav-action" style="right:{{titleInset}}px" bindtap="act" disabled="{{actionDisabled}}">{{actionText}}</button>
  </view>
 </view>

@@ -260,10 +260,15 @@ async function main() {
       let last;
       for (let attempt = 0; attempt < 3; attempt++) {
         try {
-          await mini.evaluate(({url, tab}) => {
-            setTimeout(() => wx[tab ? 'switchTab' : 'reLaunch']({ url }), 120);
+          const tab = app.tabBar.list.some(item => '/' + item.pagePath === url.split('?')[0]);
+          const refresh = tab && (await mini.currentPage())?.path === url.split('?')[0].slice(1);
+          await mini.evaluate(({url, tab, refresh}) => {
+            setTimeout(() => {
+              if (refresh) getCurrentPages().slice(-1)[0].onShow();
+              else wx[tab ? 'switchTab' : 'reLaunch']({ url });
+            }, 120);
             return true;
-          }, {url, tab: app.tabBar.list.some(item => '/' + item.pagePath === url.split('?')[0])});
+          }, {url, tab, refresh});
           await pause(3000);
           const page = await mini.currentPage();
           if (page?.path === url.split('?')[0].slice(1) && (await page.$('.theme-root')))
@@ -299,6 +304,7 @@ async function main() {
       }
       await scrollTo(0);
       await capture(name, route);
+      if (process.env.UI_AUDIT_POSITIONS === 'top') return;
       const target = inner ? 999999 : await mini.evaluate(() => new Promise(resolve => {
         wx.createSelectorQuery().selectViewport().scrollOffset(value =>
           resolve(Math.max(0, Math.ceil(value.scrollHeight - wx.getWindowInfo().windowHeight)))
@@ -336,6 +342,7 @@ async function main() {
           const page=await routeTo('/'+route+(queries[name]||''));
           assert.ok(await page.$('.theme-root'),'Rendered theme root '+route);
           const data=await page.data();
+          if (name === 'home') assert.ok(data.news.some(item => item.id === news.id), 'Real API home news loaded');
           if (name === 'publish-form') assert.equal(data.showForm, true, 'Resident publication form opened');
           if (name === 'industry') {
             assert.equal(data.mode, 'form', 'Industry form opened');
