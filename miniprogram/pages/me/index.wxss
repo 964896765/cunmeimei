@@ -89,5 +89,32 @@
 
 .hub-intro{padding:4rpx 0 16rpx}.hub-title{font-size:38rpx;font-weight:650;color:var(--ink);margin-bottom:12rpx}.hub-section{margin:10rpx 0 20rpx;padding:20rpx;border:1rpx solid var(--border);border-radius:24rpx;background:var(--surface)}.me-page .hub-row{display:flex;width:100%;align-items:center;justify-content:space-between;gap:18rpx;min-height:104rpx;padding:18rpx 0;margin:0;border-radius:0;background:transparent;text-align:left;border-bottom:1rpx solid var(--border);line-height:1.6}.hub-row::after,.hub-actions button::after{border:0}.hub-row:last-child{border-bottom:0}.hub-row-title{font-size:29rpx;font-weight:550;color:var(--ink)}.hub-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14rpx;margin:20rpx 0}.hub-actions button{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:100rpx;margin:0;padding:18rpx;border-radius:18rpx;background:var(--soft);color:var(--link);font-size:28rpx;font-weight:550;line-height:1.6;text-align:left}.hub-actions button text{font-size:23rpx;color:var(--muted);font-weight:400}.points-center-actions{grid-template-columns:repeat(3,minmax(0,1fr))}.points-center-actions button{padding:18rpx 12rpx}.large-text .hub-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.large-text .hub-row-title,.large-text .hub-actions button{font-size:33rpx}.large-text .hub-actions button text{font-size:28rpx}
 
-/* PRISM GLASS 3.0 page composition. */
-.me-page{padding:28rpx 32rpx calc(48rpx + 49px + env(safe-area-inset-bottom))}.me-page .profile-entry{padding:28rpx 20rpx;border:1rpx solid var(--glass-line);border-radius:30rpx;background:var(--glass-surface);box-shadow:var(--elevation)}.me-page .stats{margin-top:24rpx;background:var(--surface);border-radius:24rpx;border:1rpx solid var(--border);padding:24rpx 12rpx}.center-menu-row{min-height:52px}.me-page .points-entry,.me-page .merchant-entry{min-height:52px}
+/* Main workspace uses a profile header, one statistics group and continuous settings rows. */
+.me-page { padding:28rpx 32rpx calc(48rpx + 56px + env(safe-area-inset-bottom)); }
+.main-center .profile-entry { padding:12rpx 0 32rpx; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.main-center .profile-avatar { width:120rpx; height:120rpx; background:var(--soft-alt); }
+.main-center .profile-name { font-size:44rpx; font-weight:650; line-height:1.35; }
+.main-center .profile-subtitle { font-size:26rpx; margin-top:12rpx; }
+.main-center .workspace-heading { margin:32rpx 0 20rpx; }
+.main-center .workspace-heading .section-title { font-size:34rpx; }
+.main-center .workspace-grid { padding:24rpx 0; margin:0; border:1rpx solid var(--border); border-radius:20rpx; background:var(--surface); gap:0; }
+.main-center .workspace-item { min-height:128rpx; padding:12rpx 8rpx; border-right:1rpx solid var(--border); }
+.main-center .workspace-item:last-child { border-right:0; }
+.main-center .workspace-item image { display:none; }
+.main-center .workspace-count { order:-1; margin:0 0 10rpx; color:var(--ink); font-size:44rpx; font-weight:650; line-height:1.3; }
+.main-center .workspace-label { font-size:26rpx; }
+.main-center .menu-group-title { margin:40rpx 0 20rpx; color:var(--ink); font-size:34rpx; font-weight:600; }
+.center-hub { padding:0 24rpx; border:1rpx solid var(--border); border-radius:20rpx; background:var(--surface); }
+.main-center .points-entry,.main-center .merchant-entry { width:100%; min-height:112rpx; margin:0; padding:24rpx 0; border:0; border-bottom:1rpx solid var(--border); border-radius:0; background:transparent; gap:20rpx; }
+.main-center .merchant-entry { border-bottom:0; }
+.main-center .points-icon { width:40rpx; height:40rpx; border-radius:0; background:transparent; }
+.main-center .points-icon image,.main-center .merchant-entry>image { width:36rpx; height:36rpx; margin:0; }
+.main-center .center-entry-title { font-size:30rpx; font-weight:500; }
+.main-center .center-subtitle { font-size:24rpx; }
+.main-center .center-menu { border:1rpx solid var(--border); border-radius:20rpx; }
+.main-center .center-menu-row { min-height:104rpx; padding:22rpx 0; font-size:30rpx; }
+.main-center .signout-action { margin-top:32rpx; border:1rpx solid var(--border); border-radius:16rpx; font-size:28rpx; }
+.large-text .main-center .profile-name { font-size:50rpx; }
+.large-text .main-center .workspace-count { font-size:50rpx; }
+.large-text .main-center .workspace-label,.large-text .main-center .center-menu-row { font-size:34rpx; }
+.large-text .main-center .center-subtitle { font-size:30rpx; }

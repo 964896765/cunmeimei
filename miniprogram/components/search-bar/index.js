@@ -3,6 +3,8 @@ Component({
     value: String,
     placeholder: { type: String, value: '搜索本地信息' },
     label: { type: String, value: '搜索' },
+    focused: Boolean,
+    maxLength: { type: Number, value: 80 },
     readonly: Boolean,
     disabled: Boolean
   },

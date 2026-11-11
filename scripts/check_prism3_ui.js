@@ -342,7 +342,10 @@ async function main() {
           const page=await routeTo('/'+route+(queries[name]||''));
           assert.ok(await page.$('.theme-root'),'Rendered theme root '+route);
           const data=await page.data();
-          if (name === 'home') assert.ok(data.news.some(item => item.id === news.id), 'Real API home news loaded');
+          if (name === 'home') {
+            assert.ok(data.news.some(item => item.id === news.id), 'Real API home news loaded');
+            if (data.feed) assert.equal(data.hero?.id, publication.id, 'Real API image-bearing home entry loaded');
+          }
           if (name === 'publish-form') assert.equal(data.showForm, true, 'Resident publication form opened');
           if (name === 'industry') {
             assert.equal(data.mode, 'form', 'Industry form opened');

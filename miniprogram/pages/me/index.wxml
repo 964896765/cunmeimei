@@ -10,7 +10,7 @@
  <view wx:if="{{settingsBusy}}" class="notice">正在处理…</view>
  <block wx:if="{{settingsSection==='privacy'}}">
  <view class="section-card preference-panel"><view class="settings-row"><view><text class="settings-label">显示主题</text><text class="notice">保留你的选择，不按个人生活状态推断</text></view><picker disabled="{{settingsBusy}}" range="{{themeNames}}" bindchange="selectTheme"><view class="link">选择 ›</view></picker></view>
- <view class="notice">当前：{{preferences.theme==='prism'?'珍珠虹彩':preferences.theme==='dark'?'深海夜色':preferences.theme==='clear'?'清晰高对比':preferences.theme==='quiet'?'静谧灰墨':preferences.theme==='warm'?'温暖关怀':'柔和青绿'}}</view>
+ <view class="notice">当前：{{preferences.theme==='prism'?'VM 经典':preferences.theme==='dark'?'深海夜色':preferences.theme==='clear'?'清晰高对比':preferences.theme==='quiet'?'静谧灰墨':preferences.theme==='warm'?'温暖关怀':'柔和中性'}}</view>
  <view class="settings-row"><text class="settings-label">大字阅读</text><switch color="{{themeColor}}" disabled="{{settingsBusy}}" checked="{{preferences.largeText}}" data-field="largeText" bindchange="changePreference" aria-label="大字阅读"/></view>
  <view class="settings-row"><text class="settings-label">减少动态效果</text><switch color="{{themeColor}}" disabled="{{settingsBusy}}" checked="{{preferences.reduceMotion}}" data-field="reduceMotion" bindchange="changePreference" aria-label="减少动态效果"/></view>
  <button class="btn" loading="{{settingsBusy}}" disabled="{{settingsBusy||!!settingsError}}" bindtap="savePreferences">保存显示设置</button></view>
@@ -71,23 +71,23 @@
   <button class="center-menu-row" data-kind="terms" bindtap="openLegal"><text>用户协议</text><text class="center-chevron">›</text></button>
   <button class="center-menu-row" data-kind="privacy" bindtap="openLegal"><text>隐私政策与微信隐私保护指引</text><text class="center-chevron">›</text></button>
  </block>
- <block wx:else>
+ <block wx:else><view class="main-center">
   <button class="profile-entry" bindtap="openProfile" aria-label="查看和编辑个人资料">
    <view class="profile-avatar"><image wx:if="{{avatarSrc}}" src="{{avatarSrc}}" mode="aspectFill"/><image wx:else class="avatar-placeholder" src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/></view>
    <view class="profile-copy"><view class="profile-name">{{hasSession?displayName:'欢迎来到青方睐村美美'}}</view><view class="profile-subtitle">{{hasSession?'查看和编辑个人资料':'登录后查看和编辑个人资料'}}</view></view><text class="center-chevron">›</text>
   </button>
   <button wx:if="{{!hasSession}}" class="btn guest-signin" bindtap="signin">登录并开始使用</button>
   <feedback-state wx:if="{{summaryError}}" kind="error" description="{{summaryError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
-  <view class="workspace-heading"><text class="section-title">我的事务</text><text class="center-subtitle">发布 · 收藏 · 预约</text></view>
+  <view class="workspace-heading"><text class="section-title">我的事务</text></view>
   <view class="workspace-grid">
    <view class="workspace-item posts-entry" role="button" bindtap="goPosts" aria-label="我的发布"><image src="/assets/icons/center-posts-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的发布</text><text class="workspace-count">{{postCount===null?'—':postCount}}</text></view>
    <view class="workspace-item saved-entry" role="button" bindtap="showFavorites" aria-label="我的收藏"><image src="/assets/icons/center-saved-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的收藏</text><text class="workspace-count">{{favCount===null?'—':favCount}}</text></view>
    <view class="workspace-item bookings-entry" role="button" bindtap="goBookings" aria-label="我的预约"><image src="/assets/icons/center-booking-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的预约</text><text class="workspace-count">{{bookingCount===null?'—':bookingCount}}</text></view>
   </view>
-  <view class="menu-group-title">我的中心</view>
+  <view class="menu-group-title">服务与权益</view><view class="center-hub">
   <button id="points-center-entry" class="points-entry" bindtap="showPoints" aria-label="进入积分中心"><view class="points-icon"><image src="/assets/icons/center-points-{{iconPalette||displayPreferences.theme||'prism'}}.png"/></view><view class="center-entry-copy"><view class="center-entry-title">积分中心</view><view class="center-subtitle">积分记录 · 权益兑换 · 自助推广</view></view><text class="center-chevron">›</text></button>
   <button id="service-center-entry" class="merchant-entry" bindtap="openServiceCenter" aria-label="进入服务中心"><image src="/assets/icons/center-merchant-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><view class="center-entry-copy"><view class="center-entry-title">服务中心</view><view class="center-subtitle">商家资料 · 行业核验 · 沟通记录</view></view><text class="center-chevron">›</text></button>
-  <view class="menu-group-title">账户与偏好</view>
+  </view><view class="menu-group-title">账户与设置</view>
   <view class="center-menu">
    <button class="center-menu-row account-entry" bindtap="openAccount"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">账号与安全</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row privacy-entry" bindtap="openPrivacy"><image src="/assets/icons/center-settings-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">隐私与显示</text><text class="center-chevron">›</text></button>
@@ -102,6 +102,6 @@
    <button class="center-menu-row cache-entry" bindtap="inspectCache"><image src="/assets/icons/center-trash-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">清理缓存</text><text class="center-chevron">›</text></button>
   </view>
   <button wx:if="{{hasSession}}" class="signout-action" bindtap="signout">退出登录</button>
- </block>
+ </view></block>
 </view>
 </view>

@@ -89,6 +89,7 @@
     "search-bar": "/components/search-bar/index",
     "upload-progress": "/components/upload-progress/index",
     "privacy-mask": "/components/privacy-mask/index",
-    "confirm-dialog": "/components/confirm-dialog/index"
+    "confirm-dialog": "/components/confirm-dialog/index",
+    "bottom-sheet": "/components/bottom-sheet/index"
   }
 }

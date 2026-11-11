@@ -9,7 +9,7 @@
    <button wx:if="{{tab==='contacts'}}" class="toolbar-action search-action" bindtap="toggleSearch" aria-label="{{searchOpen?'关闭消息搜索':'搜索联系记录'}}"><view class="search-glyph"></view></button>
    <button wx:else class="toolbar-action read-all" disabled="{{!hasSession||!unread||reading}}" bindtap="readAll">{{reading?'处理中':'全部已读'}}</button>
   </view>
-  <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><input value="{{query}}" bindinput="search" placeholder="搜索当前联系记录" maxlength="100" focus="{{searchOpen}}" confirm-type="search" aria-label="搜索联系记录"/></view>
+  <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><search-bar value="{{query}}" placeholder="搜索当前联系记录" focused="{{true}}" max-length="{{100}}" bind:input="search"/></view>
   <view wx:if="{{!hasSession}}" class="state-panel"><view class="section-title">登录后查看消息</view><text>审核结果、预约动态和联系申请都在这里。</text><button class="btn" bindtap="signin">登录查看</button></view>
   <block wx:else>
    <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
@@ -20,8 +20,8 @@
     <view class="contact-entry" wx:for="{{visibleContacts}}" wx:key="id">
      <view class="message-row contact-row" data-id="{{item.id}}" bindtap="toggleContact" role="button" aria-expanded="{{expandedId===item.id}}" aria-label="{{item.title}}，{{item.statusText}}，点击查看联系申请">
       <view class="message-icon"><image src="/assets/icons/message-contact-{{iconPalette||displayPreferences.theme||'prism'}}.png"/></view>
-      <view class="message-copy"><view class="message-name">{{item.title}}</view><view class="message-preview">{{item.preview}}</view><view class="message-context">{{item.outgoing?'我发起的联系':'收到的联系'}} · {{item.statusText}}</view></view>
-      <view class="message-meta"><text class="message-time">{{item.dateText}}</text><text wx:if="{{item.needsReply}}" class="pending-dot" aria-label="待回复"></text></view>
+      <view class="message-copy"><view class="message-name">{{item.title}}</view><view class="message-preview">{{item.message||item.preview}}</view></view>
+      <view class="message-meta"><text class="message-time">{{item.dateText}}</text><text class="message-status">{{item.statusText}}</text><text wx:if="{{item.needsReply}}" class="pending-dot" aria-label="待回复"></text></view>
      </view>
      <view wx:if="{{expandedId===item.id}}" class="contact-detail">
       <button wx:if="{{item.status==='accepted'}}" class="btn" data-id="{{item.id}}" bindtap="openChat">进入站内会话</button><button wx:if="{{item.businessCaseId||(item.status==='accepted'&&!item.endedAt&&!item.blocked)}}" class="btn light" id="message-business-{{item.id}}" data-id="{{item.id}}" bindtap="openBusiness">查看业务处理进度</button><view class="field-label">申请内容</view><view class="body-copy" selectable="true">{{item.message}}</view>

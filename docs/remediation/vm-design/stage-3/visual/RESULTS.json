@@ -1,0 +1,134 @@
+{
+  "date": "2026-11-11",
+  "ok": true,
+  "sourceHash": "637095e05098614f4c660ef35578cf36df6af387403f36ae9f7d6d532401e37b",
+  "simulator": true,
+  "physicalDevice": false,
+  "database": "isolated PostgreSQL with labeled fixtures",
+  "stateScreenshots": "loading/error/empty use explicit rendered-state injection; permission and guest use real authorization state",
+  "routes": [
+    {
+      "route": "pages/home/index",
+      "material": "material-quiet",
+      "header": true
+    },
+    {
+      "route": "pages/discover/index",
+      "material": "material-quiet",
+      "header": true
+    },
+    {
+      "route": "pages/publish/index",
+      "material": "material-quiet",
+      "header": true
+    },
+    {
+      "route": "pages/messages/index",
+      "material": "material-pearl",
+      "header": true
+    },
+    {
+      "route": "pages/me/index",
+      "material": "material-pearl",
+      "header": true
+    }
+  ],
+  "screenshots": [
+    {
+      "route": "pages/home/index",
+      "variant": "normal",
+      "file": "home-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "middle",
+      "file": "home-middle.png",
+      "scrollTop": 95
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "bottom",
+      "file": "home-bottom.png",
+      "scrollTop": 190
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "normal",
+      "file": "discover-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "middle",
+      "file": "discover-middle.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "bottom",
+      "file": "discover-bottom.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "normal",
+      "file": "publish-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "middle",
+      "file": "publish-middle.png",
+      "scrollTop": 463
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "bottom",
+      "file": "publish-bottom.png",
+      "scrollTop": 927.5
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "normal",
+      "file": "messages-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "middle",
+      "file": "messages-middle.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "bottom",
+      "file": "messages-bottom.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "normal",
+      "file": "me-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "middle",
+      "file": "me-middle.png",
+      "scrollTop": 208
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "bottom",
+      "file": "me-bottom.png",
+      "scrollTop": 417
+    }
+  ],
+  "exceptions": [],
+  "restored": {
+    "storageRestored": true,
+    "authStorageUnchanged": true,
+    "runtimeOriginRestored": true
+  }
+}

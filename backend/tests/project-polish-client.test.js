@@ -5,12 +5,24 @@ function client(name,handler){
  let definition;const storage=new Map([['city_life_user_id','one'],['city_life_v2_auth_token','token']]),routes=[],calls=[],modals=[],timers=new Map();let city={cityCode:'441900',label:'东莞市'},timer=0;
  const api={online:()=>true,hasSession:()=>!!storage.get('city_life_v2_auth_token'),login:async()=>{},showError(){},request:async(method,url,data)=>{calls.push({method,url,data});return handler(method,url,data);}};
  const wx={getStorageSync:k=>storage.get(k)||'',showModal:v=>modals.push(v),navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url),setClipboardData(){},stopPullDownRefresh(){}};
- const sandbox={Page:v=>definition=v,wx,getCurrentPages:()=>[{}],setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id),require:n=>n.endsWith('/public-cache')?require('../../miniprogram/utils/public-cache'):n.endsWith('/api')?api:n.endsWith('/geo-context')?{current:()=>city}:n.endsWith('/theme')?{apply(){}}:n.endsWith('/shortcuts')?{load:()=>[],items:x=>x,pages:()=>[{id:'empty',items:[]}]}:n.endsWith('/navigation')?{detail:id=>routes.push('/pages/detail/index?id='+id)}:n.endsWith('/presentation')?{media:x=>'http://local'+x}:{} };
+ const sandbox={Page:v=>definition=v,wx,getCurrentPages:()=>[{}],setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id),require:n=>n.endsWith('/feed-query')?require('../../miniprogram/utils/feed-query'):n.endsWith('/public-cache')?require('../../miniprogram/utils/public-cache'):n.endsWith('/api')?api:n.endsWith('/geo-context')?{current:()=>city}:n.endsWith('/theme')?{apply(){}}:n.endsWith('/shortcuts')?{load:()=>[],items:x=>x,pages:()=>[{id:'empty',items:[]}]}:n.endsWith('/navigation')?{detail:id=>routes.push('/pages/detail/index?id='+id)}:n.endsWith('/presentation')?{media:x=>'http://local'+x,item:x=>({...x,cover:x.images?.[0]||''})}:{} };
  vm.runInNewContext(fs.readFileSync(path.resolve(__dirname,'../../miniprogram/pages',name,'index.js'),'utf8'),sandbox);
  const page={data:structuredClone(definition.data),setData(v,done){Object.assign(this.data,v);done?.();}};for(const [key,value]of Object.entries(definition))if(typeof value==='function')page[key]=value.bind(page);
  return {page,api,storage,routes,calls,modals,timers,city:value=>{city=value;}};
 }
 const news={id:'10000000-0000-4000-8000-000000000001',kind:'news',title:'本机测试资讯',sourceName:'隔离来源',body:'第一段\n第二段',startsAt:new Date(Date.now()-10000).toISOString(),endsAt:new Date(Date.now()+3600000).toISOString()};
+
+test('home selects a real image-bearing feed entry once, filters expiry and retains text when its image fails', async () => {
+ const records=[{id:'hero',images:['https://example.test/approved-photo.jpg'],title:'实际公开信息'},{id:'text-only',images:[],title:'另一条公开信息'},{id:'expired',images:[],expiresAt:'2020-01-01T00:00:00Z'}];
+ const c=client('home',async(method,url)=>url.includes('/config')?{areas:[]}:url.includes('/feed?')?{items:records}:{banners:[],news:[news]});
+ await c.page.load();
+ assert.equal(c.page.data.hero.id,'hero');
+ assert.deepEqual(c.page.data.featured.map(item=>item.id),['text-only']);
+ assert.ok(c.calls.some(call=>call.url.includes('sort=recommended')));
+ c.page.heroImageError();
+ assert.equal(c.page.data.hero,null);
+ assert.deepEqual(c.page.data.featured.map(item=>item.id),['hero','text-only']);
+});
 test('home reads actual content, preserves cities and discards late responses after city changes',async()=>{
  const gate=deferred(),c=client('home',async(m,u)=>u.includes('/config')?{areas:['中心街道']}:gate.promise);const work=c.page.load();c.city({cityCode:'310100',label:'上海市'});gate.resolve({news:[news],banners:[]});await work;assert.equal(c.page.data.news.length,0);
  c.api.request=async(m,u)=>u.includes('/config')?{areas:[]}:{news:[news],banners:[]};await c.page.load();assert.equal(c.page.data.region,'上海市');assert.equal(c.page.data.news[0].id,news.id);
