@@ -17,6 +17,7 @@ async function main() {
   let pool, repo, server, mini, session;
   const screenshots = [],
     checks = [],
+    layoutChecks = [],
     errors = [];
   const fingerprint = crypto.createHash('sha256');
   function hashSources(directory) {
@@ -288,6 +289,36 @@ async function main() {
       await mini.screenshot({ path: path.join(output, file) });
       screenshots.push({ route, variant, file, scrollTop });
     }
+    async function checkLayout(route, variant = 'normal') {
+      if (process.env.UI_AUDIT_GEOMETRY !== '1') return;
+      const bounds = await mini.evaluate(() => new Promise(resolve => {
+        const current = getCurrentPages().slice(-1)[0];
+        const header = current.selectComponent('#navigation-header');
+        const window = wx.getWindowInfo();
+        const capsule = wx.getMenuButtonBoundingClientRect();
+        header.createSelectorQuery().select('.nav-title').boundingClientRect()
+          .select('.nav-action').boundingClientRect().select('.nav-back').boundingClientRect()
+          .exec(rectangles => {
+            const result = {title:rectangles[0], action:rectangles[1], back:rectangles[2], capsule, statusHeight:window.statusBarHeight};
+            const bar = current.getTabBar?.();
+            if (!bar) { resolve(result); return; }
+            bar.createSelectorQuery().select('.curved-tabs').boundingClientRect()
+              .select('.tab-publish .tab-icon').boundingClientRect()
+              .exec(values => resolve({...result, navigation:values[0], publish:values[1]}));
+          });
+      }));
+      assert.ok(bounds.title, 'Header title geometry ' + route);
+      for (const item of [bounds.title, bounds.action, bounds.back].filter(Boolean)) {
+        assert.ok(item.top >= bounds.statusHeight - 1, 'Control clears status bar ' + route);
+        if (bounds.capsule.width > 0) assert.ok(item.right <= bounds.capsule.left - 6, 'Control clears native capsule ' + route);
+      }
+      if (bounds.action) assert.ok(bounds.title.right <= bounds.action.left + 1, 'Header title clears its action ' + route);
+      if (bounds.navigation && bounds.publish) {
+        assert.ok(bounds.publish.top >= bounds.navigation.top, 'Publish icon stays inside navigation ' + route);
+        assert.ok(bounds.publish.bottom <= bounds.navigation.top + 57, 'Publish icon clears bottom safe area ' + route);
+      }
+      layoutChecks.push({route, variant, passed:true, bounds});
+    }
     async function capturePositions(page, name, route) {
       const selector = {publish:'.industry-sidebar',regions:'.city-scroll',search:'.search-content',map:'.map-results'}[name];
       const inner = selector ? await page.$(selector) : null;
@@ -353,6 +384,7 @@ async function main() {
           }
           assert.ok(data.themeClass.includes('material-'),'Material assigned '+route);
           assert.ok(await page.$('#navigation-header'),'Shared header '+route);
+          await checkLayout(route);
           await capturePositions(page,name,route);
           checks.push({route,material:data.themeClass.match(/material-\w+/)?.[0],header:true});
           saveProgress();
@@ -422,6 +454,7 @@ async function main() {
       for (const name of ['home', 'discover', 'publish', 'messages', 'me', 'publish-form']) {
         page = await routeTo('/pages/' + name + '/index' + (queries[name] || ''));
         assert.ok((await page.data()).themeClass.includes('large-text'));
+        await checkLayout(page.path, 'accessible');
         await capture(name, page.path, 'accessible');
       }
     }
@@ -443,6 +476,7 @@ async function main() {
           stateScreenshots: 'loading/error/empty use explicit rendered-state injection; permission and guest use real authorization state',
           routes: checks,
           screenshots,
+          layoutChecks,
           exceptions: errors,
           restored
         },
