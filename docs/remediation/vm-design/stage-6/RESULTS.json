@@ -470,7 +470,6 @@
   },
   "pending": [
     "Android physical-device typography, safe areas, keyboard and overlays",
-    "iPhone physical-device typography, safe areas, keyboard and overlays",
     "Low-end-device scrolling and frame-rate measurement",
     "Operator-provided natural-light photography review"
   ],
@@ -488,5 +487,53 @@
       "file": "C:/Users/chejun/Desktop/city-life-miniapp-backups/2026-11-11-vm-design/final-visual.log",
       "sha256": "411e63d22b91f68e226e5553e97c2a654df1aeac64ca6a7cef78feec4db1e0bf"
     }
+  ],
+  "devicePreparation": {
+    "checkedAt": "2026-11-11T12:13:30.600Z",
+    "userProvidedModel": "红米 note12 trobu",
+    "interpretedModel": "Redmi Note 12 Turbo",
+    "reportedModel": "23049RAD8C",
+    "modelConfirmedByDevice": true,
+    "connection": "WeChat DevTools QR remote debugging",
+    "automationPlatform": "android",
+    "physicalDeviceConnected": true,
+    "androidVersion": "Android 13",
+    "wechatVersion": "8.0.79",
+    "environmentEvidence": "android/ENVIRONMENT.json",
+    "networkType": "4g",
+    "isolatedLanApiReachable": false,
+    "awaiting": "Phone and computer need the same Wi-Fi for isolated API access",
+    "regression": {
+      "tests": 467,
+      "passed": 453,
+      "failed": 0,
+      "skipped": 14,
+      "log": "C:/Users/chejun/Desktop/city-life-miniapp-backups/2026-11-11-vm-design/phone-audit-regression.log",
+      "sha256": "d1a59b50f88d7ab8e752677a58261319e1e31da8a1c560955af1a5d8bb744ab8"
+    }
+  },
+  "androidAcceptance": {
+    "status": "blocked",
+    "physicalDeviceConnected": true,
+    "environmentEvidence": "android/ENVIRONMENT.json",
+    "initialScreenshot": "android/home-network-error.png",
+    "normalRoutesVerified": 0,
+    "keyboardVerified": false,
+    "scrollPerformanceMeasured": false,
+    "apiBlocker": "Phone uses 4G, current private-LAN API probes fail",
+    "automationBlocker": "Automatic route switching times out; current phone page remains pages/me/index",
+    "sourceHash": "4880fcd8cecb9fc2e4666d3e957f797788336cfd7879e1ee958af15bdc3c38c4",
+    "cleanup": {
+      "storageRecoveryFilesCleared": true,
+      "residualUiSchemas": 0,
+      "otherConnections": 0,
+      "containersRemoved": 1,
+      "volumesRemoved": 1,
+      "networksRemoved": 1
+    },
+    "nativeGeometryVerified": false
+  },
+  "optionalCoverage": [
+    "iPhone physical-device coverage"
   ]
 }

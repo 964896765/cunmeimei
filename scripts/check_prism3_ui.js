@@ -4,6 +4,7 @@ const fs = require('node:fs'),
   path = require('node:path'),
   crypto = require('node:crypto');
 const assert = require('node:assert/strict');
+const { isIP } = require('node:net');
 const { Pool } = require('../backend/node_modules/pg');
 const { residentFields } = require('../backend/tests/helpers/resident-fields');
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,7 +15,28 @@ async function main() {
   require('../backend/src/test-database-guard').assertIsolatedDatabase(dsn);
   const schema = 'prism_ui_' + crypto.randomBytes(8).toString('hex'),
     control = new Pool({ connectionString: dsn });
-  let pool, repo, server, mini, session;
+  let pool, repo, server, mobileServer, mini, session, environment;
+  async function connectMini() {
+    const connected = await require('./devtools_connection')();
+    try {
+      const info = await connected.systemInfo();
+      if (process.env.UI_AUDIT_EXPECT_PLATFORM)
+        assert.equal(info.platform, process.env.UI_AUDIT_EXPECT_PLATFORM, 'Expected audit platform');
+      if (environment) {
+        assert.equal(info.platform, environment.platform, 'Audit platform remains unchanged');
+        assert.equal(info.model, environment.model, 'Audit device remains unchanged');
+      } else {
+        environment = Object.fromEntries(
+          ['platform', 'brand', 'model', 'system', 'version', 'SDKVersion', 'screenWidth', 'screenHeight', 'windowWidth', 'windowHeight', 'statusBarHeight', 'safeArea']
+            .map(key => [key, info[key]])
+        );
+      }
+      return connected;
+    } catch (error) {
+      await connected.disconnect();
+      throw error;
+    }
+  }
   const screenshots = [],
     checks = [],
     layoutChecks = [],
@@ -33,12 +55,13 @@ async function main() {
   if (process.env.PRISM_RESUME === '1' && fs.existsSync(checkpoint)) {
     const previous = JSON.parse(fs.readFileSync(checkpoint, 'utf8'));
     assert.equal(previous.sourceHash, sourceHash, 'Resume requires unchanged miniapp sources');
+    environment = previous.environment;
     checks.push(...previous.routes);
     screenshots.push(...previous.screenshots);
     layoutChecks.push(...(previous.layoutChecks || []));
   }
   function saveProgress() {
-    fs.writeFileSync(checkpoint, JSON.stringify({ sourceHash, routes: checks, screenshots, layoutChecks }, null, 2) + '\n');
+    fs.writeFileSync(checkpoint, JSON.stringify({ sourceHash, environment, routes: checks, screenshots, layoutChecks }, null, 2) + '\n');
   }
   fs.mkdirSync(output, { recursive: true });
   fs.rmSync(path.join(output, 'RESULTS.json'), { force: true });
@@ -50,15 +73,30 @@ async function main() {
     repo = require('../backend/src/pg-repository').createPgRepository(dsn, { options });
     await repo.seedRegions(['中心街道']);
     const password = crypto.randomBytes(24).toString('base64url');
-    server = require('../backend/src/server').createApp({
+    const appOptions = {
       repo,
       areas: ['中心街道'],
       allowDevLogin: true,
       superAdminPassword: password,
       legalConfig: { operatorName: '隔离界面验收主体', contactEmail: 'privacy@example.test' }
-    });
-    await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+    };
+    server = require('../backend/src/server').createApp(appOptions);
+    const bindHost = process.env.UI_AUDIT_HOST || '127.0.0.1';
+    const [first, second] = bindHost.split('.').map(Number);
+    const privateAddress = first === 10 || (first === 192 && second === 168) || (first === 172 && second >= 16 && second <= 31);
+    assert.ok(isIP(bindHost) === 4 && (bindHost === '127.0.0.1' || privateAddress), 'UI audit server uses loopback or a private LAN address');
+    await new Promise((resolve, reject) => server.once('error', reject).listen(0, '127.0.0.1', resolve));
     const origin = 'http://127.0.0.1:' + server.address().port;
+    let clientOrigin = origin;
+    if (bindHost !== '127.0.0.1') {
+      assert.ok(process.env.UI_AUDIT_TLS_KEY && process.env.UI_AUDIT_TLS_CERT, 'LAN device audit requires a TLS key and certificate');
+      mobileServer = require('node:https').createServer({
+        key:fs.readFileSync(process.env.UI_AUDIT_TLS_KEY),
+        cert:fs.readFileSync(process.env.UI_AUDIT_TLS_CERT)
+      }, server.listeners('request')[0]);
+      await new Promise((resolve, reject) => mobileServer.once('error', reject).listen(0, bindHost, resolve));
+      clientOrigin = 'https://' + bindHost + ':' + mobileServer.address().port;
+    }
     async function request(url, method = 'GET', value, auth = {}) {
       const response = await fetch(origin + url, {
         method,
@@ -236,13 +274,13 @@ async function main() {
     );
 
     console.log('Fixtures ready');
-    mini = await require('./devtools_connection')();
+    mini = await connectMini();
     mini.on('exception', (event) => errors.push(event));
     session = await require('./devtools_storage_recovery')(() => mini, async () => {
       await mini.disconnect().catch(() => {});
-      mini = await require('./devtools_connection')();
+      mini = await connectMini();
     });
-    await mini.evaluate(value => { require('utils/runtime.js').apiBaseUrl = value; return true; }, origin);
+    await mini.evaluate(value => { require('utils/runtime.js').apiBaseUrl = value; return true; }, clientOrigin);
     await mini.callWxMethod('setStorageSync', 'city_life_user_id', owner.userId);
     await mini.callWxMethod('setStorageSync', 'city_life_v2_auth_token', owner.token);
     await mini.callWxMethod('setStorageSync', 'city_life_session_expires_at', Date.now() + 3600000);
@@ -280,7 +318,7 @@ async function main() {
           last = error;
         }
         await mini.disconnect().catch(() => {});
-        mini = await require('./devtools_connection')();
+        mini = await connectMini();
         mini.on('exception', (event) => errors.push(event));
       }
       throw last || Error('Route did not open ' + url.split('?')[0]);
@@ -392,15 +430,15 @@ async function main() {
           await capturePositions(page,name,route);
           checks.push({route,material:data.themeClass.match(/material-\w+/)?.[0],header:true});
           saveProgress();
-          console.log('PASS native simulator '+route);
+          console.log('PASS '+environment.platform+' '+route);
           break;
         } catch (error) {
           screenshots.splice(previousShots);
           if(attempt===2)throw error;
-          console.log('RETRY simulator '+route+' '+error.message);
+          console.log('RETRY '+environment.platform+' '+route+' '+error.message);
         } finally {
           await mini.disconnect().catch(()=>{});
-          mini=await require('./devtools_connection')();
+          mini=await connectMini();
           mini.on('exception',event=>errors.push(event));
         }
       }
@@ -517,8 +555,9 @@ async function main() {
           date: '2026-11-11',
           ok: true,
           sourceHash,
-          simulator: true,
-          physicalDevice: false,
+          simulator: environment.platform === 'devtools',
+          physicalDevice: ['android', 'ios'].includes(environment.platform),
+          environment,
           database: 'isolated PostgreSQL with labeled fixtures',
           stateScreenshots: 'loading/error/empty use explicit rendered-state injection; permission and guest use real authorization state',
           routes: checks,
@@ -545,9 +584,10 @@ async function main() {
       async () => { if (session) await session.restore(); },
       async () => { if (mini) await mini.disconnect().catch(() => {}); },
       async () => {
-        if (!server) return;
-        server.closeAllConnections();
-        await new Promise(resolve => server.close(resolve));
+        for (const active of [server, mobileServer].filter(Boolean)) {
+          active.closeAllConnections();
+          await new Promise(resolve => active.close(resolve));
+        }
       },
       async () => { if (repo) await repo.close(); },
       async () => { if (pool) await pool.end(); },

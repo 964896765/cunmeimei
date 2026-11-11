@@ -1,0 +1,22 @@
+{
+  "platform": "android",
+  "model": "23049RAD8C",
+  "system": "Android 13",
+  "version": "8.0.79",
+  "SDKVersion": "3.17.6",
+  "screenWidth": 393,
+  "screenHeight": 857,
+  "windowWidth": 393,
+  "windowHeight": 857,
+  "statusBarHeight": 35,
+  "safeArea": {
+    "width": 393,
+    "right": 393,
+    "top": 35,
+    "left": 0,
+    "bottom": 857,
+    "height": 822
+  },
+  "source": "wx.getSystemInfoSync on QR-connected physical phone",
+  "sourceHash": "4880fcd8cecb9fc2e4666d3e957f797788336cfd7879e1ee958af15bdc3c38c4"
+}
