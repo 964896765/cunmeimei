@@ -1,1 +1,7 @@
-{"navigationBarTitleText":"商家工作台"}
+{
+  "navigationBarTitleText": "商家工作台",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "/components/page-header/index"
+  }
+}

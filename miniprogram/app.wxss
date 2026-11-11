@@ -1,5 +1,5 @@
 /* Shared semantic styles. Native navigation owns the top safe area. */
-page { background:var(--background); color:var(--ink); font-family:-apple-system, BlinkMacSystemFont, 'PingFang SC','Microsoft YaHei',sans-serif; font-size:30rpx; --background:#FAF8FB; --surface:#FFFFFF; --ink:#302735; --muted:#62545F; --brand:#895D78; --soft:#F3E8F0; --border:#EADFE7; --on-action:#FFFFFF; line-height:1.55;  --action:#70465F;  --link:#744E68;  --soft-alt:#E6F0F2;  --text:#493E4C;  --control-border:#96818F;  --danger:#9B343D;  --danger-soft:#FCEDEE;  --price:#50354F;  --glow-start:#E7D8EF;  --glow:#DAEDF0;  --glow-rose:#F7D8DF;  --action-end:#68588B;  --wash-rose:#F8DCE4;  --wash-blue:#DBEFF4;  --wash-lilac:#E8DDF5; }
+page { background:var(--background); color:var(--ink); font-family:-apple-system, BlinkMacSystemFont, 'PingFang SC','Microsoft YaHei',sans-serif; font-size:30rpx; --background:#FAF8F6; --surface:#FFFFFF; --ink:#302D33; --muted:#655C65; --brand:#875D55; --soft:#F8EAE5; --border:#E9E6E2; --on-action:#332D31; line-height:1.55;  --action:#EFCBC2;  --link:#76524C;  --soft-alt:#F2E7EB;  --text:#49434B;  --control-border:#95878D;  --danger:#973F4F;  --danger-soft:#F8EAE5;  --price:#704D47;  --glow-start:#F8EAE5;  --glow:#E9E5EF;  --glow-rose:#F2E7EB;  --action-end:#EFCBC2;  --wash-rose:#F8EAE5;  --wash-blue:#F2E7EB;  --wash-lilac:#E9E5EF; }
 view, text, input, textarea, button, picker { box-sizing:border-box; }
 .theme-root { min-height:100vh; background:var(--background); color:var(--text); }
 .theme-root.theme-prism { --page-wash:linear-gradient(180deg,var(--background),transparent 14%,transparent 60%,var(--background)),radial-gradient(ellipse at 0% 12%,var(--wash-rose),transparent 65%),radial-gradient(ellipse at 100% 20%,var(--wash-blue),transparent 65%),linear-gradient(145deg,var(--wash-lilac),var(--background) 75%);background-image:var(--page-wash);background-size:100% 900rpx;background-repeat:no-repeat; }
@@ -105,3 +105,5 @@ button,input,textarea{font-family:inherit}button[aria-pressed="true"],button[ari
 .continuous-page{position:relative;z-index:0}
 .theme-root.continuous-page.theme-prism{--continuous-header-base:transparent;background-image:none}
 .continuous-page.theme-prism::before{content:"";position:fixed;top:0;left:0;width:100%;height:900rpx;z-index:-1;pointer-events:none;background-image:var(--page-wash);background-size:100% 900rpx;background-repeat:no-repeat}
+
+@import "styles/prism-glass.wxss";

@@ -143,7 +143,8 @@ Page({
  },
  async fetchPage(page, version, query = this.loadedQuery) {
   const {type, area, q, sortIndex,sortCode} = this.data;
-  const scope=currentContext();
+  const scope=currentContext(),cacheKey='feed:'+scope+'|'+query;
+  if(page===1&&!this.data.filtered.length){const saved=require('../../utils/public-cache').read(cacheKey,wx);if(Array.isArray(saved?.items)){const available=saved.items.filter(x=>!x.expiresAt||Date.parse(x.expiresAt)>Date.now());this.setData({filtered:available.map(x=>({...present.item(x),favoriteKnown:!api.hasSession()})),count:available.length,page:1,cached:true});}}
   try {
    const r = await api.request('GET', feedUrl({type,area,q,categoryId:this.data.categoryId,sortIndex,sort:sortCode,page,days:this.data.days,images:this.data.images,radiusKm:this.data.radiusKm||0,cityCode:this.data.cityCode,districtCode:this.data.districtCode,...((sortCode==='distance'||this.data.radiusKm>0)?this.sortOrigin:{})}));
    if (this.unloaded || version !== this.reqVersion||scope!==currentContext()) return;
@@ -154,7 +155,8 @@ Page({
    this.loadedQuery = query;
    this.failedStage = '';
    this.failedPage = 0;
-   this.setData({filtered: unique, count: unique.length, hasMore: !!r.pagination?.hasMore&&page<MAX_PAGE,limitReached:!!r.pagination?.hasMore&&page>=MAX_PAGE, page, loading: false, error: ''});
+   if(page===1)require('../../utils/public-cache').write(cacheKey,r,wx);
+   this.setData({cached:false,filtered: unique, count: unique.length, hasMore: !!r.pagination?.hasMore&&page<MAX_PAGE,limitReached:!!r.pagination?.hasMore&&page>=MAX_PAGE, page, loading: false, error: ''});
    if(api.hasSession())this.hydrateSaved(items,version,scope);
   } catch (e) {
    if (!this.unloaded && version === this.reqVersion&&scope===currentContext()) {

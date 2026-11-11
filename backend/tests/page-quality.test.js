@@ -18,6 +18,7 @@ function client(name, request, session = true) {
   setTimeout(fn) { timers.set(++timerId, fn); return timerId; }, clearTimeout(id) { timers.delete(id); },
   wx: {navigateTo:options=>routes.push(options.url),getLocation:options=>{locationRequest=options;},getStorageSync: key => storage.get(key) || '',setStorageSync:(key,value)=>storage.set(key,value),removeStorageSync:key=>storage.delete(key), setNavigationBarTitle() {}, showToast() {}, stopPullDownRefresh() {}},
   require(name) {
+   if (name.endsWith('/public-cache')) return require('../../miniprogram/utils/public-cache');
    if (name.endsWith('/browse-query')) return require('../../miniprogram/utils/browse-query');
    if (name.endsWith('/auth-intent')) return {isReturning:()=>false};
    if (name.endsWith('/api')) return api;
@@ -53,6 +54,21 @@ function client(name, request, session = true) {
  return {page, storage, app, timers,routes,gps:()=>locationRequest};
 }
 const row = id => ({id, type: 'used', kind: 'listing', title: '验收信息 ' + id});
+
+test('merchant team account switch clears a previous write lock and ignores stale member responses', async () => {
+ const pending=[];
+ const {page,storage}=client('merchant-team',()=>new Promise(resolve=>pending.push(resolve)));
+ storage.set('city_life_user_id','owner-a');page.onLoad({merchantId:'merchant'});page.onShow();
+ page.setData({busy:true,targetUser:'previous-user',error:'previous error',canManage:true});
+ storage.set('city_life_user_id','owner-b');page.onShow();
+ assert.equal(page.data.busy,false);assert.equal(page.data.targetUser,'');assert.equal(page.data.error,'');assert.equal(page.data.canManage,false);
+ pending[0]({items:[{userId:'owner-a',role:'owner',status:'active'}]});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(page.data.items.length,0);
+ pending[1]({items:[{userId:'owner-b',role:'owner',status:'active'}]});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(page.data.canManage,true);assert.equal(page.data.loading,false);
+});
 
 test('map drawer accepts vertical drags, bounds its three states and ignores short movements',()=>{
  const {page}=client('map',async()=>({}));

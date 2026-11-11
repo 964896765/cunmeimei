@@ -1,0 +1,1 @@
+<view class="privacy-mask"><view class="privacy-symbol" aria-hidden="true"></view><view class="privacy-copy"><text class="privacy-label">{{label}}</text><text wx:if="{{description}}" class="privacy-description">{{description}}</text></view><button wx:if="{{actionText}}" bindtap="act">{{actionText}}</button></view>

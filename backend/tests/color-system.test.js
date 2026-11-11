@@ -16,8 +16,11 @@ function contrast(first, second) {
 }
 test('six stable palettes keep readable text, buttons and control boundaries', () => {
  assert.deepEqual(Object.keys(palettes), ['prism', 'dark', 'clear', 'quiet', 'warm', 'gentle']);
- assert.equal(palettes.prism.brand, '#895D78');
- assert.equal(palettes.prism.background, '#FAF8FB');
+ assert.equal(palettes.prism.brand, '#875D55');
+ assert.equal(palettes.prism.action, '#EFCBC2');
+ assert.equal(palettes.prism.background, '#FAF8F6');
+ for(const value of ['#FAF8F6','#F8EAE5','#F2E7EB','#E9E5EF','#EFCBC2','#E9E6E2'])
+  assert.ok(Object.values(palettes.prism).includes(value), 'Pearl Sunset reference color '+value);
  assert.equal(palettes.prism.surface, '#FFFFFF');
  const candidates = {...palettes};
  for(const name of Object.keys(pageProfiles)) candidates['page/'+name]=resolvePalette('prism','pages/'+name+'/index');
@@ -67,7 +70,7 @@ test('generated cold-start colors and PNGs match runtime palettes', async () => 
 
 test('every real route has a distinct mix and the publish tab stays luminous', async () => {
  const frozen=JSON.parse(fs.readFileSync(path.join(__dirname,'../../scripts/prism-color-baseline.json'),'utf8'));
- assert.deepEqual(palettes,frozen.palettes,'six themes match the frozen engineering color contract');
+ assert.deepEqual(palettes,frozen.palettes,'six themes match the PRISM GLASS 3.0 engineering color contract');
  assert.deepEqual(pageProfiles,frozen.pageProfiles,'route mixes match the frozen contract');
  for(const [name,accent] of Object.entries(frozen.pageAccents)){
   const actual=resolvePalette('prism','pages/'+name+'/index');

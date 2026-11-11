@@ -10,3 +10,5 @@
 
 .continuous-header{background-color:var(--continuous-header-base,var(--background));background-image:var(--page-wash,none);background-size:100% 900rpx;background-repeat:no-repeat}
 .transparent-header{background:transparent;background-image:none}
+
+.page-header{border-bottom:1rpx solid var(--border);background:var(--glass-surface,var(--background))}.continuous-header{background-color:var(--glass-surface,var(--background));background-image:none}.transparent-header{border-bottom-color:transparent}.nav-title{font-weight:600;letter-spacing:.5rpx}.nav-back{border-radius:18rpx}.nav-back:active{background:var(--soft)}

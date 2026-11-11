@@ -5,3 +5,6 @@
 .detail-attribute{display:flex;justify-content:space-between;gap:24rpx;padding:14rpx 0;font-size:28rpx;line-height:1.6}.detail-attribute text:first-child{color:var(--muted);flex-shrink:0}.detail-attribute text:last-child{text-align:right;overflow-wrap:anywhere}
 
 .trust-badges{display:flex;flex-wrap:wrap;gap:12rpx;margin:18rpx 0}
+
+/* PRISM GLASS 3.0 page composition. */
+.detail-page{padding-top:24rpx}.detail-title{line-height:1.45;letter-spacing:-.5rpx}.detail-price{color:var(--price)}.gallery{border-radius:30rpx;overflow:hidden}.detail-page .section-card{margin:24rpx 0}

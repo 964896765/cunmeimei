@@ -73,3 +73,6 @@ page{height:100%;overflow:hidden;background:#fff}
 .large-text .landing-empty{font-size:15px}
 .large-text .filter-options{grid-template-columns:repeat(2,minmax(0,1fr))}
 .large-text .filter-chip,.large-text .filter-error{font-size:16px}
+
+/* PRISM GLASS 3.0 page composition. */
+.search-fixed-header{background:var(--glass-surface,var(--surface));padding-top:16rpx}.search-box.search{border-radius:24rpx}.query-filters{border-top:0}.search-body{padding-top:16rpx}

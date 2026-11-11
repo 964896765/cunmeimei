@@ -1,0 +1,51 @@
+/* PRISM GLASS 3.0. Solid reading surfaces, restrained glass on navigation. */
+.theme-root {
+ --space-1:8rpx; --space-2:16rpx; --space-3:24rpx; --space-4:32rpx; --space-5:48rpx;
+ --radius-sm:16rpx; --radius-md:24rpx; --radius-lg:32rpx;
+ --glass-surface:rgba(255,255,255,.82); --glass-line:rgba(255,255,255,.94);
+ --elevation:0 12rpx 36rpx rgba(74,54,65,.055);
+ --card-title:31rpx; --card-meta:25rpx;
+ line-height:1.65;
+}
+.theme-prism { --page-wash:radial-gradient(ellipse at 4% 0%,var(--wash-rose),transparent 62%),radial-gradient(ellipse at 95% 12%,var(--wash-lilac),transparent 65%),linear-gradient(145deg,var(--wash-blue),var(--background) 78%); --card-glass:rgba(255,255,255,.68); }
+.theme-root.theme-prism { background-image:var(--page-wash); background-size:100% 1100rpx; }
+.material-pearl.theme-prism { background-image:radial-gradient(ellipse at 85% 0%,var(--wash-lilac),transparent 65%),linear-gradient(160deg,var(--wash-blue),var(--background) 80%); }
+.material-warm.theme-prism { background-image:radial-gradient(ellipse at 0% 5%,#F8EAE5,transparent 65%),radial-gradient(ellipse at 100% 15%,#F2E7EB,transparent 65%); }
+.theme-dark { --glass-surface:#25263A; --glass-line:var(--border); --elevation:none; }
+.theme-clear,.material-clear { --glass-surface:var(--surface); --card-glass:var(--surface); --glass-line:var(--control-border); --elevation:none; }
+.container { padding:28rpx 32rpx calc(40rpx + env(safe-area-inset-bottom)); }
+.title { font-size:44rpx; font-weight:650; letter-spacing:-1rpx; line-height:1.35; }
+.section { margin-top:32rpx; }
+.section-head { margin-bottom:20rpx; }
+.section-title { font-size:32rpx; font-weight:600; line-height:1.5; }
+.subtitle,.section-caption,.notice { line-height:1.7; }
+.card,.section-card { border-radius:var(--radius-md); padding:28rpx; }
+.theme-prism .card,.theme-prism .section-card { background:var(--card-glass); border:1rpx solid var(--glass-line); box-shadow:inset 0 1rpx 0 rgba(255,255,255,.98),var(--elevation); }
+.material-pearl.theme-prism .section-card { box-shadow:inset 0 1rpx 0 rgba(255,255,255,.98),0 8rpx 24rpx rgba(74,54,65,.035); }
+.btn { border-radius:22rpx; min-height:48px; padding:18rpx 28rpx; font-weight:600; }
+.theme-prism .btn:not(.light):not(.ghost):not(.danger) { box-shadow:0 8rpx 20rpx rgba(135,93,85,.1); }
+.btn.light { border-color:var(--border); }
+.btn:active { opacity:.82; }
+.btn[disabled] { opacity:.55; box-shadow:none; }
+.field,.field-area { border-radius:20rpx; border-color:var(--control-border); color:var(--ink); }
+.field { min-height:48px; }
+.field:focus,.field-area:focus { outline:2rpx solid var(--link); outline-offset:3rpx; }
+.field.error,.field-area.error { border-color:var(--danger); }
+.field[disabled],.field-area[disabled] { background:var(--soft); color:var(--muted); }
+.search { min-height:48px; height:96rpx; border-radius:24rpx; padding:0 26rpx; }
+.theme-prism .search { background:var(--glass-surface); border-color:var(--glass-line); box-shadow:0 8rpx 28rpx rgba(74,54,65,.035); }
+.chip { min-height:44px; align-items:center; padding:12rpx 22rpx; }
+.chip.active { background:var(--soft); border:1rpx solid var(--border); box-shadow:none; }
+.state-panel,.empty { border-radius:var(--radius-md); background:var(--glass-surface); line-height:1.75; }
+.inline-feedback,.error-banner { border-radius:var(--radius-sm); }
+.badge,.status,.tag { border-radius:10rpx; font-weight:500; }
+.body-copy { font-size:29rpx; line-height:1.85; }
+.has-bottom-tabs .container { padding-bottom:calc(48rpx + 49px + env(safe-area-inset-bottom)); }
+.large-text { --card-title:38rpx; --card-meta:30rpx; }
+.large-text .title { font-size:48rpx; }
+.large-text .section-title { font-size:38rpx; }
+.large-text .btn,.large-text .field,.large-text .field-area { font-size:34rpx; }
+.material-clear .card,.material-clear .section-card,.material-clear .state-panel { border:2rpx solid var(--control-border); box-shadow:none; }
+.material-clear .btn,.theme-clear .btn { background-image:none; }
+.reduce-motion view,.reduce-motion button,.reduce-motion image { animation:none!important; transition:none!important; }
+@media (prefers-reduced-motion:reduce) { view,button,image { animation:none!important; transition:none!important; } }

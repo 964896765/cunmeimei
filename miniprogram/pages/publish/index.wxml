@@ -1,7 +1,7 @@
 <view class="theme-root publish-root {{themeClass}}" style="{{themeStyle}}">
 <page-header id="navigation-header" transparent="{{true}}" title="发布内容" large-text="{{displayPreferences.largeText}}"/>
 <view class="container publish-page">
- <view wx:if="{{error}}" class="error-banner">{{error}}<button class="center-link" bindtap="loadConfig">重新读取发布配置</button></view><view wx:if="{{configLoading}}" class="notice" role="status">正在核对发布项目与开放状态…</view>
+ <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新读取发布配置" bind:action="loadConfig"/><view wx:if="{{configLoading}}" class="notice" role="status">正在核对发布项目与开放状态…</view>
 
  <block><view class="row publish-heading"><view class="section-title">选择发布项目</view><view class="publish-tools"><button class="drafts-button" bindtap="showGuidance" aria-label="查看发布须知">须知</button><button wx:if="{{!projectSearchOpen}}" class="project-search-button" bindtap="toggleProjectSearch" aria-label="{{projectSearchOpen?'关闭项目搜索':'搜索发布项目'}}"><view class="search-dot"></view></button><button class="drafts-button" bindtap="openDrafts" aria-label="打开草稿箱"><text>草稿箱</text></button><button class="drafts-button" bindtap="openRecords">发布进度</button></view></view>
  <view wx:if="{{projectSearchOpen}}" class="project-search-panel">
@@ -12,7 +12,7 @@
   <view class="project-search-summary" aria-live="polite">找到 {{projects.length}} 个相关项目</view>
   <scroll-view class="project-results-scroll" scroll-y="true" scroll-top="{{searchScrollTop}}" enhanced="true" show-scrollbar="{{false}}">
    <view wx:for="{{projects}}" wx:key="id" class="project-result-row" data-id="{{item.id}}" bindtap="chooseProject" role="button" aria-label="{{item.name}}，{{configReady?item.readiness.label:'待核对'}}"><view class="project-result-copy"><view class="project-result-name">{{item.name}}</view><view class="project-result-path">{{item.categoryName}} · {{item.group}}</view></view><text class="project-status {{configReady&&item.readiness.canStart?'available':''}}">{{configReady?(item.readiness.canStart?'填写':item.readiness.label):'待核对'}}</text><text class="project-arrow" aria-hidden="true">›</text></view>
-   <view wx:if="{{!projects.length}}" class="project-search-empty">没有匹配项目，试试其他名称或简称。</view>
+   <feedback-state wx:if="{{!projects.length}}" kind="empty" description="没有匹配项目，试试其他名称或简称。" compact="{{false}}" large-text="{{displayPreferences.largeText}}"/>
   </scroll-view>
  </view>
  <view wx:else class="project-browser {{projectSearchOpen?'with-search':''}}">

@@ -2,7 +2,7 @@
  <page-header id="navigation-header" continuous="{{true}}" title="手机号验证" back="{{true}}" back-label="返回刚才的页面" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
  <view class="container verification-page">
   <view class="verify-title">{{status.phoneVerified?'手机号已验证':'验证手机号后继续'}}</view><view class="notice">{{hasProject?'当前发布项目：'+projectName:'身份与联系方式分别记录，不自动继承认证。'}}</view>
-  <view wx:if="{{error}}" class="inline-feedback" role="alert">{{error}}</view><view wx:if="{{loading}}" class="notice">正在读取认证状态…</view>
+  <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/><feedback-state wx:if="{{loading}}" kind="loading" description="正在读取认证状态…" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
   <view wx:else class="section-card"><view class="verify-copy">{{purpose||'用于发布和联系等需要验证的业务，不会自动公开号码。'}}</view><view wx:if="{{status.phoneVerified}}" class="verify-number">{{status.maskedPhone}}</view>
    <button wx:if="{{!status.phoneVerified}}" class="btn" open-type="getPhoneNumber" bindgetphonenumber="authorizePhone" loading="{{busy}}" disabled="{{busy||!status.phoneProviderAvailable}}">{{status.phoneProviderAvailable?'微信授权手机号':'微信授权手机号（未开通）'}}</button>
    <button wx:elif="{{status.phoneVerified&&(hasProject||permissionResume)}}" class="btn" bindtap="finish">{{hasProject?'继续发布'+projectName:'返回并继续'}}</button>

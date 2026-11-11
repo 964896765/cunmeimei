@@ -1,10 +1,11 @@
 <view class="theme-root {{themeClass}}" style="{{themeStyle}}">
-<view wx:if="{{recoveryError}}" class="state-panel booking-recovery-error" role="alert"><view>{{recoveryError}}</view><button class="btn light" bindtap="retryRecovery" disabled="{{submitting||checking}}">重新读取恢复记录</button></view>
+ <page-header id="navigation-header" title="提交预约" continuous="{{true}}" large-text="{{displayPreferences.largeText}}" back="{{true}}" native-back="{{true}}"/>
+<feedback-state wx:if="{{recoveryError}}" kind="error" description="{{recoveryError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新读取恢复记录" bind:action="retryRecovery" action-disabled="{{submitting||checking}}"/>
 <view wx:if="{{rejectedText&&!pendingCheck}}" class="state-panel booking-rejected" role="status">{{rejectedText}}</view>
 <view wx:if="{{pendingCheck}}" class="state-panel booking-pending-check" role="alert"><view>{{recoveryTitle}}</view><view>{{date}} {{time}}（北京时间）</view><view>{{submitError||'正在核对原申请，请保留当前时段。'}}</view><button class="btn light" bindtap="checkSubmission" loading="{{checking}}" disabled="{{checking||submitting}}">核对预约结果</button><button class="btn light" bindtap="retrySubmission" loading="{{submitting}}" disabled="{{checking||submitting||recoveryError}}">重试原申请</button><button class="btn light" bindtap="viewBookings">查看我的预约</button></view>
 <view wx:if="{{submitted}}" class="state-panel booking-success" role="status"><view>{{successText}}</view><button class="btn light" bindtap="viewBookings">查看我的预约</button></view>
 <view wx:if="{{loadingItem}}" class="state-panel" role="status">正在读取可预约服务…</view>
-<view wx:if="{{itemError}}" class="state-panel booking-item-error" role="alert"><view>{{itemError}}</view><button class="btn light" bindtap="load">重新读取服务</button></view>
+<feedback-state wx:if="{{itemError}}" kind="error" description="{{itemError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新读取服务" bind:action="load"/>
 <view class="container" wx:if="{{item}}">
   <view class="title">预约服务</view><view class="subtitle">{{online?'提交预约申请，由服务方进一步确认。':'选择期望时间，创建本地预约演示。'}}</view>
   <view class="card booking-item"><view class="list-art"><image src="/assets/icons/type-service-{{iconPalette||displayPreferences.theme||'prism'}}.png" style="width:56rpx;height:56rpx"/></view><view class="list-text"><view class="list-title">{{item.title}}</view><view class="list-desc">{{item.district}}</view><view class="list-price">{{item.priceText||item.price}}</view></view></view>
@@ -12,7 +13,7 @@
   <text class="field-label">期望时间</text>
   <picker wx:if="{{online}}" mode="selector" range="{{slotLabels}}" value="{{slotIndex}}" bindchange="chooseSlot" disabled="{{loadingSlots||!openSlots.length||slotError||submitting||checking||pendingCheck||submitted}}"><view class="field picker">{{loadingSlots?'正在查询时段':slotError?'时段暂未读取成功':time||'当天已无可预约时段'}} <text>⌄</text></view></picker>
   <picker wx:else mode="time" value="{{time}}" bindchange="chooseTime" disabled="{{submitting||submitted}}"><view class="field picker">{{time}} <text>⌄</text></view></picker>
-  <view wx:if="{{slotError}}" class="inline-feedback booking-slot-error" role="alert"><text>{{slotError}}</text><button class="btn light" bindtap="retrySlots" disabled="{{loadingSlots||submitting||pendingCheck||submitted}}">重新查询时段</button></view>
+  <feedback-state wx:if="{{slotError}}" kind="error" description="{{slotError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新查询时段" bind:action="retrySlots" action-disabled="{{loadingSlots||submitting||pendingCheck||submitted}}"/>
   <text class="field-label">需求备注（选填）</text><textarea class="field-area" value="{{remark}}" maxlength="300" placeholder="简要说明服务需求" bindinput="setRemark" disabled="{{submitting||checking||pendingCheck||submitted}}"/>
   <view wx:if="{{submitError&&!pendingCheck}}" class="inline-feedback booking-submit-error" role="alert">{{submitError}} 备注已保留。</view>
   <view class="notice">{{online?'所选时段暂留30分钟，请等待服务方回应。预约意向和站内通知可从服务中心回查。':'演示记录用于了解预约意向与确认流程。'}}</view>

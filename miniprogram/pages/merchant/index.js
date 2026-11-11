@@ -4,17 +4,17 @@ const owner=()=>wx.getStorageSync('city_life_user_id')||'';
 const context=()=>owner()+':'+(wx.getStorageSync('city_life_v2_auth_token')||'');
 const live=(page,uid)=>!page._disposed&&owner()===uid;
 Page({
- data:{mode:'apply',name:'',category:'餐饮',district:'',categories:['餐饮','零售','家政','维修','其他'],districts:[],request:null,merchants:[],registrationCode:'',licenseHolder:'',evidenceReference:'',notice:'',demoBookings:0,online:api.online(),submitting:false,uploading:false,licenseUploaded:false,licenseEnabled:!api.online()},
+ data:{loading:false,loadError:'',mode:'apply',name:'',category:'餐饮',district:'',categories:['餐饮','零售','家政','维修','其他'],districts:[],request:null,merchants:[],registrationCode:'',licenseHolder:'',evidenceReference:'',notice:'',demoBookings:0,online:api.online(),submitting:false,uploading:false,licenseUploaded:false,licenseEnabled:!api.online()},
  onShow(){require('../../utils/theme').apply(this);if(this._ownerUid!==undefined&&this._ownerUid!==owner())this.setData({mode:'apply',name:'',request:null,merchants:[],registrationCode:'',licenseHolder:'',evidenceReference:'',notice:'',submitting:false,uploading:false,licenseUploaded:false,licenseEnabled:false});this._ownerUid=owner();this.refresh();},
  onUnload(){this._disposed=true;},
  async refresh(){
   if(!api.online()){const s=db.getStore();this.setData({request:s.merchantRequest,notice:s.merchantNotice,demoBookings:s.bookings.length,mode:s.merchantRequest?'status':'apply'});return;}
-  const version=this._listVersion=(this._listVersion||0)+1;let uid=owner();
+  const version=this._listVersion=(this._listVersion||0)+1;let uid=owner();this.setData({loading:true,loadError:''});
   try{if(!api.hasSession())await api.login();if(this._disposed||version!==this._listVersion)return;uid=owner();this._ownerUid=uid;
    const [r,c,m]=await Promise.all([api.request('GET','/api/v1/me/merchant-application',null,true,uid),api.request('GET','/api/v1/config'),api.request('GET','/api/v1/me/merchants',null,true,uid)]);
    if(!live(this,uid)||version!==this._listVersion)return;
    const a=r.application;const merchants=m.items||[];this.setData({request:a?{...a,statusText:labels[a.status]||a.status}:null,merchants,districts:c.areas||[],district:(c.areas||[]).includes(this.data.district)?this.data.district:(regionPref.selected(c.areas||[])==='全部地区'?c.areas[0]||'':regionPref.selected(c.areas||[])),mode:merchants.length?'operate':a?'status':'apply',registrationCode:a?.registrationCode||'',licenseHolder:a?.licenseHolder||'',evidenceReference:a?.evidenceReference||'',licenseUploaded:!!a?.licenseFileId,licenseEnabled:c.features?.licenseUpload==='private_development'});
-  }catch(e){if(live(this,uid)&&version===this._listVersion)api.showError(e);}
+  }catch(e){if(live(this,uid)&&version===this._listVersion)this.setData({loadError:e.message});}finally{if(live(this,uid)&&version===this._listVersion)this.setData({loading:false});}
  },
  input(e){this.setData({[e.currentTarget.dataset.field]:e.detail.value});},
  chooseCategory(e){this.setData({category:this.data.categories[+e.detail.value]});},chooseDistrict(e){this.setData({district:this.data.districts[+e.detail.value]});},

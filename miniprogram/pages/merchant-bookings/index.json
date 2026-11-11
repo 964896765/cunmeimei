@@ -1,1 +1,7 @@
-{"navigationBarTitleText":"商家中心"}
+{
+  "navigationBarTitleText": "商家中心",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "/components/page-header/index"
+  }
+}

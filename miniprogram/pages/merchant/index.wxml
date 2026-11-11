@@ -1,5 +1,6 @@
 <view class="theme-root {{themeClass}}" style="{{themeStyle}}">
-<view class="container">
+ <page-header id="navigation-header" title="{{mode==='apply'?'商家入驻':mode==='status'?'入驻进度':'商家工作台'}}" continuous="{{true}}" large-text="{{displayPreferences.largeText}}" back="{{true}}" native-back="{{true}}"/>
+<view class="container"><feedback-state wx:if="{{loadError}}" kind="error" compact="{{true}}" description="{{loadError}}" action-text="重新读取" bind:action="refresh"/><feedback-state wx:if="{{loading}}" kind="loading" compact="{{true}}" description="正在读取商家资料…"/>
  <view class="top-row"><view><view class="title">商家工作台</view><view class="subtitle">一个账号，管理所属门店</view></view><text class="tag">{{online?'商家中心':'本地演示'}}</text></view>
  <view wx:if="{{mode==='apply'}}">
   <view class="section card"><view class="section-title">申请入驻</view><view class="list-desc">提交基本资料，经后台人工核验后才可管理门店。</view></view>

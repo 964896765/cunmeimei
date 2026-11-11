@@ -30,13 +30,13 @@
   ],
   "window": {
     "navigationBarTitleText": "青方睐村美美",
-    "navigationBarBackgroundColor": "#FAF8FB",
+    "navigationBarBackgroundColor": "#FAF8F6",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#FAF8FB"
+    "backgroundColor": "#FAF8F6"
   },
   "tabBar": {
-    "color": "#62545F",
-    "selectedColor": "#744E68",
+    "color": "#655C65",
+    "selectedColor": "#76524C",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
@@ -82,5 +82,13 @@
   "requiredPrivateInfos": [
     "getLocation"
   ],
-  "__usePrivacyCheck__": true
+  "__usePrivacyCheck__": true,
+  "usingComponents": {
+    "feedback-state": "/components/feedback-state/index",
+    "status-badge": "/components/status-badge/index",
+    "search-bar": "/components/search-bar/index",
+    "upload-progress": "/components/upload-progress/index",
+    "privacy-mask": "/components/privacy-mask/index",
+    "confirm-dialog": "/components/confirm-dialog/index"
+  }
 }

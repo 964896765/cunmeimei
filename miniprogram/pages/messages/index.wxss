@@ -58,3 +58,6 @@
 .large-text .contact-detail{padding-left:4rpx}
 .large-text .contact-mode-note{font-size:27rpx}
 .large-text .planned-label{font-size:23rpx}
+
+/* PRISM GLASS 3.0 page composition. */
+.messages-page{padding:24rpx 32rpx calc(48rpx + 49px + env(safe-area-inset-bottom))}.message-toolbar{border-bottom:0;padding:8rpx 0 24rpx}.message-row{padding:28rpx 8rpx}.message-icon{border-radius:24rpx;background:var(--surface);border:1rpx solid var(--border)}.contact-detail{border-radius:24rpx;background:var(--surface);border:1rpx solid var(--border);padding:24rpx}.notification-shortcuts{background:var(--surface);border-radius:24rpx;padding:20rpx 8rpx}.message-name{font-weight:600}

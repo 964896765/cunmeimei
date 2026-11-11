@@ -1,1 +1,6 @@
-{"component":true}
+{
+  "component": true,
+  "usingComponents": {
+    "feedback-state": "/components/feedback-state/index"
+  }
+}

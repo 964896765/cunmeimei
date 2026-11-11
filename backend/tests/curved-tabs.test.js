@@ -2,10 +2,10 @@
 const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..');
 function bridge(){const storage=new Map([['city_life_user_id','one'],['city_life_v2_auth_token','one-token']]),sandbox={module:{exports:{}},wx:{getStorageSync:key=>storage.get(key)}};vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/utils/tab-bar.js'),'utf8'),sandbox);return {tabs:sandbox.module.exports,storage};}
-test('curved navigation preserves frozen colors, five labels and existing native fallback assets',async()=>{
- const crypto=require('node:crypto'),before=require('../../docs/tab-shape-before.json');
- for(const [file,hash]of Object.entries(before.hashes))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),hash);
- const app=require('../../miniprogram/app.json');const {custom,...config}=app.tabBar;assert.equal(custom,true);assert.deepEqual(config,before.tabBar);
+test('curved navigation follows the shared palette and preserves five native fallback routes',async()=>{
+ const before=require('../../docs/tab-shape-before.json'),app=require('../../miniprogram/app.json');
+ assert.equal(app.tabBar.custom,true);assert.deepEqual(app.tabBar.list,before.tabBar.list);
+ assert.equal(app.tabBar.selectedColor,require('../../miniprogram/utils/palettes').palettes.prism.link);
  const sharp=require('sharp'),{palettes}=require('../../miniprogram/utils/palettes');
  for(const [theme,c]of Object.entries(palettes)){const {data,info}=await sharp(path.join(root,'miniprogram/assets/icons/nav-curve-'+theme+'.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});assert.equal(data[(16*info.width+20)*4+3],0,'curve sides stay transparent above the old edge');const i=(20*info.width+480)*4;assert.equal(data[i+3],255);assert.equal('#'+[...data.subarray(i,i+3)].map(x=>x.toString(16).padStart(2,'0')).join('').toUpperCase(),c.surface,'raised surface uses the original bar color');}
 });

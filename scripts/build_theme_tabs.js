@@ -2,7 +2,7 @@
 // Small project-authored vector navigation assets, rasterized for native TabBar compatibility.
 const sharp=require('../backend/node_modules/sharp'),path=require('node:path'),fs=require('node:fs');
 const {palettes,iconPalettes,resolvePalette}=require('../miniprogram/utils/palettes');
-const paths={home:'M5 15L16 5l11 10M8 13v14h6v-8h4v8h6V13',discover:'M16 3a13 13 0 1 0 0 26a13 13 0 1 0 0-26M21 10l-3 8-8 3 3-8z',publish:'M16 3a13 13 0 1 0 0 26a13 13 0 1 0 0-26M16 9v14M9 16h14',messages:'M5 5h22v18H13l-8 5zM10 11h12M10 16h8',me:'M21 10a5 5 0 1 1-10 0a5 5 0 1 1 10 0M6 28v-3a10 8 0 0 1 20 0v3z'};
+const paths=require('./navigation-icon-paths');
 const controls={bell:'M7 22h18l-3-5v-6a6 6 0 0 0-12 0v6zM13 27h6',copy:'M11 10h16v18H11zM6 21H4V4h16v2',shield:'M16 3l11 4v9c0 6-11 13-11 13S5 22 5 16V7zM11 15l4 4 7-8',info:'M16 3a13 13 0 1 0 0 26a13 13 0 1 0 0-26M16 14v9M16 9v1'};
 async function icon(name,d,color,colors=palettes.prism){
  const filledPublish=name.startsWith('publish');

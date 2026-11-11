@@ -1,7 +1,9 @@
 {
   "navigationBarTitleText": "青方睐村美美",
   "usingComponents": {
-    "content-card": "/components/content-card/index"
+    "content-card": "/components/content-card/index",
+    "page-header": "/components/page-header/index"
   },
-  "enablePullDownRefresh": true
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom"
 }

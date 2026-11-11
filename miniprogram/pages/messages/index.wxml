@@ -1,4 +1,5 @@
 <view class="theme-root {{themeClass}}" style="{{themeStyle}}">
+ <page-header id="navigation-header" title="消息" continuous="{{true}}" large-text="{{displayPreferences.largeText}}"/>
  <view class="container messages-page">
   <view class="message-toolbar">
    <view class="message-tabs" role="tablist">
@@ -11,9 +12,9 @@
   <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><input value="{{query}}" bindinput="search" placeholder="搜索当前联系记录" maxlength="100" focus="{{searchOpen}}" confirm-type="search" aria-label="搜索联系记录"/></view>
   <view wx:if="{{!hasSession}}" class="state-panel"><view class="section-title">登录后查看消息</view><text>审核结果、预约动态和联系申请都在这里。</text><button class="btn" bindtap="signin">登录查看</button></view>
   <block wx:else>
-   <view wx:if="{{error}}" class="state-panel" role="alert"><text>{{error}}</text><button class="btn light" bindtap="refresh">重试</button></view>
-   <view wx:if="{{contactError}}" class="state-panel contact-action-error" role="alert"><text>{{contactError}} 请先核对联系状态；回复内容已保留。</text><button class="btn light" bindtap="refresh" disabled="{{loading||contactBusyId}}">刷新联系状态</button></view>
-   <view wx:if="{{loading}}" class="message-loading">正在更新消息…</view>
+   <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
+   <feedback-state wx:if="{{contactError}}" kind="error" description="{{contactError}} 请先核对联系状态；回复内容已保留。" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="刷新联系状态" bind:action="refresh" action-disabled="{{loading||contactBusyId}}"/>
+   <feedback-state wx:if="{{loading}}" kind="loading" description="正在更新消息…" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
    <block wx:if="{{tab==='contacts'}}">
     <view wx:if="{{pendingContacts||contactFilter==='pending'}}" class="contact-filter"><text>{{contactFilter==='pending'?'待我回复':'待回复 '+pendingContacts+' 条'}}</text><button class="filter-link" wx:if="{{contactFilter==='pending'}}" bindtap="showAllContacts">查看全部</button><button class="filter-link" wx:else bindtap="showPending">只看待处理</button></view>
     <view class="contact-entry" wx:for="{{visibleContacts}}" wx:key="id">

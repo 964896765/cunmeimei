@@ -21,7 +21,7 @@
    <view wx:if="{{dirty}}" class="map-inline-note">地图范围已变化，当前为上次查询结果。</view>
    <view wx:if="{{error||geoError}}" class="map-feedback"><text>{{error||geoError}}</text><button wx:if="{{cityCode}}" bindtap="retry">重试</button><button wx:else bindtap="chooseCity">选择地区</button></view>
    <view wx:if="{{loading&&!items.length}}" class="map-inline-note">正在查找当前区域…</view>
-   <view wx:elif="{{!items.length&&!error&&!geoError}}" class="map-empty"><view>当前区域暂无公开信息</view><text>移动地图或切换分类试试</text></view>
+   <feedback-state wx:elif="{{!items.length&&!error&&!geoError}}" kind="empty" description="当前区域暂无公开信息移动地图或切换分类试试" compact="{{false}}" large-text="{{displayPreferences.largeText}}"/>
    <view wx:for="{{items}}" wx:key="id" id="map-item-{{item.id}}" class="map-result {{selectedId===item.id?'selected':''}}" data-id="{{item.id}}" bindtap="selectRow" role="button" aria-label="{{item.title}}，查看详情">
     <image wx:if="{{item.cover}}" class="map-result-image" src="{{item.cover}}" mode="aspectFill"/><view wx:else class="map-result-placeholder"><image src="{{item.icon}}" mode="aspectFit" aria-hidden="true"/></view>
     <view class="map-result-copy"><view class="map-result-title">{{item.title}}</view><view class="map-result-meta">{{item.typeName}} · {{item.district}}</view><view class="map-result-meta">{{item.precision==='approximate'?'公开近似区域':'公开经营位置'}}</view><view wx:if="{{item.distanceText}}" class="map-result-meta">{{item.distanceText}}</view><view wx:if="{{item.dateText}}" class="map-result-meta">{{item.dateText}}</view></view><text class="map-result-arrow" aria-hidden="true">›</text>

@@ -1,0 +1,1 @@
+:host{display:inline-block}.badge{display:inline-block;padding:5rpx 13rpx;border-radius:10rpx;background:var(--soft);color:var(--muted);font-size:var(--card-meta,25rpx);line-height:1.5;font-weight:500}.success{color:var(--link)}.pending{color:var(--text);border:1rpx solid var(--border)}.danger{color:var(--danger);background:var(--danger-soft)}

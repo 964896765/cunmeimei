@@ -1,6 +1,6 @@
 'use strict';
 Component({
- properties:{transparent:{type:Boolean,value:false},continuous:{type:Boolean,value:false},backLabel:{type:String,value:'返回个人中心'},title:{type:String,value:''},back:{type:Boolean,value:false},largeText:{type:Boolean,value:false},actionText:{type:String,value:''},actionDisabled:{type:Boolean,value:false}},
+ properties:{transparent:{type:Boolean,value:false},continuous:{type:Boolean,value:false},nativeBack:{type:Boolean,value:false},backLabel:{type:String,value:'返回上一页'},title:{type:String,value:''},back:{type:Boolean,value:false},largeText:{type:Boolean,value:false},actionText:{type:String,value:''},actionDisabled:{type:Boolean,value:false}},
  data:{statusHeight:0,rowHeight:44,headerHeight:44,titleInset:96},
  lifetimes:{attached(){this.measure();}},
  pageLifetimes:{resize(){this.measure();}},
@@ -15,7 +15,7 @@ Component({
    this.setData({statusHeight,rowHeight,headerHeight:statusHeight+rowHeight,titleInset});
    this.triggerEvent('measure',{height:statusHeight+rowHeight});
   },
-  goBack(){this.triggerEvent('back');},
+  goBack(){if(this.properties.nativeBack)wx.navigateBack({delta:1,fail:()=>wx.switchTab({url:'/pages/home/index'})});else this.triggerEvent('back');},
   act(){if(!this.properties.actionDisabled)this.triggerEvent('action');}
  }
 });

@@ -31,11 +31,11 @@
     <view wx:if="{{queryDirty}}" class="state-panel" role="status"><text>关键词已修改，点击搜索或选择条件查看结果。</text><button class="btn light" bindtap="search">搜索当前条件</button></view>
     <view wx:elif="{{loading&&!items.length}}" class="state-panel search-loading" role="status"><view class="skeleton"></view><text>正在查找相关信息…</text></view>
     <view wx:elif="{{error&&!items.length}}" class="state-panel search-error" role="alert"><view class="section-title">搜索暂时无法完成</view><text>{{error}}</text><button class="btn light" bindtap="retry">重新加载</button></view>
-    <view wx:elif="{{!items.length}}" class="state-panel search-empty"><view class="search-empty-mark" aria-hidden="true"><view class="search-dot"></view><text>×</text></view><view class="section-title">暂未找到相关内容</view><text>可移除上方条件，或更换关键词与地区。</text><button wx:if="{{!mapScoped}}" class="btn light" bindtap="browseAll">浏览当前城市全部信息</button></view>
+    <feedback-state wx:elif="{{!items.length}}" kind="empty" title="暂未找到相关内容" description="×可移除上方条件，或更换关键词与地区。" compact="{{false}}" large-text="{{displayPreferences.largeText}}" action-text="浏览当前城市全部信息" bind:action="browseAll"/>
     <block wx:else>
      <view class="result-heading">搜索结果</view>
      <content-card id="search-result-{{item.id}}" theme="{{displayPreferences.theme}}" icon-palette="{{iconPalette}}" wx:for="{{items}}" wx:key="id" item="{{item}}" bind:open="open"/>
-     <view wx:if="{{error}}" class="pagination-error" role="alert"><text>{{error}}</text><button class="btn light" bindtap="retry">重试加载</button></view>
+     <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试加载" bind:action="retry"/>
      <button wx:elif="{{hasMore}}" class="btn light load-more" loading="{{loading}}" disabled="{{loading}}" bindtap="more">{{loading?'正在加载…':'继续加载'}}</button><view wx:else class="list-end">{{limitReached?'结果较多，请缩小地区或筛选条件继续查找。':'已显示全部匹配信息'}}</view>
     </block>
    </block>
@@ -48,7 +48,7 @@
    <view class="filter-section"><view class="field-label">图片条件</view><view class="filter-options"><button wx:for="{{imageOptions}}" wx:key="value" class="filter-chip {{draftImages===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseImages" disabled="{{filterBusy}}" aria-pressed="{{draftImages===item.value}}">{{item.label}}</button></view></view>
    <view wx:if="{{mapScoped}}" class="filter-section"><view class="field-label">发布者</view><view class="filter-options"><button class="filter-chip {{draftPublisher==='all'?'selected':''}}" data-value="all" bindtap="choosePublisher">全部</button><button class="filter-chip {{draftPublisher==='verified'?'selected':''}}" data-value="verified" bindtap="choosePublisher">已核验主体</button></view></view>
    <view wx:if="{{!mapScoped&&canFilterDistance}}" class="filter-section"><view class="field-label">距离范围</view><view class="filter-options"><button wx:for="{{radiusOptions}}" wx:key="value" class="filter-chip {{draftRadius===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseRadius" disabled="{{filterBusy}}" aria-pressed="{{draftRadius===item.value}}">{{item.label}}</button></view><view class="notice">以授权定位为中心，仅筛选所选地区内具有公开位置的商家与可预约服务。</view></view>
-   <view wx:if="{{filterError}}" class="filter-error" role="alert">{{filterError}}</view>
+   <feedback-state wx:if="{{filterError}}" kind="error" description="{{filterError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
   </scroll-view>
   <view class="filter-actions"><button class="btn light" bindtap="resetAdvanced" disabled="{{filterBusy}}">重置</button><button class="btn" bindtap="applyAdvanced" loading="{{filterBusy}}" disabled="{{filterBusy}}">{{filterBusy?'正在定位…':'查看结果'}}</button></view>
  </view></view>

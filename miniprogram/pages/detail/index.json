@@ -1,1 +1,7 @@
-{"navigationBarTitleText":"详情"}
+{
+  "navigationBarTitleText": "详情",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "page-header": "/components/page-header/index"
+  }
+}

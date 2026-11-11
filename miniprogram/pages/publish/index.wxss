@@ -64,8 +64,7 @@
 .large-text .drafts-button{font-size:32rpx}
 /* The navigation and heading own their space; only the two columns scroll. */
 page{height:100%;overflow:hidden;background:#fff}
-.theme-root.publish-root{display:flex;flex-direction:column;height:100vh;min-height:0;overflow:hidden;padding-bottom:calc(49px + env(safe-area-inset-bottom));box-sizing:border-box;background:#fff;background-image:none;--surface:#fff!important;--border:#ECEEF1!important;--ink:#1D2731!important;--text:#444D57!important;--muted:#7A8089!important}
-.publish-root.theme-dark{background:#171E26;--surface:#222B33!important;--border:#35414B!important;--ink:#F1F4F6!important;--text:#DBE2E8!important;--muted:#AAB8C2!important}
+.theme-root.publish-root{display:flex;flex-direction:column;height:100vh;min-height:0;overflow:hidden;padding-bottom:calc(49px + env(safe-area-inset-bottom));box-sizing:border-box;background-color:var(--background)}
 .publish-root>page-header{display:block;flex-shrink:0}
 .publish-root .publish-page.container{height:0;flex:1;min-height:0;display:flex;flex-direction:column;padding:8px 0 0!important;overflow:hidden}
 .publish-heading{flex-shrink:0;min-height:48px;padding:0 16px;margin-bottom:8px}
@@ -77,7 +76,7 @@ page{height:100%;overflow:hidden;background:#fff}
 .industry-sidebar,.project-content{padding-top:6px}
 .industry-choice{position:relative;display:flex;align-items:center;min-height:52px;padding:12px 10px 12px 16px;border:0;border-radius:0;font-size:14px;font-weight:500;line-height:1.5;word-break:normal}
 .industry-choice.active{background:#fff;color:#1D2731;border:0;border-radius:0;font-weight:500}
-.industry-choice.active::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:2px;background:#5A9CA6}
+.industry-choice.active::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:2px;background:var(--link)}
 .project-column{background:var(--surface);padding:0 16px}
 .project-group-section{margin-bottom:18px}
 .project-group{display:flex;align-items:center;gap:8px;min-height:48px;margin:0;padding:10px 0;background:transparent;border:0}
@@ -114,3 +113,6 @@ page{height:100%;overflow:hidden;background:#fff}
 .publish-scope-note{padding:0;flex-shrink:0}
 
 .project-row.project-focused{background:var(--soft);border-left:4rpx solid var(--link)}.project-focused .project-name{color:var(--link);font-weight:600}
+
+/* PRISM GLASS 3.0 page composition. */
+.publish-page{padding:22rpx 24rpx}.project-browser{gap:20rpx;border-top:1rpx solid var(--border);padding-top:16rpx}.industry-column{border-radius:24rpx;overflow:hidden;background:var(--soft)}.industry-choice{border-radius:0;padding:24rpx 18rpx}.industry-choice.active{border-radius:16rpx;background:var(--surface);color:var(--link);border-left-color:var(--link);box-shadow:0 6rpx 20rpx rgba(74,54,65,.04)}.project-group{border-left:0;border-radius:14rpx;background:var(--soft);padding:16rpx 18rpx}.project-row{min-height:52px;padding-left:18rpx}.project-status.available{color:var(--link)}.large-text .publish-heading{flex-wrap:wrap}.large-text .publish-tools{flex-wrap:wrap}
