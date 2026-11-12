@@ -5,10 +5,10 @@ const palettes = {
     "brand": "#A44970",
     "action": "#A13E65",
     "link": "#973454",
-    "background": "#FBF8FA",
+    "background": "#FDFCFB",
     "surface": "#FFFFFF",
-    "soft": "#F9EDF2",
-    "soft-alt": "#F0EAF4",
+    "soft": "#FCF4F7",
+    "soft-alt": "#F5F2F9",
     "ink": "#19171C",
     "text": "#38343C",
     "muted": "#6D6671",
@@ -22,9 +22,9 @@ const palettes = {
     "glow-rose": "#FAEDF1",
     "glow": "#F1ECF6",
     "action-end": "#A54A6C",
-    "wash-rose": "#FBF8FA",
-    "wash-blue": "#FBF8FA",
-    "wash-lilac": "#FBF8FA"
+    "wash-rose": "#FDFCFB",
+    "wash-blue": "#FDFCFB",
+    "wash-lilac": "#FDFCFB"
 },
   "dark": {
     "brand": "#C9B8FF",
@@ -156,121 +156,121 @@ const pageProfiles = {
   "home": {
     "family": "home",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "discover": {
     "family": "discover",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "publish": {
     "family": "publish",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "messages": {
     "family": "messages",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "me": {
     "family": "me",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "regions": {
     "family": "discover",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "detail": {
     "family": "home",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "booking": {
     "family": "discover",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "my-posts": {
     "family": "home",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "my-bookings": {
     "family": "me",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "merchant": {
     "family": "publish",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "chat": {
     "family": "messages",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "merchant-services": {
     "family": "discover",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "merchant-bookings": {
     "family": "messages",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   },
   "merchant-team": {
     "family": "publish",
     "mix": [
-      "#FBF8FA",
-      "#FBF8FA",
-      "#FBF8FA"
+      "#FDFCFB",
+      "#FDFCFB",
+      "#FDFCFB"
     ]
   }
 };

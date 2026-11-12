@@ -18,8 +18,8 @@ test('six stable palettes keep readable text, buttons and control boundaries', (
  assert.deepEqual(Object.keys(palettes), ['prism', 'dark', 'clear', 'quiet', 'warm', 'gentle']);
  assert.equal(palettes.prism.brand, '#A44970');
  assert.equal(palettes.prism.action, '#A13E65');
- assert.equal(palettes.prism.background, '#FBF8FA');
- for(const value of ['#FBF8FA','#FFFFFF','#19171C','#6D6671','#A44970','#F9EDF2','#F0EAF4','#F0E7ED'])
+ assert.equal(palettes.prism.background, '#FDFCFB');
+ for(const value of ['#FDFCFB','#FFFFFF','#19171C','#6D6671','#A44970','#FCF4F7','#F5F2F9','#F0E7ED'])
   assert.ok(Object.values(palettes.prism).includes(value), 'VM Design System reference color '+value);
  assert.equal(palettes.prism.surface, '#FFFFFF');
  const candidates = {...palettes};
@@ -36,6 +36,19 @@ test('six stable palettes keep readable text, buttons and control boundaries', (
   assert.ok(contrast(c['control-border'], c.surface) >= 3, name + ': input boundary');
   assert.ok(contrast(c.brand, c.surface) >= 3, name + ': native selected icon');
  }
+});
+
+test('main pages share the brighter pearl canvas and home photography has a light reading layer',()=>{
+ for(const name of ['home','discover','publish','messages','me']){
+  const c=resolvePalette('prism','pages/'+name+'/index');
+  assert.equal(c.background,'#FDFCFB');assert.equal(c.surface,'#FFFFFF');
+  assert.deepEqual(pageProfiles[name].mix,['#FDFCFB','#FDFCFB','#FDFCFB']);
+ }
+ const css=fs.readFileSync(path.join(root,'pages/home/index.wxss'),'utf8');
+ const caption=css.match(/\.with-photo \.banner-caption,\.guide-photo \.guide-copy \{([^}]+)\}/)[1];
+ assert.match(caption,/color:var\(--ink\)/);
+ assert.match(caption,/rgba\(255,255,255,/);
+ assert.doesNotMatch(caption,/rgba\(25,27,37/);
 });
 
 test('generated cold-start colors and PNGs match runtime palettes', async () => {
@@ -80,7 +93,7 @@ test('all routes share the VM flat canvas and the publish icon stays legible', a
  const {aliases,accentRoute}=require('../../miniprogram/utils/page-accent-route');
  assert.deepEqual([...Object.keys(pageProfiles),...Object.keys(aliases)].sort(),app.pages.map(x=>x.split('/')[1]).sort());
  for(const route of app.pages) assert.ok(pageProfiles[accentRoute(route).split('/')[1]],'all new pages reuse a frozen palette');
- for(const profile of Object.values(pageProfiles)) assert.deepEqual(profile.mix,['#FBF8FA','#FBF8FA','#FBF8FA']);
+ for(const profile of Object.values(pageProfiles)) assert.deepEqual(profile.mix,['#FDFCFB','#FDFCFB','#FDFCFB']);
  const {data}=await sharp(path.join(root,'assets/icons/publish-prism.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});
  let opaque=0,light=0;
  for(let n=0;n<data.length;n+=4) if(data[n+3]===255){opaque++;if(data[n]+data[n+1]+data[n+2]>650)light++;}

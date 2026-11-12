@@ -30,9 +30,9 @@
   ],
   "window": {
     "navigationBarTitleText": "青方睐村美美",
-    "navigationBarBackgroundColor": "#FBF8FA",
+    "navigationBarBackgroundColor": "#FDFCFB",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#FBF8FA"
+    "backgroundColor": "#FDFCFB"
   },
   "tabBar": {
     "color": "#6D6671",

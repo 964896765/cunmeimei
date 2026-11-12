@@ -40,6 +40,7 @@ async function main() {
   const screenshots = [],
     checks = [],
     layoutChecks = [],
+    backgroundSamples = [],
     errors = [];
   const fingerprint = crypto.createHash('sha256');
   function hashSources(directory) {
@@ -59,9 +60,10 @@ async function main() {
     checks.push(...previous.routes);
     screenshots.push(...previous.screenshots);
     layoutChecks.push(...(previous.layoutChecks || []));
+    backgroundSamples.push(...(previous.backgroundSamples || []));
   }
   function saveProgress() {
-    fs.writeFileSync(checkpoint, JSON.stringify({ sourceHash, environment, routes: checks, screenshots, layoutChecks }, null, 2) + '\n');
+    fs.writeFileSync(checkpoint, JSON.stringify({ sourceHash, environment, routes: checks, screenshots, layoutChecks, backgroundSamples }, null, 2) + '\n');
   }
   fs.mkdirSync(output, { recursive: true });
   fs.rmSync(path.join(output, 'RESULTS.json'), { force: true });
@@ -416,7 +418,8 @@ async function main() {
     };
     const homePublishScope = process.env.UI_AUDIT_SCOPE === 'home-publish';
     const discoveryScope = process.env.UI_AUDIT_SCOPE === 'discover';
-    const routes = discoveryScope ? ['pages/discover/index'] : homePublishScope ? ['pages/home/index','pages/publish/index'] : process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
+    const brightnessScope = process.env.UI_AUDIT_SCOPE === 'brightness';
+    const routes = discoveryScope ? ['pages/discover/index'] : homePublishScope ? ['pages/home/index','pages/publish/index'] : brightnessScope || process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
     for (const route of routes) {
       if (checks.some(check => check.route === route)) continue;
       const name = route.split('/')[1];
@@ -441,6 +444,18 @@ async function main() {
           assert.ok(await page.$('#navigation-header'),'Shared header '+route);
           await checkLayout(route);
           await capturePositions(page,name,route);
+          if(brightnessScope) {
+            assert.ok(data.themeStyle.includes('--background:#FDFCFB'),'Shared bright canvas '+name);
+            const {data:pixels,info}=await require('../backend/node_modules/sharp')(path.join(output,name+'-normal.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+            const x=Math.round(8*info.width/environment.windowWidth),y=Math.round(100*info.height/environment.windowHeight);
+            const offset=(y*info.width+x)*4,rgb=Array.from(pixels.subarray(offset,offset+3));
+            assert.deepEqual(rgb,[253,252,251],'Rendered page canvas '+name);
+            backgroundSamples.push({page:name,rgb,x,y});
+            if(name==='me') {
+              assert.equal((await page.$$('.workspace-item')).length,4);
+              assert.equal((await page.$$('.personal-functions')).length,0);
+            }
+          }
           checks.push({route,material:data.themeClass.match(/material-\w+/)?.[0],header:true});
           saveProgress();
           console.log('PASS '+environment.platform+' '+route);
@@ -568,7 +583,36 @@ async function main() {
       await page.setData({loading:true});await pause(100);await capture('discover',page.path,'loading');
       await page.setData({loading:false,error:'界面验收状态，网络连接暂时中断。'});await pause(100);await capture('discover',page.path,'error');
     }
-    if (!homePublishScope && !discoveryScope && process.env.UI_AUDIT_STATES !== '0') {
+    if(brightnessScope) {
+      let page=await routeTo('/pages/me/index');
+      for(const [method,mode,variant] of [['openProfile','profile','profile'],['openAccount','account','account'],['openServiceCenter','service','service'],['openHelp','help','help'],['openNotifications','privacy','notifications'],['openPrivacy','privacy','privacy']]) {
+        await mini.evaluate(async name=>{await getCurrentPages().slice(-1)[0][name]();return true;},method);
+        for(let attempt=0;attempt<30;attempt++) {
+          const data=await page.data();
+          if(data.mode===mode&&!data.summaryLoading&&!data.settingsBusy)break;
+          await pause(100);
+        }
+        assert.equal((await page.data()).mode,mode,method+' opens its existing destination');
+        if(mode==='profile') {
+          assert.equal((await page.$$('.profile-field')).length,3,'Profile has three text fields');
+          assert.equal((await page.$$('.avatar-editor')).length,1,'Profile has one avatar editor');
+        }
+        await pause(200);await capture('me',page.path,variant);
+        await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].back();return true;});
+        await pause(200);
+      }
+      await mini.callWxMethod('setStorageSync','city_life_preferences_'+owner.userId,{theme:'prism',largeText:true,reduceMotion:true});
+      for(const name of ['home','me']) {
+        page=await routeTo('/pages/'+name+'/index');
+        await checkLayout(page.path,'accessible');await capture(name,page.path,'accessible');
+      }
+      await mini.callWxMethod('removeStorageSync','city_life_v2_auth_token');
+      await mini.callWxMethod('removeStorageSync','city_life_user_id');
+      page=await routeTo('/pages/me/index');
+      assert.equal((await page.data()).hasSession,false);
+      await capture('me',page.path,'guest');
+    }
+    if (!homePublishScope && !discoveryScope && !brightnessScope && process.env.UI_AUDIT_STATES !== '0') {
       let page = await routeTo('/pages/discover/index');
       await mini.evaluate(() => { getCurrentPages().slice(-1)[0].openSort(); return true; });
       await pause(200);
@@ -695,6 +739,7 @@ async function main() {
           routes: checks,
           screenshots,
           layoutChecks,
+          backgroundSamples,
           exceptions: errors,
           restored
         },

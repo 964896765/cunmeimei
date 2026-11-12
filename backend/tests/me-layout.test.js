@@ -51,3 +51,17 @@ test('personal workspace exposes four real counts and keeps draft loading indepe
  assert.equal((markup.match(/class="workspace-item /g)||[]).length,4);
  assert.ok(markup.includes('bindtap="openDrafts"'));
 });
+
+test('personal workspace presents one entry per action and uses one avatar and verification editor',()=>{
+ const markup=fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.wxml'),'utf8');
+ const main=markup.slice(markup.indexOf('<block wx:else><view class="main-center">'));
+ const actions=[...main.matchAll(/bindtap="([^"]+)"/g)].map(match=>match[1]);
+ assert.equal(actions.length,new Set(actions).size,'main workspace actions have a single visible entry');
+ for(const action of ['goPosts','showFavorites','openDrafts','goBookings','showHistory','openNotifications','openPrivacy','openPersonalData','openHelp','openAccount','openServiceCenter'])assert.ok(actions.includes(action),action+' remains addressable');
+ assert.doesNotMatch(main,/personal-function-grid|bindtap="showAbout"|bindtap="goMessages"/);
+ const profile=markup.slice(markup.indexOf("mode==='profile'"),markup.indexOf("<block wx:elif=\"{{mode==='service'}}\""));
+ assert.equal((profile.match(/open-type="chooseAvatar"/g)||[]).length,1);
+ const account=markup.slice(markup.indexOf("<block wx:elif=\"{{mode==='account'}}\""),markup.indexOf("<block wx:elif=\"{{mode==='help'}}\""));
+ assert.equal((account.match(/bindtap="openVerification"/g)||[]).length,1);
+ assert.ok(markup.includes('class="center-menu-row about-action" bindtap="showAbout"'));
+});

@@ -1,15 +1,15 @@
 /* Semantic foundations shared by all 27 registered pages. */
 page {
- --background:#FBF8FA; --surface:#FFFFFF; --ink:#19171C;
+ --background:#FDFCFB; --surface:#FFFFFF; --ink:#19171C;
  --text:#38343C; --muted:#6D6671; --brand:#A44970;
  --action:#A13E65; --on-action:#FFFFFF; --link:#973454;
- --soft:#F9EDF2; --soft-alt:#F0EAF4; --border:#F0E7ED;
+ --soft:#FCF4F7; --soft-alt:#F5F2F9; --border:#F0E7ED;
  --control-border:#9B8292; --danger:#AE3154; --danger-soft:#FBEAF0;
  --price:#BC2855; --action-end:#A54A6C;
  background:var(--background); color:var(--ink);
  font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
  font-size:30rpx; line-height:1.55;
- --glow-start:#F8E8EE;  --glow-rose:#FAEDF1;  --glow:#F1ECF6;  --wash-rose:#FBF8FA;  --wash-blue:#FBF8FA;  --wash-lilac:#FBF8FA; }
+ --glow-start:#F8E8EE;  --glow-rose:#FAEDF1;  --glow:#F1ECF6;  --wash-rose:#FDFCFB;  --wash-blue:#FDFCFB;  --wash-lilac:#FDFCFB; }
 view,text,input,textarea,button,picker { box-sizing:border-box; }
 button,input,textarea { font-family:inherit; }
 button::after { border:0; }

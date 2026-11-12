@@ -1,0 +1,89 @@
+{
+  "checkedAt": "2026-11-12T22:42:52.762Z",
+  "baseline": "0819c7f",
+  "default": {
+    "tests": 484,
+    "pass": 469,
+    "fail": 0,
+    "skipped": 15
+  },
+  "focused": {
+    "tests": 12,
+    "pass": 12,
+    "fail": 0
+  },
+  "wxml": {
+    "files": 44,
+    "balanced": true
+  },
+  "officialPreview": {
+    "ok": true,
+    "packageBytes": 2046138,
+    "limitBytes": 2097152
+  },
+  "visual": {
+    "sourceHash": "841d4f7666ca408a3d74eeaad32620f0513d57d9ca573cb3f26397e55615db1f",
+    "sourceHashVerified": true,
+    "screenshots": 25,
+    "layoutChecks": 7,
+    "exceptions": 0,
+    "backgroundSamples": [
+      {
+        "page": "home",
+        "rgb": [
+          253,
+          252,
+          251
+        ],
+        "x": 12,
+        "y": 152
+      },
+      {
+        "page": "discover",
+        "rgb": [
+          253,
+          252,
+          251
+        ],
+        "x": 12,
+        "y": 152
+      },
+      {
+        "page": "publish",
+        "rgb": [
+          253,
+          252,
+          251
+        ],
+        "x": 12,
+        "y": 152
+      },
+      {
+        "page": "messages",
+        "rgb": [
+          253,
+          252,
+          251
+        ],
+        "x": 12,
+        "y": 152
+      },
+      {
+        "page": "me",
+        "rgb": [
+          253,
+          252,
+          251
+        ],
+        "x": 12,
+        "y": 152
+      }
+    ],
+    "physicalDevice": false,
+    "restored": {
+      "storageRestored": true,
+      "authStorageUnchanged": true,
+      "runtimeOriginRestored": true
+    }
+  }
+}
