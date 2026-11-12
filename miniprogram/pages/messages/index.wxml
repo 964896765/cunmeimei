@@ -3,8 +3,8 @@
  <view class="container messages-page">
   <view class="message-toolbar">
    <view class="message-tabs" role="tablist">
-    <view class="message-tab {{tab==='contacts'?'active':''}}" role="tab" aria-selected="{{tab==='contacts'}}" data-tab="contacts" bindtap="tab">聊天</view>
-    <view class="message-tab {{tab==='notices'?'active':''}}" role="tab" aria-selected="{{tab==='notices'}}" data-tab="notices" bindtap="tab">通知<text wx:if="{{unread}}" class="tab-unread" aria-label="有未读通知"></text></view>
+    <view class="message-tab {{tab==='contacts'?'active':''}}" role="tab" aria-selected="{{tab==='contacts'}}" data-tab="contacts" bindtap="tab">会话<text wx:if="{{pendingContacts}}" class="segment-count" aria-label="{{pendingContacts}}条待处理联系">{{pendingContacts}}</text></view>
+    <view class="message-tab {{tab==='notices'?'active':''}}" role="tab" aria-selected="{{tab==='notices'}}" data-tab="notices" bindtap="tab">通知<text wx:if="{{unread}}" class="segment-count" aria-label="{{unread}}条未读通知">{{unread>99?'99+':unread}}</text></view>
    </view>
    <button wx:if="{{tab==='contacts'}}" class="toolbar-action search-action" bindtap="toggleSearch" aria-label="{{searchOpen?'关闭消息搜索':'搜索联系记录'}}"><view class="search-glyph"></view></button>
    <button wx:else class="toolbar-action read-all" disabled="{{!hasSession||!unread||reading}}" bindtap="readAll">{{reading?'处理中':'全部已读'}}</button>
@@ -19,7 +19,7 @@
     <view wx:if="{{pendingContacts||contactFilter==='pending'}}" class="contact-filter"><text>{{contactFilter==='pending'?'待我回复':'待回复 '+pendingContacts+' 条'}}</text><button class="filter-link" wx:if="{{contactFilter==='pending'}}" bindtap="showAllContacts">查看全部</button><button class="filter-link" wx:else bindtap="showPending">只看待处理</button></view>
     <view class="contact-entry" wx:for="{{visibleContacts}}" wx:key="id">
      <view class="message-row contact-row" data-id="{{item.id}}" bindtap="toggleContact" role="button" aria-expanded="{{expandedId===item.id}}" aria-label="{{item.title}}，{{item.statusText}}，点击查看联系申请">
-      <view class="message-icon"><image src="/assets/icons/message-contact-{{iconPalette||displayPreferences.theme||'prism'}}.png"/></view>
+      <view class="message-icon contact-avatar"><text>{{item.avatarInitial}}</text></view>
       <view class="message-copy"><view class="message-name">{{item.title}}</view><view class="message-preview">{{item.message||item.preview}}</view></view>
       <view class="message-meta"><text class="message-time">{{item.dateText}}</text><text class="message-status">{{item.statusText}}</text><text wx:if="{{item.needsReply}}" class="pending-dot" aria-label="待回复"></text></view>
      </view>
@@ -34,6 +34,7 @@
     <view wx:if="{{!loading&&!error&&!visibleContacts.length}}" class="state-panel"><view class="section-title">{{query?'没有找到相关联系':contactFilter==='pending'?'没有待回复申请':'还没有联系记录'}}</view><text>{{query?'试试信息标题或申请中的关键词。':'从信息详情发起联系，收到的申请和回复会显示在这里。'}}</text></view>
     <button wx:if="{{contactsHasMore}}" class="load-notices filter-link" disabled="{{loading||contactsLoading||contactBusyId}}" bindtap="moreContacts">{{contactsLoading?'正在加载…':'加载更早联系记录'}}</button>
     <view class="contact-mode-note">先发送联系申请，对方接受后进入站内文字会话。搜索仅匹配已加载记录。</view>
+    <view wx:if="{{!query&&items.length}}" class="system-preview"><view class="notice-section-heading"><text class="section-title">系统通知</text><button class="filter-link" data-tab="notices" bindtap="tab">全部通知 ›</button></view><view wx:for="{{items}}" wx:if="{{index<3}}" wx:key="id" class="message-row notice-row" data-id="{{item.id}}" bindtap="open" role="button" aria-label="{{item.title}}，查看通知"><view class="message-icon"><image src="/assets/icons/message-{{item.icon}}-{{iconPalette||'prism'}}.png"/></view><view class="message-copy"><view class="message-name">{{item.title}}</view><view class="message-preview notice-body">{{item.body}}</view></view><view class="message-meta"><text class="message-time">{{item.dateText}}</text><text wx:if="{{!item.readAt}}" class="unread-dot" aria-label="未读"></text></view></view></view>
    </block>
    <block wx:else>
     <view class="notification-shortcuts">

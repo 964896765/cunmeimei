@@ -12,6 +12,6 @@ function notice(item){
  const category=kind==='businesscase'?'business':kind==='merchant'?'merchant':['booking','merchant-booking'].includes(kind)?'booking':['publication','publication-expiry','industry'].includes(kind)?'review':['points-ledger','points-reward','points-appeal','commerce','promotion'].includes(kind)?'points':'other';
  return {...item,category,icon:{business:'calendar',merchant:'store',booking:'calendar',review:'review',points:'points',other:'bell'}[category],dateText:dateText(item.createdAt)};
 }
-function contact(item){return {...item,statusText:item.endedAt?'会话已结束':item.blocked?'已屏蔽':status[item.status]||'状态已更新',dateText:dateText(item.createdAt),preview:item.status==='accepted'?'已建立站内会话':item.status==='pending'?'查看联系申请':'联系状态已更新',needsReply:item.status==='pending'&&!item.outgoing&&!item.blocked};}
+function contact(item){return {...item,avatarInitial:Array.from(String(item.title||'联系').replace(/^\[[^\]]*\]\s*/,''))[0]||'联',statusText:item.endedAt?'会话已结束':item.blocked?'已屏蔽':status[item.status]||'状态已更新',dateText:dateText(item.createdAt),preview:item.status==='accepted'?'已建立站内会话':item.status==='pending'?'查看联系申请':'联系状态已更新',needsReply:item.status==='pending'&&!item.outgoing&&!item.blocked};}
 function filterContacts(items,query,filter){const q=String(query||'').trim().toLocaleLowerCase();return items.filter(x=>(filter!=='pending'||x.needsReply)&&(!q||[x.title,x.message,x.response].some(v=>String(v||'').toLocaleLowerCase().includes(q))));}
 module.exports={dateText,notice,contact,filterContacts};

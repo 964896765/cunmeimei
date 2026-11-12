@@ -15,30 +15,6 @@ function client(name){
  if(name==='chat'){page.onLoad({id:chatId});page.data.chat={id:chatId,canSend:true,peerId:'peer',publicationId:itemId};page.data.messages=[{id:'message-id',mine:false,body:'对方消息'}];page.data.draft='原始消息内容';}
  return {page,api,calls,store,modals,sheets,toasts,phones,recent,event:dataset=>({currentTarget:{dataset}}),switchOwner(){store.set('city_life_user_id','two');store.set('city_life_v2_auth_token','token-two');}};
 }
-test('comment completion preserves text typed after the original request was sent',async()=>{
- const c=client('detail'),gate=deferred();c.api.request=async()=>gate.promise;const p=c.page.sendComment();await tick();c.page.setComment({detail:{value:'提交期间新增的留言'}});gate.resolve({comment:{id:'submitted'}});await p;assert.equal(c.page.data.comment,'提交期间新增的留言');assert.equal(c.page.data.commenting,false);
-});
-test('comment retry uses a new key when the reply target changed after an uncertain result',async()=>{
- const c=client('detail'),posts=[];c.page.data.replyTo='first-parent';c.api.request=async(method,url,body)=>{posts.push(body);throw Error('网络返回中断');};await c.page.sendComment();c.page.cancelReply();await c.page.sendComment();assert.notEqual(posts[0].clientKey,posts[1].clientKey);assert.equal(posts[1].parentId,null);
-});
-test('unchanged comment retry preserves its idempotency key even when an identical input event fires',async()=>{
- const c=client('detail'),posts=[];c.api.request=async(method,url,body)=>{posts.push(body);throw Error('网络返回中断');};await c.page.sendComment();c.page.setComment({detail:{value:c.page.data.comment}});await c.page.sendComment();assert.equal(posts[0].clientKey,posts[1].clientKey);
-});
-test('late comment completion cannot change an unloaded page',async()=>{
- const c=client('detail'),gate=deferred();c.api.request=()=>gate.promise;const p=c.page.sendComment();await tick();c.page.onUnload();const n=c.page.updates;gate.resolve({comment:{id:'done'}});await p;assert.equal(c.page.updates,n);assert.equal(c.toasts.length,0);
-});
-test('old comment completion cannot clear a replacement account draft',async()=>{
- const c=client('detail'),gate=deferred();c.api.request=()=>gate.promise;const p=c.page.sendComment();await tick();c.switchOwner();c.page.data.comment='新账号的草稿';gate.resolve({comment:{id:'old'}});await p;assert.equal(c.page.data.comment,'新账号的草稿');assert.equal(c.toasts.length,0);
-});
-test('old comment pagination cannot append over a newer first-page refresh',async()=>{
- const c=client('detail'),gate=deferred();c.page.data.commentHasMore=true;c.page.interactionVersion=1;c.api.request=async(method,url)=>url.includes('?page=2')?gate.promise:{comments:[{id:'fresh'}],likes:0,liked:false,hasMore:false};const p=c.page.moreComments();await c.page.loadInteractions();gate.resolve({comments:[{id:'old-page'}],hasMore:false});await p;assert.equal(c.page.data.comments.length,1);assert.equal(c.page.data.comments[0].id,'fresh');
-});
-test('comment pagination failure preserves rows and exposes a retry state',async()=>{
- const c=client('detail');c.page.data.comments=[{id:'first'}];c.page.data.commentHasMore=true;c.api.request=async()=>{throw Error('分页失败');};await c.page.moreComments();assert.equal(c.page.data.comments[0].id,'first');assert.ok(c.page.data.commentPageError);assert.equal(c.page.data.commentsLoading,false);
-});
-test('like taps are serialized while the existing mutation is pending',async()=>{
- const c=client('detail'),gate=deferred();let writes=0;c.api.request=async method=>{if(method==='PUT'||method==='DELETE'){writes++;return gate.promise;}return {comments:[],likes:1,liked:true};};const a=c.page.like(),b=c.page.like();await tick();assert.equal(writes,1);gate.resolve({ok:true});await Promise.all([a,b]);
-});
 test('contact modal after account switching never dispatches under the replacement account',async()=>{
  const c=client('detail');await c.page.talk();c.switchOwner();await c.modals[0].success({confirm:true,content:'旧账号的联系申请'});assert.equal(c.calls.filter(x=>x.method==='POST').length,0);
 });
@@ -51,9 +27,6 @@ test('late phone disclosure after leaving the page never opens the native dialer
 });
 test('late report sheet never opens a confirmation for another account',async()=>{
  const c=client('detail');await c.page.report();c.switchOwner();await c.sheets[0].success({tapIndex:0});assert.equal(c.modals.length,0);
-});
-test('comment deletion rechecks ownership and page lifetime after confirmation',async()=>{
- const c=client('detail');c.page.data.comments=[{id:'own',mine:true}];c.page.deleteComment(c.event({id:'own'}));c.switchOwner();await c.modals[0].success({confirm:true});assert.equal(c.calls.filter(x=>x.method==='DELETE').length,0);
 });
 test('chat completion preserves text received after the sent message snapshot',async()=>{
  const c=client('chat'),gate=deferred();c.api.request=async method=>method==='POST'?gate.promise:{items:[],canSend:true};const p=c.page.submit();await tick();c.page.input({detail:{value:'下一条新消息'}});gate.resolve({message:{warning:''}});await p;assert.equal(c.page.data.draft,'下一条新消息');
@@ -88,12 +61,17 @@ test('a failed message report never prepopulates a different target report',asyn
 test('public detail response from an earlier account context cannot restore old content',async()=>{
  const c=client('detail'),gate=deferred();c.page.data.item=null;c.api.request=()=>gate.promise;const p=c.page.refresh();c.switchOwner();gate.resolve({item:{id:itemId,type:'community',kind:'listing'}});await p;assert.equal(c.page.data.item,null);
 });
-test('guest comment authentication binds the submitting account without losing the intended draft',async()=>{
- const c=client('detail');c.store.clear();c.api.request=async(method,url,body)=>{c.calls.push({method,url,body});return {comment:{id:'created'}};};await c.page.sendComment();assert.equal(c.store.get('city_life_user_id'),'one');assert.equal(c.calls[0].body.body,'原始留言内容');assert.equal(c.page.data.comment,'');assert.equal(c.page.data.commenting,false);
-});
 test('a denied chat read removes previously loaded private messages',async()=>{
  const c=client('chat');c.api.request=async()=>{const e=Error('会话不属于当前账号');e.code='CHAT_UNAVAILABLE';throw e;};await c.page.refresh(true);assert.equal(c.page.data.chat,null);assert.equal(c.page.data.messages.length,0);assert.equal(c.page.data.permissionsReady,false);
 });
 test('a server-blocked chat send pauses further sends while retaining its draft',async()=>{
  const c=client('chat');let writes=0;c.api.request=async()=>{writes++;const e=Error('对方已关闭联系');e.code='CHAT_BLOCKED';throw e;};await c.page.submit();await c.page.submit();assert.equal(writes,1);assert.equal(c.page.data.chat.canSend,false);assert.equal(c.page.data.draft,'原始消息内容');
+});
+
+
+test('query product detail has no public posting, like, comment or reply controls', async()=>{
+ const c=client('detail');
+ for(const name of ['sendComment','setComment','like','moreComments','loadInteractions','deleteComment','reply'])assert.equal(c.page[name],undefined,name);
+ const markup=fs.readFileSync(path.resolve(__dirname,'../../miniprogram/pages/detail/index.wxml'),'utf8');
+ assert.doesNotMatch(markup,/bindtap="(?:sendComment|like|reply|deleteComment|moreComments)"/);
 });

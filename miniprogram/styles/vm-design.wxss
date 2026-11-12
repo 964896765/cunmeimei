@@ -7,15 +7,15 @@
  --space-5:40rpx;
  --space-6:48rpx;
  --radius-sm:12rpx;
- --radius-md:20rpx;
+ --radius-md:24rpx;
  --radius-lg:28rpx;
  --type-visual:48rpx;
  --type-page:38rpx;
  --type-section:36rpx;
- --type-card:32rpx;
+ --type-card:30rpx;
  --type-body:30rpx;
  --type-meta:26rpx;
- --card-title:32rpx;
+ --card-title:30rpx;
  --card-meta:26rpx;
  --control-height:96rpx;
  --row-height:104rpx;
@@ -23,7 +23,7 @@
  --glass-line:var(--border);
  --card-glass:var(--surface);
  --page-wash:none;
- --elevation:0 8rpx 28rpx rgba(36,35,41,.04);
+ --elevation:0 8rpx 28rpx rgba(99,51,76,.055);
  --bottom-navigation-height:56px;
  background:var(--background);
  color:var(--text);
@@ -44,7 +44,7 @@
 .section-head { margin-bottom:24rpx; }
 .section-title { color:var(--ink); font-size:var(--type-section); font-weight:600; line-height:1.4; }
 .subtitle,.notice,.list-desc,.section-caption { color:var(--muted); font-size:var(--type-meta); line-height:1.7; }
-.card,.section-card { padding:28rpx; border:1rpx solid var(--border); border-radius:var(--radius-md); background:var(--surface); box-shadow:none; }
+.card,.section-card { padding:28rpx; border:1rpx solid var(--border); border-radius:var(--radius-md); background:var(--surface); box-shadow:var(--elevation); }
 .btn { display:flex; align-items:center; justify-content:center; min-height:var(--control-height); padding:20rpx 28rpx; border-radius:16rpx; font-size:30rpx; font-weight:600; line-height:1.5; box-shadow:none; }
 .theme-root .btn:not(.light):not(.ghost):not(.danger) { background:var(--action); color:var(--on-action); }
 .btn.light { background:var(--surface); border:1rpx solid var(--control-border); color:var(--ink); }

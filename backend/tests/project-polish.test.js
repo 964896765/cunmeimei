@@ -4,7 +4,7 @@ const {content}=require('../src/home-content');
 const state=require('../../miniprogram/utils/publication-readiness'),catalog=require('../../miniprogram/utils/classification-contract');
 const template=()=>({kind:'news',cityCode:'441900',title:'隔离验收资讯',summary:'测试来源与公开边界',body:'正文第一段\n正文第二段',sourceName:'隔离测试来源',sourceUrl:'https://example.org/local-source',startsAt:new Date(Date.now()-3600000).toISOString(),endsAt:new Date(Date.now()+86400000).toISOString(),priority:10});
 test('all 418 publication projects have explicit readiness without granting new permissions',()=>{
- const entries=catalog.projects.map(p=>({id:p.id,...state.state(p.id)}));assert.equal(entries.length,418);assert.equal(entries.filter(p=>p.canStart).length,43);
+ const entries=catalog.projects.map(p=>({id:p.id,...state.state(p.id)}));assert.equal(entries.length,418);assert.equal(entries.filter(p=>p.canStart).length,40);
  assert.ok(entries.every(p=>p.label&&p.reason));assert.equal(state.state('C03G01S01').label,'发布需求');
  assert.equal(state.state('C04G01S01',[{id:'used',enabled:false}]).canStart,false);
  assert.equal(state.state('C04G01S01',undefined,{publishingApproved:false}).canStart,false);

@@ -15,7 +15,7 @@ Page({
   dateOptions:require('../../utils/search-filters').dateOptions,dateLabels:require('../../utils/search-filters').dateOptions.map(x=>x.label),dateIndex:0,limitReached:false,days:0,images:'all',publicOnly:false,
   headerHeight:88,channels:registry.channels||[],immersed:false,unavailable:'',categoryId:'',categoryName:'',types: catalog.groupOptions, type: 'all', areas: ['全部地区'], area: '全部地区', q: '',
   filtered: [], count: 0, hasMore: false, loading: false, error: '', sortIndex: 0,
-  sortNames: ['最新发布', '价格从低到高', '价格从高到低'],sortCode:'latest',sortLabel:'最新发布',sortOpen:false,sortBusy:false,sortError:'',sortOptions:discoverySorts.options('all'), online: api.online()
+  sortNames: ['最新发布', '价格从低到高', '价格从高到低'],sortCode:'latest',sortLabel:'最新发布',sortOpen:false,filterOpen:false,sortBusy:false,sortError:'',sortOptions:discoverySorts.options('all'), online: api.online()
  },
  onShow() {
   require('../../utils/theme').apply(this);
@@ -23,7 +23,7 @@ Page({
   return this.initialize();
  },
  onHide() {
-  this.closeSort();
+  this.closeFilters();this.closeSort();
   this.active=false;this.restoreNavigation();
   clearTimeout(this.searchTimer);
   this.searchTimer = null;
@@ -100,7 +100,7 @@ Page({
   this.searchPending = true;
   this.searchTimer = setTimeout(() => this.filter(), 300);
  },
- changeType(e) { const type=e.detail?.type||e.currentTarget?.dataset?.type;if(!registry.channels.some(x=>x.id===type))return;this.closeSort();this.restoreNavigation();const previousSort=this.data.sortCode,resetDistance=!['all','merchant','service'].includes(type)&&(this.data.radiusKm>0||this.data.sortCode==='distance');if(resetDistance)this.sortOrigin=null;this.setData({type,filterNotice:resetDistance?'该频道不支持公开位置筛选，已清除距离条件。':'',...(resetDistance?{radiusKm:0}:{})});this.syncSortOptions();if(previousSort!==this.data.sortCode&&!resetDistance)this.setData({filterNotice:'该频道不适用原排序，已切换为最新发布。'});return this.filter(); },
+ changeType(e) { const type=e.detail?.type||e.currentTarget?.dataset?.type;if(!registry.channels.some(x=>x.id===type))return;this.closeSort();this.restoreNavigation();const previousSort=this.data.sortCode,resetDistance=!['all','merchant','service'].includes(type)&&(this.data.radiusKm>0||this.data.sortCode==='distance');if(resetDistance)this.sortOrigin=null;this.setData({type,categoryId:'',categoryName:'',categoryIconId:'',filterNotice:resetDistance?'该频道不支持公开位置筛选，已清除距离条件。':'',...(resetDistance?{radiusKm:0}:{})});this.syncSortOptions();if(previousSort!==this.data.sortCode&&!resetDistance)this.setData({filterNotice:'该频道不适用原排序，已切换为最新发布。'});return this.filter(); },
  chooseCity(){wx.navigateTo({url:'/pages/regions/index?returnTo=previous'});},
  headerMeasured(e){this.setData({headerHeight:e.detail.height});},
  changeArea(e) {
@@ -110,7 +110,10 @@ Page({
   return this.filter();
  },
  syncSortOptions(){const options=discoverySorts.options(this.data.type);const current=options.find(x=>x.code===this.data.sortCode);if(!current?.enabled)this.setData({sortCode:'latest',sortLabel:'最新发布',sortIndex:0});this.setData({sortOptions:options});},
- openSort(){this.restoreNavigation();this.syncSortOptions();this.setData({sortOpen:true,sortError:''});require('../../utils/tab-bar').visibility(this,true);this.sortBarHidden=true;},
+ openFilters(){this.closeSort();this.restoreNavigation();this.setData({filterOpen:true});require('../../utils/tab-bar').visibility(this,true);this.filterBarHidden=true;},
+ closeFilters(){this.setData({filterOpen:false});if(this.filterBarHidden){require('../../utils/tab-bar').visibility(this,!!this.data.immersed);this.filterBarHidden=false;}},
+ chooseNearby(){this.openSort();return this.selectSort({currentTarget:{dataset:{code:'distance'}}});},
+ openSort(){this.closeFilters();this.restoreNavigation();this.syncSortOptions();this.setData({sortOpen:true,sortError:''});require('../../utils/tab-bar').visibility(this,true);this.sortBarHidden=true;},
  closeSort(){this.sortAttempt=(this.sortAttempt||0)+1;this.setData({sortOpen:false,sortBusy:false,sortError:''});if(this.sortBarHidden){require('../../utils/tab-bar').visibility(this,!!this.data.immersed);this.sortBarHidden=false;}},
  preventScroll(){},
  chooseSort(e){const index=Number(e.detail.value),code=['latest','price_low','price_high'][index];if(!code)return;this.setData({sortIndex:index,sortCode:code,sortLabel:discoverySorts.labels[code]});return this.filter();},
@@ -146,7 +149,7 @@ Page({
   const scope=currentContext(),cacheKey='feed:'+scope+'|'+query;
   if(page===1&&!this.data.filtered.length){const saved=require('../../utils/public-cache').read(cacheKey,wx);if(Array.isArray(saved?.items)){const available=saved.items.filter(x=>!x.expiresAt||Date.parse(x.expiresAt)>Date.now());this.setData({filtered:available.map(x=>({...present.item(x),favoriteKnown:!api.hasSession()})),count:available.length,page:1,cached:true});}}
   try {
-   const r = await api.request('GET', feedUrl({type,area,q,categoryId:this.data.categoryId,sortIndex,sort:sortCode,page,days:this.data.days,images:this.data.images,radiusKm:this.data.radiusKm||0,cityCode:this.data.cityCode,districtCode:this.data.districtCode,...((sortCode==='distance'||this.data.radiusKm>0)?this.sortOrigin:{})}));
+   const r = await api.request('GET', feedUrl({type:'all',channel:type==='all'?'':type,area,q,categoryId:this.data.categoryId,sortIndex,sort:sortCode,page,days:this.data.days,images:this.data.images,radiusKm:this.data.radiusKm||0,cityCode:this.data.cityCode,districtCode:this.data.districtCode,...((sortCode==='distance'||this.data.radiusKm>0)?this.sortOrigin:{})}));
    if (this.unloaded || version !== this.reqVersion||scope!==currentContext()) return;
    const items = (r.items || []).map(x=>({...present.item(x),favoriteKnown:!api.hasSession()}));
    const merged = page === 1 ? items : [...this.data.filtered, ...items];
@@ -186,14 +189,20 @@ Page({
   return this.filter();
  },
  goDetail(e) { nav.detail(e.detail.id || e.currentTarget.dataset.id); },
- categoryChanged(e){const category=browse.category(e.detail.categoryId);this.setData({categoryId:category.id,categoryName:category.name,categoryIconId:category.industryId});return this.filter();},
+ categoryChanged(e){
+  const category=browse.category(e.detail.categoryId),type=registry.channelFor(category.id)||this.data.type;
+  const resetDistance=!['all','merchant','service'].includes(type)&&(this.data.radiusKm>0||this.data.sortCode==='distance');
+  if(resetDistance)this.sortOrigin=null;
+  this.setData({type,categoryId:category.id,categoryName:category.name,categoryIconId:category.industryId,...(resetDistance?{radiusKm:0,filterNotice:'该行业使用所属频道筛选，已清除距离条件。'}:{})});
+  this.syncSortOptions();return this.filter();
+ },
  districtChanged(e){const d=browse.districts(this.data.cityCode).find(x=>x.code===e.detail.districtCode);if(!d)return;this.setData({districtCode:d.code,area:d.name});return this.filter();},
  selectTime(e){const index=Number(e.detail.value),days=this.data.dateOptions[index]?.value;if(days===undefined)return;this.setData({days,dateIndex:index});return this.filter();},
  toggleImages(){this.setData({images:this.data.images==='with'?'all':'with'});return this.filter();},
  openSearch(){nav.search(this.data.type,this.data.q,this.data.categoryId,{cityCode:this.data.cityCode,districtCode:this.data.districtCode,days:this.data.days,images:this.data.images,sort:this.data.sortCode,radiusKm:this.data.radiusKm||0,...((this.data.sortCode==='distance'||this.data.radiusKm>0)?this.sortOrigin:{}),fromDiscover:true,events:{browseSearchApplied:value=>{if(this.unloaded||browse.signature({...this.data,sort:this.data.sortCode,...(this.sortOrigin||{})})===browse.signature(value))return;const c=browse.common(value);if(!c.cityCode&&this.data.cityCode)return;this.sortOrigin=browse.origin(value);this.setData({radiusKm:value.radiusKm||0,...c,sortCode:c.sort,sortLabel:discoverySorts.labels[c.sort],sortIndex:0,categoryName:browse.category(c.categoryId).name,categoryIconId:browse.category(c.categoryId).industryId,dateIndex:this.data.dateOptions.findIndex(x=>x.value===c.days)});this.searchPending=true;}}});},
  openMap(){this.restoreNavigation();const query={type:this.data.type,q:this.data.q,categoryId:this.data.categoryId,cityCode:this.data.cityCode,districtCode:this.data.districtCode,days:this.data.days,images:this.data.images,sourceSort:this.data.sortCode,sourceRadius:this.data.radiusKm||0,sort:['latest','recommended'].includes(this.data.sortCode)?this.data.sortCode:'recommended'};wx.navigateTo({url:'/pages/map/index?'+Object.entries(query).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&')});},
  restoreNavigation(){this.scrollAnchor=null;if(this.data.immersed)this.setData({immersed:false});if(this.barHidden){require('../../utils/tab-bar').visibility(this,false);this.barHidden=false;}},
- onPageScroll(e){if(!this.active||this.data.sortOpen)return;const y=Math.max(0,e.scrollTop||0);if(y<20){this.restoreNavigation();this.scrollAnchor=y;return;}if(this.scrollAnchor===null||this.scrollAnchor===undefined){this.scrollAnchor=y;return;}const distance=y-this.scrollAnchor;if(Math.abs(distance)<24)return;this.scrollAnchor=y;const hidden=distance>0;if(hidden===this.data.immersed)return;this.setData({immersed:hidden});this.barHidden=hidden;require('../../utils/tab-bar').visibility(this,hidden);},
+ onPageScroll(e){if(!this.active||this.data.sortOpen||this.data.filterOpen)return;const y=Math.max(0,e.scrollTop||0);if(y<20){this.restoreNavigation();this.scrollAnchor=y;return;}if(this.scrollAnchor===null||this.scrollAnchor===undefined){this.scrollAnchor=y;return;}const distance=y-this.scrollAnchor;if(Math.abs(distance)<24)return;this.scrollAnchor=y;const hidden=distance>0;if(hidden===this.data.immersed)return;this.setData({immersed:hidden});this.barHidden=hidden;require('../../utils/tab-bar').visibility(this,hidden);},
  async hydrateSaved(items,version,scope){
   const ids=items.map(x=>x.id);if(!ids.length)return true;this.savedVersions=this.savedVersions||{};const tickets=Object.fromEntries(ids.map(id=>[id,this.savedVersions[id]||0]));
   try{const result=await api.request('GET','/api/v1/me/saved-state?ids='+ids.map(encodeURIComponent).join(','),null,true);if(this.unloaded||version!==this.reqVersion||scope!==currentContext()||!Array.isArray(result.savedIds))return false;const saved=new Set(result.savedIds);this.setData({filtered:this.data.filtered.map(x=>ids.includes(x.id)&&(this.savedVersions[x.id]||0)===tickets[x.id]?{...x,isSaved:saved.has(x.id),favoriteKnown:true}:x)});return true;}catch{return false;}

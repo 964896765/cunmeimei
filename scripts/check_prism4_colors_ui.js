@@ -9,7 +9,7 @@ const root = path.resolve(__dirname, '..');
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const rgb = hex => 'rgb(' + hex.slice(1).match(/../g).map(x => parseInt(x, 16)).join(', ') + ')';
 async function login(devUser) {
- const response = await fetch('http://127.0.0.1:3100/api/v1/dev/login', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({devUser})});
+ const response = await fetch('http://127.0.0.1:3101/api/v1/dev/login', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({devUser})});
  assert.equal(response.status, 200, 'local development login'); return response.json();
 }
 

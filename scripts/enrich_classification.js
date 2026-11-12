@@ -16,7 +16,7 @@ const policies={
  MERCHANT_SERVICE:{businessCodes:['SERVICE'],channel:'merchant_service',publisherRoles:['verified_merchant'],reviewPolicy:'merchant_service_review'},
  EVENT:{businessCodes:['EVENT'],channel:'resident_event',publisherRoles:['resident'],reviewPolicy:'event_review'},
  EVENT_BIZ:{businessCodes:['EVENT'],channel:'institution_event',publisherRoles:['verified_institution'],reviewPolicy:'institution_event_review'},
- COMMUNITY:{businessCodes:['PUBLIC'],channel:'resident_community',publisherRoles:['resident'],reviewPolicy:'standard'},
+ COMMUNITY:{businessCodes:['PUBLIC'],channel:'resident_practical_information',publisherRoles:['resident'],reviewPolicy:'practical_information_review'},
  CURATED_INFO:{businessCodes:['PUBLIC'],channel:'curated_information',publisherRoles:['operator'],reviewPolicy:'source_review'},
  LICENSED_PROVIDER:{businessCodes:['SERVICE'],channel:'licensed_provider',publisherRoles:['licensed_provider'],reviewPolicy:'qualification_review'},
  LICENSED_DIRECTORY:{businessCodes:['MERCHANT'],channel:'licensed_directory',publisherRoles:['verified_institution','operator'],reviewPolicy:'qualification_and_source_review'},
@@ -44,7 +44,7 @@ for(const category of data.categories)for(const group of category.groups)for(con
  const terms=[...new Set(aliases.get(group.id)[index])].filter(x=>x!==item.name);
  if(!terms.length||terms.some(x=>!x||x.length>40))throw Error('Invalid aliases '+item.id);
  item.aliases=terms;
- const legacyKinds=legacySnapshot.filter(x=>x.categoryId===item.id).map(x=>x.kind);
+ const legacyKinds=legacySnapshot.filter(x=>x.categoryId===item.id&&!require('../miniprogram/utils/product-scope').isForumProject(item.id)).map(x=>x.kind);
  item.publication={schemaVersion:1,policy:row.policy,enabled:legacyKinds.length>0,legacyKinds};
  changes.push({id:item.id,name:item.name,policy:row.policy,enabled:item.publication.enabled,legacyKinds,aliases:terms,plannedFlow:row.flow,requirements:row.requirements,reviewStatus:'pending_business_review'});
  for(const alias of terms){const word=alias.toLowerCase();if(!aliasIndex.has(word))aliasIndex.set(word,[]);aliasIndex.get(word).push(item.id);}
@@ -53,8 +53,8 @@ if(JSON.stringify(identity())!==before)throw Error('Category IDs or names change
 data.publicationConfig={version:1,status:'proposal_with_preserved_legacy_access',policies};
 const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 const report={checkedAt:new Date().toISOString(),sourcePlanSha256:sha(plan),stableIdentitySha256:sha(before),categories:27,groups:83,projects:418,aliasCovered:changes.filter(x=>x.aliases.length).length,aliasTerms:changes.reduce((n,x)=>n+x.aliases.length,0),planCovered:changes.length,legacyMapped:changes.filter(x=>x.enabled).length,newChannelsOpened:0,businessReviewComplete:false,aliasReview:'lexical review against each project name and parent group; not business/qualification approval',aliasCollisions:[...aliasIndex].filter(([,ids])=>ids.length>1).map(([alias,ids])=>({alias,ids})),items:changes};
-if(report.legacyMapped!==43)throw Error('Existing access changed; expected 43 legacy mappings');
+if(report.legacyMapped!==40)throw Error('Existing access changed; expected 40 resident mappings');
 fs.writeFileSync(file,JSON.stringify(data,null,2)+'\n');
 fs.writeFileSync(path.join(root,'docs/CLASSIFICATION_418_PLAN.md'),plan);
 fs.writeFileSync(path.join(root,'docs/classification-418-integration-audit.json'),JSON.stringify(report,null,2)+'\n');
-console.log('PASS 418 aliases and explicit publication plans; 43 existing mappings preserved; zero newly opened channels');
+console.log('PASS 418 aliases and explicit publication plans; 40 resident mappings; three forum projects closed; zero newly opened channels');

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const connect = require('./devtools_connection');
-const base = 'http://127.0.0.1:3100';
+const base = 'http://127.0.0.1:3101';
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function poll(read, accept, label) {
  for (let n = 0; n < 60; n++) { const value = await read(); if (accept(value)) return value; await pause(200); }

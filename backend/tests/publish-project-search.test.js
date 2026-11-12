@@ -1,8 +1,8 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const registry=require('../../miniprogram/utils/classification'),schemas=require('../../miniprogram/utils/publication-schemas');
-test('all 418 explicit plans and reviewed aliases preserve the 43 prior access mappings',()=>{
- const previous=require('../../docs/classification-legacy-access.json'),expected=new Map(previous.map(x=>[x.categoryId,[x.kind]]));
+test('all 418 explicit plans and reviewed aliases preserve the 40 retained access mappings',()=>{
+ const previous=require('../../docs/classification-legacy-access.json'),expected=new Map(previous.filter(x=>!require('../../miniprogram/utils/product-scope').isForumProject(x.categoryId)).map(x=>[x.categoryId,[x.kind]]));
  const {publicationExtras}=require('../src/product-repository'),{validateDraft}=require('../src/account-drafts');
  for(const item of registry.projects){
   assert.ok(item.aliases.length>0,item.id);assert.ok(registry.publicationFor(item.id),item.id);
@@ -13,7 +13,7 @@ test('all 418 explicit plans and reviewed aliases preserve the 43 prior access m
    const publication=()=>publicationExtras({type:kind,attributes}),draft=()=>validateDraft({kind,title:'',detail:'',price:'',district:'',attributes,imageIds:[],clientKey:'catalog_permission_matrix_123'});
    if((expected.get(item.id)||[]).includes(kind)){
     assert.deepEqual(publication().attributes,attributes);assert.deepEqual(draft().attributes,attributes);
-    // Check all 43 current-version forms against both client and server validation.
+    // Check all 40 current-version forms against both client and server validation.
     const current={...attributes,templateVersion:'3',cityCode:'310100',districtCode:'310101',...(kind==='community'?{}:{priceMode:'amount'}),...(kind==='used'?{condition:'正常使用'}:{}),...(kind==='housing'?{intent:'出租',area:'80',layout:'两室一厅'}:{})};
     const value={type:kind,title:'隔离验收发布项目',detail:'明确标记的隔离验收描述，不是真实业务供给。',price:kind==='community'?'':'100',attributes:current,imageIds:kind==='used'?['00000000-0000-4000-8000-000000000001']:[]};
     assert.equal(schemas.formError(kind,value),'',item.id);assert.deepEqual(publicationExtras(value).attributes,current,item.id);
@@ -21,7 +21,7 @@ test('all 418 explicit plans and reviewed aliases preserve the 43 prior access m
    else{assert.throws(publication,e=>e.code==='CATEGORY_NOT_READY',item.id+': '+kind);assert.throws(draft,e=>e.code==='CATEGORY_NOT_READY',item.id+': draft '+kind);}
   }
  }
- assert.equal(registry.projects.length,418);assert.equal(registry.projects.filter(x=>registry.kindsFor(x.id).length).length,43);
+ assert.equal(registry.projects.length,418);assert.equal(registry.projects.filter(x=>registry.kindsFor(x.id).length).length,40);
  for(const id of ['C02G01S01','C15G01S01','C23G01S01','C26G01S01','C27G01S01'])for(const kind of schemas.kinds)assert.equal(registry.validateReference(id,registry.source.version,kind),false,'regulated/unimplemented category remains closed');
 });
 test('search ranks exact names and actual aliases, normalizes case/width and combines tokens',()=>{

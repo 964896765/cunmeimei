@@ -16,6 +16,7 @@ test('all 418 projects execute their applicable lifecycle against isolated real 
   for(const p of catalog.projects){if(t.signal.aborted)break;let failed=false;await t.test(p.id+' '+p.name,async()=>{
    const j=journey(p.id),e={projectId:p.id,name:p.name,kind:j.kind,steps:[],status:'running'},done=step=>{if(!e.steps.includes(step))e.steps.push(step);};items.push(e);
    try{
+    if(j.route==='closed'){assert.equal(require('../../miniprogram/utils/publication-readiness').state(p.id,undefined,{industryWorkflows:true}).canStart,false);done('closed');done('owned_records');e.status='pass';return;}
     const owner=await account('journey-owner-'+p.id),reader=await account('journey-reader-'+p.id),other=await account('journey-other-'+p.id);let id,payload;
     if(j.route==='industry'){
      payload=industryPayload(p);let r=await req('/api/v1/industry/entries','POST',payload,owner,201);id=r.data.entry.id;done('draft');assert.equal((await req('/api/v1/industry/public/'+id,'GET',undefined,{},404)).data.error,'NOT_FOUND');

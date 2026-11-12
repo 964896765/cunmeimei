@@ -1,9 +1,10 @@
 .messages-page { padding:24rpx 32rpx calc(48rpx + 56px + env(safe-area-inset-bottom)); }
-.message-toolbar { display:flex; align-items:center; justify-content:space-between; gap:24rpx; padding-bottom:20rpx; border-bottom:1rpx solid var(--border); }
-.message-tabs { display:flex; gap:32rpx; align-items:center; }
-.message-tab { position:relative; display:flex; align-items:center; justify-content:center; min-width:104rpx; min-height:96rpx; padding:16rpx 0; color:var(--muted); font-size:36rpx; line-height:1.4; }
-.message-tab.active { color:var(--ink); font-weight:600; }
-.message-tab.active::after { content:''; position:absolute; bottom:0; left:24rpx; right:24rpx; height:5rpx; border-radius:4rpx; background:var(--brand); }
+.message-toolbar { display:flex; align-items:center; gap:12rpx; margin:8rpx 0 26rpx; }
+.message-tabs { flex:1; display:flex; align-items:center; padding:3rpx; border-radius:70rpx; background:var(--surface); box-shadow:var(--elevation); }
+.message-tab { display:flex; align-items:center; justify-content:center; gap:12rpx; flex:1; min-height:84rpx; padding:14rpx; border-radius:60rpx; color:var(--link); font-size:32rpx; font-weight:600; line-height:1.4; }
+.message-tab.active { background:var(--action); color:var(--on-action); }
+.segment-count { display:flex; align-items:center; justify-content:center; min-width:36rpx; height:36rpx; padding:0 8rpx; border-radius:50rpx; background:var(--action); color:var(--on-action); font-size:24rpx; }
+.active .segment-count { color:var(--link); background:var(--surface); }
 .toolbar-action,.filter-link,.notice-shortcut { margin:0; padding:0; border:0; background:transparent; color:var(--link); font-weight:400; line-height:1.5; }
 .toolbar-action::after,.filter-link::after,.notice-shortcut::after { border:0; }
 .toolbar-action { display:flex; align-items:center; justify-content:center; min-height:88rpx; padding:12rpx; font-size:26rpx; }
@@ -50,3 +51,16 @@
 .large-text .message-icon { width:72rpx; height:72rpx; }
 .large-text .message-meta { max-width:120rpx; }
 .large-text .notice-shortcut { font-size:30rpx; }
+
+.contact-entry { padding:0 22rpx; background:var(--surface); }
+.contact-entry:first-of-type { border-radius:26rpx 26rpx 0 0; }
+.contact-entry .message-row { min-height:144rpx; }
+.contact-avatar { width:94rpx; height:94rpx; border:4rpx solid var(--surface); background:var(--soft); color:var(--link); }
+.contact-avatar text { display:block; width:34rpx; height:48rpx; overflow:hidden; font-size:34rpx; font-weight:600; line-height:48rpx; white-space:nowrap; }
+.system-preview { margin-top:16rpx; padding:16rpx 22rpx; border-radius:26rpx; background:var(--surface); }
+.system-preview .notice-section-heading { margin:0 0 8rpx; }
+.system-preview .message-row:last-child { border-bottom:0; }
+.notice-row .message-icon { width:88rpx; height:88rpx; border-radius:24rpx; }
+.notice-row .message-icon image { width:44rpx; height:44rpx; }
+.search-action { border:0; border-radius:50%; width:76rpx; background:var(--surface); }
+.contact-mode-note { font-size:22rpx; padding:20rpx 12rpx; }

@@ -1,0 +1,21 @@
+{
+  "scope": "local development only",
+  "database": "citylife_dev",
+  "status": "pass",
+  "checkedAt": "2026-11-12T01:28:14.228Z",
+  "backupFile": "C:\\Users\\chejun\\.codex\\backups\\city-life-miniapp\\citylife_dev_2026-11-12T01-28-14-227Z_e2fb6d0b.dump",
+  "originalTables": 69,
+  "originalRows": 1335,
+  "backupSha256": "04b5a4d742a92892cbe33a5bacdb411de78e44c2b4117d6cc9e0e1684d4d427e",
+  "backupContentsMatch": true,
+  "rehearsalOriginalDataUnchanged": true,
+  "appliedNow": [
+    "030_business_case_progress.sql",
+    "031_industry_service_links.sql",
+    "032_booking_source_cancellation.sql"
+  ],
+  "developmentOriginalDataUnchanged": true,
+  "totalMigrations": 32,
+  "finalTables": 72,
+  "drillDatabaseRemoved": true
+}

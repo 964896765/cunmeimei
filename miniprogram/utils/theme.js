@@ -1,6 +1,6 @@
 const api=require('./api');
 const tabs=require('./tab-bar');
-const {palettes,resolvePalette,profileFor}=require('./palettes');
+const {palettes,resolvePalette}=require('./palettes');
 const {accentRoute}=require('./page-accent-route');
 const {materialFor}=require('./design-system');
 const defaults={theme:'prism',largeText:false,reduceMotion:false,notificationPreview:true,allowContacts:true,revision:0};
@@ -9,8 +9,8 @@ function current(){const v=wx.getStorageSync(key());return v&&palettes[v.theme]?
 function store(v){wx.setStorageSync(key(),v);}
 let nativeTheme='',nativeStyle='',nativeTimer;
 function apply(page){
- const p=current(),material=materialFor(page,p),c=resolvePalette(p.theme,accentRoute(page.route)),profile=profileFor(accentRoute(page.route));
- page.setData({displayPreferences:p,iconPalette:p.theme==='prism'?'prism-'+profile.family:p.theme,themeColor:c.action,themeBorderColor:c.border,themeClass:'theme-'+p.theme+' material-'+material+(p.largeText?' large-text':'')+(p.reduceMotion?' reduce-motion':'')+(tabs.isTab?.(page.route)?' has-bottom-tabs':''),themeStyle:Object.entries(c).map(([k,v])=>'--'+k+':'+v).join(';')+';--card-title:'+(p.largeText?'38rpx':'32rpx')+';--card-meta:'+(p.largeText?'30rpx':'26rpx')});
+ const p=current(),material=materialFor(page,p),c=resolvePalette(p.theme,accentRoute(page.route));
+ page.setData({displayPreferences:p,iconPalette:p.theme,themeColor:c.action,themeBorderColor:c.border,themeClass:'theme-'+p.theme+' material-'+material+(p.largeText?' large-text':'')+(p.reduceMotion?' reduce-motion':'')+(tabs.isTab?.(page.route)?' has-bottom-tabs':''),themeStyle:Object.entries(c).map(([k,v])=>'--'+k+':'+v).join(';')+';--card-title:'+(p.largeText?'38rpx':'30rpx')+';--card-meta:'+(p.largeText?'30rpx':'26rpx')});
  tabs.sync?.(page,p,c);
  // Native TabBar reconstruction during onShow can interrupt an in-flight route transition.
  clearTimeout(nativeTimer);

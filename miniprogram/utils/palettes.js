@@ -2,30 +2,30 @@
 // VM Design System 1.0. Saved theme identifiers remain readable across upgrades.
 const palettes = {
   "prism": {
-    "brand": "#A67E91",
-    "action": "#A67E91",
-    "link": "#745269",
-    "background": "#FAF9F8",
+    "brand": "#A44970",
+    "action": "#A13E65",
+    "link": "#973454",
+    "background": "#FBF8FA",
     "surface": "#FFFFFF",
-    "soft": "#F4EBF0",
-    "soft-alt": "#EEEAF4",
-    "ink": "#242329",
-    "text": "#3F3B44",
-    "muted": "#66616B",
-    "border": "#EAE6E9",
-    "control-border": "#938A96",
-    "on-action": "#17151B",
-    "danger": "#8D3D51",
-    "danger-soft": "#F4EBF0",
-    "price": "#62465A",
-    "glow-start": "#F4EBF0",
-    "glow-rose": "#F4EBF0",
-    "glow": "#EEEAF4",
-    "action-end": "#A67E91",
-    "wash-rose": "#FAF9F8",
-    "wash-blue": "#FAF9F8",
-    "wash-lilac": "#FAF9F8"
-  },
+    "soft": "#F9EDF2",
+    "soft-alt": "#F0EAF4",
+    "ink": "#19171C",
+    "text": "#38343C",
+    "muted": "#6D6671",
+    "border": "#F0E7ED",
+    "control-border": "#9B8292",
+    "on-action": "#FFFFFF",
+    "danger": "#AE3154",
+    "danger-soft": "#FBEAF0",
+    "price": "#BC2855",
+    "glow-start": "#F8E8EE",
+    "glow-rose": "#FAEDF1",
+    "glow": "#F1ECF6",
+    "action-end": "#A54A6C",
+    "wash-rose": "#FBF8FA",
+    "wash-blue": "#FBF8FA",
+    "wash-lilac": "#FBF8FA"
+},
   "dark": {
     "brand": "#C9B8FF",
     "action": "#C9B8FF",
@@ -156,121 +156,121 @@ const pageProfiles = {
   "home": {
     "family": "home",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "discover": {
     "family": "discover",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "publish": {
     "family": "publish",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "messages": {
     "family": "messages",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "me": {
     "family": "me",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "regions": {
     "family": "discover",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "detail": {
     "family": "home",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "booking": {
     "family": "discover",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "my-posts": {
     "family": "home",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "my-bookings": {
     "family": "me",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "merchant": {
     "family": "publish",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "chat": {
     "family": "messages",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "merchant-services": {
     "family": "discover",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "merchant-bookings": {
     "family": "messages",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   },
   "merchant-team": {
     "family": "publish",
     "mix": [
-      "#FAF9F8",
-      "#FAF9F8",
-      "#FAF9F8"
+      "#FBF8FA",
+      "#FBF8FA",
+      "#FBF8FA"
     ]
   }
 };
@@ -282,7 +282,4 @@ function resolvePalette(theme = 'prism') {
   return palettes[theme] || palettes.prism;
 }
 const iconPalettes = {...palettes};
-for (const name of ['home','discover','publish','messages','me']) {
-  iconPalettes['prism-' + name] = palettes.prism;
-}
 module.exports = {palettes, pageProfiles, profileFor, resolvePalette, iconPalettes};

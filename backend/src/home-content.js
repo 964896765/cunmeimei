@@ -32,6 +32,7 @@ function attachHomeContent(repo,pool){
    COALESCE((SELECT jsonb_agg(jsonb_build_object('id',a.id,'name',a.name) ORDER BY a.name,a.id) FROM advertisers a WHERE a.user_id=p.user_id AND a.status='verified' AND a.valid_until>clock_timestamp()),'[]'::jsonb) advertisers
    FROM publications p JOIN app_users u ON u.id=p.user_id AND u.status='active' JOIN service_regions r ON r.name=p.district AND r.enabled
    WHERE p.status='published' AND NOT p.is_test AND (p.expires_at IS NULL OR p.expires_at>clock_timestamp())
+    AND ${require('./public-information-policy').eligibilitySql('p')}
     AND ($1='' OR p.title ILIKE '%'||$1||'%') AND ($2='' OR p.attributes->>'cityCode'=$2)
    ORDER BY p.created_at DESC,p.id DESC LIMIT 21 OFFSET $3`,[q,cityCode,(page-1)*20])).rows;
   return {items:rows.slice(0,20),hasMore:rows.length>20};
@@ -40,7 +41,7 @@ function attachHomeContent(repo,pool){
  async function eligible(c,p){
   if(p.kind==='news')return true;
   const target=(await c.query("SELECT p.* FROM publications p JOIN service_regions r ON r.name=p.district AND r.enabled WHERE p.id=$1 AND p.status='published' AND NOT p.is_test AND (p.expires_at IS NULL OR p.expires_at>clock_timestamp())",[p.targetId])).rows[0];
-  if(!target)return false;
+  if(!target||!require('../../miniprogram/utils/product-scope').isPublicInformation(target))return false;
   if(p.cityCode&&target.attributes?.cityCode!==p.cityCode)return false;
   if(p.imageId&&!target.image_ids.includes(p.imageId))return false;
   if(p.kind==='ad'&&!(await c.query('SELECT 1 FROM publications p WHERE p.id=$1 AND '+require('./promotion-eligibility').promotionClause('p'),[target.id])).rows.length)return false;

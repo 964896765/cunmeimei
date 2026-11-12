@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs'),sharp=require('../backend/node_modules/sharp');
 const connect=require('./devtools_connection');
-const base='http://127.0.0.1:3100';let passed=0;
+const base='http://127.0.0.1:3101';let passed=0;
 function ok(value,label){assert.ok(value,label);passed++;console.log('PASS '+label);}
 async function poll(read,accept,label){for(let n=0;n<40;n++){const value=await read();if(accept(value))return value;await new Promise(r=>setTimeout(r,200));}throw Error('Timed out: '+label);}
 async function request(route,method='GET',data,credentials={}){const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json','X-Development-Test-Data':'true',...(credentials.token?{Authorization:'Bearer '+credentials.token}:{}),...(credentials.cookie?{Cookie:credentials.cookie,'X-CSRF-Token':credentials.csrf}:{})},body:data===undefined?undefined:JSON.stringify(data)});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}

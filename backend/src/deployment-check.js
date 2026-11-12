@@ -29,6 +29,7 @@ function validateDeployment(env,root=path.resolve(__dirname,'../..'),{requirePro
   add(require('./legal-documents').documents({operatorName:env.PLATFORM_OPERATOR_NAME||' ',contactEmail:env.PRIVACY_CONTACT_EMAIL||' '}).configured,'LEGAL_OPERATOR_AND_PRIVACY_CONTACT_REQUIRED');
   add((env.ADMIN_PASSWORD||'').length>=16,'ADMIN_PASSWORD_WEAK');
   for(const key of ['SUPER_ADMIN_PASSWORD','VERIFICATION_ADMIN_PASSWORD']){
+   add(!!env[key],key+'_REQUIRED');
    if(env[key])add(env[key].length>=16,key+'_WEAK');
   }
   const passwords=[env.ADMIN_PASSWORD,env.SUPER_ADMIN_PASSWORD,env.VERIFICATION_ADMIN_PASSWORD].filter(Boolean);

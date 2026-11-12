@@ -123,16 +123,14 @@ async function main() {
     );
     const image = await repo.uploadContentImage(
       owner.userId,
-      await require('../backend/node_modules/sharp')({
-        create: { width: 400, height: 300, channels: 3, background: '#E9E6E2' }
-      })
-        .png()
-        .toBuffer()
+      process.env.UI_AUDIT_IMAGE?fs.readFileSync(process.env.UI_AUDIT_IMAGE):await require('../backend/node_modules/sharp')({
+        create:{width:400,height:300,channels:3,background:'#E9E6E2'}
+      }).png().toBuffer()
     );
     const payload = {
       ...residentFields('used', [image.id]),
       type: 'used',
-      title: '[界面验收] 闲置实木书桌',
+      title:process.env.UI_AUDIT_IMAGE?'[界面验收] 家居信息图片展示':'[界面验收] 闲置实木书桌',
       detail: '隔离环境页面测试内容，用于检查文字、图片、地区和联系流程。',
       price: '80',
       district: '中心街道'
@@ -362,7 +360,7 @@ async function main() {
       else layoutChecks[existing] = record;
     }
     async function capturePositions(page, name, route) {
-      const selector = {publish:'.industry-sidebar',regions:'.city-scroll',search:'.search-content',map:'.map-results'}[name];
+      const selector = {publish:'.industry-overview',regions:'.city-scroll',search:'.search-content',map:'.map-results'}[name];
       const inner = selector ? await page.$(selector) : null;
       async function scrollTo(top) {
         if (inner) await inner.scrollTo(0, top);
@@ -417,8 +415,9 @@ async function main() {
           const data=await page.data();
           if (name === 'home') {
             assert.ok(data.news.some(item => item.id === news.id), 'Real API home news loaded');
-            if (data.feed) assert.equal(data.hero?.id, publication.id, 'Real API image-bearing home entry loaded');
+            if (data.feed) assert.ok(data.featured.some(item => item.id === publication.id), 'Real API public information loaded');
           }
+          if(name==='map'){for(let wait=0;wait<50&&(await page.data()).loading;wait++)await pause(200);}
           if (name === 'publish-form') assert.equal(data.showForm, true, 'Resident publication form opened');
           if (name === 'industry') {
             assert.equal(data.mode, 'form', 'Industry form opened');
@@ -453,6 +452,14 @@ async function main() {
       assert.equal((await page.data()).sortOpen, true);
       await capture('discover', page.path, 'sort');
       await mini.evaluate(() => { getCurrentPages().slice(-1)[0].closeSort(); return true; });
+      page=await routeTo('/pages/publish/index');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].openDirectory();return true;});
+      await pause(200);await capture('publish',page.path,'directory');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeDirectory();return true;});
+      page=await routeTo('/pages/discover/index');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].openFilters();return true;});
+      await pause(200);await capture('discover',page.path,'filters');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeFilters();return true;});
       page = await routeTo('/pages/map/index');
       await mini.evaluate(() => { getCurrentPages().slice(-1)[0].openFilters(); return true; });
       await pause(200);
@@ -548,11 +555,13 @@ async function main() {
     session = null;
     await mini.evaluate(() => { setTimeout(() => wx.reLaunch({url:'/pages/home/index'}), 100); return true; });
     await pause(1500);
+    await mini.screenshot({path:path.join(output,'home-local-data.png')});
+    screenshots.push({route:'pages/home/index',variant:'local-data',file:'home-local-data.png',scrollTop:0});
     fs.writeFileSync(
       path.join(output, 'RESULTS.json'),
       JSON.stringify(
         {
-          date: '2026-11-11',
+          date:new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Shanghai'}),
           ok: true,
           sourceHash,
           simulator: environment.platform === 'devtools',

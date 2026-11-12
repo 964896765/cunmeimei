@@ -55,6 +55,21 @@ function client(name, request, session = true) {
 }
 const row = id => ({id, type: 'used', kind: 'listing', title: '验收信息 ' + id});
 
+test('a missing native map callback ends loading and exposes the list fallback', async () => {
+ const {page, timers} = client('map', async () => { throw Error('HTTP must wait for a map viewport'); });
+ page.ready = true;
+ page.map = {getRegion(){}};
+ page.setData({cityCode:'310100'});
+ const pending = page.searchArea();
+ assert.equal(page.data.loading, true);
+ assert.equal(timers.size, 1);
+ [...timers.values()][0]();
+ await pending;
+ assert.equal(page.data.loading, false);
+ assert.equal(page.data.mapUnavailable, true);
+ assert.match(page.data.error, /地图范围读取/);
+});
+
 test('merchant team account switch clears a previous write lock and ignores stale member responses', async () => {
  const pending=[];
  const {page,storage}=client('merchant-team',()=>new Promise(resolve=>pending.push(resolve)));
@@ -188,20 +203,11 @@ test('public detail denial clears old content instead of retaining an unavailabl
  assert.equal(invalid.data.loading, false); assert.match(invalid.data.error, /缺少信息标识/);
 });
 
-test('community failure keeps the article and typed comment, and has a separate recovery path', async () => {
- let failing = true;
- const {page} = client('detail', async (method, url) => {
-  if (url.endsWith('/interaction')) {
-   if (failing) throw Error('temporary interaction failure');
-   return {comments: [{id: 'comment-one', body: '真实留言'}], likes: 1, hasMore: false};
-  }
-  return {item: {...row('one'), type: 'community'}};
- }, false);
- page.onLoad({id: 'one'}); page.setData({comment: '保留尚未提交的文字'}); await page.onShow();
- assert.equal(page.data.item.id, 'one'); assert.ok(page.data.interactionError);
- assert.equal(page.data.comment, '保留尚未提交的文字');
- failing = false; await page.loadInteractions();
- assert.equal(page.data.interactionError, ''); assert.equal(page.data.comments.length, 1);
+test('practical information detail loads without requesting public interactions', async () => {
+ const calls=[];
+ const {page}=client('detail',async(method,url)=>{calls.push(url);return {item:{...row('one'),type:'community'}};},false);
+ page.onLoad({id:'one'});await page.onShow();
+ assert.equal(page.data.item.id,'one');assert.ok(!calls.some(url=>url.includes('/interaction')));
 });
 
 test('detail re-entry during a favorite mutation or retry never leaves its action permanently disabled', async () => {
@@ -273,7 +279,7 @@ test('discover config retry revalidates areas and retains the intended category'
  let failing = true; let configCalls = 0; const types = [];
  const {page, app} = client('discover', async (method, url) => {
   if (url === '/api/v1/config') { configCalls++; if (failing) throw Error('config offline'); return {areas: ['中心街道']}; }
-  types.push(new URL(url, 'http://local').searchParams.get('type')); return feed([]);
+  types.push(new URL(url, 'http://local').searchParams.get('channel')); return feed([]);
  });
  app.globalData.exploreTarget = 'housing'; await page.onShow();
  assert.ok(page.data.error); failing = false; await page.retry();
@@ -298,7 +304,7 @@ test('changed region and navigation category refresh discovery instead of reusin
  const {page, storage, app} = client('discover', async (method, url) => {
   if (url === '/api/v1/config') return {areas: ['中心街道']};
   const params = new URL(url, 'http://local').searchParams;
-  queries.push([params.get('area'), params.get('type')]); return feed([]);
+  queries.push([params.get('area'), params.get('channel')||'all']); return feed([]);
  });
  await page.onShow(); storage.set('area', '中心街道'); await page.onShow();
  app.globalData.exploreTarget = 'housing'; await page.onShow();

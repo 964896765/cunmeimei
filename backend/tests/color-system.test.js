@@ -16,10 +16,10 @@ function contrast(first, second) {
 }
 test('six stable palettes keep readable text, buttons and control boundaries', () => {
  assert.deepEqual(Object.keys(palettes), ['prism', 'dark', 'clear', 'quiet', 'warm', 'gentle']);
- assert.equal(palettes.prism.brand, '#A67E91');
- assert.equal(palettes.prism.action, '#A67E91');
- assert.equal(palettes.prism.background, '#FAF9F8');
- for(const value of ['#FAF9F8','#FFFFFF','#242329','#66616B','#A67E91','#F4EBF0','#EEEAF4','#EAE6E9'])
+ assert.equal(palettes.prism.brand, '#A44970');
+ assert.equal(palettes.prism.action, '#A13E65');
+ assert.equal(palettes.prism.background, '#FBF8FA');
+ for(const value of ['#FBF8FA','#FFFFFF','#19171C','#6D6671','#A44970','#F9EDF2','#F0EAF4','#F0E7ED'])
   assert.ok(Object.values(palettes.prism).includes(value), 'VM Design System reference color '+value);
  assert.equal(palettes.prism.surface, '#FFFFFF');
  const candidates = {...palettes};
@@ -70,7 +70,7 @@ test('generated cold-start colors and PNGs match runtime palettes', async () => 
 
 test('all routes share the VM flat canvas and the publish icon stays legible', async () => {
  const frozen=JSON.parse(fs.readFileSync(path.join(__dirname,'../../scripts/prism-color-baseline.json'),'utf8'));
- assert.deepEqual(palettes,frozen.palettes,'six themes match the PRISM GLASS 3.0 engineering color contract');
+ assert.deepEqual(palettes,frozen.palettes,'six themes match the Pearl reference engineering color contract');
  assert.deepEqual(pageProfiles,frozen.pageProfiles,'route mixes match the frozen contract');
  for(const [name,accent] of Object.entries(frozen.pageAccents)){
   const actual=resolvePalette('prism','pages/'+name+'/index');
@@ -80,7 +80,7 @@ test('all routes share the VM flat canvas and the publish icon stays legible', a
  const {aliases,accentRoute}=require('../../miniprogram/utils/page-accent-route');
  assert.deepEqual([...Object.keys(pageProfiles),...Object.keys(aliases)].sort(),app.pages.map(x=>x.split('/')[1]).sort());
  for(const route of app.pages) assert.ok(pageProfiles[accentRoute(route).split('/')[1]],'all new pages reuse a frozen palette');
- for(const profile of Object.values(pageProfiles)) assert.deepEqual(profile.mix,['#FAF9F8','#FAF9F8','#FAF9F8']);
+ for(const profile of Object.values(pageProfiles)) assert.deepEqual(profile.mix,['#FBF8FA','#FBF8FA','#FBF8FA']);
  const {data}=await sharp(path.join(root,'assets/icons/publish-prism.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});
  let opaque=0,light=0;
  for(let n=0;n<data.length;n+=4) if(data[n+3]===255){opaque++;if(data[n]+data[n+1]+data[n+2]>650)light++;}

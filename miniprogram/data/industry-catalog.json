@@ -2243,10 +2243,8 @@
               "publication": {
                 "schemaVersion": 1,
                 "policy": "COMMUNITY",
-                "enabled": true,
-                "legacyKinds": [
-                  "community"
-                ]
+                "enabled": false,
+                "legacyKinds": []
               }
             },
             {
@@ -2356,10 +2354,8 @@
               "publication": {
                 "schemaVersion": 1,
                 "policy": "COMMUNITY",
-                "enabled": true,
-                "legacyKinds": [
-                  "community"
-                ]
+                "enabled": false,
+                "legacyKinds": []
               }
             }
           ]
@@ -2424,10 +2420,8 @@
               "publication": {
                 "schemaVersion": 1,
                 "policy": "COMMUNITY",
-                "enabled": true,
-                "legacyKinds": [
-                  "community"
-                ]
+                "enabled": false,
+                "legacyKinds": []
               }
             }
           ]
@@ -7282,11 +7276,11 @@
         "businessCodes": [
           "PUBLIC"
         ],
-        "channel": "resident_community",
+        "channel": "resident_practical_information",
         "publisherRoles": [
           "resident"
         ],
-        "reviewPolicy": "standard"
+        "reviewPolicy": "practical_information_review"
       },
       "CURATED_INFO": {
         "businessCodes": [

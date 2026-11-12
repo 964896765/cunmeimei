@@ -290,6 +290,8 @@ test('P0 production gate rejects missing modes, development launch, invalid flag
     { DATA_DRIVER: 'memory' },
     { PHONE_ENCRYPTION_KEY: '' },
     { SUPER_ADMIN_PASSWORD: passwords.operator },
+    { SUPER_ADMIN_PASSWORD: '' },
+    { VERIFICATION_ADMIN_PASSWORD: '' },
     { OPERATOR_ADMIN_PERMISSIONS: 'all' }
   ])
     assert.equal(validateDeployment({ ...safe, ...patch }).ok, false);

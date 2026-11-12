@@ -30,4 +30,4 @@ function searchProjects(categoryId,q=''){
  if(query)results.sort((a,b)=>b.score-a.score||a.index-b.index);
  return results.map(({project:p,score})=>{const result={...p,matchScore:score,firstOfGroup:!query&&p.groupId!==previous,kinds:contract.kindsFor(p.id)};previous=p.groupId;return result;});
 }
-module.exports={...contract,templateCodes,channels,categoryItems,searchProjects,matchScore};
+module.exports={...contract,templateCodes,channels,categoryItems,searchProjects,matchScore,channelFor:require('./discovery-channels').channelFor};

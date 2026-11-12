@@ -74,30 +74,27 @@
  <block wx:else><view class="main-center">
   <button class="profile-entry" bindtap="openProfile" aria-label="查看和编辑个人资料">
    <view class="profile-avatar"><image wx:if="{{avatarSrc}}" src="{{avatarSrc}}" mode="aspectFill"/><image wx:else class="avatar-placeholder" src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/></view>
-   <view class="profile-copy"><view class="profile-name">{{hasSession?displayName:'欢迎来到青方睐村美美'}}</view><view class="profile-subtitle">{{hasSession?'查看和编辑个人资料':'登录后查看和编辑个人资料'}}</view></view><text class="center-chevron">›</text>
+   <view class="profile-copy"><view class="profile-name">{{hasSession?displayName:'欢迎来到青方睐村美美'}}</view><view class="profile-subtitle">{{hasSession?(profileCityName||'个人信息'):'登录后查看和编辑个人资料'}}</view></view><text class="center-chevron">›</text>
   </button>
   <button wx:if="{{!hasSession}}" class="btn guest-signin" bindtap="signin">登录并开始使用</button>
   <feedback-state wx:if="{{summaryError}}" kind="error" description="{{summaryError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
-  <view class="workspace-heading"><text class="section-title">我的事务</text></view>
   <view class="workspace-grid">
-   <view class="workspace-item posts-entry" role="button" bindtap="goPosts" aria-label="我的发布"><image src="/assets/icons/center-posts-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的发布</text><text class="workspace-count">{{postCount===null?'—':postCount}}</text></view>
-   <view class="workspace-item saved-entry" role="button" bindtap="showFavorites" aria-label="我的收藏"><image src="/assets/icons/center-saved-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的收藏</text><text class="workspace-count">{{favCount===null?'—':favCount}}</text></view>
-   <view class="workspace-item bookings-entry" role="button" bindtap="goBookings" aria-label="我的预约"><image src="/assets/icons/center-booking-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><text class="workspace-label">我的预约</text><text class="workspace-count">{{bookingCount===null?'—':bookingCount}}</text></view>
+   <view class="workspace-item posts-entry" role="button" bindtap="goPosts" aria-label="我的发布"><text class="workspace-count">{{postCount===null?'—':postCount}}</text><text class="workspace-label">我的发布</text></view>
+   <view class="workspace-item saved-entry" role="button" bindtap="showFavorites" aria-label="我的收藏"><text class="workspace-count">{{favCount===null?'—':favCount}}</text><text class="workspace-label">我的收藏</text></view>
+   <view class="workspace-item draft-entry" role="button" bindtap="openDrafts" aria-label="草稿箱"><text class="workspace-count">{{draftCount===null?'—':draftCount}}</text><text class="workspace-label">草稿箱</text></view>
+   <view class="workspace-item bookings-entry" role="button" bindtap="goBookings" aria-label="我的预约"><text class="workspace-count">{{bookingCount===null?'—':bookingCount}}</text><text class="workspace-label">我的预约</text></view>
   </view>
-  <view class="menu-group-title">服务与权益</view><view class="center-hub">
-  <button id="points-center-entry" class="points-entry" bindtap="showPoints" aria-label="进入积分中心"><view class="points-icon"><image src="/assets/icons/center-points-{{iconPalette||displayPreferences.theme||'prism'}}.png"/></view><view class="center-entry-copy"><view class="center-entry-title">积分中心</view><view class="center-subtitle">积分记录 · 权益兑换 · 自助推广</view></view><text class="center-chevron">›</text></button>
-  <button id="service-center-entry" class="merchant-entry" bindtap="openServiceCenter" aria-label="进入服务中心"><image src="/assets/icons/center-merchant-{{iconPalette||displayPreferences.theme||'prism'}}.png"/><view class="center-entry-copy"><view class="center-entry-title">服务中心</view><view class="center-subtitle">商家资料 · 行业核验 · 沟通记录</view></view><text class="center-chevron">›</text></button>
-  </view><view class="menu-group-title">账户与设置</view>
-  <view class="center-menu">
+  <button id="points-center-entry" class="points-entry" bindtap="showPoints" aria-label="进入积分中心"><view class="points-icon"><image src="/assets/icons/center-points-{{iconPalette||'prism'}}.png"/></view><text class="points-title">我的积分</text><text class="points-action">积分中心 ›</text></button>
+  <view class="personal-functions"><view class="section-title">我的功能</view><view class="personal-function-grid">
+   <button bindtap="goPosts"><image src="/assets/icons/center-posts-{{iconPalette||'prism'}}.png"/><text>我的发布</text></button><button bindtap="showFavorites"><image src="/assets/icons/center-saved-{{iconPalette||'prism'}}.png"/><text>我的收藏</text></button><button bindtap="openDrafts"><image src="/assets/icons/center-draft-{{iconPalette||'prism'}}.png"/><text>草稿箱</text></button><button bindtap="goBookings"><image src="/assets/icons/center-booking-{{iconPalette||'prism'}}.png"/><text>我的预约</text></button>
+   <button bindtap="goMessages"><image src="/assets/icons/center-notifications-{{iconPalette||'prism'}}.png"/><text>消息通知</text></button><button bindtap="openNotifications"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png"/><text>通知设置</text></button><button bindtap="openPrivacy"><image src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/><text>屏蔽管理</text></button><button bindtap="showHistory"><image src="/assets/icons/center-history-{{iconPalette||'prism'}}.png"/><text>浏览记录</text></button>
+  </view></view>
+  <view class="center-menu personal-services">
+   <button id="service-center-entry" class="center-menu-row service-entry" bindtap="openServiceCenter"><image src="/assets/icons/center-merchant-{{iconPalette||'prism'}}.png"/><view class="center-menu-copy"><text class="center-entry-title">服务中心</text><text class="center-subtitle">商家入驻 · 行业核验 · 管理信息</text></view><text class="center-chevron">›</text></button>
+   <button class="center-menu-row help-entry" bindtap="openHelp"><image src="/assets/icons/center-help-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">帮助与反馈</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row account-entry" bindtap="openAccount"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">账号与安全</text><text class="center-chevron">›</text></button>
-   <button class="center-menu-row privacy-entry" bindtap="openPrivacy"><image src="/assets/icons/center-settings-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">隐私与显示</text><text class="center-chevron">›</text></button>
-   <button class="center-menu-row notifications-entry" bindtap="openNotifications"><image src="/assets/icons/center-notifications-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">通知设置</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row privacy-entry" bindtap="openPrivacy"><image src="/assets/icons/center-settings-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">隐私与设置</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row data-entry" bindtap="openPersonalData"><image src="/assets/icons/center-data-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">个人数据</text><text class="center-chevron">›</text></button>
-  </view>
-  <view class="menu-group-title">其他服务</view>
-  <view class="center-menu">
-   <button class="center-menu-row history-entry" bindtap="showHistory"><image src="/assets/icons/center-history-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">浏览记录</text><text class="center-chevron">›</text></button>
-   <button class="center-menu-row help-entry" bindtap="openHelp"><image src="/assets/icons/center-help-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">帮助与申诉</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row about-entry" bindtap="showAbout"><image src="/assets/icons/center-about-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">关于小程序</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row cache-entry" bindtap="inspectCache"><image src="/assets/icons/center-trash-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">清理缓存</text><text class="center-chevron">›</text></button>
   </view>

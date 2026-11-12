@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const automator=require('../backend/node_modules/miniprogram-automator');
 const fs=require('node:fs');
 const path=require('node:path');
-const base='http://127.0.0.1:3100';
+const base='http://127.0.0.1:3101';
 let passed=0;
 function check(condition,label){assert.ok(condition,label);console.log('PASS '+label);passed++;}
 async function request(route,method='GET',body,auth={}){

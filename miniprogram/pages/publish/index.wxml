@@ -1,10 +1,11 @@
 <view class="theme-root publish-root {{themeClass}}" style="{{themeStyle}}">
-<page-header id="navigation-header" transparent="{{true}}" title="发布内容" large-text="{{displayPreferences.largeText}}"/>
+<page-header id="navigation-header" transparent="{{true}}" title="发布内容" back="{{directoryOpen}}" bind:back="closeDirectory" large-text="{{displayPreferences.largeText}}"/>
 <view class="container publish-page">
  <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新读取发布配置" bind:action="loadConfig"/><view wx:if="{{configLoading}}" class="notice" role="status">正在核对发布项目与开放状态…</view>
 
- <block><view class="publish-heading"><view><view class="section-title">选择发布项目</view><text class="directory-summary">{{categories.length}} 个行业 · {{projectCount}} 个项目</text></view><button wx:if="{{!projectSearchOpen}}" class="project-search-button" bindtap="toggleProjectSearch" aria-label="搜索发布项目"><view class="search-dot"></view></button></view>
- <view class="publish-tools"><button class="drafts-button" bindtap="showGuidance">发布须知</button><button class="drafts-button" bindtap="openDrafts">草稿箱</button><button class="drafts-button" bindtap="openRecords">发布进度</button></view>
+ <block><view class="publish-hero"><view class="publish-hero-copy"><view>发布本地信息</view><text>27个行业 · 418个细分类目</text></view><image src="/assets/publish-checklist.png" mode="aspectFit" aria-hidden="true"/></view>
+ <button wx:if="{{!projectSearchOpen}}" class="publish-search-entry" bindtap="toggleProjectSearch"><view class="search-dot"></view><text>搜索418个分类，例如：二手手机、房屋出租</text></button>
+ <view class="publish-tools"><button class="drafts-button" bindtap="showGuidance"><image src="/assets/icons/center-about-{{iconPalette||'prism'}}.png"/><text>发布须知</text></button><button class="drafts-button" bindtap="openDrafts"><image src="/assets/icons/center-draft-{{iconPalette||'prism'}}.png"/><text>草稿箱</text></button><button class="drafts-button" bindtap="openRecords"><image src="/assets/icons/center-history-{{iconPalette||'prism'}}.png"/><text>发布进度</text></button><button class="drafts-button" bindtap="showHelp"><image src="/assets/icons/center-help-{{iconPalette||'prism'}}.png"/><text>常见问题</text></button></view>
  <view wx:if="{{projectSearchOpen}}" class="project-search-panel">
   <view class="project-search-box"><view class="search-dot" aria-hidden="true"></view><input class="project-search-input" value="{{projectQuery}}" focus="{{projectSearchFocused}}" maxlength="80" placeholder="搜索项目名称或别名" bindinput="searchProjects" aria-label="搜索发布项目名称或别名"/><button wx:if="{{projectQuery}}" class="project-search-clear" bindtap="clearProjectSearch" aria-label="清空项目搜索">×</button></view>
   <button class="project-search-cancel" bindtap="closeProjectSearch">取消</button>
@@ -16,6 +17,7 @@
    <feedback-state wx:if="{{!projects.length}}" kind="empty" description="没有匹配项目，试试其他名称或简称。" compact="{{false}}" large-text="{{displayPreferences.largeText}}"/>
   </scroll-view>
  </view>
+ <scroll-view wx:elif="{{!directoryOpen}}" class="industry-overview" scroll-y="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}"><view class="industry-overview-heading"><view>选择发布分类 <text>（27个行业）</text></view><button bindtap="openDirectory">全部分类 ›</button></view><view class="industry-grid"><button wx:for="{{categories}}" wx:key="id" class="industry-tile" data-id="{{item.id}}" bindtap="chooseIndustry" aria-label="{{item.name}}，查看细分类目"><image src="/assets/icons/{{item.icon}}-{{displayPreferences.theme==='prism'?'pearl':iconPalette}}.png" mode="aspectFit"/><text>{{item.name}}</text></button></view></scroll-view>
  <view wx:else class="project-browser {{projectSearchOpen?'with-search':''}}">
   <view class="industry-column"><scroll-view class="industry-sidebar" scroll-y="true" scroll-top="{{industryScrollTop}}" scroll-into-view="{{industryAnchor}}" bindscroll="onIndustryScroll" enhanced="true" show-scrollbar="{{false}}"><view wx:for="{{categories}}" wx:key="id" id="industry-{{item.id}}" class="industry-choice {{selectedCategory===item.id?'active':''}}" data-id="{{item.id}}" bindtap="selectCategory" role="button" aria-selected="{{selectedCategory===item.id}}">{{item.name}}</view></scroll-view></view>
   <view class="project-column"><scroll-view class="project-content" scroll-y="true" scroll-top="{{projectScrollTop}}" bindscroll="onProjectScroll" enhanced="true" show-scrollbar="{{false}}">

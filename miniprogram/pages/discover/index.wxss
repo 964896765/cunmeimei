@@ -1,11 +1,11 @@
-.discover-root { --channel-row-height:50px; }
+.discover-root { --channel-row-height:56px; }
 .discover-root.theme-prism { background:var(--background); background-image:none; }
 .discover-toolbar { position:sticky; z-index:20; top:var(--channel-header-height,88px); height:var(--channel-row-height); border-bottom:1rpx solid var(--border); background:var(--surface); }
 .discover-root .discover-page { padding:0 32rpx calc(48rpx + 56px + env(safe-area-inset-bottom)); }
-.discover-controls { position:sticky; z-index:19; top:calc(var(--channel-header-height,88px) + var(--channel-row-height)); margin:0 0 28rpx; padding:12rpx 0 16rpx; border-bottom:1rpx solid var(--border); background:var(--surface); }
-.result-header { display:flex; align-items:center; justify-content:space-between; gap:20rpx; min-height:88rpx; }
-.browse-city,.sort-trigger { display:flex; align-items:center; gap:12rpx; min-height:88rpx; padding:14rpx 0; margin:0; border:0; border-radius:0; background:transparent; color:var(--ink); font-size:28rpx; line-height:1.5; }
-.browse-city { min-width:0; max-width:65%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-weight:600; }
+.discover-controls { position:sticky; z-index:19; top:calc(var(--channel-header-height,88px) + var(--channel-row-height)); margin:0 0 8rpx; padding:4rpx 0 10rpx; border-bottom:1rpx solid var(--border); background:var(--surface); }
+.result-header { display:flex; align-items:center; justify-content:space-between; gap:20rpx; min-height:76rpx; }
+.browse-city,.sort-trigger { display:flex; align-items:center; gap:12rpx; min-height:76rpx; padding:14rpx 0; margin:0; border:0; border-radius:0; background:transparent; color:var(--ink); font-size:28rpx; line-height:1.5; }
+.browse-city { min-width:0; max-width:68%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-weight:600; }
 .sort-trigger { color:var(--muted); font-size:26rpx; }
 .browse-city::after,.sort-trigger::after,.browse-chip::after { border:0; }
 .sort-chevron { width:12rpx; height:12rpx; border-right:2rpx solid var(--muted); border-bottom:2rpx solid var(--muted); transform:rotate(45deg); margin-top:-6rpx; }
@@ -14,7 +14,7 @@
 .browse-scope,.browse-secondary { width:50%; min-width:0; }
 .browse-secondary { display:flex; align-items:center; gap:6rpx; }
 .browse-secondary picker,.browse-secondary button { flex:1; min-width:0; }
-.browse-chip { display:flex; align-items:center; justify-content:center; min-height:88rpx; margin:0; padding:12rpx 8rpx; border:0; border-radius:12rpx; background:transparent; color:var(--muted); font-size:26rpx; line-height:1.5; white-space:nowrap; }
+.browse-chip { display:flex; align-items:center; justify-content:center; min-height:76rpx; margin:0; padding:12rpx 8rpx; border:0; border-radius:12rpx; background:transparent; color:var(--muted); font-size:26rpx; line-height:1.5; white-space:nowrap; }
 .browse-chip.selected { color:var(--link); background:var(--soft); font-weight:600; }
 .result-list { padding-top:0; }
 .list-end { padding:24rpx 0 32rpx; color:var(--muted); text-align:center; font-size:26rpx; line-height:1.7; }
@@ -30,7 +30,7 @@
 .float-globe view { position:absolute; top:16rpx; left:0; right:0; height:2rpx; background:var(--link); }
 .immersed { opacity:0; pointer-events:none; }
 .sort-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:12rpx; }
-.sort-close { display:flex; align-items:center; justify-content:center; min-height:88rpx; padding:12rpx; margin:0; border:0; background:transparent; color:var(--link); font-size:28rpx; }
+.sort-close { display:flex; align-items:center; justify-content:center; min-height:76rpx; padding:12rpx; margin:0; border:0; background:transparent; color:var(--link); font-size:28rpx; }
 .sort-close::after,.sort-option::after { border:0; }
 .sort-option { display:flex; align-items:center; width:100%; gap:16rpx; min-height:112rpx; margin:0; padding:20rpx 16rpx; border:0; border-bottom:1rpx solid var(--border); border-radius:0; background:var(--surface); text-align:left; }
 .sort-option.selected { background:var(--soft); border-radius:14rpx; }
@@ -43,3 +43,29 @@
 .large-text .browse-filter-row { flex-wrap:wrap; }
 .large-text .browse-scope,.large-text .browse-secondary { width:100%; }
 .large-text .browse-city,.large-text .sort-trigger,.large-text .browse-chip { font-size:30rpx; }
+
+.discover-root { --header-logo-width:54rpx; --header-logo-height:72rpx; --header-logo-image-width:104rpx; --header-logo-image-height:156rpx; --header-logo-offset-x:-20rpx; --header-logo-offset-y:-34rpx; }
+.discovery-intro { padding:16rpx 32rpx 28rpx; }
+.discovery-intro>view { color:var(--link); font-size:46rpx; font-weight:700; line-height:1.3; letter-spacing:1rpx; }
+.discovery-intro>text { display:block; margin-top:8rpx; color:var(--muted); font-size:25rpx; }
+.browse-location-icon { width:28rpx; height:34rpx; flex-shrink:0; }
+.region-switch { display:none; }
+.result-list { background:var(--surface); border-radius:24rpx; padding:0 18rpx; }
+.browse-chip { border-radius:40rpx; background:var(--background); }
+.discover-controls { border-radius:0 0 20rpx 20rpx; }
+.browse-scope { width:44%; }
+.browse-secondary { width:56%; }
+.large-text .browse-scope,.large-text .browse-secondary { width:100%; }
+
+.discover-controls { padding-bottom:12rpx; }
+.result-header { margin:0; min-height:72rpx; }
+.browse-city { max-width:78%; font-size:28rpx; }
+.browse-city>text { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.refine-trigger { flex-shrink:0; min-height:44px; margin:0; padding:8rpx 0 8rpx 12rpx; border:0; background:transparent; color:var(--link); font-size:25rpx; line-height:1.5; }
+.refine-trigger::after { border:0; }
+.discovery-filter-pills { display:flex; gap:12rpx; align-items:center; }
+.discovery-filter-pills .browse-chip { flex:1; min-width:0; min-height:44px; padding:10rpx 8rpx; border-radius:48rpx; background:var(--background); font-size:24rpx; }
+.browse-chip[disabled] { opacity:.45; }
+.large-text .discovery-filter-pills { flex-wrap:wrap; }
+.large-text .discovery-filter-pills .browse-chip { flex-basis:44%; font-size:30rpx; }
+.large-text .browse-city { white-space:normal; font-size:32rpx; }

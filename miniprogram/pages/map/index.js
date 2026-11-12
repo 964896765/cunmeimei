@@ -4,12 +4,12 @@ const channels=require('../../utils/business-templates').channels;
 const drawerStates=['collapsed','half','expanded'];
 const countFilters=value=>filters.options.filter(x=>x.key!=='sort'&&value[x.key]!==filters.defaults[x.key]).length;
 Page({
- data:{headerHeight:88,cityCode:'',districtCode:'',cityLabel:'选择地区',q:'',type:'all',channels,latitude:35.8617,longitude:104.1954,scale:4,markers:[],items:[],total:0,selectedId:'',anchor:'',drawer:'half',dirty:false,loading:false,hasMore:false,error:'',geoError:'',filters:{...filters.defaults},draftFilters:{...filters.defaults},rangeMode:'current',draftRange:'current',rangeLabel:'当前视野',filterOptions:filters.options,filterCount:0,filterOpen:false},
+ data:{headerHeight:88,cityCode:'',districtCode:'',cityLabel:'选择地区',q:'',type:'all',channels,latitude:35.8617,longitude:104.1954,scale:4,markers:[],items:[],total:0,selectedId:'',anchor:'',drawer:'half',dirty:false,loading:false,hasMore:false,mapUnavailable:false,error:'',geoError:'',filters:{...filters.defaults},draftFilters:{...filters.defaults},rangeMode:'current',draftRange:'current',rangeLabel:'当前视野',filterOptions:filters.options,filterCount:0,filterOpen:false},
  onLoad(opts={}){const scope=browse.common(opts);this.initialScope=scope.cityCode?scope:null;this.sourceType=scope.type;const decode=require('../../utils/route-query').decodeQuery,type=['all','merchant','service'].includes(scope.type)?scope.type:'all',value={...filters.defaults};for(const key of Object.keys(value)){const v=key==='days'?Number(opts[key]):opts[key];if(filters.valid(key,v))value[key]=v;}const category=require('../../utils/classification').find(decode(opts.categoryId)),notices=[];if(type!==scope.type)notices.push('地图仅展示公开位置的商家与服务，原频道请返回列表查看。');if(['price_low','price_high','popular','distance'].includes(opts.sourceSort)||Number(opts.sourceRadius)>0)notices.push('地图改按当前视野检索；原列表的价格、热度或定位距离条件仍可返回后继续使用。');this.setData({type,q:decode(opts.q).slice(0,80),categoryId:category?.id||'',filters:value,filterCount:countFilters(value),scopeNotice:notices.join(' ')});},
  onShow(){
   this.visible=true;require('../../utils/theme').apply(this);if(this.chooseCityAfterSearch){this.chooseCityAfterSearch=false;setTimeout(()=>{if(this.visible&&!this.unloaded)this.chooseCity();},0);}
   const pref=context.current(),key=pref.cityCode+':'+pref.districtCode,changedBrowse=key!==this.browseKey||this.cityReselected,browsing=!this.scopeApplied&&this.initialScope?this.initialScope:changedBrowse?pref:{cityCode:this.data.cityCode,districtCode:this.data.districtCode,label:this.data.cityLabel},feedContext=JSON.stringify([key,wx.getStorageSync('city_life_v2_auth_token'),wx.getStorageSync('city_life_acceptance_mode')]),changedContext=feedContext!==this.feedContext;this.feedContext=feedContext;
-  if(key!==this.browseKey||this.cityReselected||changedContext){this.scopeApplied=true;this.cityReselected=false;this.browseKey=key;this.version=(this.version||0)+1;this.setData({cityCode:browsing.cityCode,districtCode:browsing.districtCode,cityLabel:geography.findCity(browsing.cityCode)?.name||browsing.label,items:[],markers:[],total:0,selectedId:'',anchor:'',drawer:'half',dirty:false,hasMore:false,error:''});this.centerCity();}
+  if(key!==this.browseKey||this.cityReselected||changedContext){this.scopeApplied=true;this.cityReselected=false;this.browseKey=key;this.version=(this.version||0)+1;this.setData({cityCode:browsing.cityCode,districtCode:browsing.districtCode,cityLabel:geography.findCity(browsing.cityCode)?.name||browsing.label,items:[],markers:[],total:0,selectedId:'',anchor:'',drawer:'half',dirty:false,hasMore:false,mapUnavailable:false,error:''});this.centerCity();}
   else if(this.ready&&this.resumeSearch){this.resumeSearch=false;this.scheduleCitySearch();}
  },
  onReady(){this.map=wx.createMapContext('information-map',this);this.ready=true;this.scheduleCitySearch();},
@@ -27,7 +27,7 @@ Page({
  returnToList(){if(getCurrentPages().length>1)return this.goBack();nav.discover(this.sourceType||this.data.type,this.data.categoryId,{...this.data,...this.data.filters});},
  resetConditions(){this.setData({categoryId:'',districtCode:'',filters:{...filters.defaults},filterCount:0});return this.searchArea();},
  removeCondition(e){const patch=browse.remove({...this.data,...this.data.filters},e.detail.key),next={...this.data.filters};for(const key of Object.keys(filters.defaults))if(key in patch)next[key]=patch[key];this.setData({...(e.detail.key==='q'?{q:''}:{}),filters:next,filterCount:countFilters(next)});return this.searchArea();},
- async openSearch(){if(!this.data.cityCode||!this.map){this.chooseCity();return;}try{const region=await new Promise((resolve,reject)=>this.map.getRegion({success:resolve,fail:reject})),bounds={west:region.southwest.longitude,east:region.northeast.longitude,south:region.southwest.latitude,north:region.northeast.latitude};nav.search(this.data.type,this.data.q,this.data.categoryId,{...this.data.filters,cityCode:this.data.cityCode,districtCode:this.data.districtCode,bounds,fromMap:true,publicOnly:true,events:{mapChooseCity:()=>{this.chooseCityAfterSearch=true;},mapSearchApplied:value=>{if(this.unloaded||browse.signature({...this.data,...this.data.filters})===browse.signature(value))return;const c=browse.common(value);if(!c.cityCode)return;this.version=(this.version||0)+1;const filtersValue={...this.data.filters,days:c.days,images:c.images,sort:c.sort==='latest'?'latest':'recommended',publisher:value.publisher==='verified'?'verified':'all'};this.setData({...c,filters:filtersValue,filterCount:countFilters(filtersValue),items:[],markers:[],total:0,selectedId:'',dirty:true});this.resumeSearch=true;}}});}catch{api.showError(Error('暂时无法读取地图范围，请重试'));}},
+ async openSearch(){if(!this.data.cityCode||!this.map){this.chooseCity();return;}try{const region=await this.readMapRegion(),bounds={west:region.southwest.longitude,east:region.northeast.longitude,south:region.southwest.latitude,north:region.northeast.latitude};nav.search(this.data.type,this.data.q,this.data.categoryId,{...this.data.filters,cityCode:this.data.cityCode,districtCode:this.data.districtCode,bounds,fromMap:true,publicOnly:true,events:{mapChooseCity:()=>{this.chooseCityAfterSearch=true;},mapSearchApplied:value=>{if(this.unloaded||browse.signature({...this.data,...this.data.filters})===browse.signature(value))return;const c=browse.common(value);if(!c.cityCode)return;this.version=(this.version||0)+1;const filtersValue={...this.data.filters,days:c.days,images:c.images,sort:c.sort==='latest'?'latest':'recommended',publisher:value.publisher==='verified'?'verified':'all'};this.setData({...c,filters:filtersValue,filterCount:countFilters(filtersValue),items:[],markers:[],total:0,selectedId:'',dirty:true});this.resumeSearch=true;}}});}catch{api.showError(Error('暂时无法读取地图范围，请重试'));}},
  chooseCity(){wx.navigateTo({url:'/pages/regions/index?returnTo=previous',events:{citySelected:()=>{this.cityReselected=true;}}});},
  headerMeasured(e){this.setData({headerHeight:e.detail.height});},
  goBack(){wx.navigateBack({fail:()=>wx.switchTab({url:'/pages/discover/index'})});},
@@ -47,11 +47,23 @@ Page({
   const scale=e.detail?.scale??e.scale;if(Number.isFinite(scale))this.syncScale(scale);else this.map?.getScale?.({success:r=>this.syncScale(r.scale)});
  },
  syncScale(scale){if(this.unloaded||!Number.isFinite(scale)||scale===this.data.scale)return;this.setData({scale});this.renderMarkers();},
+ readMapRegion(){
+  return new Promise((resolve,reject)=>{
+   const unavailable=()=>{
+    clearTimeout(timer);
+    const error=Error('地图范围读取超时或暂不可用，请重试或返回列表浏览');
+    error.code='MAP_REGION_UNAVAILABLE';reject(error);
+   };
+   const timer=setTimeout(unavailable,8000);
+   try{this.map.getRegion({success:value=>{clearTimeout(timer);resolve(value);},fail:unavailable});}
+   catch{unavailable();}
+  });
+ },
  async searchArea(){
   if(!this.ready||!this.data.cityCode)return;
-  const version=this.version=(this.version||0)+1;this.failedPage=0;this.setData({loading:true,error:'',items:[],markers:[],total:0,hasMore:false,selectedId:'',anchor:''});
+  const version=this.version=(this.version||0)+1;this.failedPage=0;this.setData({loading:true,mapUnavailable:false,error:'',items:[],markers:[],total:0,hasMore:false,selectedId:'',anchor:''});
   try{
-   const box=await new Promise((resolve,reject)=>this.map.getRegion({success:resolve,fail:()=>reject(Error('暂时无法读取地图范围，请重试'))}));
+   const box=await this.readMapRegion();
    if(this.unloaded||version!==this.version)return;
    this.bounds={west:box.southwest.longitude,east:box.northeast.longitude,south:box.southwest.latitude,north:box.northeast.latitude};
    const c=this.centerTarget,b=this.bounds;
@@ -59,7 +71,7 @@ Page({
     this.setData({loading:false});if(this.centerRetries++<5)this.scheduleCitySearch(200);else this.setData({geoError:'地图尚未完成地区切换，请重试。'});return;
    }
    this.awaitingCenter=false;await this.fetchPage(1,version);
-  }catch(e){if(!this.unloaded&&version===this.version)this.setData({loading:false,error:e.message});}
+  }catch(e){if(!this.unloaded&&version===this.version)this.setData({loading:false,error:e.message,mapUnavailable:e.code==='MAP_REGION_UNAVAILABLE'});}
  },
  async fetchPage(page,version){
   this.setData({loading:true,error:''});const query={...this.bounds,cityCode:this.data.cityCode,districtCode:this.data.districtCode,q:this.data.q,categoryId:this.data.categoryId||'',type:this.data.type,...this.data.filters,page};
@@ -69,7 +81,7 @@ Page({
    const rows=(result.items||[]).map(item=>({...item,...require('../../utils/map-preview').describe(item,this.bounds),cover:present.media(item.images?.[0],true),typeName:channels.find(c=>c.id===item.type)?.name||'信息',icon:'/assets/icons/type-'+item.type+'-'+this.data.iconPalette+'.png'}));
    const items=[...new Map([...(page===1?[]:this.data.items),...rows].map(x=>[x.id,x])).values()];
    this.hasLoaded=true;this.setData({items,total:result.total??items.length,page,hasMore:!!result.pagination?.hasMore,loading:false,dirty:false,geoError:''});this.renderMarkers();
-  }catch(e){if(!this.unloaded&&version===this.version){this.failedPage=page;this.setData({loading:false,error:e.message});}}
+  }catch(e){if(!this.unloaded&&version===this.version){this.failedPage=page;this.setData({loading:false,error:e.message,mapUnavailable:e.code==='MAP_REGION_UNAVAILABLE'});}}
  },
  more(){if(!this.data.loading&&this.data.hasMore&&!this.data.dirty)return this.fetchPage(this.data.page+1,this.version);},retry(){return this.failedPage>1?this.fetchPage(this.failedPage,this.version):this.searchArea();},
  renderMarkers(){const built=markerBuilder.markers(this.data.items,this.data.scale,this.data.selectedId,this.data.iconPalette);this.markerLookup=built.lookup;this.setData({markers:built.markers});},

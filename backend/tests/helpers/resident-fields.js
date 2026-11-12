@@ -7,7 +7,7 @@ function residentFields(kind = 'used', imageIds = ['00000000-0000-4000-8000-0000
     categoryId: {
       used: 'C04G01S01',
       housing: 'C05G01S03',
-      community: 'C08G01S03',
+      community: 'C08G01S01',
       service: 'C03G01S01'
     }[kind],
     categoryVersion: '2.0-audit',

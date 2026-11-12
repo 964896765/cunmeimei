@@ -106,7 +106,7 @@ function attachAds(repo,pool){
  FROM ad_campaigns a JOIN advertisers v ON v.id=a.advertiser_id AND v.status='verified' AND v.valid_until>now()
  JOIN ad_reservations r ON r.campaign_id=a.id AND r.cancelled_at IS NULL JOIN ad_slots s ON s.id=r.slot_id
  JOIN service_regions region ON region.name=s.region AND region.enabled
- JOIN publications p ON p.id=a.publication_id AND p.status='published' AND NOT p.is_test AND (p.expires_at IS NULL OR p.expires_at>now())
+ JOIN publications p ON p.id=a.publication_id AND ${require('./public-information-policy').eligibilitySql('p')} AND p.status='published' AND NOT p.is_test AND (p.expires_at IS NULL OR p.expires_at>now())
  WHERE a.status='scheduled' AND s.region=$1 AND s.placement=$2 AND s.starts_at<=now() AND s.ends_at>now() ORDER BY a.id LIMIT 20`,[region,placement])).rows;
  return repo;
 }

@@ -4,6 +4,7 @@
  <view class="map-tab-bar"><channel-tabs id="business-channels" scope="map" value="{{type}}" theme="{{displayPreferences.theme}}" large-text="{{displayPreferences.largeText}}" reduce-motion="{{displayPreferences.reduceMotion}}" bind:change="changeType"/></view>
  <view class="map-stage">
  <map id="information-map" class="information-map" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}" markers="{{markers}}" show-location="{{false}}" enable-scroll="true" enable-zoom="true" bindmarkertap="markerTap" bindcallouttap="markerTap" bindregionchange="regionChanged"/>
+ <view wx:if="{{mapUnavailable}}" class="map-unavailable"><view class="map-state-title">地图暂未就绪</view><text>可以重新加载，或先浏览当前地区的信息列表。</text><button bindtap="returnToList">浏览信息列表 ›</button></view>
  <view wx:if="{{dirty&&cityCode&&drawer!=='expanded'}}" class="search-region"><button bindtap="searchArea" loading="{{loading}}" disabled="{{loading}}">搜索此区域</button></view>
  <view class="map-drawer drawer-{{drawer}}">
   <view class="drawer-header" bindtouchstart="dragStart" bindtouchend="dragEnd" bindtouchcancel="cancelDrag">

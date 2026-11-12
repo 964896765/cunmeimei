@@ -14,7 +14,7 @@ function toPublicItem(record, origin) {
   description:record.description,
   desc:record.description,
   detail:record.description,
-  category:isCatalog?'生活服务':({merchant:'本地商家',used:'二手闲置',housing:'房屋信息',community:'邻里社区',service:'服务需求'}[record.type]||'同城信息'),
+  category:isCatalog?'生活服务':({merchant:'本地商家',used:'二手闲置',housing:'房屋信息',community:'实用信息',service:'服务需求'}[record.type]||'同城信息'),
   createdAt:record.created_at,
   glyph:isCatalog?'服':'同'
  };

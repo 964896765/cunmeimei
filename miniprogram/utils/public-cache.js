@@ -8,7 +8,11 @@ function read(key, storage) {
     const entries = storage.getStorageSync?.(storageKey);
     if (!Array.isArray(entries)) return null;
     const entry = entries.find((item) => item.key === key && Date.now() - item.at < maxAge);
-    return entry?.value || null;
+    const value = entry?.value;
+    if (Array.isArray(value?.items)) {
+      return {...value, items:value.items.filter(require('./product-scope').isPublicInformation)};
+    }
+    return value || null;
   } catch {
     return null;
   }

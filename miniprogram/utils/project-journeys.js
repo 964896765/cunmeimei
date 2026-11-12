@@ -3,6 +3,7 @@ const catalog=require('./classification-contract'),workflows=require('./industry
 const names={job:'岗位申请与面谈',event:'活动报名与参与',service:'服务咨询与约定',housing:'房源沟通与交接',exchange:'物品协商与交接',merchant:'机构咨询与处理',information:'来源维护与纠错'};
 function journey(id){
  const p=catalog.find(id);if(!p?.groupId)return null;
+ if(require('./product-scope').isForumProject(id))return {projectId:id,route:'closed',kind:'information',informationOnly:true,steps:['closed','owned_records'],title:'论坛型发布已关闭'};
  const legacy=catalog.kindsFor(id),w=legacy.length?null:workflows.workflow(id);if(!legacy.length&&!w)return null;
  const information=!!(w?.editorial||w?.directory||!w?.response&&!legacy.length),kind=information?'information':w?.response==='job'?'job':w?.response==='event'?'event':w?.channel==='housing'||legacy.includes('housing')?'housing':legacy.includes('used')?'exchange':w?.channel==='merchant'?'merchant':'service';
  const steps=information?['draft','source_review','published','feed_search_detail','correction','operator_reply','revision_review','closed','owned_records']:['draft','qualification_if_required','submitted','reviewed','published','feed_search_detail','private_application','accepted_contact','business_record','mutual_schedule','completion_request','completion_confirmation','cancellation','dispute_resolution','closed','owned_records'];

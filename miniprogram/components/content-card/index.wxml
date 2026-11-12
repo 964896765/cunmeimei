@@ -1,14 +1,8 @@
-<block wx:if="{{layout==='stream'||layout==='merchant'||layout==='service'||layout==='article'}}"><view class="stream {{layout}}" bindtap="open" role="button" aria-label="{{item.category}}：{{item.title}}，{{item.district}}">
- <view class="stream-heading"><image src="{{placeholderIcon}}" aria-hidden="true"/><text>{{item.category}}</text><text wx:if="{{item.kind==='service'}}" class="bookable">可预约</text><text class="stream-region">{{item.district||'地区未填写'}}</text></view>
- <view class="stream-main">
-  <view class="stream-copy"><view class="stream-title">{{item.title}}</view><view wx:if="{{item.meta}}" class="stream-meta">{{item.meta}}</view></view>
-  <view wx:if="{{item.cover&&!coverFailed}}" class="stream-photo-wrap"><image class="stream-photo" src="{{item.cover}}" mode="aspectFill" lazy-load="true" binderror="imageError" catchtap="preview" aria-label="查看信息图片"/><text wx:if="{{item.images.length>1}}" class="photo-count">{{item.images.length}}图</text></view>
-  <view wx:elif="{{coverFailed}}" class="stream-image-fallback">图片暂不可用</view>
+<view class="content-card {{layout}} theme-{{theme}} type-{{item.type}} kind-{{item.kind}} {{compact?'compact':''}} {{item.cover&&!coverFailed?'has-photo':'text-led'}}" bindtap="open" role="button" aria-label="{{item.category}}，{{item.title}}，{{item.district}}">
+ <view wx:if="{{item.cover&&!coverFailed}}" class="photo-wrap"><image class="cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" binderror="imageError" catchtap="preview" aria-label="查看信息图片"/><text wx:if="{{item.images.length>1}}" class="photo-count">▧ {{item.images.length}}</text></view>
+ <view class="body"><view class="card-heading"><text class="category">{{item.category}}</text><text wx:if="{{item.kind==='service'}}" class="bookable">可预约</text><button wx:if="{{layout==='stream'||layout==='merchant'||layout==='service'||layout==='article'}}" class="save-button {{item.isSaved?'is-saved':''}}" catchtap="favorite" aria-pressed="{{item.favoriteKnown===false?'mixed':!!item.isSaved}}" aria-label="{{item.favoriteKnown===false?'核对收藏状态':item.isSaved?'取消收藏':'收藏信息'}}"><text>{{item.isSaved?'♥':'♡'}}</text></button></view>
+  <view class="name">{{item.title}}</view><view wx:if="{{item.meta}}" class="meta">{{item.meta}}</view><view wx:elif="{{item.description}}" class="meta">{{item.description}}</view>
+  <view wx:if="{{coverFailed}}" class="image-unavailable">图片暂不可用，仍可查看信息详情</view>
+  <view class="card-footer"><text class="price">{{item.priceText}}</text><text class="location">{{distanceText||item.district||item.locationText}}</text></view>
  </view>
- <view class="stream-footer"><view class="stream-footer-copy"><text class="stream-price">{{item.priceText}}</text><text wx:if="{{item.dateText}}" class="stream-date">{{item.dateText}}</text></view><button class="stream-save {{item.favoriteKnown!==false&&item.isSaved?'is-saved':''}}" catchtap="favorite" aria-pressed="{{item.favoriteKnown===false?'mixed':!!item.isSaved}}" aria-label="{{item.favoriteKnown===false?'核对收藏状态':item.isSaved?'取消收藏':'收藏信息'}}">{{item.favoriteKnown===false?'核对收藏':item.isSaved?'✓ 已收藏':'＋ 收藏'}}</button></view>
-</view></block>
-<block wx:else><view class="content-card theme-{{theme}} type-{{item.type}} kind-{{item.kind}} {{item.type==='community'?'community':''}} {{compact?'compact':''}}" bindtap="open" role="button" aria-label="{{item.category+'：'+item.title}}">
- <image wx:if="{{item.cover&&!coverFailed}}" class="cover" src="{{item.cover}}" mode="aspectFill" lazy-load="true" binderror="imageError"/>
- <view wx:else class="cover placeholder"><image class="placeholder-icon" src="{{placeholderIcon}}"/><text>{{coverFailed?'图片暂不可用':item.category}}</text></view>
- <view class="body"><view class="category">{{item.category}}<text wx:if="{{item.kind==='service'}}" class="bookable">可预约</text></view><view class="name">{{item.title}}</view><view wx:if="{{item.meta}}" class="meta">{{item.meta}}</view><view class="meta">{{item.district}}<text wx:if="{{item.dateText}}"> · {{item.dateText}}</text></view><view wx:if="{{item.priceText}}" class="price">{{item.priceText}}</view></view><text class="arrow" aria-hidden="true">›</text>
-</view></block>
+</view>

@@ -3,7 +3,7 @@
 const schemas={
  used:{businessCode:'GOODS',version:1,fields:[{key:'condition',label:'物品成色',type:'select',options:['全新','几乎全新','正常使用','需维修'],placeholder:'请选择成色'},{key:'itemCategory',type:'text',render:false}]},
  housing:{businessCode:'PROPERTY',version:1,fields:[{key:'intent',label:'发布类型',type:'select',options:['出租','求租'],placeholder:'请选择出租或求租'},{key:'area',label:'面积（㎡）',type:'number',inputType:'digit',placeholder:'填写面积'},{key:'layout',label:'户型',type:'text',placeholder:'如两室一厅'}]},
- community:{businessCode:'PUBLIC',version:1,fields:[{key:'topic',label:'话题（选填）',type:'text',maxLength:40,placeholder:'如邻里互助、周末生活'}]},
+ community:{businessCode:'PUBLIC',version:1,fields:[{key:'topic',label:'信息主题（选填）',type:'text',maxLength:40,placeholder:'如遗失物品、发现地点'}],notice:'用于失物招领、寻物启事等实用信息，提交后由平台审核。'},
  service:{businessCode:'SERVICE',version:1,fields:[{key:'serviceType',type:'text',render:false},{key:'expectedDate',label:'期望日期（选填）',type:'date',placeholder:'选择日期'}],notice:'这里发布的是服务需求，可预约的商家服务请到发现页查看。'}
 };
 function get(kind){return Object.hasOwnProperty.call(schemas,kind)?schemas[kind]:null;}

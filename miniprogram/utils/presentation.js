@@ -1,6 +1,6 @@
 const runtime=require('./runtime');
 const display=require('./publication-display');
-const labels={used:'二手闲置',housing:'房屋信息',community:'邻里社区',service:'服务需求',merchant:'本地商家',job:'招聘求职',event:'同城活动',public:'公共信息'};
+const labels={used:'二手闲置',housing:'房屋信息',community:'实用信息',service:'服务需求',merchant:'本地商家',job:'招聘求职',event:'同城活动',public:'公共信息'};
 function media(url,thumb=false){return url?(url.startsWith('/')?runtime.apiBaseUrl+url:url)+(thumb?'?size=thumb':'')+(runtime.devLogin&&wx.getStorageSync('city_life_acceptance_mode')?(thumb?'&test=1':'?test=1'):''):'';}
 function item(x){const a=x.attributes||{},category=x.kind==='service'?'生活服务':labels[x.type]||x.category||'同城信息';
  const facts=display.describe(x.type,a,x.price,x.district);

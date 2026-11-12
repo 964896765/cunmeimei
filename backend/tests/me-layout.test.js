@@ -43,4 +43,11 @@ test('logout modal callbacks cannot log out another identity',async()=>{
  assert.equal(calls.length,0);assert.equal(state.session,true);
 });
 
-test('personal center never fetches draft data and renders exactly posts, favorites and bookings',async()=>{const calls=[],{page}=client(async(method,url)=>{calls.push(url);return responses(url);});await page.refresh();assert.ok(!calls.some(x=>x.includes('draft')));assert.equal(page.refreshDraftCount,undefined);assert.equal(page.data.draftCount,undefined);const wxml=fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.wxml'),'utf8');assert.equal((wxml.match(/class="workspace-item /g)||[]).length,3);assert.ok(!wxml.includes('drafts-entry'));assert.ok(!wxml.includes('goDrafts'));const css=fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.wxss'),'utf8');assert.match(css,/workspace-grid\{display:grid;grid-template-columns:repeat\(3,/);});
+test('personal workspace exposes four real counts and keeps draft loading independent of summary',async()=>{
+ const calls=[],{page}=client(async(method,url)=>{calls.push(url);return responses(url);});
+ await page.refresh();assert.ok(!calls.some(url=>url.includes('draft')));assert.equal(page.data.draftCount,null);
+ assert.equal(typeof page.openDrafts,'function');assert.equal(typeof page.loadDraftCount,'function');
+ const markup=fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.wxml'),'utf8');
+ assert.equal((markup.match(/class="workspace-item /g)||[]).length,4);
+ assert.ok(markup.includes('bindtap="openDrafts"'));
+});

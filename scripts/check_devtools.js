@@ -12,7 +12,7 @@ const path=require('node:path');
   if(server){
    report=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/local-business-result.json'),'utf8'));
    originalToken=await mini.callWxMethod('getStorageSync','city_life_v2_auth_token');
-   const r=await fetch('http://127.0.0.1:3100/api/v1/dev/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({devUser:report.ownerDevUser})});
+   const r=await fetch('http://127.0.0.1:3101/api/v1/dev/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({devUser:report.ownerDevUser})});
    if(r.status!==200)throw Error('Local merchant development login failed');ownerToken=(await r.json()).token;
   }
   const app=JSON.parse(fs.readFileSync(path.join(__dirname,'../miniprogram/app.json'),'utf8'));

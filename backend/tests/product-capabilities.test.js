@@ -114,29 +114,19 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    assert.equal((await pool.query('SELECT read_at FROM user_notifications WHERE id=$1',[notice.id])).rows[0].read_at,null);
    await req('/api/v1/me/notifications/read','POST',{id:notice.id},owner);assert.ok((await pool.query('SELECT read_at FROM user_notifications WHERE id=$1',[notice.id])).rows[0].read_at);
   });
-  await t.test('community likes unique, comments hidden until authorized review',async()=>{
-   community=(await req('/api/v1/publications','POST',{...payload,type:'community',title:'测试专用邻里交流',attributes:{...residentFields('community').attributes,topic:'邻里互助'},imageIds:[]},owner)).data.publication;
+  await t.test('practical information keeps private contacts while public likes, comments and replies stay closed',async()=>{
+   community=(await req('/api/v1/publications','POST',{...payload,type:'community',title:'测试专用失物招领',attributes:{...residentFields('community').attributes,topic:'失物招领'},imageIds:[]},owner)).data.publication;
    await req('/admin/api/review','POST',{target:'publication',id:community.id,status:'published'},admin);
-   for(let i=0;i<2;i++)await req('/api/v1/items/'+community.id+'/like','PUT',{},buyer);
-   comment=(await req('/api/v1/items/'+community.id+'/comments','POST',{body:'这是一条友善的测试留言'},buyer)).data.comment;
-   let state=(await req('/api/v1/items/'+community.id+'/interaction')).data;assert.equal(state.likes,1);assert.equal(state.comments.length,0);
-   assert.equal((await req('/admin/api/comments/review','POST',{id:comment.id,status:'published'},{cookie:admin.cookie})).status,403);
-   assert.equal((await req('/admin/api/comments/review','POST',{id:comment.id,status:'published'},admin)).status,200);
-   state=(await req('/api/v1/items/'+community.id+'/interaction')).data;assert.equal(state.comments.length,1);
-   assert.equal((await req('/api/v1/me/comments/'+comment.id,'DELETE',{},other)).status,404);
-   assert.equal((await req('/api/v1/me/comments/'+comment.id,'DELETE',{},buyer)).status,200);
+   for(const [action,method] of [['like','PUT'],['like','DELETE'],['comments','POST'],['interaction','GET']]){
+    const response=await req('/api/v1/items/'+community.id+'/'+action,method,method==='POST'?{body:'尝试公开回复',parentId:community.id}:undefined,buyer);
+    assert.equal(response.status,404);assert.equal(response.data.error,'PUBLIC_INTERACTIONS_CLOSED');
+   }
   });
-  await t.test('replies are moderated, retry-safe and restricted to visible parent comments',async()=>{
-   const parent=(await req('/api/v1/items/'+community.id+'/comments','POST',{body:'用于回复验证的原留言'},owner)).data.comment;
-   await req('/admin/api/comments/review','POST',{id:parent.id,status:'published'},admin);
-   const value={body:'友善回复这条街坊留言',parentId:parent.id,clientKey:'reply_request_key_0001'};
-   const first=await req('/api/v1/items/'+community.id+'/comments','POST',value,buyer);assert.equal(first.status,201);
-   const second=await req('/api/v1/items/'+community.id+'/comments','POST',value,buyer);assert.equal(first.data.comment.id,second.data.comment.id);
-   await req('/admin/api/comments/review','POST',{id:first.data.comment.id,status:'published'},admin);
-   const state=(await req('/api/v1/items/'+community.id+'/interaction','GET',undefined,buyer)).data;
-   const reply=state.comments.find(x=>x.id===first.data.comment.id);assert.equal(reply.parentId,parent.id);assert.equal(reply.mine,true);
-   await req('/api/v1/me/comments/'+parent.id,'DELETE',{},owner);
-   assert.equal((await req('/api/v1/items/'+community.id+'/comments','POST',{body:'不允许回复已经删除的留言',parentId:parent.id},buyer)).status,409);
+  await t.test('historical comments remain owner-deletable and cannot be republished',async()=>{
+   const historical=(await pool.query("INSERT INTO content_comments(publication_id,user_id,body,status) VALUES($1,$2,'历史公开留言保留删除权','pending') RETURNING id",[community.id,buyer.userId])).rows[0];
+   assert.equal((await req('/admin/api/comments/review','POST',{id:historical.id,status:'published'},admin)).status,400);
+   assert.equal((await req('/api/v1/me/comments/'+historical.id,'DELETE',{},other)).status,404);
+   assert.equal((await req('/api/v1/me/comments/'+historical.id,'DELETE',{},buyer)).status,200);
   });
   await t.test('service editing rechecks merchant role and requires a new platform review',async()=>{
    const application=(await req('/api/v1/merchant-applications','POST',{name:'数据库验收维修门店',category:'维修',district:'中心街道'},owner)).data.application;

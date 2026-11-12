@@ -3,11 +3,16 @@
 .tab-items { display:flex; align-items:stretch; height:56px; }
 .tab-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; width:20%; min-height:44px; height:56px; padding:4px 0; margin:0; border:0; border-radius:0; background:transparent; overflow:visible; line-height:1.2; font-weight:400; }
 .tab-item::after { border:0; }
-.tab-icon { display:flex; align-items:center; justify-content:center; position:relative; width:30px; height:27px; }
-.tab-icon image { display:block; width:24px; height:24px; }
-.tab-label { font-size:11px; line-height:14px; }
+.tab-icon { display:flex; align-items:center; justify-content:center; position:relative; width:34px; height:30px; }
+.tab-icon image { display:block; width:30px; height:30px; }
+.tab-label { font-size:12px; line-height:15px; }
 .tab-publish .tab-icon { width:30px; height:30px; border-radius:10px; background:var(--surface); border:1rpx solid var(--border); }
-.tab-publish .tab-icon image { width:24px; height:24px; }
-.tab-item.selected .tab-label { font-weight:600; }
+.tab-publish .tab-icon image { width:30px; height:30px; }
+.tab-item.selected .tab-icon { width:36px; height:32px; border-radius:12px; border-color:var(--tab-active); background:var(--tab-active); }
+.tab-item.selected .tab-label { font-weight:700; }
 .tab-badge { position:absolute; top:-2px; left:20px; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:8px; background:#8D3D51; color:#FFFFFF; font-size:11px; line-height:16px; text-align:center; }
 .large-text .tab-label { font-size:12px; }
+
+.tab-discover.selected .tab-icon { border-radius:50%; }
+.tab-home.selected .tab-icon,.tab-me.selected .tab-icon,.tab-messages.selected .tab-icon { background:transparent; }
+.tab-publish .tab-icon { width:32px; height:30px; }

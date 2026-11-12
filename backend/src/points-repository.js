@@ -1,11 +1,18 @@
 'use strict';
 const {ApiError}=require('./rules'),policy=require('./trust-policy');
 const fail=(code,message,status=409)=>{throw new ApiError(status,code,message);};
+function ledgerSource(value, kind) {
+ const internal = /^(ad-campaign|reward-event|benefit-order|points-hold):([0-9a-f-]{36})$/i.exec(String(value || ''));
+ // Internal record IDs can contain a phone-shaped digit sequence by chance.
+ // Manual adjustments continue to use the external evidence-reference checks.
+ if (kind !== 'adjustment' && internal && require('./rules').uuid(internal[2])) return value;
+ return policy.reference(value);
+}
 async function transaction(pool,fn){const c=await pool.connect();try{await c.query('BEGIN');const result=await fn(c);await c.query('COMMIT');return result;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}}
 // One account lock orders all postings, including concurrent retries and holds.
 async function post(c,uid,v){
  if(!Number.isSafeInteger(v.amount)||v.amount<1||v.amount>1000000||!['earn','hold','release','spend','reversal','adjustment'].includes(v.kind)||!(/^[A-Za-z0-9:_-]{16,160}$/.test(v.key||'')))fail('INVALID_POINTS_EVENT','积分事件参数无效',400);
- const reason=policy.note(v.reason),source=policy.reference(v.source),actor=String(v.actor||'system').slice(0,40);
+ const reason=policy.note(v.reason),source=ledgerSource(v.source,v.kind),actor=String(v.actor||'system').slice(0,40);
  if(v.originalId&&!require('./rules').uuid(v.originalId))fail('INVALID_POINTS_REFERENCE','原始积分记录编号无效',400);
  const requestHash=require('node:crypto').createHash('sha256').update(JSON.stringify([uid,v.kind,v.amount,source,reason,v.originalId||null,!!v.debit,v.expiresAt||null])).digest('hex');
  if(['earn','hold','spend','adjustment'].includes(v.kind)){
@@ -57,4 +64,4 @@ function attachPoints(repo,pool){
  };
  return repo;
 }
-module.exports={attachPoints,post,transaction};
+module.exports={attachPoints,post,transaction,ledgerSource};

@@ -72,6 +72,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   }
   if(m==='GET'&&p==='/admin'){return adminHtml(res);}
   if(m==='GET'&&p==='/admin/app.js'){return adminScript(res);}
+  if(m==='GET'&&p==='/admin/review-dialog.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/review-dialog.js')));}
   if(m==='GET'&&p==='/admin/workflows.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/workflows.js')));}
   if(m==='GET'&&p==='/admin/home-content.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/home-content.js')));}
   if(m==='GET'&&p==='/admin/app.css'){res.writeHead(200,{'Content-Type':'text/css; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/app.css')));}
@@ -84,7 +85,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   if(await require('./business-case-routes').businessCaseRoutes({req,res,p,m,url,repo,user,admin,body,json}))return;
   if(m==='GET'&&p==='/api/v1/health'){return json(res,200,{ok:true,version:require('../package.json').version});}
   if(m==='GET'&&p==='/api/v1/ready'){try{await repo.ping();if(typeof repo.verifySchema==='function')await repo.verifySchema();return json(res,200,{ready:true});}catch{return json(res,503,{ready:false,error:'DEPENDENCY_UNAVAILABLE'});}}
-  if(m==='GET'&&p==='/api/v1/config'){const regions=await allRegions();const categories=await repo.listCategories();return json(res,200,{areas:regions.filter(r=>r.enabled).map(r=>r.name),categories,features:{publishingApproved:!production||platformPublishApproved,industryWorkflows:!!repo.saveIndustryEntry,businessProgress:!!repo.createBusinessCase,industryServiceBooking:!!repo.connectIndustryService,benefitRedemption:!!repo.redeemBenefit,selfPromotion:!!repo.applyPromotion,jobs:!!repo.saveIndustryEntry,payments:false,realtimeChat:false,textContactChat:!!repo.sendChat,phoneVerification:phoneConfigured,identityVerification:'manual_external_evidence',machineImageReview:'not_configured_manual_required',merchantCertification:'manual_review',merchantOperations:true,reports:true,licenseUpload:production?'disabled_pending_security_review':'private_development',bookingSlots:'single_capacity_30min_hold'}});}
+  if(m==='GET'&&p==='/api/v1/config'){const regions=await allRegions();const categories=await repo.listCategories();return json(res,200,{areas:regions.filter(r=>r.enabled).map(r=>r.name),categories,features:{forumPublishing:false,publicInteractions:false,practicalInformation:true,benefitMode:'points_only',bookingPurpose:'service_request',businessProgressPurpose:'mutual_progress_record',publishingApproved:!production||platformPublishApproved,industryWorkflows:!!repo.saveIndustryEntry,businessProgress:!!repo.createBusinessCase,industryServiceBooking:!!repo.connectIndustryService,benefitRedemption:!!repo.redeemBenefit,selfPromotion:!!repo.applyPromotion,jobs:!!repo.saveIndustryEntry,payments:false,realtimeChat:false,textContactChat:!!repo.sendChat,phoneVerification:phoneConfigured,identityVerification:'manual_external_evidence',machineImageReview:'not_configured_manual_required',merchantCertification:'manual_review',merchantOperations:true,reports:true,licenseUpload:production?'disabled_pending_security_review':'private_development',bookingSlots:'single_capacity_30min_hold'}});}
   if(m==='GET'&&p==='/api/v1/legal')return json(res,200,{...legalDocs,wechatAvailable:!!wechatAppId&&!!wechatSecret});
   if(m==='POST'&&p==='/api/v1/auth/wechat'){limitLogin(req);const v=await body(req),consent=require('./legal-documents').consent(v,legalDocs),code=text(v.code,512,4);return json(res,200,await issueSession('wechat_miniapp',await wechatAuthenticate(code),consent));}
   if(m==='POST'&&p==='/api/v1/dev/login'){
@@ -146,7 +147,9 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const origin=needsLocation?{latitude:geography.number(url.searchParams.get('latitude'),-90,90),longitude:geography.number(url.searchParams.get('longitude'),-180,180)}:{};
    const publicFlag=url.searchParams.get('publicOnly')||'0';if(!['0','1'].includes(publicFlag))fail(400,'INVALID_FILTER','公开位置筛选无效');
    const images=url.searchParams.get('images')??'all';if(!['all','with'].includes(images))fail(400,'INVALID_FILTER','图片条件无效');
-   const found=await repo.listFeed({type,area,q,categoryId,cityCode,districtCode,limit:pageSize+1,offset,sort,days,radiusKm,images,publicOnly:publicFlag==='1',...origin,includeTest:testData(req)});
+   const channel=url.searchParams.get('channel')||'';
+   if(channel&&!require('../../miniprogram/utils/discovery-channels').definitions.some(value=>value.id===channel))fail(400,'INVALID_CHANNEL','发现频道无效');
+   const found=await repo.listFeed({type,channel,area,q,categoryId,cityCode,districtCode,limit:pageSize+1,offset,sort,days,radiusKm,images,publicOnly:publicFlag==='1',...origin,includeTest:testData(req)});
    return json(res,200,{items:found.slice(0,pageSize),pagination:{page,pageSize,hasMore:found.length>pageSize}});
   }
   if(m==='GET'&&/^\/api\/v1\/items\/[0-9a-f-]{36}$/i.test(p)){const item=await repo.getItem(p.split('/').at(-1),{includeTest:testData(req)});if(!item)fail(404,'NOT_FOUND','内容不存在或未通过审核');return json(res,200,{item});}
@@ -237,13 +240,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const response=v.action==='accept'?text(v.response,300,4):'';
    if(!await repo.respondContact?.(uid,p.split('/')[5],v.action,response))fail(409,'CONTACT_CHANGED','联系申请已变化或无权处理');return json(res,200,{ok:true});
   }
-  if(/^\/api\/v1\/items\/[0-9a-f-]{36}\/(interaction|like|comments)$/i.test(p)){
-   const id=p.split('/')[4],kind=p.split('/')[5],item=await repo.getItem(id,{includeTest:testData(req)});if(!item||item.type!=='community')fail(404,'NOT_FOUND','社区内容暂不可用');
-   const uid=m==='GET'?(req.headers.authorization?await user(req):null):await user(req);
-   if(m==='GET'&&kind==='interaction'){const page=Number(url.searchParams.get('page')||1);if(!Number.isInteger(page)||page<1||page>500)fail(400,'INVALID_PAGE','页码无效');return json(res,200,await repo.communityStats(uid,id,(page-1)*20));}
-   if(kind==='like'&&['PUT','DELETE'].includes(m)){await repo.likeContent(uid,id,m==='PUT');return json(res,200,{liked:m==='PUT'});}
-   if(kind==='comments'&&m==='POST'){const v=await body(req);if(v.clientKey!==undefined&&!/^[a-zA-Z0-9_-]{16,64}$/.test(v.clientKey))fail(400,'INVALID_REQUEST_KEY','提交标识无效');if(v.parentId!==undefined&&v.parentId!==null&&!uuid(v.parentId))fail(400,'INVALID_PARENT','原留言标识无效');return json(res,201,{comment:await repo.commentContent(uid,id,text(v.body,500,2),v.clientKey||null,v.parentId||null)});}
-  }
+  if(/^\/api\/v1\/items\/[0-9a-f-]{36}\/(interaction|like|comments)$/i.test(p))fail(404,'PUBLIC_INTERACTIONS_CLOSED','公开点赞、评论和回复已关闭。');
   if(/^\/api\/v1\/me\/comments\/[0-9a-f-]{36}$/i.test(p)&&m==='DELETE'){
    if(!await repo.deleteComment?.(await user(req),p.split('/')[5]))fail(404,'NOT_FOUND','评论不存在或无权删除');return json(res,200,{ok:true});
   }
@@ -253,7 +250,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   }
   if(p==='/admin/api/comments'&&m==='GET'){admin(req);return json(res,200,{items:await repo.commentQueue?.()||[]});}
   if(p==='/admin/api/comments/review'&&m==='POST'){
-   admin(req,true);const v=await body(req);if(!uuid(v.id)||!['published','rejected'].includes(v.status))fail(400,'INVALID_REVIEW','审核参数无效');
+   admin(req,true);const v=await body(req);if(!uuid(v.id)||v.status!=='rejected')fail(400,'INVALID_REVIEW','公开互动已关闭，历史留言仅支持拒绝处理。');
    if(!await repo.reviewComment?.(v.id,v.status,text(v.reason||'',300,v.status==='rejected'?4:0)))fail(409,'STALE_REVIEW','评论审核状态已变化');return json(res,200,{ok:true});
   }
   if(m==='GET'&&p==='/api/v1/me'){return json(res,200,{userId:await user(req)});}
@@ -452,7 +449,7 @@ if(require.main===module){
  if(!deployment.ok){console.error('Deployment configuration blocked:',deployment.errors.join(','));process.exit(1);}
  const repo=driver==='memory'?createMemoryRepository():require('./pg-repository').createPgRepository(process.env.DATABASE_URL);
  const areas=(process.env.SERVICE_AREAS||'').split(',').map(x=>x.trim()).filter(Boolean);
- const host=process.env.HOST||'127.0.0.1',port=Number(process.env.PORT||3100);
+ const host=process.env.HOST||'127.0.0.1',port=Number(process.env.PORT||3101);
  const app=createApp({repo,areas,allowDevLogin:process.env.ALLOW_DEV_LOGIN==='true',adminPassword:process.env.ADMIN_PASSWORD||'',wechatAppId:process.env.WECHAT_APPID||'',wechatSecret:process.env.WECHAT_SECRET||'',privateUploadDir:process.env.PRIVATE_UPLOAD_DIR||path.resolve(__dirname,'../../private-data'),verificationAdminPassword:process.env.VERIFICATION_ADMIN_PASSWORD||'',superAdminPassword:process.env.SUPER_ADMIN_PASSWORD||'',operatorPermissions:(process.env.OPERATOR_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),verifierPermissions:(process.env.VERIFIER_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),phoneEncryptionKey:process.env.PHONE_ENCRYPTION_KEY||'',platformPublishApproved:process.env.PLATFORM_PUBLISH_APPROVED==='true',platformContactApproved:process.env.PLATFORM_CONTACT_APPROVED==='true',trustedProxyIps:process.env.TRUSTED_PROXY_IPS||'',tencentMapKey:process.env.TENCENT_MAP_KEY||'',legalConfig:{operatorName:process.env.PLATFORM_OPERATOR_NAME,contactEmail:process.env.PRIVACY_CONTACT_EMAIL},production});
  let stopReminders=async()=>{},stopMaintenance=async()=>{};
  (async()=>{if(driver==='postgres')await repo.verifySchema();await repo.seedRegions(areas);
