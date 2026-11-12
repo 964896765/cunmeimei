@@ -9,3 +9,6 @@
 .channel-icon,.channel-edge { display:none; }
 .large-text .channel-row { display:inline-flex; gap:12rpx; }
 .large-text .channel-tab { font-size:34rpx; min-width:94rpx; }
+
+.underlined .channel-tab.is-selected { background:transparent; color:var(--link); box-shadow:none; }
+.underlined .channel-tab.is-selected::before { bottom:0; height:5rpx; }

@@ -149,6 +149,16 @@ async function main() {
       },
       admin
     );
+    if (process.env.UI_AUDIT_SCOPE === 'discover') {
+      for (const [kind,title] of [['housing','[界面验收] 房屋信息与无图排版'],['community','[界面验收] 失物招领实用信息'],['used','[界面验收] 长标题与图片列表滚动检查']]) {
+        const extra=(await request('/api/v1/publications','POST',{
+          ...residentFields(kind,[image.id]),type:kind,title,
+          detail:'明确标记的隔离验收内容，用于检查分类、发布时间、缺图和滚动布局。',
+          price:kind==='community'?'':'100',district:'中心街道'
+        },owner)).publication;
+        await request('/admin/api/review','POST',{target:'publication',id:extra.id,status:'published',expectedRevision:1,textReviewed:true,imagesReviewed:true},admin);
+      }
+    }
     const application = (
       await request(
         '/api/v1/merchant-applications',
@@ -300,13 +310,14 @@ async function main() {
         try {
           const tab = app.tabBar.list.some(item => '/' + item.pagePath === url.split('?')[0]);
           const refresh = tab && (await mini.currentPage())?.path === url.split('?')[0].slice(1);
-          await mini.evaluate(({url, tab, refresh}) => {
-            setTimeout(() => {
-              if (refresh) getCurrentPages().slice(-1)[0].onShow();
-              else wx[tab ? 'switchTab' : 'reLaunch']({ url });
-            }, 120);
-            return true;
-          }, {url, tab, refresh});
+          if(attempt>0) await mini.reLaunch(url);
+          else await mini.evaluate(({url, tab, refresh}) => {
+              setTimeout(() => {
+                if (refresh) getCurrentPages().slice(-1)[0].onShow();
+                else wx[tab ? 'switchTab' : 'reLaunch']({ url });
+              }, 120);
+              return true;
+            }, {url, tab, refresh});
           await pause(3000);
           const page = await mini.currentPage();
           if (page?.path === url.split('?')[0].slice(1) && (await page.$('.theme-root')))
@@ -404,7 +415,8 @@ async function main() {
       industry: '?projectId=C22G01S01'
     };
     const homePublishScope = process.env.UI_AUDIT_SCOPE === 'home-publish';
-    const routes = homePublishScope ? ['pages/home/index','pages/publish/index'] : process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
+    const discoveryScope = process.env.UI_AUDIT_SCOPE === 'discover';
+    const routes = discoveryScope ? ['pages/discover/index'] : homePublishScope ? ['pages/home/index','pages/publish/index'] : process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
     for (const route of routes) {
       if (checks.some(check => check.route === route)) continue;
       const name = route.split('/')[1];
@@ -496,7 +508,67 @@ async function main() {
       await page.setData({loading:true});await pause(150);await capture('home',page.path,'loading');
       await page.setData({loading:false,error:'界面验收状态，网络暂时不可用。'});await pause(150);await capture('home',page.path,'error');
     }
-    if (!homePublishScope && process.env.UI_AUDIT_STATES !== '0') {
+    if (discoveryScope) {
+      async function returnToDiscovery() {
+        try { await mini.navigateBack(); }
+        catch(error) { if(!/timeout/i.test(error.message)||(await mini.currentPage()).path!=='pages/discover/index')throw error; }
+        await pause(500);
+        await mini.disconnect();
+        mini=await connectMini();
+        mini.on('exception',event=>errors.push(event));
+      }
+      let page=await routeTo('/pages/discover/index');
+      await mini.evaluate(()=>new Promise(resolve=>wx.pageScrollTo({scrollTop:0,duration:0,complete:resolve})));
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].restoreNavigation();return true;});
+      const bounds=await mini.evaluate(()=>new Promise(resolve=>{
+        const current=getCurrentPages().slice(-1)[0];
+        current.createSelectorQuery().selectAll('.float-action').boundingClientRect().exec(rows=>{
+          current.getTabBar().createSelectorQuery().select('.curved-tabs').boundingClientRect().exec(tabs=>resolve({actions:rows[0],navigation:tabs[0],width:wx.getWindowInfo().windowWidth}));
+        });
+      }));
+      assert.equal(bounds.actions.length,2,'Search and map keep their two floating controls');
+      assert.ok(bounds.actions.every(action=>action.left>bounds.width/2&&action.bottom<bounds.navigation.top),'Both floating controls clear the lower-right navigation safe area');
+      assert.ok(bounds.actions[0].bottom<bounds.actions[1].top,'Search stays above map');
+      assert.ok((await page.data()).filtered.some(item=>item.id===publication.id),'Real API content is rendered');
+      const channels=await page.$('#business-channels');
+      assert.equal((await channels.$$('.channel-tab')).length,7,'All seven channels remain visible');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].openSort();return true;});
+      await pause(200);await capture('discover',page.path,'sort');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeSort();getCurrentPages().slice(-1)[0].openFilters();return true;});
+      await pause(200);await capture('discover',page.path,'filters');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeFilters();return true;});
+      await pause(500);
+      console.log('CHECK lower-right search');
+      try { await (await page.$$('.float-action'))[0].tap(); }
+      catch(error) { if(!/timeout/i.test(error.message)||(await mini.currentPage()).path!=='pages/search/index')throw error; }
+      for(let attempt=0;attempt<30&&(await mini.currentPage()).path==='pages/discover/index';attempt++)await pause(100);
+      assert.equal((await mini.currentPage()).path,'pages/search/index','Lower-right search opens the current query');
+      console.log('PASS lower-right search');
+      await returnToDiscovery();
+      page=await mini.currentPage();
+      console.log('CHECK lower-right map');
+      // The simulator can retain stale native element handles after returning from search.
+      // Invoke the existing bound handler and verify the real navigation result.
+      await mini.evaluate(()=>{setTimeout(()=>getCurrentPages().slice(-1)[0].openMap(),100);return true;});
+      for(let attempt=0;attempt<30&&(await mini.currentPage()).path==='pages/discover/index';attempt++)await pause(100);
+      assert.equal((await mini.currentPage()).path,'pages/map/index','Lower-right map opens map browsing');
+      console.log('PASS lower-right map');
+      await returnToDiscovery();
+      page=await routeTo('/pages/discover/index');
+      await mini.evaluate(()=>getCurrentPages().slice(-1)[0].changeType({detail:{type:'used'}}));
+      await pause(500);await capture('discover',page.path,'selected-channel');
+      const selected=await (await page.$('#business-channels')).$('#channel-used');
+      assert.ok((await selected.attribute('class')).includes('is-selected'),'Real selected channel is highlighted');
+      await mini.callWxMethod('setStorageSync','city_life_preferences_'+owner.userId,{theme:'prism',largeText:true,reduceMotion:true});
+      page=await routeTo('/pages/discover/index');
+      await checkLayout(page.path,'accessible');await capture('discover',page.path,'accessible');
+      await mini.callWxMethod('setStorageSync','city_life_preferences_'+owner.userId,{theme:'prism',largeText:false,reduceMotion:true});
+      page=await routeTo('/pages/discover/index');
+      await page.setData({filtered:[],loading:false,error:'',hasMore:false});await pause(100);await capture('discover',page.path,'empty');
+      await page.setData({loading:true});await pause(100);await capture('discover',page.path,'loading');
+      await page.setData({loading:false,error:'界面验收状态，网络连接暂时中断。'});await pause(100);await capture('discover',page.path,'error');
+    }
+    if (!homePublishScope && !discoveryScope && process.env.UI_AUDIT_STATES !== '0') {
       let page = await routeTo('/pages/discover/index');
       await mini.evaluate(() => { getCurrentPages().slice(-1)[0].openSort(); return true; });
       await pause(200);
