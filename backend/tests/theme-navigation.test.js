@@ -31,3 +31,28 @@ test('care material follows the resident form category and preserves clear readi
  }
  assert.equal(materialFor({route:'pages/industry/index',options:{projectId:'C22G01S01'}},{theme:'clear'}),'clear');
 });
+
+test('selected navigation artwork stays within the normal icon bounds across all themes', async () => {
+ const sharp=require('sharp');
+ async function bounds(file){
+  const {data,info}=await sharp(file).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+  const result={left:info.width,top:info.height,right:0,bottom:0};
+  for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){
+   if(data[(y*info.width+x)*4+3]<8)continue;
+   result.left=Math.min(result.left,x);result.right=Math.max(result.right,x);
+   result.top=Math.min(result.top,y);result.bottom=Math.max(result.bottom,y);
+  }
+  return result;
+ }
+ for(const name of ['home','discover','messages','me']){
+  const normal=await bounds(path.resolve(__dirname,'../../miniprogram/assets/icons/nav-'+name+'.png'));
+  for(const theme of Object.keys(require('../../miniprogram/utils/palettes').palettes)){
+   const selected=await bounds(path.resolve(__dirname,'../../miniprogram/assets/icons/nav-'+name+'-'+theme+'.png'));
+   assert.ok(selected.left>=normal.left-1&&selected.top>=normal.top-1&&selected.right<=normal.right+1&&selected.bottom<=normal.bottom+1,name+' '+theme+' stays inside its outline');
+  }
+ }
+ const css=fs.readFileSync(path.resolve(__dirname,'../../miniprogram/custom-tab-bar/index.wxss'),'utf8');
+ assert.doesNotMatch(css,/\.tab-item\.selected \.tab-icon\s*\{/,'selection must not create an expanded background frame');
+ const publish=css.match(/\.tab-publish\.selected \.tab-icon\s*\{([^}]*)\}/)[1];
+ assert.doesNotMatch(publish,/width|height|border-radius/,'publish keeps the same outline when selected');
+});
