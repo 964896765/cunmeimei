@@ -39,9 +39,9 @@ test('schema versions are enforced by both final publication and account draft v
  }
  assert.equal(schemas.get('job'),null);assert.equal(schemas.get('event'),null);
 });
-function publish(){
+function publish(draftRead=async()=>0){
  let definition;const store={},app={globalData:{}},modals=[],routes=[];
- const sandbox={Page:value=>definition=value,getApp:()=>app,wx:{navigateTo:value=>routes.push(value.url),showModal:value=>modals.push(value),getStorageSync:key=>store[key],setStorageSync:(key,value)=>{store[key]=value;}},require:name=>name.endsWith('/publication-readiness')?require('../../miniprogram/utils/publication-readiness'):name.endsWith('/verification')?{selectProject:async id=>routes.push('/pages/publish-form/index?categoryId='+id)}:name.endsWith('/classification')?registry:name.endsWith('/geography')?require('../../miniprogram/utils/geography'):name.endsWith('/publication-schemas')?schemas:name.endsWith('/catalog')?{postTypes:[]}:name.endsWith('/api')?{online:()=>true,request:async()=>({areas:[],categories:['used','housing','service','community'].map(id=>({id,enabled:true,restricted:false})),features:{}}),showError(){}}:{} };
+ const sandbox={Page:value=>definition=value,getApp:()=>app,wx:{navigateTo:value=>routes.push(value.url),showModal:value=>modals.push(value),getStorageSync:key=>store[key],setStorageSync:(key,value)=>{store[key]=value;}},require:name=>name.endsWith('/draft-summary')?{read:draftRead}:name.endsWith('/tab-bar')?{context:()=>store.owner||'guest'}:name.endsWith('/publication-readiness')?require('../../miniprogram/utils/publication-readiness'):name.endsWith('/verification')?{selectProject:async id=>routes.push('/pages/publish-form/index?categoryId='+id)}:name.endsWith('/classification')?registry:name.endsWith('/geography')?require('../../miniprogram/utils/geography'):name.endsWith('/publication-schemas')?schemas:name.endsWith('/catalog')?{postTypes:[]}:name.endsWith('/api')?{online:()=>true,request:async()=>({areas:[],categories:['used','housing','service','community'].map(id=>({id,enabled:true,restricted:false})),features:{}}),showError(){}}:{} };
  vm.runInNewContext(fs.readFileSync(path.resolve(__dirname,'../../miniprogram/pages/publish/index.js'),'utf8'),sandbox);
  const page={data:structuredClone(definition.data),setData(value,done){Object.assign(this.data,value);done?.();}};for(const [key,value]of Object.entries(definition))if(typeof value==='function')page[key]=value.bind(page);return {page,modals,store,routes};
 }
@@ -75,4 +75,17 @@ test('group headings only toggle the single expansion and search dismissal resto
  page.toggleProjectSearch();page.searchProjects({detail:{value:'维修'}});page.closeProjectSearch();assert.equal(page.data.expandedGroupId,group.id);
  page.toggleGroup({currentTarget:{dataset:{id:group.id}}});assert.equal(page.data.expandedGroupId,'');
  page.toggleProjectSearch();page.closeProjectSearch();assert.equal(page.data.expandedGroupId,'');
+});
+
+
+test('publish draft count rejects stale reloads and account-switched results',async()=>{
+ const pending=[];
+ const {page,store}=publish(()=>new Promise((resolve,reject)=>pending.push({resolve,reject})));
+ const first=page.loadDraftCount(),second=page.loadDraftCount();
+ pending[1].resolve(2);await second;pending[0].resolve(4);await first;
+ assert.equal(page.data.draftCount,2);
+ const third=page.loadDraftCount();store.owner='another-account';pending[2].resolve(8);await third;
+ assert.equal(page.data.draftCount,null);
+ const failed=page.loadDraftCount();pending[3].reject(Error('offline'));await failed;
+ assert.equal(page.data.draftCount,null);
 });

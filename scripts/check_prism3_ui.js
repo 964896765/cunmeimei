@@ -360,7 +360,7 @@ async function main() {
       else layoutChecks[existing] = record;
     }
     async function capturePositions(page, name, route) {
-      const selector = {publish:'.industry-overview',regions:'.city-scroll',search:'.search-content',map:'.map-results'}[name];
+      const selector = {publish:'.industry-sidebar',regions:'.city-scroll',search:'.search-content',map:'.map-results'}[name];
       const inner = selector ? await page.$(selector) : null;
       async function scrollTo(top) {
         if (inner) await inner.scrollTo(0, top);
@@ -403,7 +403,8 @@ async function main() {
       'publish-form': '?categoryId=C04G01S01',
       industry: '?projectId=C22G01S01'
     };
-    const routes = process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
+    const homePublishScope = process.env.UI_AUDIT_SCOPE === 'home-publish';
+    const routes = homePublishScope ? ['pages/home/index','pages/publish/index'] : process.env.UI_AUDIT_SCOPE === 'main' ? app.tabBar.list.map(item => item.pagePath) : app.pages;
     for (const route of routes) {
       if (checks.some(check => check.route === route)) continue;
       const name = route.split('/')[1];
@@ -414,6 +415,7 @@ async function main() {
           assert.ok(await page.$('.theme-root'),'Rendered theme root '+route);
           const data=await page.data();
           if (name === 'home') {
+            if (!data.news.some(item => item.id === news.id)) console.log('Home fixture diagnostics '+JSON.stringify({loading:data.loading,error:data.error,region:data.region,newsCount:data.news.length,origin:await mini.evaluate(()=>require('utils/runtime.js').apiBaseUrl)}));
             assert.ok(data.news.some(item => item.id === news.id), 'Real API home news loaded');
             if (data.feed) assert.ok(data.featured.some(item => item.id === publication.id), 'Real API public information loaded');
           }
@@ -445,7 +447,56 @@ async function main() {
     // Re-capture variants on resume using this run's fresh API fixtures.
     const normalShots = screenshots.filter(shot => ['normal', 'middle', 'bottom'].includes(shot.variant));
     screenshots.splice(0, screenshots.length, ...normalShots);
-    if (process.env.UI_AUDIT_STATES !== '0') {
+    if (homePublishScope) {
+      let page = await routeTo('/pages/home/index');
+      for (let attempt=0;attempt<50;attempt++) {
+        if ((await page.data()).featured.some(item=>item.id===publication.id&&item.favoriteKnown)) break;
+        await pause(100);
+      }
+      const initialSaved = (await page.data()).featured.find(item=>item.id===publication.id).isSaved;
+      await mini.evaluate(async id => { await getCurrentPages().slice(-1)[0].toggleSaved({detail:{id}}); return true; },publication.id);
+      assert.equal((await page.data()).featured.find(item=>item.id===publication.id).isSaved,!initialSaved,'Home favorite updates its real API state');
+      const savedState = await request('/api/v1/me/saved-state?ids='+publication.id,'GET',undefined,owner);
+      assert.equal(savedState.savedIds.includes(publication.id),!initialSaved,'Home favorite persisted');
+      await mini.evaluate(async id => { await getCurrentPages().slice(-1)[0].toggleSaved({detail:{id}}); return true; },publication.id);
+      await mini.evaluate(() => new Promise(resolve => wx.pageScrollTo({scrollTop:999999,duration:0,complete:resolve})));
+      await pause(1800);
+      await capture('home',page.path,'feed');
+      const newsEntry=await page.$('.news-headline');
+      assert.ok(newsEntry,'Real sourced news appears in compact strip');
+      await newsEntry.tap();
+      for(let attempt=0;attempt<30&&(await mini.currentPage()).path==='pages/home/index';attempt++)await pause(100);
+      assert.equal((await mini.currentPage()).path,'pages/information/index','News strip opens its article');
+      await mini.navigateBack();
+      await pause(500);
+      page=await routeTo('/pages/publish/index');
+      assert.equal((await page.$$('.industry-choice')).length,27,'Default directory exposes all industries');
+      assert.equal((await page.$$('.project-row')).length,4,'Default digital group renders four project cards');
+      assert.equal((await page.data()).draftCount,await mini.evaluate(async()=>require('utils/draft-summary.js').read()),'Draft badge derives from actual draft summary');
+      const geometry=await mini.evaluate(()=>new Promise(resolve=>{
+        wx.createSelectorQuery().select('.project-browser').boundingClientRect().selectAll('.project-row').boundingClientRect().exec(resolve);
+      }));
+      assert.ok(geometry[0].height>=140,'Directory retains usable scrolling space');
+      assert.ok(geometry[1][1].left>geometry[1][0].left,'Project cards use two columns');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].toggleProjectSearch();getCurrentPages().slice(-1)[0].searchProjects({detail:{value:'空调维修'}});return true;});
+      assert.equal((await page.data()).projects[0].id,'C03G02S01','Search resolves a project across industries');
+      await pause(300);await capture('publish',page.path,'search');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeProjectSearch();return true;});
+      assert.equal((await page.data()).selectedCategory,'C04','Search cancel restores selected industry');
+      await mini.callWxMethod('setStorageSync','city_life_preferences_'+owner.userId,{theme:'prism',largeText:true,reduceMotion:true});
+      for(const name of ['home','publish']) {
+        page=await routeTo('/pages/'+name+'/index');
+        await checkLayout(page.path,'accessible');
+        await capture(name,page.path,'accessible');
+      }
+      await mini.callWxMethod('setStorageSync','city_life_preferences_'+owner.userId,{theme:'prism',largeText:false,reduceMotion:true});
+      page=await routeTo('/pages/home/index');
+      await page.setData({featured:[],feed:[],loading:false,error:''});await pause(150);
+      await capture('home',page.path,'empty');
+      await page.setData({loading:true});await pause(150);await capture('home',page.path,'loading');
+      await page.setData({loading:false,error:'界面验收状态，网络暂时不可用。'});await pause(150);await capture('home',page.path,'error');
+    }
+    if (!homePublishScope && process.env.UI_AUDIT_STATES !== '0') {
       let page = await routeTo('/pages/discover/index');
       await mini.evaluate(() => { getCurrentPages().slice(-1)[0].openSort(); return true; });
       await pause(200);
@@ -453,9 +504,9 @@ async function main() {
       await capture('discover', page.path, 'sort');
       await mini.evaluate(() => { getCurrentPages().slice(-1)[0].closeSort(); return true; });
       page=await routeTo('/pages/publish/index');
-      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].openDirectory();return true;});
-      await pause(200);await capture('publish',page.path,'directory');
-      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeDirectory();return true;});
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].toggleProjectSearch();return true;});
+      await pause(200);await capture('publish',page.path,'search');
+      await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].closeProjectSearch();return true;});
       page=await routeTo('/pages/discover/index');
       await mini.evaluate(()=>{getCurrentPages().slice(-1)[0].openFilters();return true;});
       await pause(200);await capture('discover',page.path,'filters');

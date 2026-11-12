@@ -31,17 +31,11 @@
 .quick-icon { display:flex; align-items:center; justify-content:center; width:68rpx; height:68rpx; margin:0 auto 8rpx; border-radius:22rpx; background:var(--soft); }
 .quick-icon image { width:54rpx; height:54rpx; }
 .quick-item text { display:block; padding:0 2rpx; white-space:nowrap; }
-.merchant-invitation { display:flex; align-items:center; gap:12rpx; width:100%; min-height:64rpx; margin:0 0 20rpx; padding:12rpx 18rpx; border:0; border-radius:40rpx; background:var(--soft); color:var(--text); text-align:left; font-size:22rpx; line-height:1.6; }
-.merchant-invitation image { width:28rpx; height:28rpx; flex-shrink:0; }
-.merchant-invitation>text:first-of-type { flex:1; }
-.invitation-action { flex-shrink:0; color:var(--link); font-weight:600; }
 .feed-tabs { display:flex; align-items:center; gap:16rpx; margin-bottom:8rpx; }
 .feed-tab { position:relative; flex:1; min-height:88rpx; margin:0; padding:18rpx 0; border:0; border-radius:0; background:transparent; color:var(--muted); font-size:25rpx; white-space:nowrap; line-height:1.5; }
 .feed-tab.selected { color:var(--ink); font-weight:700; }
 .feed-tab.selected::before { content:''; position:absolute; left:16%; right:16%; bottom:4rpx; height:5rpx; border-radius:5rpx; background:var(--link); }
 .feed-more { width:100%; min-height:88rpx; margin:0; padding:20rpx; border:0; background:transparent; color:var(--link); font-size:26rpx; }
-.news-section { margin-top:28rpx; padding:24rpx; border-radius:24rpx; background:var(--surface); }
-.news-empty { color:var(--muted); font-size:26rpx; padding-top:12rpx; }
 .photo-credit { margin:24rpx 0 0; padding:12rpx 0; min-height:44px; border:0; background:transparent; color:var(--muted); font-size:20rpx; }
 .large-text .home-search-row { flex-wrap:wrap; }
 .large-text .home-city { max-width:100%; font-size:32rpx; }
@@ -54,4 +48,26 @@
 .large-text .quick-item text { white-space:normal; }
 .large-text .feed-tabs { flex-wrap:wrap; }
 .large-text .feed-tab { flex-basis:40%; font-size:30rpx; }
-.large-text .merchant-invitation { flex-wrap:wrap; font-size:28rpx; }
+.merchant-invitation { position:relative; display:flex; align-items:center; gap:12rpx; width:100%; min-height:108rpx; margin:0 0 12rpx; padding:20rpx 24rpx; overflow:hidden; border:0; border-radius:24rpx; background:linear-gradient(110deg,#A84668,#D78FA5); color:#FFFFFF; text-align:left; line-height:1.5; box-shadow:0 6rpx 16rpx rgba(142,63,90,.12); }
+.invitation-copy { position:relative; z-index:1; flex:1; min-width:0; }
+.invitation-title { font-size:32rpx; font-weight:650; letter-spacing:1rpx; }
+.invitation-summary { display:block; font-size:23rpx; margin-top:3rpx; }
+.invitation-store { position:absolute; right:138rpx; bottom:-12rpx; width:178rpx; height:140rpx; opacity:.85; }
+.invitation-action { position:relative; z-index:1; flex-shrink:0; padding:12rpx 20rpx; border-radius:40rpx; background:#FFF9F8; color:#983D5B; font-size:24rpx; font-weight:650; }
+.featured-section { padding:0 16rpx; border-radius:24rpx; background:var(--surface); }
+.news-strip { display:flex; align-items:center; gap:12rpx; min-height:76rpx; margin-top:14rpx; padding:10rpx 18rpx; border-radius:24rpx; background:var(--soft); }
+.news-speaker { flex-shrink:0; width:32rpx; height:32rpx; }
+.news-strip-label { flex-shrink:0; color:var(--ink); font-size:24rpx; font-weight:600; }
+.news-strip-content { flex:1; min-width:0; }
+.news-headline { min-height:60rpx; display:flex; align-items:center; color:var(--link); font-size:24rpx; line-height:1.5; overflow:hidden; }
+.news-empty { display:block; color:var(--muted); font-size:24rpx; line-height:1.5; }
+.news-strip-more { flex-shrink:0; display:flex; align-items:center; justify-content:center; width:44px; min-height:44px; margin:-10rpx -12rpx -10rpx 0; padding:0; border:0; background:transparent; color:var(--link); font-size:38rpx; }
+.news-strip-more::after { border:0; }
+.large-text .merchant-invitation { flex-wrap:wrap; }
+.large-text .invitation-title { font-size:38rpx; }
+.large-text .invitation-summary,.large-text .invitation-action { font-size:30rpx; }
+.large-text .invitation-store { display:none; }
+.large-text .news-strip { flex-wrap:wrap; }
+.large-text .news-headline,.large-text .news-empty,.large-text .news-strip-label { font-size:30rpx; }
+.theme-dark .merchant-invitation { background:var(--soft); color:var(--ink); }
+.theme-dark .invitation-action { background:var(--surface); color:var(--link); }

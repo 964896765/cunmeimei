@@ -1,22 +1,60 @@
 const registry=require('../../utils/classification');
 const api=require('../../utils/api');
 const readiness=require('../../utils/publication-readiness');
-function directory(categoryId,preferredGroup='',settings={}){
- const projects=readiness.decorate(registry.searchProjects(categoryId),settings.categories,settings.features),groups=[];
- for(const project of projects){let group=groups.find(x=>x.id===project.groupId);if(!group){group={id:project.groupId,name:project.group,items:[],availableCount:0};groups.push(group);}group.items.push(project);if(project.readiness.canStart)group.availableCount++;}
- for(const group of groups)group.items.sort((a,b)=>Number(b.readiness.canStart)-Number(a.readiness.canStart));
- const expandedGroupId=groups.some(x=>x.id===preferredGroup)?preferredGroup:(groups.find(x=>x.availableCount)||groups[0])?.id||'';
- return {projects,groups,expandedGroupId};
+const projectVisuals={
+ C04G01S01:{icon:'project-phone',summary:'手机、配件、周边'},
+ C04G01S02:{icon:'project-laptop',summary:'笔记本、台式机等'},
+ C04G01S03:{icon:'project-tablet',summary:'iPad、平板电脑等'},
+ C04G01S04:{icon:'project-headphones',summary:'耳机、充电器、配件等'}
+};
+function directory(categoryId, preferredGroup = '', settings = {}) {
+ const projects = readiness.decorate(registry.searchProjects(categoryId), settings.categories, settings.features);
+ const groups = [];
+ for (const project of projects) {
+  let group = groups.find(item => item.id === project.groupId);
+  if (!group) {
+   group = {id:project.groupId, name:project.group, icon:'industry-' + categoryId, items:[], availableCount:0};
+   groups.push(group);
+  }
+  group.items.push({
+   ...project,
+   icon:'industry-' + categoryId,
+   summary:project.aliases.slice(0,2).join('、'),
+   ...projectVisuals[project.id]
+  });
+  if (project.readiness.canStart) group.availableCount++;
+ }
+ for (const group of groups) {
+  group.summary = group.items.slice(0,3).map(item => item.name.replace(/^二手/,'')).join('、');
+  group.items.sort((a,b) => Number(b.readiness.canStart) - Number(a.readiness.canStart));
+ }
+ const homeware = groups.find(group => group.id === 'C04G02');
+ const other = groups.find(group => group.id === 'C04G03');
+ if (homeware) homeware.icon = 'publish-homeware';
+ if (other) other.icon = 'publish-other';
+ const expandedGroupId = groups.some(group => group.id === preferredGroup)
+  ? preferredGroup
+  : (groups.find(group => group.availableCount) || groups[0])?.id || '';
+ return {projects, groups, expandedGroupId};
 }
 Page({
- data:{directoryOpen:false,projectCount:registry.projects.length,configLoading:true,configReady:false,focusedProjectId:'',categories:registry.categoryItems(),selectedCategory:'C04',projectScrollTop:0,industryScrollTop:0,industryAnchor:'',projectSearchOpen:false,projectSearchFocused:false,searchHasQuery:false,searchScrollTop:0,projectQuery:'',...directory('C04'),districts:[],error:'',online:api.online()},
- onShow(){this._disposed=false;this._hidden=false;require('../../utils/theme').apply(this);const target=getApp().globalData.publishTarget;delete getApp().globalData.publishTarget;const node=registry.find(target?.id);if(node){const project=registry.projects.find(x=>x.id===node.id),categoryId=project?.categoryId||registry.categories.find(c=>c.id===node.id||c.groups.some(g=>g.id===node.id))?.id;if(categoryId)this.setData({directoryOpen:true,selectedCategory:categoryId,focusedProjectId:project?.id||'',...directory(categoryId,project?.groupId||node.id,this._availability)});}return this.loadConfig();},
+ data:{draftCount:null,projectCount:registry.projects.length,configLoading:true,configReady:false,focusedProjectId:'',categories:registry.categoryItems(),selectedCategory:'C04',projectScrollTop:0,industryScrollTop:0,industryAnchor:'',projectSearchOpen:false,projectSearchFocused:false,searchHasQuery:false,searchScrollTop:0,projectQuery:'',...directory('C04'),districts:[],error:'',online:api.online()},
+ onShow(){this._disposed=false;this._hidden=false;require('../../utils/theme').apply(this);this.loadDraftCount();const target=getApp().globalData.publishTarget;delete getApp().globalData.publishTarget;const node=registry.find(target?.id);if(node){const project=registry.projects.find(x=>x.id===node.id),categoryId=project?.categoryId||registry.categories.find(c=>c.id===node.id||c.groups.some(g=>g.id===node.id))?.id;if(categoryId)this.setData({selectedCategory:categoryId,focusedProjectId:project?.id||'',industryAnchor:'industry-'+categoryId,...directory(categoryId,project?.groupId||node.id,this._availability)});}return this.loadConfig();},
+ async loadDraftCount() {
+  const tabs = require('../../utils/tab-bar');
+  const owner = tabs.context();
+  const version = this._draftVersion = (this._draftVersion || 0) + 1;
+  this.setData({draftCount:null});
+  try {
+   const count = await require('../../utils/draft-summary').read();
+   if (!this._disposed && !this._hidden && version === this._draftVersion && owner === tabs.context()) this.setData({draftCount:count});
+  } catch {
+   if (!this._disposed && !this._hidden && version === this._draftVersion && owner === tabs.context()) this.setData({draftCount:null});
+  }
+ },
  async loadConfig(){this.setData({configLoading:true});const version=this._configVersion=(this._configVersion||0)+1;try{const c=await api.request('GET','/api/v1/config');if(this._disposed||version!==this._configVersion)return;this._availability=c;this.setData({configReady:true,categories:registry.categoryItems(c.categories),districts:c.areas||[],...directory(this.data.selectedCategory,this.data.expandedGroupId,c),...(this.data.searchHasQuery?{projects:readiness.decorate(registry.searchProjects(this.data.selectedCategory,this.data.projectQuery),c.categories,c.features)}:{}),error:''});}catch(e){if(!this._disposed&&version===this._configVersion)this.setData({configReady:false,error:e.message});}finally{if(!this._disposed&&version===this._configVersion)this.setData({configLoading:false});}},
  onHide(){this._hidden=true;},
  onUnload(){this._disposed=true;this._configVersion=(this._configVersion||0)+1;},
- chooseIndustry(e){this.setData({directoryOpen:true});this.selectCategory(e);},
- openDirectory(){this.setData({directoryOpen:true});},
- closeDirectory(){this.setData({directoryOpen:false});},
  showHelp(){wx.showModal({title:'发布常见问题',content:'选择行业后查看细分类目和发布条件。居民信息提交后由平台审核，企业招聘和专项服务需要主体或资质核验。未完成的内容可保存到草稿箱，审核进度可在发布进度中查询。',showCancel:false,confirmText:'知道了'});},
  selectCategory(e){const selectedCategory=e.currentTarget.dataset.id,category=this.data.categories.find(x=>x.id===selectedCategory);if(!category||selectedCategory===this.data.selectedCategory)return;this._projectOffset=0;this.setData({selectedCategory,projectQuery:'',...directory(selectedCategory,'',this._availability),projectScrollTop:1},()=>this.setData({projectScrollTop:0}));},
  toggleGroup(e){const id=e.currentTarget.dataset.id;if(!this.data.groups.some(x=>x.id===id))return;this.setData({expandedGroupId:this.data.expandedGroupId===id?'':id});},

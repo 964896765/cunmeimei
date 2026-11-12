@@ -4,7 +4,7 @@ const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve
 function client(name,handler){
  let definition;const storage=new Map([['city_life_user_id','one'],['city_life_v2_auth_token','token']]),routes=[],calls=[],modals=[],timers=new Map();let city={cityCode:'441900',label:'东莞市'},timer=0;
  const api={online:()=>true,hasSession:()=>!!storage.get('city_life_v2_auth_token'),login:async()=>{},showError(){},request:async(method,url,data)=>{calls.push({method,url,data});return handler(method,url,data);}};
- const wx={getStorageSync:k=>storage.get(k)||'',setStorageSync:(k,v)=>storage.set(k,v),showModal:v=>modals.push(v),navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url),setClipboardData(){},stopPullDownRefresh(){}};
+ const wx={getStorageSync:k=>storage.get(k)||'',setStorageSync:(k,v)=>storage.set(k,v),showToast(){},showModal:v=>modals.push(v),navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url),setClipboardData(){},stopPullDownRefresh(){}};
  const sandbox={Page:v=>definition=v,wx,getCurrentPages:()=>[{}],setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id),require:n=>n.endsWith('/feed-query')?require('../../miniprogram/utils/feed-query'):n.endsWith('/public-cache')?require('../../miniprogram/utils/public-cache'):n.endsWith('/api')?api:n.endsWith('/geo-context')?{current:()=>city}:n.endsWith('/theme')?{apply(){}}:n.endsWith('/shortcuts')?{load:()=>[],items:x=>x,pages:()=>[{id:'empty',items:[]}]}:n.endsWith('/navigation')?{detail:id=>routes.push('/pages/detail/index?id='+id)}:n.endsWith('/presentation')?{media:x=>'http://local'+x,item:x=>({...x,cover:x.images?.[0]||''})}:{} };
  vm.runInNewContext(fs.readFileSync(path.resolve(__dirname,'../../miniprogram/pages',name,'index.js'),'utf8'),sandbox);
  const page={data:structuredClone(definition.data),setData(v,done){Object.assign(this.data,v);done?.();}};for(const [key,value]of Object.entries(definition))if(typeof value==='function')page[key]=value.bind(page);
@@ -56,6 +56,54 @@ test('home backgrounding cancels refresh timers and prevents delayed private con
 });
 test('banner navigation rechecks current eligibility and cannot open after the user changes city',async()=>{
  const gate=deferred(),c=client('home',()=>gate.promise);c.page.visible=true;const opening=c.page.openBanner({currentTarget:{dataset:{id:news.id}}});c.city({cityCode:'310100',label:'上海市'});gate.resolve({item:{targetId:'target'}});await opening;assert.equal(c.routes.length,0);
+});
+
+test('home saves once during concurrent taps and ignores older hydration after a mutation',async()=>{
+ const stale=deferred(),saving=deferred();
+ const c=client('home',async(method,url)=>method==='PUT'?saving.promise:stale.promise);
+ c.page.visible=true;c.page.version=1;
+ c.page.setData({featured:[{id:'record',isSaved:false,favoriteKnown:true}]});
+ const hydrate=c.page.hydrateSaved(c.page.data.featured,1,c.page.context());
+ const save=c.page.toggleSaved({detail:{id:'record'}});
+ await c.page.toggleSaved({detail:{id:'record'}});
+ assert.equal(c.calls.filter(call=>call.method==='PUT').length,1);
+ saving.resolve({saved:true});await save;
+ stale.resolve({savedIds:[]});await hydrate;
+ assert.equal(c.page.data.featured[0].isSaved,true);
+ assert.equal(c.page.data.feed[0].isSaved,true);
+});
+
+test('home verifies unknown saved state before toggling and discards account-switched responses',async()=>{
+ const c=client('home',async(method)=>method==='GET'?{savedIds:['record']}:{saved:false});
+ c.page.visible=true;c.page.version=1;
+ c.page.setData({featured:[{id:'record',favoriteKnown:false}]});
+ await c.page.toggleSaved({detail:{id:'record'}});
+ assert.equal(c.calls[1].method,'DELETE');
+ assert.equal(c.page.data.featured[0].isSaved,false);
+ const gate=deferred();c.api.request=()=>gate.promise;
+ const saving=c.page.toggleSaved({detail:{id:'record'}});
+ c.storage.set('city_life_user_id','two');gate.resolve({saved:true});await saving;
+ assert.equal(c.page.data.featured[0].isSaved,false);
+});
+
+test('home login reloads the authenticated account before the first save action',async()=>{
+ const c=client('home',async(method,url)=>url.includes('/config')?{areas:[]}:url.includes('/feed?')?{items:[{id:'record'}]}:url.includes('/saved-state')?{savedIds:['record']}:method==='DELETE'?{saved:false}:{banners:[],news:[]});
+ c.page.visible=true;c.storage.delete('city_life_v2_auth_token');
+ c.page.setData({featured:[{id:'record',isSaved:false,favoriteKnown:true}]});
+ c.api.login=async()=>{c.storage.set('city_life_user_id','logged-in');c.storage.set('city_life_v2_auth_token','new-token');};
+ await c.page.toggleSaved({detail:{id:'record'}});
+ assert.equal(c.calls.filter(call=>call.method==='DELETE').length,1);
+ assert.equal(c.calls.filter(call=>call.method==='PUT').length,0);
+ assert.equal(c.page.data.featured[0].isSaved,false);
+});
+
+test('home does not mutate saved state after verification fails',async()=>{
+ const c=client('home',async()=>{throw Error('network');});
+ c.page.visible=true;c.page.version=1;c.page.setData({featured:[{id:'record',favoriteKnown:false}]});
+ await c.page.toggleSaved({detail:{id:'record'}});
+ assert.equal(c.calls.length,1);assert.equal(c.calls[0].method,'GET');
+ assert.equal(c.page.data.featured[0].favoriteKnown,false);
+ assert.equal(c.page.favoritePending.size,0);
 });
 test('information pagination deduplicates and retains earlier rows when the next page fails',async()=>{
  let fail=false;const c=client('information',async()=>{if(fail)throw Error('offline');return {items:[news],hasMore:true};});await c.page.load(true);await c.page.load(false);assert.equal(c.page.data.items.length,1);fail=true;await c.page.load(false);assert.equal(c.page.data.items.length,1);assert.ok(c.page.data.error);

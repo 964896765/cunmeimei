@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-11-12T16:18:41.368Z",
+  "default": {
+    "tests": 479,
+    "pass": 464,
+    "fail": 0,
+    "skipped": 15
+  },
+  "focused": {
+    "tests": 22,
+    "pass": 22,
+    "fail": 0
+  },
+  "wxml": {
+    "files": 44,
+    "balanced": true
+  },
+  "officialPreview": {
+    "ok": true,
+    "packageBytes": 2025170,
+    "limitBytes": 2097152
+  },
+  "visual": {
+    "ok": true,
+    "sourceHash": "081fedd460b83e7f210d71e294d0941bfc5e79b66e96032990de3644c2321692",
+    "sourceHashVerified": true,
+    "screenshots": 14,
+    "layoutChecks": 4,
+    "exceptions": 0,
+    "physicalDevice": false,
+    "restored": {
+      "storageRestored": true,
+      "authStorageUnchanged": true,
+      "runtimeOriginRestored": true
+    }
+  },
+  "priorBaseline": "6c6b46d"
+}

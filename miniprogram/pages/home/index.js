@@ -36,7 +36,7 @@ Page({
   },
   onUnload() { this.onHide(); },
   context() {
-    return JSON.stringify([require('../../utils/geo-context').current().cityCode, wx.getStorageSync('city_life_user_id'), !!wx.getStorageSync('city_life_acceptance_mode'), this.data.feedTab]);
+    return JSON.stringify([require('../../utils/geo-context').current().cityCode, wx.getStorageSync('city_life_user_id'), api.hasSession(), !!wx.getStorageSync('city_life_acceptance_mode'), this.data.feedTab]);
   },
   async load() {
     const version = this.version = (this.version || 0) + 1;
@@ -54,7 +54,7 @@ Page({
     this.setData({
       loading:true, error:'', cached:false, bannerIndex:0,
       banners:bannersFrom(cachedHome.banners), news:newsFrom(cachedHome.news),
-      ...(!sameContext ? {feed:(Array.isArray(savedFeed?.items) ? savedFeed.items : []).map(present.item), featured:[]} : {})
+      ...(!sameContext ? {feed:(Array.isArray(savedFeed?.items) ? savedFeed.items : []).map(item => ({...present.item(item),isSaved:false,favoriteKnown:!api.hasSession()})), featured:[]} : {})
     });
     const results = await Promise.allSettled([
       api.request('GET','/api/v1/config'),
@@ -66,7 +66,10 @@ Page({
     const banners = bannersFrom(home.banners);
     const news = newsFrom(home.news);
     const feedResponse = results[2];
-    const feed = (feedResponse.status === 'fulfilled' ? (feedResponse.value.items || []).map(present.item) : this.data.feed).filter(item => !item.expiresAt || Date.parse(item.expiresAt) > Date.now());
+    const feed = (feedResponse.status === 'fulfilled' ? (feedResponse.value.items || []).map(item => {
+      const previous = sameContext && this.data.featured.find(record => record.id === item.id);
+      return {...present.item(item), isSaved:previous?.isSaved || false, favoriteKnown:previous?.favoriteKnown ?? !api.hasSession()};
+    }) : this.data.feed).filter(item => !item.expiresAt || Date.parse(item.expiresAt) > Date.now());
     if (results[1].status === 'fulfilled') cache.write('home:' + context, {banners:home.banners || [], news:home.news || []}, wx);
     if (feedResponse.status === 'fulfilled') cache.write('home-feed:' + context, {items:feedResponse.value.items || []}, wx);
     this.setData({
@@ -75,6 +78,7 @@ Page({
       cached:results.some(result => result.status === 'rejected') && !!(banners.length || news.length || feed.length),
       error:[...new Set(results.filter(result => result.status === 'rejected').map(result => result.reason.message || '首页暂未更新'))].join('；')
     });
+    if (api.hasSession()) this.hydrateSaved(feed, version, context);
     if (this.visible && typeof setTimeout === 'function') {
       const next = Math.min(60000, ...[...banners,...news].map(item => Math.max(1000,Date.parse(item.endsAt) - Date.now())));
       this.refreshTimer = setTimeout(() => { if (this.visible) this.load(); },next);
@@ -110,6 +114,67 @@ Page({
     } finally { this.opening = false; }
   },
   openFeatured(event) { nav.detail(event.detail?.id || event.currentTarget.dataset.id); },
+  async hydrateSaved(items, version, context, includePending = false) {
+    const ids = items.map(item => item.id);
+    if (!ids.length) return true;
+    this.savedVersions = this.savedVersions || {};
+    const tickets = Object.fromEntries(ids.map(id => [id, this.savedVersions[id] || 0]));
+    try {
+      const result = await api.request('GET', '/api/v1/me/saved-state?ids=' + ids.map(encodeURIComponent).join(','), null, true);
+      if (!this.visible || version !== this.version || context !== this.context() || !Array.isArray(result.savedIds)) return false;
+      const saved = new Set(result.savedIds);
+      const featured = this.data.featured.map(item => {
+        if (!ids.includes(item.id) || (!includePending && this.favoritePending?.has(item.id)) || (this.savedVersions[item.id] || 0) !== tickets[item.id]) return item;
+        return {...item, isSaved:saved.has(item.id), favoriteKnown:true};
+      });
+      this.setData({featured, feed:featured});
+      return true;
+    } catch { return false; }
+  },
+  async toggleSaved(event) {
+    const id = event.detail.id;
+    if (!this.visible || !this.data.featured.some(item => item.id === id) || this.favoritePending?.has(id)) return;
+    const beforeLogin = this.context();
+    const hadSession = api.hasSession();
+    this.favoritePending = this.favoritePending || new Set();
+    this.favoritePending.add(id);
+    let context = beforeLogin;
+    let mutating = false;
+    try {
+      if (!hadSession) await api.login();
+      if (!this.visible || (hadSession && beforeLogin !== this.context())) return;
+      context = this.context();
+      // Reload public content in the newly authenticated account scope.
+      if (!hadSession) await this.load();
+      if (context !== this.context()) return;
+      let item = this.data.featured.find(record => record.id === id);
+      if (!item) return;
+      if (item.favoriteKnown === false) {
+        const hydrated = await this.hydrateSaved([item], this.version, context, true);
+        if (!hydrated) throw Error('收藏状态暂未核对，请重试。');
+        item = this.data.featured.find(record => record.id === id);
+      }
+      if (!this.visible || context !== this.context() || !item) return;
+      this.savedVersions = this.savedVersions || {};
+      this.savedVersions[id] = (this.savedVersions[id] || 0) + 1;
+      mutating = true;
+      const result = await api.request(item.isSaved ? 'DELETE' : 'PUT', '/api/v1/items/' + encodeURIComponent(id) + '/saved', {}, true);
+      if (!this.visible || context !== this.context()) return;
+      const featured = this.data.featured.map(record => record.id === id ? {...record,isSaved:result.saved,favoriteKnown:true} : record);
+      this.setData({featured, feed:featured});
+      wx.showToast({title:result.saved ? '已收藏' : '已取消收藏',icon:'none'});
+    } catch (error) {
+      if (!this.visible || context !== this.context()) return;
+      if (mutating) {
+        const featured = this.data.featured.map(item => item.id === id ? {...item,favoriteKnown:false} : item);
+        this.setData({featured,feed:featured});
+      }
+      api.showError(error);
+    } finally {
+      if (mutating) this.savedVersions[id]++;
+      this.favoritePending.delete(id);
+    }
+  },
   openNews(event) { wx.navigateTo({url:'/pages/information/index?id=' + encodeURIComponent(event.currentTarget.dataset.id)}); },
   moreNews() { wx.navigateTo({url:'/pages/information/index?cityCode=' + encodeURIComponent(require('../../utils/geo-context').current().cityCode || '')}); },
   showArea() { wx.navigateTo({url:'/pages/regions/index'}); },
