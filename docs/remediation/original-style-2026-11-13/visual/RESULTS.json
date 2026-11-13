@@ -1,0 +1,605 @@
+{
+  "date": "2026-11-13",
+  "ok": true,
+  "sourceHash": "cf8ad514e47ed035c90aa237105613c2af1375c4db8eeba9a248cedca1f68ec8",
+  "simulator": true,
+  "physicalDevice": false,
+  "environment": {
+    "platform": "devtools",
+    "brand": "devtools",
+    "model": "iPhone 12/13 (Pro)",
+    "system": "iOS 10.0.1",
+    "version": "8.0.5",
+    "SDKVersion": "3.17.4",
+    "screenWidth": 390,
+    "screenHeight": 844,
+    "windowWidth": 390,
+    "windowHeight": 844,
+    "statusBarHeight": 47,
+    "safeArea": {
+      "top": 47,
+      "left": 0,
+      "right": 390,
+      "bottom": 810,
+      "width": 390,
+      "height": 763
+    }
+  },
+  "database": "isolated PostgreSQL with labeled fixtures",
+  "stateScreenshots": "loading/error/empty use explicit rendered-state injection; permission and guest use real authorization state",
+  "routes": [
+    {
+      "route": "pages/home/index",
+      "material": "material-quiet",
+      "header": true
+    },
+    {
+      "route": "pages/discover/index",
+      "material": "material-quiet",
+      "header": true
+    },
+    {
+      "route": "pages/publish/index",
+      "material": "material-quiet",
+      "header": true
+    },
+    {
+      "route": "pages/messages/index",
+      "material": "material-pearl",
+      "header": true
+    },
+    {
+      "route": "pages/me/index",
+      "material": "material-pearl",
+      "header": true
+    }
+  ],
+  "screenshots": [
+    {
+      "route": "pages/home/index",
+      "variant": "normal",
+      "file": "home-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "middle",
+      "file": "home-middle.png",
+      "scrollTop": 65
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "bottom",
+      "file": "home-bottom.png",
+      "scrollTop": 131
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "normal",
+      "file": "discover-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "middle",
+      "file": "discover-middle.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "bottom",
+      "file": "discover-bottom.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "normal",
+      "file": "publish-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "middle",
+      "file": "publish-middle.png",
+      "scrollTop": 346
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "bottom",
+      "file": "publish-bottom.png",
+      "scrollTop": 693.5
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "normal",
+      "file": "messages-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "middle",
+      "file": "messages-middle.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "bottom",
+      "file": "messages-bottom.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "normal",
+      "file": "me-normal.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "middle",
+      "file": "me-middle.png",
+      "scrollTop": 34
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "bottom",
+      "file": "me-bottom.png",
+      "scrollTop": 69
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "profile",
+      "file": "me-profile.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "account",
+      "file": "me-account.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "service",
+      "file": "me-service.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "help",
+      "file": "me-help.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "notifications",
+      "file": "me-notifications.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "privacy",
+      "file": "me-privacy.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "accessible",
+      "file": "home-accessible.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "accessible",
+      "file": "me-accessible.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "guest",
+      "file": "me-guest.png",
+      "scrollTop": 0
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "local-data",
+      "file": "home-local-data.png",
+      "scrollTop": 0
+    }
+  ],
+  "layoutChecks": [
+    {
+      "route": "pages/home/index",
+      "variant": "normal",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 16,
+          "right": 288,
+          "top": 47,
+          "bottom": 107,
+          "width": 272,
+          "height": 60
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    },
+    {
+      "route": "pages/discover/index",
+      "variant": "normal",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 102,
+          "right": 288,
+          "top": 55.703125,
+          "bottom": 82.296875,
+          "width": 186,
+          "height": 26.59375
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    },
+    {
+      "route": "pages/publish/index",
+      "variant": "normal",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 102,
+          "right": 288,
+          "top": 55.703125,
+          "bottom": 82.296875,
+          "width": 186,
+          "height": 26.59375
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    },
+    {
+      "route": "pages/messages/index",
+      "variant": "normal",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 102,
+          "right": 288,
+          "top": 55.703125,
+          "bottom": 82.296875,
+          "width": 186,
+          "height": 26.59375
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "normal",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 102,
+          "right": 288,
+          "top": 55.703125,
+          "bottom": 82.296875,
+          "width": 186,
+          "height": 26.59375
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    },
+    {
+      "route": "pages/home/index",
+      "variant": "accessible",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 16,
+          "right": 288,
+          "top": 47,
+          "bottom": 107,
+          "width": 272,
+          "height": 60
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    },
+    {
+      "route": "pages/me/index",
+      "variant": "accessible",
+      "passed": true,
+      "bounds": {
+        "title": {
+          "id": "",
+          "dataset": {},
+          "left": 102,
+          "right": 288,
+          "top": 55,
+          "bottom": 83,
+          "width": 186,
+          "height": 28
+        },
+        "action": null,
+        "back": null,
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 296,
+          "top": 51,
+          "right": 383,
+          "bottom": 83
+        },
+        "statusHeight": 47,
+        "navigation": {
+          "id": "",
+          "dataset": {},
+          "left": 0,
+          "right": 390,
+          "top": 754,
+          "bottom": 844,
+          "width": 390,
+          "height": 90
+        },
+        "publish": {
+          "id": "",
+          "dataset": {},
+          "left": 179,
+          "right": 211,
+          "top": 759,
+          "bottom": 789,
+          "width": 32,
+          "height": 30
+        }
+      }
+    }
+  ],
+  "backgroundSamples": [
+    {
+      "page": "home",
+      "rgb": [
+        251,
+        248,
+        250
+      ],
+      "x": 12,
+      "y": 152
+    },
+    {
+      "page": "discover",
+      "rgb": [
+        251,
+        248,
+        250
+      ],
+      "x": 12,
+      "y": 152
+    },
+    {
+      "page": "publish",
+      "rgb": [
+        251,
+        248,
+        250
+      ],
+      "x": 12,
+      "y": 152
+    },
+    {
+      "page": "messages",
+      "rgb": [
+        251,
+        248,
+        250
+      ],
+      "x": 12,
+      "y": 152
+    },
+    {
+      "page": "me",
+      "rgb": [
+        251,
+        248,
+        250
+      ],
+      "x": 12,
+      "y": 152
+    }
+  ],
+  "exceptions": [],
+  "restored": {
+    "storageRestored": true,
+    "authStorageUnchanged": true,
+    "runtimeOriginRestored": true
+  }
+}

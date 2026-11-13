@@ -123,16 +123,23 @@
 .workspace-item { min-height:80rpx; padding:0 4rpx; }
 .workspace-count { order:-1; color:var(--ink); font-size:34rpx; font-weight:650; line-height:1.4; margin:0 0 4rpx; }
 .workspace-label { font-size:23rpx; }
-.me-page .points-entry { min-height:76rpx; margin:0 0 20rpx; padding:10rpx 20rpx; border:0; border-radius:24rpx; background:var(--soft); }
+.me-page .points-entry { min-height:76rpx; margin:0 0 20rpx; padding:10rpx 20rpx; border:0; border-radius:24rpx; background:#FDEEDD; }
 .points-icon { width:44rpx; height:44rpx; background:transparent; }
 .points-icon image { width:36rpx; height:36rpx; }
-.points-title { flex:1; color:var(--ink); font-size:28rpx; font-weight:600; }
+.points-title { flex:1; color:#533C37; font-size:28rpx; font-weight:600; }
 .points-action { flex-shrink:0; padding:6rpx 22rpx; border-radius:40rpx; color:var(--on-action); background:var(--action); font-size:23rpx; }
+.personal-functions { margin-bottom:20rpx; padding:20rpx 18rpx 12rpx; border-radius:26rpx; background:var(--surface); }
+.personal-functions>.section-title { margin:0 6rpx 14rpx; font-size:30rpx; }
+.personal-function-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14rpx 0; }
+.personal-function-grid button { display:flex; flex-direction:column; align-items:center; gap:8rpx; min-height:100rpx; margin:0; padding:8rpx 0; border:0; background:transparent; color:var(--ink); font-size:23rpx; line-height:1.5; }
+.personal-function-grid button::after { border:0; }
+.personal-function-grid image { width:52rpx; height:52rpx; padding:8rpx; border-radius:14rpx; background:var(--soft); }
 .personal-services .center-menu-row { min-height:90rpx; padding:16rpx 4rpx; }
 .personal-services .service-entry { min-height:112rpx; }
 .personal-services .center-entry-title { display:block; font-size:28rpx; margin:0; }
 .personal-services .center-subtitle { font-size:23rpx; }
 .large-text .workspace-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20rpx; }
-.large-text .workspace-label { font-size:29rpx; }
+.large-text .workspace-label,.large-text .personal-function-grid button { font-size:29rpx; }
+.large-text .personal-function-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
 .theme-dark .points-entry { background:var(--soft); }
 .theme-dark .points-title { color:var(--ink); }

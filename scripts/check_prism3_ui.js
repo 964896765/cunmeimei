@@ -445,15 +445,17 @@ async function main() {
           await checkLayout(route);
           await capturePositions(page,name,route);
           if(brightnessScope) {
-            assert.ok(data.themeStyle.includes('--background:#FDFCFB'),'Shared bright canvas '+name);
+            const background=require('../miniprogram/utils/palettes').palettes.prism.background;
+            const expectedRgb=background.slice(1).match(/../g).map(value=>parseInt(value,16));
+            assert.ok(data.themeStyle.includes('--background:'+background),'Shared canvas '+name);
             const {data:pixels,info}=await require('../backend/node_modules/sharp')(path.join(output,name+'-normal.png')).ensureAlpha().raw().toBuffer({resolveWithObject:true});
             const x=Math.round(8*info.width/environment.windowWidth),y=Math.round(100*info.height/environment.windowHeight);
             const offset=(y*info.width+x)*4,rgb=Array.from(pixels.subarray(offset,offset+3));
-            assert.deepEqual(rgb,[253,252,251],'Rendered page canvas '+name);
+            assert.deepEqual(rgb,expectedRgb,'Rendered page canvas '+name);
             backgroundSamples.push({page:name,rgb,x,y});
             if(name==='me') {
               assert.equal((await page.$$('.workspace-item')).length,4);
-              assert.equal((await page.$$('.personal-functions')).length,0);
+              assert.equal((await page.$$('.personal-functions')).length,1);
             }
           }
           checks.push({route,material:data.themeClass.match(/material-\w+/)?.[0],header:true});
