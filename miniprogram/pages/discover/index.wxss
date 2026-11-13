@@ -15,8 +15,7 @@
 .city-chevron,.pill-chevron { flex-shrink:0; width:10rpx; height:10rpx; margin:-6rpx 4rpx 0; border-right:2rpx solid currentColor; border-bottom:2rpx solid currentColor; transform:rotate(45deg); }
 .refine-trigger { display:flex; align-items:center; justify-content:center; gap:10rpx; flex-shrink:0; min-height:44px; margin:0; padding:8rpx 0 8rpx 12rpx; border:0; background:transparent; color:var(--link); font-size:25rpx; line-height:1.5; }
 .browse-city::after,.refine-trigger::after,.browse-chip::after { border:0; }
-.filter-funnel { position:relative; width:22rpx; height:16rpx; border:2rpx solid currentColor; border-bottom:0; border-radius:3rpx 3rpx 0 0; transform:perspective(24rpx) rotateX(-30deg); }
-.filter-funnel::after { content:''; position:absolute; left:7rpx; top:15rpx; width:6rpx; height:12rpx; border:2rpx solid currentColor; border-top:0; }
+.filter-funnel { display:block; flex-shrink:0; width:32rpx; height:34rpx; }
 .discovery-filter-pills { display:flex; gap:10rpx; align-items:center; }
 .browse-chip { flex:1; display:flex; align-items:center; justify-content:center; gap:6rpx; min-width:0; min-height:44px; margin:0; padding:10rpx 6rpx; border:0; border-radius:48rpx; background:var(--background); color:var(--text); font-size:24rpx; line-height:1.5; white-space:nowrap; }
 .browse-chip.selected { color:var(--link); background:var(--soft); font-weight:600; }

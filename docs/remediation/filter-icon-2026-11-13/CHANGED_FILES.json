@@ -1,0 +1,19 @@
+{
+  "baseline": "abce17e",
+  "files": [
+    "docs/remediation/filter-icon-2026-11-13/REPORT.md",
+    "docs/remediation/filter-icon-2026-11-13/RESULTS.json",
+    "docs/remediation/filter-icon-2026-11-13/discover.png",
+    "docs/remediation/filter-icon-2026-11-13/filter-button.png",
+    "miniprogram/assets/icons/filter-clear.png",
+    "miniprogram/assets/icons/filter-dark.png",
+    "miniprogram/assets/icons/filter-gentle.png",
+    "miniprogram/assets/icons/filter-prism.png",
+    "miniprogram/assets/icons/filter-quiet.png",
+    "miniprogram/assets/icons/filter-warm.png",
+    "miniprogram/pages/discover/index.wxml",
+    "miniprogram/pages/discover/index.wxss",
+    "scripts/build_filter_icon.js",
+    "docs/remediation/filter-icon-2026-11-13/CHANGED_FILES.json"
+  ]
+}
