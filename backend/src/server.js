@@ -101,7 +101,8 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const box=geography.bounds(Object.fromEntries(url.searchParams)),type=url.searchParams.get('type')||'all',q=(url.searchParams.get('q')||'').trim();
    const rawPage=url.searchParams.get('page')||'1';if(!/^[1-9]\d{0,2}$/.test(rawPage)||Number(rawPage)>200||q.length>80||!['all',...require('../../miniprogram/utils/business-templates').templates.map(x=>x.id)].includes(type))fail(400,'BAD_QUERY','地图筛选无效');
    const filters=require('./map-filters').parse(url.searchParams);
-   if(!repo.listPublicLocations)fail(503,'MAP_UNAVAILABLE','地图检索暂不可用');const page=Number(rawPage),rows=await repo.listPublicLocations({...box,cityCode,districtCode,type,q,categoryId,...filters,limit:51,offset:(page-1)*50,includeTest:testData(req)});
+   let refinements;try{refinements=require('../../miniprogram/utils/discovery-refinements').normalize(url.searchParams.get('refinements')||{},type,true);}catch(error){fail(400,'INVALID_REFINEMENTS',error.message);}
+   if(!repo.listPublicLocations)fail(503,'MAP_UNAVAILABLE','地图检索暂不可用');const page=Number(rawPage),rows=await repo.listPublicLocations({...box,cityCode,districtCode,type,q,categoryId,...filters,refinements,limit:51,offset:(page-1)*50,includeTest:testData(req)});
    return json(res,200,{items:rows.slice(0,50).map(({totalCount,...item})=>item),total:rows[0]?.totalCount||0,pagination:{page,hasMore:rows.length>50},policy:'verified_public_business_only'});
   }
   if(m==='PUT'&&/^\/admin\/api\/map-locations\/[0-9a-f-]{36}$/i.test(p)){
@@ -149,7 +150,8 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const images=url.searchParams.get('images')??'all';if(!['all','with'].includes(images))fail(400,'INVALID_FILTER','图片条件无效');
    const channel=url.searchParams.get('channel')||'';
    if(channel&&!require('../../miniprogram/utils/discovery-channels').definitions.some(value=>value.id===channel))fail(400,'INVALID_CHANNEL','发现频道无效');
-   const found=await repo.listFeed({type,channel,area,q,categoryId,cityCode,districtCode,limit:pageSize+1,offset,sort,days,radiusKm,images,publicOnly:publicFlag==='1',...origin,includeTest:testData(req)});
+   let refinements;try{refinements=require('../../miniprogram/utils/discovery-refinements').normalize(url.searchParams.get('refinements')||{},channel||type,true);}catch(error){fail(400,'INVALID_REFINEMENTS',error.message);}
+   const found=await repo.listFeed({type,channel,refinements,area,q,categoryId,cityCode,districtCode,limit:pageSize+1,offset,sort,days,radiusKm,images,publicOnly:publicFlag==='1',...origin,includeTest:testData(req)});
    return json(res,200,{items:found.slice(0,pageSize),pagination:{page,pageSize,hasMore:found.length>pageSize}});
   }
   if(m==='GET'&&/^\/api\/v1\/items\/[0-9a-f-]{36}$/i.test(p)){const item=await repo.getItem(p.split('/').at(-1),{includeTest:testData(req)});if(!item)fail(404,'NOT_FOUND','内容不存在或未通过审核');return json(res,200,{item});}

@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-13T02:34:16.417Z",
+  "defaultSuite": {
+    "tests": 497,
+    "pass": 481,
+    "fail": 0,
+    "skipped": 16
+  },
+  "isolatedPostgres": {
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "skipped": 0,
+    "database": "citylife_pearl_test",
+    "temporarySchemaCleaned": true
+  },
+  "developerTools": {
+    "pass": 83,
+    "fail": 0,
+    "physicalDevice": false
+  },
+  "wxml": {
+    "files": 44,
+    "pass": true
+  },
+  "officialPreview": {
+    "success": true,
+    "bytes": 2067090
+  },
+  "localService": {
+    "port": 3101,
+    "databaseReady": true,
+    "migrationsVerified": true
+  },
+  "physicalDevice": false
+}

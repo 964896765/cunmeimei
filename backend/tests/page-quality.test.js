@@ -18,6 +18,7 @@ function client(name, request, session = true) {
   setTimeout(fn) { timers.set(++timerId, fn); return timerId; }, clearTimeout(id) { timers.delete(id); },
   wx: {navigateTo:options=>routes.push(options.url),getLocation:options=>{locationRequest=options;},getStorageSync: key => storage.get(key) || '',setStorageSync:(key,value)=>storage.set(key,value),removeStorageSync:key=>storage.delete(key), setNavigationBarTitle() {}, showToast() {}, stopPullDownRefresh() {}},
   require(name) {
+   if (name.endsWith('/discovery-refinements')) return require('../../miniprogram/utils/discovery-refinements');
    if (name.endsWith('/public-cache')) return require('../../miniprogram/utils/public-cache');
    if (name.endsWith('/browse-query')) return require('../../miniprogram/utils/browse-query');
    if (name.endsWith('/auth-intent')) return {isReturning:()=>false};
@@ -54,6 +55,88 @@ function client(name, request, session = true) {
  return {page, storage, app, timers,routes,gps:()=>locationRequest};
 }
 const row = id => ({id, type: 'used', kind: 'listing', title: '验收信息 ' + id});
+
+test('discovery quick filters select actual fields, reset sale price after intent changes and clear across channels', async () => {
+ const calls=[];
+ const {page}=client('discover',async(method,url)=>{calls.push(url);return {items:[],pagination:{hasMore:false}};});
+ page.active=true;
+ await page.changeType({detail:{type:'housing'}});
+ page.openQuickFilter({currentTarget:{dataset:{key:'intent'}}});
+ await page.selectRefinement({currentTarget:{dataset:{value:'出售'}}});
+ page.openQuickFilter({currentTarget:{dataset:{key:'price'}}});
+ await page.selectRefinement({currentTarget:{dataset:{value:'500k_1m'}}});
+ assert.deepEqual(JSON.parse(new URL(calls.at(-1),'http://test').searchParams.get('refinements')), {intent:'出售',price:'500k_1m'});
+ page.openQuickFilter({currentTarget:{dataset:{key:'intent'}}});
+ await page.selectRefinement({currentTarget:{dataset:{value:'出租'}}});
+ assert.deepEqual(JSON.parse(JSON.stringify(page.data.refinements)), {intent:'出租'});
+ await page.changeType({detail:{type:'used'}});
+ assert.equal(Object.keys(page.data.refinements).length,0);
+ assert.deepEqual(Array.from(page.data.quickFilters,item=>item.key), ['category','price','condition','days','sort']);
+});
+
+test('distance quick filters handle denial and ignore locations after close, hide, channel or account changes', async () => {
+ for (const outcome of ['denied','closed','hidden','channel','account','success']) {
+  const calls=[];
+  const c=client('discover',async(method,url)=>{calls.push(url);return {items:[],pagination:{hasMore:false}};});
+  c.page.active=true;
+  await c.page.changeType({detail:{type:'service'}});
+  c.page.openQuickFilter({currentTarget:{dataset:{key:'radiusKm'}}});
+  const before=calls.length;
+  const pending=c.page.selectRefinement({currentTarget:{dataset:{value:'3'}}});
+  assert.ok(c.gps());
+  if(outcome==='closed')c.page.closeQuickFilter();
+  if(outcome==='hidden')c.page.onHide();
+  if(outcome==='channel')await c.page.changeType({detail:{type:'used'}});
+  if(outcome==='account')c.storage.set('city_life_user_id','other-owner');
+  if(outcome==='denied')c.gps().fail({});else c.gps().success({latitude:31.2,longitude:121.4});
+  await pending;
+  if(outcome==='success') {
+   assert.equal(c.page.data.radiusKm,3);
+   assert.match(calls.at(-1),/radiusKm=3/);
+  } else {
+   assert.ok(!c.page.data.radiusKm,outcome);
+   assert.equal(calls.length,before+(outcome==='channel'?1:0),outcome);
+  }
+  if(outcome==='denied')assert.ok(c.page.data.quickError);
+ }
+});
+
+test('distance refinement caches distinguish location changes even with the same radius', async () => {
+ const {page}=client('discover',async()=>({items:[],pagination:{hasMore:false}}));
+ page.setData({type:'service',radiusKm:3});
+ page.sortOrigin={latitude:23,longitude:113};
+ await page.filter();
+ const previous=page.loadedQuery;
+ page.sortOrigin={latitude:24,longitude:113};
+ await page.filter();
+ assert.notEqual(page.loadedQuery,previous);
+});
+
+test('funnel selection keeps its panel open and cancellation ignores a late native location', async () => {
+ const calls=[];
+ const c=client('discover',async(method,url)=>{calls.push(url);return {items:[],pagination:{hasMore:false}};});
+ c.page.active=true;
+ await c.page.changeType({detail:{type:'housing'}});
+ c.page.openFilters();
+ await c.page.selectRefinement({currentTarget:{dataset:{key:'intent',value:'出租'}}});
+ assert.equal(c.page.data.filterOpen,true);
+ assert.equal(c.page.data.quickOpen,false);
+ assert.equal(c.page.data.refinements.intent,'出租');
+ assert.match(c.page.data.filterTitle,/房产/);
+ await c.page.selectRefinement({currentTarget:{dataset:{key:'price',value:'2000_3000'}}});
+ await c.page.selectRefinement({currentTarget:{dataset:{key:'intent',value:'出租'}}});
+ assert.equal(c.page.data.refinements.price,'2000_3000');
+ await c.page.changeType({detail:{type:'service'}});
+ c.page.openFilters();
+ const before=calls.length;
+ const pending=c.page.selectRefinement({currentTarget:{dataset:{key:'radiusKm',value:'3'}}});
+ c.page.closeFilters();
+ c.gps().success({latitude:31.2,longitude:121.4});
+ await pending;
+ assert.equal(calls.length,before);
+ assert.ok(!c.page.data.radiusKm);
+ assert.equal(c.page.data.quickBusy,false);
+});
 
 test('a missing native map callback ends loading and exposes the list fallback', async () => {
  const {page, timers} = client('map', async () => { throw Error('HTTP must wait for a map viewport'); });
@@ -308,7 +391,7 @@ test('changed region and navigation category refresh discovery instead of reusin
  });
  await page.onShow(); storage.set('area', '中心街道'); await page.onShow();
  app.globalData.exploreTarget = 'housing'; await page.onShow();
- assert.deepEqual(queries, [['全部地区', 'all'], ['中心街道', 'all'], ['中心街道', 'housing']]);
+ assert.deepEqual(queries, [['全部地区', 'job'], ['中心街道', 'job'], ['中心街道', 'housing']]);
 });
 
 test('unloaded detail and discovery pages ignore late network results', async () => {

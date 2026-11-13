@@ -18,7 +18,7 @@
   </view>
   <scroll-view wx:else class="map-results" scroll-y="true" enhanced="true" show-scrollbar="{{false}}" scroll-into-view="{{anchor}}" scroll-with-animation="{{!displayPreferences.reduceMotion}}" bindscrolltolower="more">
    <view wx:if="{{scopeNotice}}" class="map-inline-note">{{scopeNotice}}<button class="map-load-more" bindtap="returnToList">返回原频道列表</button></view>
-   <active-conditions id="active-conditions" keyword="{{q}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{filters.days}}" images="{{filters.images}}" publisher="{{filters.publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="resetConditions"/>
+   <active-conditions refinements="{{refinements}}" id="active-conditions" keyword="{{q}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{filters.days}}" images="{{filters.images}}" publisher="{{filters.publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="resetConditions"/>
    <view wx:if="{{dirty}}" class="map-inline-note">地图范围已变化，当前为上次查询结果。</view>
    <view wx:if="{{error||geoError}}" class="map-feedback"><text>{{error||geoError}}</text><button wx:if="{{cityCode}}" bindtap="retry">重试</button><button wx:else bindtap="chooseCity">选择地区</button></view>
    <view wx:if="{{loading&&!items.length}}" class="map-inline-note">正在查找当前区域…</view>

@@ -60,7 +60,7 @@ for(const name of ['search','discover'])test(name+' stops at the supported pagin
 });
 test('invalid native GPS keeps the previous discovery results and the sorting sheet open',async()=>{
  for(const point of [{latitude:NaN,longitude:113},{latitude:91,longitude:113},{latitude:23,longitude:181}]){
-  const c=client('discover');c.page.data.filtered=[{id:'preserved'}];c.page.openSort();const p=c.page.selectSort({currentTarget:{dataset:{code:'distance'}}});c.gps().success(point);await p;assert.equal(c.page.data.sortCode,'latest');assert.equal(c.page.data.sortOpen,true);assert.ok(c.page.data.sortError);assert.equal(c.calls.length,0);assert.equal(c.page.data.filtered[0].id,'preserved');
+  const c=client('discover');c.page.setData({type:'service'});c.page.data.filtered=[{id:'preserved'}];c.page.openSort();const p=c.page.selectSort({currentTarget:{dataset:{code:'distance'}}});c.gps().success(point);await p;assert.equal(c.page.data.sortCode,'latest');assert.equal(c.page.data.sortOpen,true);assert.ok(c.page.data.sortError);assert.equal(c.calls.length,0);assert.equal(c.page.data.filtered[0].id,'preserved');
  }
 });
 const booking={id:'booking-one',serviceTitle:'本地测试服务',status:'pending_confirm',requestedAt:'2026-11-02T01:30:00Z'};

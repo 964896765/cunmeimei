@@ -135,11 +135,20 @@
 .personal-function-grid button::after { border:0; }
 .personal-function-grid image { width:52rpx; height:52rpx; padding:8rpx; border-radius:14rpx; background:var(--soft); }
 .personal-services .center-menu-row { min-height:90rpx; padding:16rpx 4rpx; }
-.personal-services .service-entry { min-height:112rpx; }
-.personal-services .center-entry-title { display:block; font-size:28rpx; margin:0; }
-.personal-services .center-subtitle { font-size:23rpx; }
 .large-text .workspace-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20rpx; }
 .large-text .workspace-label,.large-text .personal-function-grid button { font-size:29rpx; }
 .large-text .personal-function-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
 .theme-dark .points-entry { background:var(--soft); }
 .theme-dark .points-title { color:var(--ink); }
+
+.me-page .service-center-card { display:flex; align-items:center; gap:20rpx; width:100%; min-height:120rpx; margin:0 0 20rpx; padding:22rpx 24rpx; border:1rpx solid var(--border); border-radius:24rpx; background:var(--soft-alt); box-shadow:inset 0 1rpx 0 rgba(255,255,255,.65); color:var(--ink); text-align:left; line-height:1.5; }
+.service-center-card::after { border:0; }
+.service-center-icon { width:36rpx; height:36rpx; flex-shrink:0; }
+.service-card-title { display:block; font-size:30rpx; font-weight:600; }
+.service-center-card .center-subtitle { margin-top:4rpx; font-size:24rpx; }
+.large-text .service-card-title { font-size:34rpx; }
+.large-text .service-center-card .center-subtitle { font-size:29rpx; }
+.theme-clear .service-center-card { border-width:2rpx; }
+.service-icon-frame { display:flex; align-items:center; justify-content:center; width:64rpx; height:64rpx; flex-shrink:0; border:1rpx solid var(--border); border-radius:18rpx; background:var(--surface); }
+.service-center-card .center-chevron { color:var(--link); }
+.service-card-pressed { opacity:.85; }

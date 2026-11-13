@@ -67,3 +67,14 @@ test('personal workspace keeps the original groups with unique actions and one a
  assert.equal((account.match(/bindtap="openVerification"/g)||[]).length,1);
  assert.ok(markup.includes('class="center-menu-row about-action" bindtap="showAbout"'));
 });
+
+
+test('service center is a single independent card directly below the points center',()=>{
+ const markup=fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.wxml'),'utf8');
+ const main=markup.slice(markup.indexOf('<block wx:else><view class="main-center">'));
+ const points=main.indexOf('id="points-center-entry"'),service=main.indexOf('id="service-center-entry"'),functions=main.indexOf('class="personal-functions"');
+ assert.ok(points>=0&&service>points&&functions>service);
+ assert.match(main,/id="service-center-entry" class="service-center-card"/);
+ assert.equal((main.match(/bindtap="openServiceCenter"/g)||[]).length,1);
+ assert.ok(!main.slice(main.indexOf('class="center-menu personal-services"')).includes('id="service-center-entry"'));
+});

@@ -20,7 +20,7 @@
     <view wx:if="{{landingError||error}}" class="landing-retry" role="alert"><text>{{landingError||error}}</text><button bindtap="retryLanding">重试</button></view>
    </block>
    <block wx:else>
-    <active-conditions id="active-conditions" keyword="{{submittedQ}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{days}}" images="{{images}}" radius-km="{{radiusKm}}" publisher="{{publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="clear"/>
+    <active-conditions refinements="{{refinements}}" id="active-conditions" keyword="{{submittedQ}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{days}}" images="{{images}}" radius-km="{{radiusKm}}" publisher="{{publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="clear"/>
     <view wx:if="{{publicOnly}}" class="notice">{{mapScoped?'当前地图视野内 · 仅展示可公开定位的商家与服务':'公开位置范围 · 仅展示可公开定位的商家与服务'}}</view>
     <view wx:if="{{filterNotice}}" class="notice">{{filterNotice}}</view>
     <view wx:if="{{queryDirty}}" class="state-panel" role="status"><text>关键词已修改，点击搜索或选择条件查看结果。</text><button class="btn light" bindtap="search">搜索当前条件</button></view>

@@ -27,7 +27,7 @@ function createMemoryRepository(){
  async authenticate(tokenHash){const s=sessions.get(tokenHash);return s&&Date.parse(s.expiresAt)>Date.now()&&users.get(s.userId)?.status==='active'?s.userId:null;},
  async revokeSession(tokenHash){return sessions.delete(tokenHash);},
  async ping(){return true;},
- async listFeed({type='all',channel='',area='全部地区',q='',limit=100,offset=0,sort='latest',categoryId='',cityCode='',districtCode='',days=0,radiusKm=0,images='all',publicOnly=false}){
+ async listFeed({type='all',channel='',area='全部地区',q='',limit=100,offset=0,sort='latest',categoryId='',cityCode='',districtCode='',days=0,radiusKm=0,images='all',publicOnly=false,refinements={}}){
   // Memory mode has no verified public coordinates or saved-item ledger.
   if(sort==='distance'||radiusKm>0||publicOnly)return [];
   const amount=value=>{const clean=String(value||'').replace(/[¥￥ ,]/g,'');return /^\d+(\.\d{1,2})?$/.test(clean)?Number(clean):null;};
@@ -35,7 +35,7 @@ function createMemoryRepository(){
   const pictured=x=>images!=='with'||!!x.imageIds?.length;
   const list=pubs.filter(x=>require('../../miniprogram/utils/product-scope').isPublicInformation(x)&&pictured(x)&&x.status==='published'&&visible(x.district)&&(!categoryId||x.attributes?.categoryId?.startsWith(categoryId))&&(!cityCode||x.attributes?.cityCode===cityCode)&&(!districtCode||x.attributes?.districtCode?.startsWith(districtCode))).map(x=>({...toPublicItem(x,'publication'),attributes:x.attributes,createdAt:x.createdAt}));
   const svc=services.filter(x=>pictured(x)&&!categoryId&&!cityCode&&x.status==='published'&&visible(x.district)).map(x=>({...toPublicItem({...x,type:'service'},'catalog'),createdAt:x.createdAt}));
-  return clone([...list,...svc].filter(x=>require('../../miniprogram/utils/discovery-channels').matches(x,channel)&&(!days||Date.parse(x.createdAt)>=Date.now()-days*86400000)&&(type==='all'||x.type===type||type==='public'&&x.type==='community')&&(area==='全部地区'||x.district===area)&&(!q||[x.title,x.description,x.district].join(' ').toLowerCase().includes(q.toLowerCase())))
+  return clone([...list,...svc].filter(x=>require('./discovery-refinement-query').matches(x,refinements)&&require('../../miniprogram/utils/discovery-channels').matches(x,channel)&&(!days||Date.parse(x.createdAt)>=Date.now()-days*86400000)&&(type==='all'||x.type===type||type==='public'&&x.type==='community')&&(area==='全部地区'||x.district===area)&&(!q||[x.title,x.description,x.district].join(' ').toLowerCase().includes(q.toLowerCase())))
    .sort((a,b)=>{if(['price_low','price_high'].includes(sort)){const av=amount(a.price),bv=amount(b.price);if(av===null&&bv!==null)return 1;if(bv===null&&av!==null)return -1;if(av!==null&&bv!==null&&av!==bv)return sort==='price_low'?av-bv:bv-av;}if(sort==='recommended'&&q){const am=a.title.toLowerCase().includes(q.toLowerCase()),bm=b.title.toLowerCase().includes(q.toLowerCase());if(am!==bm)return bm-am;}return (Date.parse(b.createdAt||0)-Date.parse(a.createdAt||0))||(a.id<b.id?1:-1);}).slice(offset,offset+limit));
  },
  async getItem(itemId){
