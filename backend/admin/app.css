@@ -28,3 +28,9 @@ p,.muted,small{color:#6D6671}label{color:#76636F;font-size:14px}button,input,sel
 .review-dialog-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:24px; }
 .review-dialog-actions button { min-width:96px; }
 @media (max-width:640px) { .shell { padding:18px 14px; } .card { padding:20px; } .admin-nav { position:static; gap:8px; } .review-dialog { padding:22px; } }
+
+body { background:radial-gradient(ellipse at 90% 0,rgba(249,229,238,.7),transparent 55%),#FBF8FA; }
+.card { border-color:#F0E7ED; border-radius:20px; box-shadow:0 5px 18px rgba(126,55,88,.07); }
+button { background-image:linear-gradient(110deg,#A73660,#A13E65); }
+button.secondary,button.danger { background-image:none; }
+.admin-nav a { border-color:#F0E7ED; border-radius:12px; background:#FFFFFF; }

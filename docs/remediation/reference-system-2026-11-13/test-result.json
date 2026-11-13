@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-11-13T04:17:42.998Z",
+  "suites": {
+    "default": {
+      "tests": 502,
+      "passed": 486,
+      "failed": 0,
+      "skipped": 16,
+      "log": "reference-system-unit.log"
+    },
+    "isolatedJourneys": {
+      "tests": 444,
+      "passed": 444,
+      "failed": 0,
+      "skipped": 0,
+      "log": "reference-system-journeys.log"
+    },
+    "finalLegalAndPostgres": {
+      "tests": 47,
+      "passed": 47,
+      "failed": 0,
+      "skipped": 0,
+      "log": "reference-system-pg-final.log"
+    }
+  },
+  "native": {
+    "status": "pass",
+    "checks": 89,
+    "pages": 27,
+    "exceptions": [],
+    "cleanup": {
+      "authStorageUnchanged": true,
+      "runtimeOverlayRemoved": true
+    }
+  },
+  "loginThemes": {
+    "status": "pass",
+    "passed": 18
+  },
+  "wxml": {
+    "files": 45,
+    "status": "pass"
+  },
+  "contrast": {
+    "checked": 180,
+    "minimum": 4.93
+  },
+  "preview": {
+    "status": "pass",
+    "mainPackageBytes": 1911672
+  },
+  "physicalDevice": false,
+  "realWechatAuthorization": false,
+  "scope": "Suites overlap. Database and HTTP journeys use isolated fixtures. Actual production configuration and physical-device acceptance remain pending."
+}

@@ -141,7 +141,7 @@
 .theme-dark .points-entry { background:var(--soft); }
 .theme-dark .points-title { color:var(--ink); }
 
-.me-page .service-center-card { display:flex; align-items:center; gap:20rpx; width:100%; min-height:120rpx; margin:0 0 20rpx; padding:22rpx 24rpx; border:1rpx solid var(--border); border-radius:24rpx; background:var(--soft-alt); box-shadow:inset 0 1rpx 0 rgba(255,255,255,.65); color:var(--ink); text-align:left; line-height:1.5; }
+.me-page .service-center-card { display:flex; align-items:center; gap:20rpx; width:100%; min-height:120rpx; margin:0 0 20rpx; padding:22rpx 24rpx; border:1rpx solid var(--border); border-radius:24rpx; background:var(--soft); box-shadow:inset 0 1rpx 0 rgba(255,255,255,.85),var(--elevation); color:var(--ink); text-align:left; line-height:1.5; }
 .service-center-card::after { border:0; }
 .service-center-icon { width:36rpx; height:36rpx; flex-shrink:0; }
 .service-card-title { display:block; font-size:30rpx; font-weight:600; }
@@ -152,3 +152,10 @@
 .service-icon-frame { display:flex; align-items:center; justify-content:center; width:64rpx; height:64rpx; flex-shrink:0; border:1rpx solid var(--border); border-radius:18rpx; background:var(--surface); }
 .service-center-card .center-chevron { color:var(--link); }
 .service-card-pressed { opacity:.85; }
+.main-center .workspace-grid,.personal-functions,.main-center .center-menu { box-shadow:var(--elevation); }
+.me-page .points-entry { position:relative; background:linear-gradient(110deg,#FFF4E8,#FCE7E8); border:1rpx solid #FFFFFF; box-shadow:var(--elevation); }
+.me-page .service-center-card { position:relative; overflow:hidden; border-color:var(--surface); }
+.service-card-scene { position:absolute; right:0; bottom:0; width:40%; height:100%; opacity:.6; }
+.service-center-card>.center-entry-copy,.service-center-card>.center-chevron,.service-icon-frame { position:relative; z-index:1; }
+.theme-dark .points-entry { background:var(--soft); border-color:var(--border); }
+.theme-dark .service-center-card { border-color:var(--border); }

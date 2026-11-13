@@ -6,7 +6,7 @@ page { height:100%; overflow:hidden; }
 .publish-tools { display:flex; align-items:center; flex-shrink:0; gap:0; margin:16rpx 32rpx 20rpx; padding:18rpx 0; border-radius:24rpx; background:var(--surface); box-shadow:var(--elevation); }
 .drafts-button { display:flex; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:12rpx; min-height:100rpx; margin:0; padding:8rpx 0; border:0; border-right:1rpx solid var(--border); border-radius:0; background:transparent; color:var(--ink); font-size:25rpx; line-height:1.5; }
 .drafts-button:last-child { border-right:0; }
-.drafts-button image { width:40rpx; height:40rpx; }
+.drafts-button image { width:64rpx; height:64rpx; padding:12rpx; border-radius:20rpx; background:var(--soft); }
 .publish-page>feedback-state,.publish-page>.notice { margin:0 32rpx; }
 .industry-column,.project-column { display:flex; flex-direction:column; min-width:0; min-height:0; }
 .industry-sidebar,.project-content { flex:1; height:0; min-height:0; width:100%; }
@@ -28,12 +28,12 @@ page { height:100%; overflow:hidden; }
 .large-text .project-group-title { font-size:38rpx; }
 .large-text .project-status,.large-text .drafts-button { font-size:30rpx; }
 
-.publish-hero { position:relative; flex-shrink:0; height:152rpx; overflow:hidden; margin:0 32rpx 18rpx; border-radius:24rpx; background:linear-gradient(110deg,#9E4266,#CB8697); color:#FFFFFF; }
+.publish-hero { position:relative; flex-shrink:0; height:164rpx; overflow:hidden; margin:0 32rpx 18rpx; border-radius:24rpx; background:linear-gradient(110deg,#9E4266,#CB8697); color:#FFFFFF; }
 .publish-hero-copy { position:relative; z-index:1; padding:24rpx 30rpx; }
 .publish-hero-copy>view { font-size:42rpx; font-weight:700; line-height:1.4; letter-spacing:1rpx; }
 .publish-hero-copy>text { display:block; margin-top:8rpx; font-size:27rpx; }
 .publish-hero>image { position:absolute; right:8rpx; bottom:-30rpx; width:190rpx; height:190rpx; }
-.publish-search-entry { flex-shrink:0; display:flex; align-items:center; gap:14rpx; min-height:72rpx; margin:0 32rpx; padding:16rpx 26rpx; border:1rpx solid var(--border); border-radius:48rpx; background:var(--surface); color:var(--muted); text-align:left; font-size:24rpx; line-height:1.5; }
+.publish-search-entry { flex-shrink:0; display:flex; align-items:center; gap:14rpx; min-height:72rpx; margin:0 32rpx; padding:16rpx 26rpx; border:1rpx solid var(--border); border-radius:48rpx; background:var(--surface); box-shadow:var(--elevation); color:var(--muted); text-align:left; font-size:24rpx; line-height:1.5; }
 
 .publish-search-entry .search-dot { flex-shrink:0; margin-right:0; }
 .large-text .publish-hero { height:180rpx; }
@@ -43,14 +43,14 @@ page { height:100%; overflow:hidden; }
 .theme-dark .publish-hero { background:var(--soft); color:var(--ink); }
 .draft-label { display:flex; align-items:center; justify-content:center; gap:6rpx; }
 .draft-count { min-width:28rpx; padding:0 6rpx; border-radius:20rpx; background:var(--action); color:var(--on-action); font-size:22rpx; line-height:1.4; }
-.project-browser { flex:1; display:grid; grid-template-columns:minmax(0,29fr) minmax(0,71fr); gap:12rpx; height:0; min-height:0; padding:0 20rpx; }
-.industry-column { border-radius:24rpx 0 0 0; background:var(--soft); overflow:hidden; }
+.project-browser { flex:1; display:grid; grid-template-columns:minmax(0,29fr) minmax(0,71fr); gap:0; height:0; min-height:0; margin:0 26rpx 20rpx; padding:0; border:1rpx solid var(--border); border-radius:28rpx; overflow:hidden; box-shadow:var(--elevation); }
+.industry-column { border-radius:0; background:var(--soft); overflow:hidden; }
 .industry-choice { position:relative; display:flex; align-items:center; gap:12rpx; min-height:82rpx; padding:16rpx 12rpx; color:var(--ink); font-size:27rpx; line-height:1.5; }
 .industry-choice text { flex:1; min-width:0; }
 .industry-icon { flex-shrink:0; width:32rpx; height:32rpx; }
 .industry-choice.active { border-radius:22rpx; color:var(--link); background:var(--surface); font-weight:650; box-shadow:var(--elevation); }
 .industry-choice.active::before { content:''; position:absolute; top:22rpx; bottom:22rpx; left:0; width:5rpx; border-radius:5rpx; background:var(--brand); }
-.project-column { padding:0 18rpx; border-radius:24rpx 24rpx 0 0; background:var(--surface); overflow:hidden; }
+.project-column { padding:0 18rpx; border-radius:0; background:var(--surface); overflow:hidden; }
 .project-group-section { padding-bottom:0; }
 .project-group { display:flex; align-items:center; gap:10rpx; min-height:104rpx; padding:22rpx 0; border-bottom:1rpx solid var(--border); }
 .group-icon { flex-shrink:0; width:40rpx; height:40rpx; }

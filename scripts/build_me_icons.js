@@ -20,6 +20,6 @@ const shapes={
  help:'<circle cx="16" cy="16" r="13"/><circle cx="16" cy="16" r="7"/><path d="m7 7 4 4m10 10 4 4M7 25l4-4M21 11l4-4"/>'
 };
 (async()=>{for(const [theme,c]of Object.entries(iconPalettes))for(const [name,shape]of Object.entries(shapes)){
- const svg='<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 32 32"><g fill="none" stroke="'+c.muted+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+shape+'</g></svg>';
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 32 32"><g fill="none" stroke="'+(theme==='prism'?c.link:c.muted)+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+shape+'</g></svg>';
  await sharp(Buffer.from(svg)).png().toFile(path.resolve(__dirname,'../miniprogram/assets/icons/center-'+name+'-'+theme+'.png'));
 }console.log('PASS personal workspace icons generated from frozen theme colors');})().catch(e=>{console.error(e.message);process.exitCode=1});

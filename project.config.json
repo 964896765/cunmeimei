@@ -13,6 +13,118 @@
       {
         "type": "file",
         "value": "data/industry-catalog.json"
+      },
+      {
+        "type": "file",
+        "value": "assets/brand-butterfly.jpg"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C01-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C02-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C04-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C05-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C06-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C07-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C08-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C09-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C10-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C11-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C12-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C13-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C14-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C15-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C16-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C17-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C18-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C19-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C20-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C21-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C22-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C23-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C24-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C25-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C26-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/industry-C27-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/icons/shortcut-more-pearl.png"
       }
     ],
     "include": []

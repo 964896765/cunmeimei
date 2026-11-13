@@ -90,6 +90,7 @@
     "upload-progress": "/components/upload-progress/index",
     "privacy-mask": "/components/privacy-mask/index",
     "confirm-dialog": "/components/confirm-dialog/index",
-    "bottom-sheet": "/components/bottom-sheet/index"
+    "bottom-sheet": "/components/bottom-sheet/index",
+    "brand-scene": "/components/brand-scene/index"
   }
 }

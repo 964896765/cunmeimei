@@ -1,0 +1,17 @@
+:host { display:block; width:100%; height:100%; pointer-events:none; }
+.scene { position:relative; width:100%; height:100%; overflow:hidden; }
+.skyline { position:absolute; right:16%; bottom:12%; display:flex; align-items:flex-end; gap:6rpx; width:150rpx; height:96rpx; opacity:.5; }
+.building { position:relative; width:26rpx; border-radius:4rpx 4rpx 0 0; background:var(--scene-color,#EFC9D9); background-image:repeating-linear-gradient(0deg,transparent 0,transparent 7rpx,rgba(255,255,255,.5) 8rpx,transparent 9rpx); }
+.building::before { content:''; position:absolute; top:-7rpx; left:8rpx; width:10rpx; height:7rpx; background:inherit; }
+.low { height:34%; }.medium { height:66%; }.tall { height:92%; }.second { height:54%; }.last { height:27%; }
+.wave { position:absolute; width:120%; height:66%; border-radius:50%; background:var(--scene-color,#EFC9D9); }
+.wave-back { left:-30%; bottom:-40%; opacity:.3; transform:rotate(8deg); }
+.wave-front { right:-35%; bottom:-47%; opacity:.22; transform:rotate(-8deg); }
+.chat .skyline { right:3%; bottom:16%; width:130rpx; height:100rpx; opacity:.45; }
+.chat .wave { height:50%; }.chat .wave-back { bottom:-28%; }.chat .wave-front { bottom:-32%; }
+.bubble { position:absolute; width:136rpx; height:106rpx; border-radius:38rpx; }
+.bubble-back { left:48%; top:13%; background:var(--soft); transform:rotate(7deg); }
+.bubble-back::after { content:''; position:absolute; right:12rpx; bottom:-11rpx; width:32rpx; height:32rpx; background:var(--soft); transform:skewY(20deg); border-radius:5rpx; }
+.bubble-front { left:31%; top:28%; display:flex; align-items:center; justify-content:center; gap:14rpx; background:linear-gradient(140deg,#EBA4BC,#CE6D91); border:2rpx solid rgba(191,93,132,.25); box-shadow:inset 3rpx 5rpx 12rpx rgba(255,255,255,.5),0 12rpx 18rpx rgba(161,62,101,.12); }
+.bubble-front::after { content:''; position:absolute; left:16rpx; bottom:-14rpx; width:30rpx; height:30rpx; background:#D47A99; transform:skewY(-28deg); border-radius:4rpx; }
+.bubble-front>view { width:12rpx; height:12rpx; border-radius:50%; background:#FFF9FC; box-shadow:0 2rpx 3rpx rgba(123,44,78,.22); }

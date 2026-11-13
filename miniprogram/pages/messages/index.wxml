@@ -10,7 +10,7 @@
    <button wx:else class="toolbar-action read-all" disabled="{{!hasSession||!unread||reading}}" bindtap="readAll">{{reading?'处理中':'全部已读'}}</button>
   </view>
   <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><search-bar value="{{query}}" placeholder="搜索当前联系记录" focused="{{true}}" max-length="{{100}}" bind:input="search" bind:search="filter"/></view>
-  <view wx:if="{{!hasSession}}" class="state-panel"><view class="section-title">登录后查看消息</view><text>审核结果、预约动态和联系申请都在这里。</text><button class="btn" bindtap="signin">登录查看</button></view>
+  <view wx:if="{{!hasSession}}" class="state-panel message-login"><brand-scene class="message-art" variant="chat"/><view class="section-title">登录后查看消息</view><text>审核结果、预约动态和联系申请都在这里。</text><button class="btn" bindtap="signin">登录查看</button></view>
   <block wx:else>
    <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
    <feedback-state wx:if="{{contactError}}" kind="error" description="{{contactError}} 请先核对联系状态；回复内容已保留。" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="刷新联系状态" bind:action="refresh" action-disabled="{{loading||contactBusyId}}"/>

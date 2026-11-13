@@ -3,3 +3,12 @@
 /* VM page composition. */
 .legal-copy { padding:24rpx 0 36rpx; font-size:30rpx; line-height:1.85; word-break:normal; overflow-wrap:anywhere; }
 .container>.notice { padding-bottom:24rpx; border-bottom:1rpx solid var(--border); }
+
+.legal-block { display:block; margin:0 0 20rpx; font-size:28rpx; line-height:1.9; }
+.legal-block.heading-1 { margin:0 0 28rpx; color:var(--ink); font-size:38rpx; font-weight:650; line-height:1.5; }
+.legal-block.heading-2 { margin:40rpx 0 24rpx; color:var(--ink); font-size:34rpx; font-weight:600; }
+.legal-block.heading-3 { margin:30rpx 0 18rpx; color:var(--ink); font-size:30rpx; font-weight:600; }
+.legal-block.bullet { padding-left:14rpx; }
+.large-text .legal-block { font-size:34rpx; }
+.large-text .legal-block.heading-1 { font-size:44rpx; }
+.large-text .legal-block.heading-2 { font-size:38rpx; }

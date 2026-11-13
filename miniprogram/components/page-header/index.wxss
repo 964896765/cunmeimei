@@ -1,4 +1,4 @@
-.page-header { position:fixed; z-index:50; top:0; left:0; width:100%; box-sizing:border-box; border-bottom:0; background:var(--background); color:var(--ink); }
+.page-header { position:fixed; z-index:50; top:0; left:0; width:100%; box-sizing:border-box; border-bottom:0; background-color:var(--background); background-image:var(--page-wash,none); background-size:100% 1600rpx; color:var(--ink); }
 .nav-row { position:relative; display:flex; align-items:center; }
 .nav-back { display:flex; align-items:center; justify-content:center; width:44px; height:44px; margin:0 0 0 6px; padding:0; border:0; border-radius:12rpx; background:transparent; flex-shrink:0; }
 .nav-back::after,.nav-action::after { border:0; }

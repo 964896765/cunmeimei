@@ -7,6 +7,7 @@ const {iconPalettes} = require('../miniprogram/utils/palettes');
 
 // Use the existing industry's 24-unit line grid for the four device categories.
 const shapes = {
+  'shortcut-more': '<circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><circle cx="7" cy="17" r="3"/><circle cx="17" cy="17" r="3"/>',
   'project-phone': '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 5h4M11 19h2"/>',
   'project-laptop': '<rect x="4" y="3" width="16" height="13" rx="1.5"/><path d="m4 16-2 4h20l-2-4M9 20h6"/>',
   'project-tablet': '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M11 19h2"/>',

@@ -117,7 +117,7 @@ function field(key, channel = 'all', values = {}) {
     ];
   }
   if (key === 'days') {
-    label = '发布时间';
+    label = '时间范围';
     options = days.map((item) => choice(String(item.value), item.label));
   }
   if (key === 'radiusKm') {

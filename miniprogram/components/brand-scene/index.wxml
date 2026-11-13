@@ -1,0 +1,6 @@
+<view class="scene {{variant}}" aria-hidden="true">
+ <view class="skyline"><view class="building low"></view><view class="building medium"></view><view class="building tall"></view><view class="building medium second"></view><view class="building low last"></view></view>
+ <view wx:if="{{variant==='chat'}}" class="bubble bubble-back"></view>
+ <view wx:if="{{variant==='chat'}}" class="bubble bubble-front"><view></view><view></view><view></view></view>
+ <view class="wave wave-back"></view><view class="wave wave-front"></view>
+</view>

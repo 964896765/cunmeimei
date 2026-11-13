@@ -1,0 +1,809 @@
+{
+  "status": "pass",
+  "checks": [
+    "all 19 page handlers resolve home ",
+    "capsule safety home",
+    "shared visual theme home",
+    "all 25 page handlers resolve discover ",
+    "capsule safety discover",
+    "shared visual theme discover",
+    "all 14 page handlers resolve publish ",
+    "capsule safety publish",
+    "shared visual theme publish",
+    "all 19 page handlers resolve messages ",
+    "capsule safety messages",
+    "shared visual theme messages",
+    "all 51 page handlers resolve me ",
+    "capsule safety me",
+    "shared visual theme me",
+    "all 9 page handlers resolve regions ",
+    "capsule safety regions",
+    "shared visual theme regions",
+    "all 10 page handlers resolve detail ",
+    "capsule safety detail",
+    "shared visual theme detail",
+    "all 11 page handlers resolve booking ",
+    "capsule safety booking",
+    "shared visual theme booking",
+    "all 13 page handlers resolve my-posts ",
+    "capsule safety my-posts",
+    "shared visual theme my-posts",
+    "all 6 page handlers resolve my-bookings ",
+    "capsule safety my-bookings",
+    "shared visual theme my-bookings",
+    "all 11 page handlers resolve merchant ",
+    "capsule safety merchant",
+    "shared visual theme merchant",
+    "all 6 page handlers resolve chat ",
+    "capsule safety chat",
+    "shared visual theme chat",
+    "all 9 page handlers resolve merchant-services ",
+    "capsule safety merchant-services",
+    "shared visual theme merchant-services",
+    "all 3 page handlers resolve merchant-bookings ",
+    "capsule safety merchant-bookings",
+    "shared visual theme merchant-bookings",
+    "all 5 page handlers resolve merchant-team ",
+    "capsule safety merchant-team",
+    "shared visual theme merchant-team",
+    "all 26 page handlers resolve search ",
+    "capsule safety search",
+    "shared visual theme search",
+    "all 4 page handlers resolve categories ",
+    "capsule safety categories",
+    "shared visual theme categories",
+    "all 28 page handlers resolve map ",
+    "capsule safety map",
+    "shared visual theme map",
+    "all 25 page handlers resolve publish-form ",
+    "capsule safety publish-form",
+    "shared visual theme publish-form",
+    "all 5 page handlers resolve drafts ",
+    "capsule safety drafts",
+    "shared visual theme drafts",
+    "all 5 page handlers resolve verification ",
+    "capsule safety verification",
+    "shared visual theme verification",
+    "all 6 page handlers resolve information ",
+    "capsule safety information",
+    "shared visual theme information",
+    "all 16 page handlers resolve commerce ",
+    "capsule safety commerce",
+    "shared visual theme commerce",
+    "all 32 page handlers resolve industry ",
+    "capsule safety industry",
+    "shared visual theme industry",
+    "all 4 page handlers resolve login ",
+    "capsule safety login",
+    "shared visual theme login",
+    "all 3 page handlers resolve legal ",
+    "capsule safety legal",
+    "shared visual theme legal",
+    "all 13 page handlers resolve business ",
+    "capsule safety business",
+    "shared visual theme business",
+    "login consent initially unchecked",
+    "phone login deferred as requested",
+    "login icons have equal frames",
+    "login avoids a nested status card",
+    "all user-agreement chapters load",
+    "all privacy chapters load",
+    "admin dashboard authenticates with real isolated API",
+    "no captured application exceptions"
+  ],
+  "passed": 89,
+  "routes": [
+    {
+      "route": "pages/home/index",
+      "handlers": [
+        "showArea",
+        "goSearch",
+        "load",
+        "changeBanner",
+        "openBanner",
+        "bannerImageError",
+        "openGuide",
+        "guideImageError",
+        "editShortcuts",
+        "changeQuickPage",
+        "openQuick",
+        "openMerchant",
+        "changeFeed",
+        "openFeatured",
+        "toggleSaved",
+        "goDiscover",
+        "openNews",
+        "moreNews",
+        "showPhotoCredit"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 107,
+        "capsule": 83
+      },
+      "screenshot": "page-home.png",
+      "bottomScreenshot": "page-home-bottom.png"
+    },
+    {
+      "route": "pages/discover/index",
+      "handlers": [
+        "headerMeasured",
+        "changeType",
+        "chooseCity",
+        "openFilters",
+        "refinementCategoryColumn",
+        "refinementCategorySelected",
+        "cancelRefinementCategory",
+        "openSort",
+        "openQuickFilter",
+        "removeCondition",
+        "clearFilters",
+        "goDetail",
+        "toggleSaved",
+        "retry",
+        "browseAll",
+        "loadMore",
+        "openSearch",
+        "openMap",
+        "closeFilters",
+        "categoryChanged",
+        "districtChanged",
+        "selectRefinement",
+        "closeQuickFilter",
+        "closeSort",
+        "selectSort"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-discover.png",
+      "bottomScreenshot": "page-discover-bottom.png"
+    },
+    {
+      "route": "pages/publish/index",
+      "handlers": [
+        "loadConfig",
+        "toggleProjectSearch",
+        "showGuidance",
+        "openDrafts",
+        "openRecords",
+        "showHelp",
+        "searchProjects",
+        "clearProjectSearch",
+        "closeProjectSearch",
+        "chooseProject",
+        "onIndustryScroll",
+        "selectCategory",
+        "onProjectScroll",
+        "toggleGroup"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-publish.png",
+      "bottomScreenshot": "page-publish-bottom.png"
+    },
+    {
+      "route": "pages/messages/index",
+      "handlers": [
+        "tab",
+        "toggleSearch",
+        "readAll",
+        "search",
+        "filter",
+        "signin",
+        "refresh",
+        "showAllContacts",
+        "showPending",
+        "toggleContact",
+        "openChat",
+        "openBusiness",
+        "contactAction",
+        "block",
+        "moreContacts",
+        "open",
+        "filterNotices",
+        "openPoints",
+        "more"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-messages.png",
+      "bottomScreenshot": "page-messages-bottom.png"
+    },
+    {
+      "route": "pages/me/index",
+      "handlers": [
+        "back",
+        "reloadSettings",
+        "selectTheme",
+        "changePreference",
+        "savePreferences",
+        "unblockUser",
+        "exportPersonalData",
+        "requestKind",
+        "requestReason",
+        "submitPrivacyRequest",
+        "cancelPrivacyRequest",
+        "openSaved",
+        "loadSaved",
+        "showHistory",
+        "clearHistory",
+        "chooseAvatar",
+        "refresh",
+        "retryAvatar",
+        "editProfileField",
+        "selectProfileCity",
+        "openServiceSection",
+        "goPublish",
+        "copyId",
+        "openVerification",
+        "openPersonalData",
+        "signin",
+        "goMessages",
+        "showAbout",
+        "openLegal",
+        "openProfile",
+        "goPosts",
+        "showFavorites",
+        "openDrafts",
+        "goBookings",
+        "showPoints",
+        "openServiceCenter",
+        "openNotifications",
+        "inspectCache",
+        "openHelp",
+        "openAccount",
+        "openPrivacy",
+        "signout",
+        "openCommerce",
+        "retryPoints",
+        "selectPointsView",
+        "beginRewardAppeal",
+        "withdrawRewardAppeal",
+        "rewardAppealReason",
+        "submitRewardAppeal",
+        "cancelRewardAppeal",
+        "loadPoints"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-me.png",
+      "bottomScreenshot": "page-me-bottom.png"
+    },
+    {
+      "route": "pages/regions/index",
+      "handlers": [
+        "headerMeasured",
+        "input",
+        "locate",
+        "chooseCity",
+        "expandNearby",
+        "expandDistrict",
+        "jump",
+        "closeDistricts",
+        "chooseDistrict"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-regions.png",
+      "bottomScreenshot": "page-regions-bottom.png"
+    },
+    {
+      "route": "pages/detail/index",
+      "handlers": [
+        "refresh",
+        "previewImage",
+        "openService",
+        "warn",
+        "report",
+        "retryFavorite",
+        "talk",
+        "toggleFavorite",
+        "book",
+        "callPublisher"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-detail.png",
+      "bottomScreenshot": "page-detail-bottom.png"
+    },
+    {
+      "route": "pages/booking/index",
+      "handlers": [
+        "retryRecovery",
+        "checkSubmission",
+        "retrySubmission",
+        "viewBookings",
+        "load",
+        "chooseDate",
+        "chooseSlot",
+        "chooseTime",
+        "retrySlots",
+        "setRemark",
+        "submit"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-booking.png",
+      "bottomScreenshot": "page-booking-bottom.png"
+    },
+    {
+      "route": "pages/my-posts/index",
+      "handlers": [
+        "returnToMe",
+        "refresh",
+        "cancelEdit",
+        "changeEdit",
+        "editTemplateField",
+        "removePhoto",
+        "addPhoto",
+        "changeEditDistrict",
+        "saveEdit",
+        "showItem",
+        "contactSettings",
+        "startEdit",
+        "withdraw"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-my-posts.png",
+      "bottomScreenshot": "page-my-posts-bottom.png"
+    },
+    {
+      "route": "pages/my-bookings/index",
+      "handlers": [
+        "returnToMe",
+        "loadRecoveries",
+        "resumePending",
+        "refresh",
+        "openBusiness",
+        "cancel"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-my-bookings.png",
+      "bottomScreenshot": "page-my-bookings-bottom.png"
+    },
+    {
+      "route": "pages/merchant/index",
+      "handlers": [
+        "refresh",
+        "input",
+        "chooseCategory",
+        "chooseDistrict",
+        "submit",
+        "submitEvidence",
+        "chooseLicense",
+        "goPanel",
+        "saveNotice",
+        "back",
+        "demo"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-merchant.png",
+      "bottomScreenshot": "page-merchant-bottom.png"
+    },
+    {
+      "route": "pages/chat/index",
+      "handlers": [
+        "refresh",
+        "submit",
+        "openItem",
+        "safetyAction",
+        "report",
+        "input"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-chat.png",
+      "bottomScreenshot": "page-chat-bottom.png"
+    },
+    {
+      "route": "pages/merchant-services/index",
+      "handlers": [
+        "load",
+        "editService",
+        "serviceAction",
+        "cancelEdit",
+        "input",
+        "previewPhoto",
+        "removePhoto",
+        "choosePhotos",
+        "submit"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-merchant-services.png",
+      "bottomScreenshot": "page-merchant-services-bottom.png"
+    },
+    {
+      "route": "pages/merchant-bookings/index",
+      "handlers": [
+        "load",
+        "action",
+        "openBusiness"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-merchant-bookings.png",
+      "bottomScreenshot": "page-merchant-bookings-bottom.png"
+    },
+    {
+      "route": "pages/merchant-team/index",
+      "handlers": [
+        "load",
+        "remove",
+        "setUser",
+        "chooseRole",
+        "add"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-merchant-team.png",
+      "bottomScreenshot": "page-merchant-team-bottom.png"
+    },
+    {
+      "route": "pages/search/index",
+      "handlers": [
+        "goBack",
+        "input",
+        "clearQuery",
+        "search",
+        "chooseCity",
+        "changeType",
+        "chooseSort",
+        "toggleAdvanced",
+        "more",
+        "categoryChanged",
+        "districtChanged",
+        "clearHistory",
+        "chooseTerm",
+        "retryLanding",
+        "removeCondition",
+        "clear",
+        "retry",
+        "browseAll",
+        "open",
+        "closeAdvanced",
+        "chooseDate",
+        "chooseImages",
+        "choosePublisher",
+        "chooseRadius",
+        "resetAdvanced",
+        "applyAdvanced"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-search.png",
+      "bottomScreenshot": "page-search-bottom.png"
+    },
+    {
+      "route": "pages/categories/index",
+      "handlers": [
+        "back",
+        "reset",
+        "open",
+        "save"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-categories.png",
+      "bottomScreenshot": "page-categories-bottom.png"
+    },
+    {
+      "route": "pages/map/index",
+      "handlers": [
+        "goBack",
+        "headerMeasured",
+        "changeType",
+        "markerTap",
+        "regionChanged",
+        "returnToList",
+        "searchArea",
+        "dragStart",
+        "dragEnd",
+        "cancelDrag",
+        "toggleDrawer",
+        "openFilters",
+        "openSearch",
+        "categoryChanged",
+        "districtChanged",
+        "retry",
+        "chooseCity",
+        "more",
+        "removeCondition",
+        "resetConditions",
+        "selectRow",
+        "returnToCenter",
+        "expandResults",
+        "closeFilters",
+        "chooseDraftRange",
+        "chooseFilter",
+        "resetFilters",
+        "applyFilters"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-map.png",
+      "bottomScreenshot": "page-map-bottom.png"
+    },
+    {
+      "route": "pages/publish-form/index",
+      "handlers": [
+        "cancelPublish",
+        "goBack",
+        "initialize",
+        "previewPhoto",
+        "retryPhotos",
+        "removePhoto",
+        "choosePhotos",
+        "setField",
+        "focusField",
+        "blurField",
+        "changeAmount",
+        "toggleNegotiable",
+        "templateFieldChange",
+        "choosePublishCity",
+        "chooseAdministrativeDistrict",
+        "changeDistrict",
+        "togglePublicPhone",
+        "changeAllowMessages",
+        "openVerification",
+        "editPost",
+        "confirmSubmit",
+        "previewPost",
+        "saveAndExit",
+        "discardAndExit",
+        "continueEditing"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-publish-form.png",
+      "bottomScreenshot": "page-publish-form-bottom.png"
+    },
+    {
+      "route": "pages/drafts/index",
+      "handlers": [
+        "goBack",
+        "signin",
+        "refresh",
+        "openDraft",
+        "deleteDraft"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-drafts.png",
+      "bottomScreenshot": "page-drafts-bottom.png"
+    },
+    {
+      "route": "pages/verification/index",
+      "handlers": [
+        "goBack",
+        "authorizePhone",
+        "finish",
+        "revoke",
+        "appeal"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-verification.png",
+      "bottomScreenshot": "page-verification-bottom.png"
+    },
+    {
+      "route": "pages/information/index",
+      "handlers": [
+        "goBack",
+        "retry",
+        "copySource",
+        "report",
+        "open",
+        "more"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-information.png",
+      "bottomScreenshot": "page-information-bottom.png"
+    },
+    {
+      "route": "pages/commerce/index",
+      "handlers": [
+        "back",
+        "signin",
+        "tab",
+        "load",
+        "resume",
+        "clearPending",
+        "redeem",
+        "cancelOrder",
+        "field",
+        "applyAdvertiser",
+        "pick",
+        "submitPromotion",
+        "purchase",
+        "displayStatus",
+        "cancelPromotion",
+        "more"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-commerce.png",
+      "bottomScreenshot": "page-commerce-bottom.png"
+    },
+    {
+      "route": "pages/industry/index",
+      "handlers": [
+        "back",
+        "signin",
+        "myWorkspace",
+        "load",
+        "resume",
+        "clearPending",
+        "chooseMerchant",
+        "connectService",
+        "openServiceCenter",
+        "field",
+        "applyCredential",
+        "chooseCity",
+        "district",
+        "area",
+        "businessField",
+        "choosePhotos",
+        "removePhoto",
+        "save",
+        "close",
+        "preview",
+        "copySource",
+        "bookService",
+        "apply",
+        "report",
+        "tab",
+        "openChat",
+        "openBusiness",
+        "openOwn",
+        "openPublic",
+        "responseInput",
+        "resolve",
+        "more"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-industry.png",
+      "bottomScreenshot": "page-industry-bottom.png"
+    },
+    {
+      "route": "pages/login/index",
+      "handlers": [
+        "back",
+        "login",
+        "guest",
+        "legal"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-login.png",
+      "bottomScreenshot": "page-login-bottom.png"
+    },
+    {
+      "route": "pages/legal/index",
+      "handlers": [
+        "back",
+        "load",
+        "openPlatformPrivacy"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-legal.png",
+      "bottomScreenshot": "page-legal-bottom.png"
+    },
+    {
+      "route": "pages/business/index",
+      "handlers": [
+        "back",
+        "signin",
+        "load",
+        "resume",
+        "clearPending",
+        "create",
+        "original",
+        "input",
+        "act",
+        "toggleHistory",
+        "filter",
+        "open",
+        "more"
+      ],
+      "missingHandlers": [],
+      "header": {
+        "height": 91,
+        "capsule": 83
+      },
+      "screenshot": "page-business.png",
+      "bottomScreenshot": "page-business-bottom.png"
+    }
+  ],
+  "exceptions": [],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "physicalDevice": false,
+  "realBackend": true,
+  "isolatedPostgres": true,
+  "referenceCaptures": "guest UI with empty Shanghai queries; login provider configuration and agreement callback are fixtures; no real WeChat authorization performed",
+  "checkedAt": "2026-11-13T04:13:35.566Z"
+}

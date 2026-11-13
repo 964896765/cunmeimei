@@ -64,3 +64,11 @@
 .notice-row .message-icon image { width:44rpx; height:44rpx; }
 .search-action { border:0; border-radius:50%; width:76rpx; background:var(--surface); }
 .contact-mode-note { font-size:22rpx; padding:20rpx 12rpx; }
+
+.message-login { padding:16rpx 32rpx 48rpx; border-radius:30rpx; text-align:center; background:var(--surface); box-shadow:var(--elevation); }
+.message-art { display:block; height:280rpx; margin:0 -32rpx 32rpx; }
+.message-login .section-title { font-size:44rpx; font-weight:650; }
+.message-login>text { font-size:28rpx; margin-top:20rpx; }
+.message-login .btn { margin-top:46rpx; }
+.large-text .message-login .section-title { font-size:48rpx; }
+.large-text .message-login>text { font-size:32rpx; }

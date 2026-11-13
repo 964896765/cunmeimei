@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-11-13T04:01:12.568Z",
+  "localReady": true,
+  "productionConfigurationCheck": {
+    "ok": false,
+    "errors": [
+      "PROD_DEV_LOGIN_DISABLED",
+      "WECHAT_APPID_REQUIRED",
+      "WECHAT_SECRET_REQUIRED",
+      "LEGAL_OPERATOR_AND_PRIVACY_CONTACT_REQUIRED",
+      "SUPER_ADMIN_PASSWORD_REQUIRED",
+      "PRIVATE_STORAGE_ABSOLUTE_PATH_REQUIRED",
+      "PRIVATE_STORAGE_OUTSIDE_SOURCE_REQUIRED"
+    ]
+  },
+  "legalConfigured": false,
+  "wechatAvailable": false,
+  "phoneVerification": false,
+  "forumPublishing": false,
+  "publicInteractions": false,
+  "benefitMode": "points_only",
+  "payments": false,
+  "userDecisions": {
+    "contactFields": "placeholders",
+    "phoneLogin": "deferred",
+    "deviceAcceptance": "deferred"
+  },
+  "productionDeployed": false
+}
