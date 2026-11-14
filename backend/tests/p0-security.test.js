@@ -1,6 +1,7 @@
 'use strict';
 
 const test = require('node:test');
+const {acceptedConsent,completedSectorChecks} = require('./helpers/publication-confirmation');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
 const { spawnSync } = require('node:child_process');
@@ -397,7 +398,7 @@ test(
       });
       assert.equal(upload.status, 201);
       const image = (await upload.json()).image;
-      const value = { ...publication(), imageIds: [image.id] };
+      const value = { ...publication(), imageIds: [image.id], publicationConsent: acceptedConsent() };
       for (const version of ['1', '2', '3']) {
         const invalid = structuredClone(value);
         invalid.attributes.templateVersion = version;
@@ -439,6 +440,7 @@ test(
         value.attributes.categoryId
       );
       const review = {
+        ...completedSectorChecks(),
         target: 'publication',
         id: publicationId,
         status: 'published',

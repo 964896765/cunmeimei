@@ -158,6 +158,7 @@ function createPgRepository(connectionString, options={}){
  require('./industry-services').attachIndustryServices(trusted,pool);
  require('./booking-source-lifecycle').attachBookingSourceLifecycle(trusted,pool);
  require('./publication-records').attach(trusted,pool);
+ require('./memorial-repository').attachMemorial(trusted,pool);
  return require('./maintenance').attachMaintenance(trusted,pool);
 }
 module.exports={createPgRepository,literalSearchPattern};

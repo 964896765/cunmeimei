@@ -39,3 +39,6 @@ button.secondary,button.danger { background-image:none; }
 .publication-records details { margin:12px 0; }
 .publication-records pre { white-space:pre-wrap; overflow-wrap:anywhere; font:13px/1.7 ui-monospace,monospace; color:#66616b; }
 .publication-review-check { display:flex; align-items:flex-start; gap:10px; margin:12px 0; }
+
+.memorial-admin { border-color:#deded9; background:#f7f7f4; }.memorial-admin summary { color:#42423c; }.memorial-admin pre { white-space:pre-wrap; overflow-wrap:anywhere; font:13px/1.7 ui-monospace,monospace; }
+.memorial-admin button { background:#50504a; border-color:#50504a; color:#fff; }.memorial-admin textarea { width:100%; min-height:120px; box-sizing:border-box; background:#fff; border:1px solid #d7d7d1; color:#30302c; }.memorial-admin a { color:#42423c; }.memorial-admin label { color:#484844; line-height:1.8; }

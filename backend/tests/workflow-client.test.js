@@ -7,3 +7,17 @@ test('late results cannot populate a different account or a later page incarnati
 test('failure to preserve the request prevents a business mutation from being dispatched',async()=>{const s=setup(async()=>({}));s.storage.set=(key)=>{if(key.startsWith('city_life_pending'))throw Error('quota exceeded');};await assert.rejects(()=>s.flow.write(s.page,'POST','/api/v1/industry/entries',{title:'fixture'},{keyed:true}),/quota/);assert.equal(s.calls.length,0);});
 
 test('a confirmed nested business payload is captured before login and cannot change underneath its replay key',async()=>{const c=setup(async()=>({ok:true}));let finish;c.api.hasSession=()=>false;c.api.login=()=>new Promise(r=>finish=r);const input={title:'confirmed',fields:{detail:'original details'}},p=c.flow.write(c.page,'POST','/api/v1/industry/entries',input,{keyed:true});input.fields.detail='changed while login was open';c.api.hasSession=()=>true;finish('token-a');await p;assert.equal(c.calls[0].body.fields.detail,'original details');});
+
+test('memorial retries use separate pending storage and preserve ordinary business requests', async () => {
+ const state = setup(async () => { throw Error('network interrupted'); });
+ await assert.rejects(() => state.flow.write(state.page, 'POST', '/api/v1/benefit-orders', { offerId: 'existing' }));
+ const ordinary = state.flow.pending();
+ state.page.workflowNamespace = 'memorial';
+ assert.equal(state.flow.pending(state.page), null);
+ await assert.rejects(() => state.flow.write(state.page, 'POST', '/api/v1/memorial/halls', { clientKey: 'memorial_fixture_key' }));
+ assert.equal(state.flow.pending(state.page).url, '/api/v1/memorial/halls');
+ assert.equal(state.flow.pending().url, ordinary.url);
+ state.flow.abandon(state.page);
+ assert.equal(state.flow.pending(state.page), null);
+ assert.equal(state.flow.pending().url, ordinary.url);
+});

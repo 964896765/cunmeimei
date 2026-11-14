@@ -18,6 +18,10 @@ async function closureBlockers(c,uid){
  return Object.entries(r).filter(([,v])=>v).map(([key])=>key);
 }
 const exportSections={
+ memorial_halls:{sql:'SELECT id,payload,status,requested_public,public_allowed,revision,response,created_at,updated_at FROM memorial_halls WHERE owner_id=$1',paged:true},
+ memorial_authorizations:{sql:'SELECT id,hall_id,relationship,statement,status,response,created_at FROM memorial_authorizations WHERE owner_id=$1',paged:true},
+ memorial_tributes:{sql:'SELECT id,hall_id,kind,blessing_code,tribute_day,created_at FROM memorial_tributes WHERE user_id=$1',paged:true},
+ memorial_reports:{sql:'SELECT id,hall_id,kind,reason,status,response,created_at FROM memorial_reports WHERE user_id=$1',paged:true},
  industry_service_links:{sql:'SELECT id,entry_id,service_id,merchant_id,source_revision,active,revision,created_at FROM industry_service_links WHERE owner_id=$1',paged:true},
  business_cases:{sql:"SELECT id,source_kind,source_id,project_id,kind,snapshot-'request'-'acceptedResponse' AS snapshot,status,scheduled_at,resolution_outcome,resolution,revision,created_at,updated_at FROM business_cases WHERE (owner_id=$1 OR applicant_id=$1)",paged:true},
  business_case_events:{sql:'SELECT e.id,e.case_id,e.action,e.body,e.detail,e.created_at FROM business_case_events e JOIN business_cases c ON c.id=e.case_id WHERE e.actor_id=$1 AND (c.owner_id=$1 OR c.applicant_id=$1)',paged:true,id:'e.id'},

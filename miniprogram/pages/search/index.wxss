@@ -45,3 +45,7 @@ page { height:100%; overflow:hidden; }
 .sheet-close { min-height:88rpx; margin:0; padding:18rpx 0 18rpx 20rpx; border:0; background:transparent; color:var(--link); font-size:28rpx; }
 .large-text .city-filter,.large-text .filter,.large-text .recent-list button,.large-text .filter-chip { font-size:30rpx; }
 .large-text .query-filters { flex-wrap:wrap; }
+
+.memorial-search-results { margin:28rpx 0; padding:24rpx; border:1rpx solid #e2e2dd; border-radius:24rpx; background:#f5f5f3; color:#30302d; }
+.memorial-search-card { display:flex; flex-direction:column; gap:10rpx; margin:18rpx 0 0; padding:24rpx; min-height:100rpx; border:1rpx solid #e2e2dd; border-radius:20rpx; background:#fff; color:#30302d; text-align:left; font-size:30rpx; line-height:1.6; }
+.memorial-search-card::after { border:0; }.memorial-search-dates,.memorial-search-link { color:#73736e; font-size:25rpx; }

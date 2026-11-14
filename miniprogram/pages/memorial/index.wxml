@@ -1,0 +1,64 @@
+<view class="theme-root memorial-page {{themeClass}}" style="{{themeStyle}}">
+ <page-header id="navigation-header" title="{{pageTitle}}" back="{{true}}" bind:back="back" large-text="{{displayPreferences.largeText}}"/>
+ <view class="memorial-content">
+  <feedback-state wx:if="{{loading}}" kind="loading" description="正在读取纪念资料…" compact="{{true}}"/>
+  <feedback-state wx:if="{{error}}" kind="error" title="请核对后继续" description="{{error}}" compact="{{true}}" action-text="重新读取" bind:action="load" action-disabled="{{busy}}"/>
+  <view wx:if="{{pending}}" class="memorial-card"><text>有一项提交结果待核对。</text><button class="memorial-button" bindtap="resume" disabled="{{busy}}">核对上次提交</button><button class="memorial-link" bindtap="clearPending" disabled="{{busy}}">已核对，清除本机请求</button></view>
+  <view wx:if="{{privateLocked}}" class="memorial-card"><view class="memorial-title">登录后管理纪念馆</view><text class="memorial-muted">创建资料、授权材料及本人核查请求通过账号权限保护。</text><button class="memorial-button" bindtap="signin">微信登录并继续</button></view>
+  <block wx:elif="{{mode==='portal'}}">
+   <view class="memorial-intro"><view class="memorial-flower" aria-hidden="true">✾</view><view class="memorial-heading">悼念专区</view><view class="memorial-subtitle">缅怀逝者 · 留存思念</view><view class="memorial-rule"></view><text>让那些珍贵的回忆，安静地留在这里。</text></view>
+   <view wx:if="{{!publicEnabled}}" class="memorial-status" role="status">专区正在内部验收，公开浏览尚未开放。</view>
+   <button class="memorial-entry" bindtap="openCreate"><view class="memorial-entry-icon memorial-book" aria-hidden="true"></view><view><text class="memorial-title">创建纪念馆</text><text class="memorial-muted">为亲友留存珍贵回忆</text></view><text class="memorial-arrow">›</text></button>
+   <button class="memorial-entry" disabled="{{!publicEnabled}}" bindtap="openBrowse"><view class="memorial-entry-icon memorial-heart" aria-hidden="true">♡</view><view><text class="memorial-title">追思纪念</text><text class="memorial-muted">留下思念与祝福</text></view><text class="memorial-arrow">›</text></button>
+   <button class="memorial-entry" bindtap="openManage"><view class="memorial-entry-icon memorial-book" aria-hidden="true"></view><view><text class="memorial-title">纪念馆管理</text><text class="memorial-muted">管理已创建的纪念页面</text></view><text class="memorial-arrow">›</text></button>
+   <view class="memorial-footer">静静怀念 · 珍藏回忆</view>
+  </block>
+  <block wx:elif="{{mode==='form'&&!privateLocked}}">
+   <view class="memorial-status">{{statusText}}<text wx:if="{{hall.response}}"> · {{hall.response}}</text></view>
+   <view wx:if="{{hall.status==='deleted'}}" class="memorial-card"><view class="memorial-title">纪念馆已删除</view><button class="memorial-link" bindtap="openManage">返回管理记录</button></view>
+   <block wx:else>
+    <view class="memorial-card">
+     <view class="memorial-title">生平资料</view>
+     <view class="portrait-edit"><image wx:if="{{portrait}}" class="memorial-portrait" src="{{portrait}}" mode="aspectFill"/><view wx:else class="memorial-person" aria-hidden="true"></view><button class="memorial-link" bindtap="choosePortrait" disabled="{{busy}}">{{portrait?'更换纪念照片':'添加纪念照片'}}</button><button wx:if="{{portrait}}" class="memorial-link" bindtap="removePortrait" disabled="{{busy}}">移除照片</button></view>
+     <text class="memorial-label">逝者姓名 *</text><input class="memorial-input" value="{{form.name}}" data-key="name" bindinput="input" maxlength="80" disabled="{{busy}}" aria-label="逝者姓名"/>
+     <view class="memorial-date-row"><view><text class="memorial-label">出生日期（选填）</text><picker mode="date" start="0001-01-01" end="{{today}}" value="{{form.birthDate}}" data-key="birthDate" bindchange="input" disabled="{{busy}}"><view class="memorial-input">{{form.birthDate||'选择日期'}}</view></picker></view><view><text class="memorial-label">逝世日期（选填）</text><picker mode="date" start="0001-01-01" end="{{today}}" value="{{form.deathDate}}" data-key="deathDate" bindchange="input" disabled="{{busy}}"><view class="memorial-input">{{form.deathDate||'选择日期'}}</view></picker></view></view>
+     <text class="memorial-label">生平回忆 *</text><textarea class="memorial-textarea" value="{{form.biography}}" data-key="biography" bindinput="input" maxlength="5000" placeholder="记录值得怀念的故事" disabled="{{busy}}" aria-label="生平回忆"/>
+     <text class="memorial-label">追思文字（选填）</text><textarea class="memorial-textarea" value="{{form.memories}}" data-key="memories" bindinput="input" maxlength="5000" placeholder="留下您想说的话" disabled="{{busy}}" aria-label="创建人的追思文字"/>
+     <text class="memorial-muted">公开资料请避免填写联系方式、证件号码和详细住址。</text>
+     <button id="memorial-save" class="memorial-button secondary" bindtap="saveDraft" disabled="{{busy}}">保存草稿</button>
+    </view>
+    <view class="memorial-card"><view class="memorial-title">家属授权核验</view><text class="memorial-muted">材料通过私有通道提交，由核验人员按授权范围查看。</text>
+     <view wx:if="{{hall.authorization}}" class="memorial-status">{{hall.authorization.current===false?'逝者资料已修改，请更新授权':hall.authorization.status==='verified'?'授权已核验':hall.authorization.status==='pending'?'授权待核验':hall.authorization.status==='revoked'?'授权已撤销':'授权需补充'}}<text wx:if="{{hall.authorization.response}}"> · {{hall.authorization.response}}</text></view>
+     <text class="memorial-label">与逝者的关系 *</text><input class="memorial-input" value="{{relationship}}" data-key="relationship" bindinput="input" maxlength="80" placeholder="如实填写亲属关系或授权身份" disabled="{{busy}}"/>
+     <text class="memorial-label">授权说明 *</text><textarea class="memorial-textarea" value="{{statement}}" data-key="statement" bindinput="input" maxlength="2000" placeholder="说明已取得的家属授权及材料核验范围" disabled="{{busy}}"/>
+     <button class="memorial-button secondary" bindtap="uploadProof" disabled="{{busy||!hall}}">{{proofReady?'更换核验材料':'上传必要的授权材料'}}</button><button wx:if="{{proofReady}}" class="memorial-link" bindtap="viewProof">查看本人提交的材料</button>
+     <button id="memorial-authorize" class="memorial-button secondary" bindtap="authorize" disabled="{{busy||!hall||!proofReady}}">提交授权核验</button>
+    </view>
+    <view class="memorial-card"><view class="memorial-title">资料展示范围</view><view class="memorial-public-choice"><view><text>申请公开展示</text><text class="memorial-muted">审核通过且专区开放后，可被搜索和浏览。</text></view><switch color="{{themeColor}}" checked="{{publicRequested}}" bindchange="publicChanged" disabled="{{busy}}"/></view><text wx:if="{{!publicRequested}}" class="memorial-muted">当前选择仅供本人管理，通过审核后继续保留此范围。</text>
+     <checkbox-group bindchange="consentChanged"><label class="memorial-consent"><checkbox value="agree" checked="{{agreed}}" color="{{themeColor}}" disabled="{{busy}}"/><text>本人已取得必要授权，并确认本次资料内容及展示范围。</text></label></checkbox-group><button class="memorial-link" bindtap="readPolicy">阅读纪念馆创建与资料处理说明</button>
+     <button id="memorial-submit" class="memorial-button" bindtap="submit" disabled="{{busy||!hall||!agreed}}">确认并提交审核</button>
+    </view>
+    <view wx:if="{{hall}}" class="memorial-management"><button class="memorial-link" data-action="hide" bindtap="ownerAction" disabled="{{busy}}">隐藏纪念馆</button><button class="memorial-link" data-action="delete" bindtap="ownerAction" disabled="{{busy}}">删除纪念馆</button></view>
+   </block>
+  </block>
+  <block wx:elif="{{mode==='detail'&&hall}}">
+   <view class="memorial-motto">✾　生命值得铭记 · 思念永不褪色</view>
+   <view class="memorial-card remembrance"><image wx:if="{{portrait}}" class="memorial-portrait" src="{{portrait}}" mode="aspectFill"/><view wx:else class="memorial-person" aria-hidden="true"></view><view class="memorial-heading">永远怀念</view><view class="memorial-name">{{hall.name}}</view><text class="memorial-muted">{{hall.birthDate}}{{hall.birthDate&&hall.deathDate?' — ':''}}{{hall.deathDate}}</text><view class="memorial-rule"></view><text class="memorial-biography" selectable="true">{{hall.biography}}</text></view>
+   <view class="tribute-actions"><button class="memorial-entry" data-kind="flower" bindtap="tribute" disabled="{{busy}}"><text class="tribute-symbol" aria-hidden="true">✾</text><text>献上一束花</text></button><button class="memorial-entry" data-kind="candle" bindtap="tribute" disabled="{{busy}}"><view class="memorial-candle" aria-hidden="true"></view><text>点亮烛光</text></button></view>
+   <view wx:if="{{tributeFeedback}}" class="memorial-status" role="status">{{tributeFeedback}}</view>
+   <view wx:if="{{hall.memories}}" class="memorial-card"><view class="memorial-title">留存思念</view><text class="memorial-biography" selectable="true">{{hall.memories}}</text></view>
+   <view class="memorial-card"><view class="memorial-title">寄托思念</view><button wx:for="{{blessings}}" wx:key="code" class="blessing-choice" data-kind="blessing" data-code="{{item.code}}" bindtap="tribute" disabled="{{busy}}">{{item.text}}</button><text class="memorial-muted">献花、点烛及固定追思祝福均免费。</text></view>
+   <button class="memorial-link" bindtap="toggleReport">举报或近亲属权利请求</button>
+   <view wx:if="{{reportOpen}}" class="memorial-card"><view class="memorial-title">提交核查请求</view><picker range="{{reportKinds}}" value="{{reportIndex}}" bindchange="reportType"><view class="memorial-input">{{reportKinds[reportIndex]}} ›</view></picker><textarea class="memorial-textarea" value="{{reportReason}}" data-key="reportReason" bindinput="input" maxlength="1000" placeholder="说明核查事项及请求范围，至少8字"/><button class="memorial-button" bindtap="sendReport" disabled="{{busy}}">提交平台核查</button></view>
+   <view class="memorial-footer">静静怀念 · 思念长存</view>
+  </block>
+  <block wx:elif="{{mode==='browse'||mode==='manage'}}">
+   <view wx:if="{{mode==='browse'}}" class="memorial-card"><input class="memorial-input" value="{{query}}" data-key="query" bindinput="input" bindconfirm="search" placeholder="查找已公开的纪念馆"/><button class="memorial-button secondary" bindtap="search">查找纪念馆</button></view>
+   <button wx:if="{{mode==='manage'}}" class="memorial-button" bindtap="openCreate">创建纪念馆</button>
+   <view wx:for="{{items}}" wx:key="id" class="memorial-card"><view class="memorial-title">{{item.name}}</view><text class="memorial-muted">{{mode==='manage'?item.statusText:item.birthDate}}{{mode==='browse'&&item.birthDate&&item.deathDate?' — ':''}}{{mode==='browse'?item.deathDate:''}}</text><text wx:if="{{item.response}}" class="memorial-muted">{{item.response}}</text><button wx:if="{{mode==='manage'&&item.status!=='deleted'}}" class="memorial-link" data-id="{{item.id}}" bindtap="openOwn">资料、授权与展示管理 ›</button><button wx:if="{{mode==='browse'}}" class="memorial-link" data-id="{{item.id}}" bindtap="openHall">进入纪念馆 ›</button></view>
+   <feedback-state wx:if="{{!loading&&!items.length&&!error}}" kind="empty" title="{{mode==='manage'?'还没有创建纪念馆':'暂时没有匹配的公开纪念馆'}}" description="{{mode==='manage'?'为亲友留存珍贵回忆。':'可以更换姓名关键词查找。'}}"/>
+   <button wx:if="{{hasMore}}" class="memorial-button secondary" bindtap="more" disabled="{{loading}}">继续查看</button>
+   <view wx:if="{{mode==='manage'&&reports.length}}" class="memorial-card"><view class="memorial-title">本人核查请求</view><view wx:for="{{reports}}" wx:key="id" class="memorial-request"><text>{{item.status==='pending'?'待核查':item.status==='resolved'?'已有处理答复':'已有核查说明'}}</text><text class="memorial-muted">{{item.response||'平台将核对后在此答复。'}}</text></view></view>
+  </block>
+ </view>
+</view>

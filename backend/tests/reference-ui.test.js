@@ -25,6 +25,6 @@ test('home and the category directory use the same runtime icon palette',()=>{
   assert.ok(markup.includes('{{item.icon}}-{{iconPalette}}.png'));
  }
  const app=require('../../miniprogram/app.json');
- assert.equal(app.pages.length,27);
+ assert.equal(app.pages.length,28);
  assert.equal(app.usingComponents['brand-scene'],'/components/brand-scene/index');
 });

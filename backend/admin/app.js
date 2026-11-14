@@ -97,6 +97,7 @@ async function process(url,data,description){if(!await adminConfirm('确定执�
 async function reload(){
  if(canAdmin('operations')&&typeof loadHomeConsole==='function')await loadHomeConsole();
  if(typeof loadWorkflowConsole==='function')await loadWorkflowConsole();
+ if(typeof loadMemorialConsole==='function')await loadMemorialConsole();
  await loadTasks();
  if(canAdmin('operations'))await loadPointsRules();else el('points-rules').replaceChildren();
  const [stats,queue,config,comments,privacy,trust,projectCatalog]=await Promise.all([api('/admin/api/stats'),api('/admin/api/queue'),api('/admin/api/catalog'),canAdmin('operations')?api('/admin/api/comments'):Promise.resolve({items:[]}),canAdmin('privacy')?api('/admin/api/privacy-requests'):Promise.resolve({items:[]}),api('/admin/api/trust'),api('/admin/api/trust/classification')]);

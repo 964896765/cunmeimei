@@ -177,7 +177,9 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
    assert.ok(!(await req('/api/v1/feed?type=service')).data.items.some(x=>x.id===sid));
    await pool.query("UPDATE verified_merchants SET status='active' WHERE id=$1",[mid]);
    await req('/api/v1/merchants/'+mid+'/services/'+sid,'PUT',{...value,imageIds:[]},owner);
-   assert.equal((await req('/api/v1/me/media/'+photo.id,'DELETE',{},owner)).status,200);
+   // The submitted image remains part of the immutable publication confirmation archive.
+   assert.equal((await req('/api/v1/me/media/'+photo.id,'DELETE',{},owner)).status,409);
+   assert.equal((await fetch(base+photo.url)).status,404);
   });
   await t.test('editing preserves existing photos, attributes and re-hides public image',async()=>{
    assert.equal((await req('/api/v1/me/publications/'+publication.id,'PUT',{...payload,expectedRevision:1,title:'测试专用已修改书桌'},owner)).status,200);

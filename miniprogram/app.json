@@ -26,7 +26,8 @@
     "pages/industry/index",
     "pages/login/index",
     "pages/legal/index",
-    "pages/business/index"
+    "pages/business/index",
+    "pages/memorial/index"
   ],
   "window": {
     "navigationBarTitleText": "青方睐村美美",

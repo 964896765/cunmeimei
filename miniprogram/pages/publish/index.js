@@ -12,6 +12,12 @@ const projectVisuals={
  C04G01S03:{icon:'project-tablet',summary:'iPad、平板电脑等'},
  C04G01S04:{icon:'project-headphones',summary:'耳机、充电器、配件等'}
 };
+function publicationCategories(settings) {
+ const items = registry.categoryItems(settings);
+ const finalCategories = ['C08', 'C09', 'C10', 'C23'];
+ return items.filter(item => !finalCategories.includes(item.id))
+  .concat(finalCategories.map(id => items.find(item => item.id === id)).filter(Boolean));
+}
 function directory(categoryId, preferredGroup = '', settings = {}) {
  const projects = readiness.decorate(registry.searchProjects(categoryId), settings.categories, settings.features);
  const groups = [];
@@ -43,7 +49,7 @@ function directory(categoryId, preferredGroup = '', settings = {}) {
  return {projects,groups,expandedGroupId,selectedCategoryName:registry.categories.find(item=>item.id===categoryId)?.name||'',selectedCategoryIcon:'industry-'+categoryId};
 }
 Page({
- data:{toolsOpen:false,industryAtEnd:false,draftCount:null,projectCount:registry.projects.length,configLoading:true,configReady:false,focusedProjectId:'',categories:registry.categoryItems(),selectedCategory:'C04',projectScrollTop:0,industryScrollTop:0,industryAnchor:'',projectSearchOpen:false,projectSearchFocused:false,searchHasQuery:false,searchScrollTop:0,projectQuery:'',...directory('C04'),districts:[],error:'',online:api.online()},
+ data:{toolsOpen:false,industryAtEnd:false,draftCount:null,projectCount:registry.projects.length,configLoading:true,configReady:false,focusedProjectId:'',memorialPublic:false,categories:publicationCategories(),selectedCategory:'C04',projectScrollTop:0,industryScrollTop:0,industryAnchor:'',projectSearchOpen:false,projectSearchFocused:false,searchHasQuery:false,searchScrollTop:0,projectQuery:'',...directory('C04'),districts:[],error:'',online:api.online()},
  onShow(){this._disposed=false;this._hidden=false;require('../../utils/theme').apply(this);this.loadDraftCount();const target=getApp().globalData.publishTarget;delete getApp().globalData.publishTarget;const node=registry.find(target?.id);if(node){const project=registry.projects.find(x=>x.id===node.id),categoryId=project?.categoryId||registry.categories.find(c=>c.id===node.id||c.groups.some(g=>g.id===node.id))?.id;if(categoryId)this.setData({selectedCategory:categoryId,focusedProjectId:project?.id||'',industryAnchor:'industry-'+categoryId,...directory(categoryId,project?.groupId||node.id,this._availability)});}return this.loadConfig();},
  async loadDraftCount() {
   const tabs = require('../../utils/tab-bar');
@@ -57,7 +63,7 @@ Page({
    if (!this._disposed && !this._hidden && version === this._draftVersion && owner === tabs.context()) this.setData({draftCount:null});
   }
  },
- async loadConfig(){this.setData({configLoading:true});const version=this._configVersion=(this._configVersion||0)+1;try{const c=await api.request('GET','/api/v1/config');if(this._disposed||version!==this._configVersion)return;this._availability=c;this.setData({configReady:true,categories:registry.categoryItems(c.categories),districts:c.areas||[],...directory(this.data.selectedCategory,this.data.expandedGroupId,c),...(this.data.searchHasQuery?{projects:readiness.decorate(registry.searchProjects(this.data.selectedCategory,this.data.projectQuery),c.categories,c.features)}:{}),error:''});}catch(e){if(!this._disposed&&version===this._configVersion)this.setData({configReady:false,error:e.message});}finally{if(!this._disposed&&version===this._configVersion)this.setData({configLoading:false});}},
+ async loadConfig(){this.setData({configLoading:true});const version=this._configVersion=(this._configVersion||0)+1;try{const c=await api.request('GET','/api/v1/config');if(this._disposed||version!==this._configVersion)return;this._availability=c;this.setData({configReady:true,memorialPublic:c.features?.memorialPublic===true,categories:publicationCategories(c.categories),districts:c.areas||[],...directory(this.data.selectedCategory,this.data.expandedGroupId,c),...(this.data.searchHasQuery?{projects:readiness.decorate(registry.searchProjects(this.data.selectedCategory,this.data.projectQuery),c.categories,c.features)}:{}),error:''});}catch(e){if(!this._disposed&&version===this._configVersion)this.setData({configReady:false,error:e.message});}finally{if(!this._disposed&&version===this._configVersion)this.setData({configLoading:false});}},
  onHide(){this._hidden=true;},
  onUnload(){this._disposed=true;this._configVersion=(this._configVersion||0)+1;},
  showHelp(){this.setData({toolsOpen:false});wx.showModal({title:'发布常见问题',content:'选择行业后查看细分类目和发布条件。居民信息提交后由平台审核，企业招聘和专项服务需要主体或资质核验。未完成的内容可保存到草稿箱，审核进度可在发布进度中查询。',showCancel:false,confirmText:'知道了'});},
@@ -70,6 +76,7 @@ Page({
  searchProjects(e){const q=e.detail.value.slice(0,80);if(!q.trim()){this.clearProjectSearch();return;}this.setData({projectQuery:q,searchHasQuery:!!q.trim(),projects:readiness.decorate(registry.searchProjects(this.data.selectedCategory,q),this._availability?.categories,this._availability?.features),searchScrollTop:1},()=>this.setData({searchScrollTop:0}));},
  applyProjectSelection(project){this._directoryPosition=null;this._projectOffset=0;this.setData({selectedCategory:project.categoryId,projectSearchOpen:false,projectSearchFocused:false,projectQuery:'',searchHasQuery:false,...directory(project.categoryId,project.groupId,this._availability),industryAnchor:'industry-'+project.categoryId,projectScrollTop:0});},
  async chooseProject(e){const project=registry.projects.find(x=>x.id===e.currentTarget.dataset.id);if(!project||this.choosingProject)return;if(!this.data.configReady){await this.loadConfig();if(!this.data.configReady){api.showError(Error('发布配置暂不可用，请重试后再选择项目'));return;}}if(this._disposed||this._hidden)return;const s=readiness.state(project.id,this._availability?.categories,this._availability?.features);if(!s.canStart){wx.showModal({title:s.label,content:s.reason+' 可先浏览该行业的公开信息。',confirmText:'浏览信息',success:r=>{if(r.confirm&&!this._disposed)require('../../utils/navigation').discoverIndustry(project.categoryId);}});return;}this.applyProjectSelection(project);if(s.route==='industry'){wx.navigateTo({url:'/pages/industry/index?projectId='+project.id});return;}this.choosingProject=true;try{await require('../../utils/verification').selectProject(project.id);}catch(e){api.showError(e);}finally{this.choosingProject=false;}},
+ openMemorial(){if(this.data.memorialPublic)wx.navigateTo({url:'/pages/memorial/index'});},
  toggleTools(){this.setData({toolsOpen:!this.data.toolsOpen});},
  scrollIndustryDown(){if(!this.data.industryAtEnd)this.setData({industryScrollTop:(this._industryOffset||0)+280});},
  industryEnd(){this.setData({industryAtEnd:true});},

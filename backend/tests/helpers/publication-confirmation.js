@@ -18,7 +18,7 @@ function completedSectorChecks() {
 }
 function acceptedFixtureRequest(route,method,value) {
  if(!value||typeof value!=='object')return value;
- const publication = method==='POST'&&route==='/api/v1/publications' || method==='PUT'&&/^\/api\/v1\/me\/publications\//.test(route);
+ const publication = method==='POST'&&route==='/api/v1/publications' || method==='PUT'&&/^\/api\/v1\/me\/publications\/[0-9a-f-]{36}$/i.test(route);
  const service = ['POST','PUT'].includes(method)&&/^\/api\/v1\/merchants\/[^/]+\/services(?:\/[^/]+)?$/.test(route);
  const submission = /\/api\/v1\/industry\/entries/.test(route)&&value.action==='submit' || /\/services\/[^/]+\/action$/.test(route)&&value.action==='resubmit';
  if(publication||service||submission)value=acceptedPublication(value);

@@ -4,7 +4,7 @@ const WebSocket=require('../backend/node_modules/ws');
 module.exports=async function browser(){
  const executable='C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';if(!fs.existsSync(executable))throw Error('Local Edge browser is required for UI acceptance');
  const profile=fs.mkdtempSync(path.join(os.tmpdir(),'citylife-browser-'));
- const child=spawn(executable,['--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{windowsHide:true,stdio:['ignore','ignore','pipe'],env:{...process.env,DATABASE_URL:'',PG_TEST_DATABASE_URL:'',ADMIN_PASSWORD:'',VERIFICATION_ADMIN_PASSWORD:'',WECHAT_SECRET:''}});
+ const child=spawn(executable,['--edge-skip-compat-layer-relaunch','--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{windowsHide:true,stdio:['ignore','ignore','pipe'],env:{...process.env,DATABASE_URL:'',PG_TEST_DATABASE_URL:'',ADMIN_PASSWORD:'',VERIFICATION_ADMIN_PASSWORD:'',WECHAT_SECRET:''}});
  let ws,seq=0;const pending=new Map();
  async function close(){
   if(ws){try{ws.send(JSON.stringify({id:++seq,method:'Browser.close'}));}catch{}ws.close();}

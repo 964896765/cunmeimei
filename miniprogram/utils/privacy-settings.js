@@ -55,7 +55,7 @@ module.exports={
    await fileCall('writeFile',{filePath,data:JSON.stringify({format:'personal-data-v1',notice:'仅含本人资料及本人创作内容；不含他人消息、真实号码和登录凭据。'})+'\n',encoding:'utf8'});
    fileCreated=true;
    let totalCharacters=0;
-   for(const section of ['business_cases','business_case_events','industry_service_links','login_consents','phone_authorizations','benefit_orders','promotions','industry_entries','industry_responses','industry_credentials','industry_reports','profile','home_reports','bookings','booking_submissions','publications','draft','favorites','contacts','messages','points','rewards','reward_appeals','privacy','consent']){
+   for(const section of ['memorial_halls','memorial_authorizations','memorial_tributes','memorial_reports','business_cases','business_case_events','industry_service_links','login_consents','phone_authorizations','benefit_orders','promotions','industry_entries','industry_responses','industry_credentials','industry_reports','profile','home_reports','bookings','booking_submissions','publications','draft','favorites','contacts','messages','points','rewards','reward_appeals','privacy','consent']){
     let cursor=null,pages=0;
     do{
      assertLive();const result=await api.request('GET','/api/v1/me/data-export?section='+section+(cursor?'&cursor='+encodeURIComponent(cursor):''),null,true);assertLive();

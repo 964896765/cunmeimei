@@ -62,10 +62,16 @@ async function uploadLicense(applicationId,buffer,contentType,expectedContext){
  if(contentType&&actualType!==contentType)throw Error('图片格式与文件类型不一致，请重新选择');
  return authenticated(token=>raw('POST','/api/v1/merchant-applications/'+encodeURIComponent(applicationId)+'/license',buffer,token,{contentType:actualType,timeout:15000}),guard);
 }
+async function uploadMemorialProof(hallId,filePath){
+ const guard=sessionGuard(undefined,true);
+ const data=await new Promise((resolve,reject)=>wx.getFileSystemManager().readFile({filePath,success:r=>resolve(r.data),fail:()=>reject(Error('无法读取材料图片'))}));
+ const contentType=imageType(data);guard.check();
+ return authenticated(token=>raw('POST','/api/v1/memorial/halls/'+encodeURIComponent(hallId)+'/proofs',data,token,{contentType,timeout:15000}),guard);
+}
 function hasSession(){const expiry=Number(wx.getStorageSync(EXPIRY)||0);return !!wx.getStorageSync(KEY)&&(!expiry||expiry>Date.now());}
 async function logout(){const started=identity();sessionVersion++;signInPromise=null;require('./auth-intent').cancel();require('./auth-intent').cancelPhone();let serverRevoked=!started.token;try{if(started.token)await raw('POST','/api/v1/auth/logout',{},started.token);serverRevoked=true;}catch(e){if(['SESSION_EXPIRED','LOGIN_REQUIRED'].includes(e.code))serverRevoked=true;}finally{const current=identity();if(current.owner===started.owner&&current.token===started.token&&!signInPromise){wx.removeStorageSync(KEY);wx.removeStorageSync('city_life_user_id');wx.removeStorageSync(EXPIRY);}}return {serverRevoked};}
 function showError(e){wx.showToast({title:e.message||'请求失败',icon:'none',duration:2500});}
-module.exports={online,request,login,completeLogin,logout,hasSession,uploadLicense,showError};
+module.exports={online,request,login,completeLogin,logout,hasSession,uploadLicense,uploadMemorialProof,showError};
 
 async function uploadImage(filePath,expectedOwner){
  if(!online())throw Error('仅服务端模式允许上传');
@@ -78,10 +84,10 @@ async function uploadImage(filePath,expectedOwner){
 module.exports.uploadImage=uploadImage;
 
 function discardDownload(filePath){try{wx.getFileSystemManager().unlink({filePath,fail(){}});}catch{}}
-async function privateImage(id){
+async function privateImage(id,route='/api/v1/media/'){
  const guard=sessionGuard(),temporary=new Set();let kept='';
  try{
-  const url=baseUrl()+'/api/v1/media/'+encodeURIComponent(id);
+  const url=baseUrl()+route+encodeURIComponent(id);
   const result=await authenticated(token=>new Promise((resolve,reject)=>wx.downloadFile({url,timeout:15000,header:{Authorization:'Bearer '+token},success:r=>{
    if(r.tempFilePath)temporary.add(r.tempFilePath);
    if(r.statusCode===200&&r.tempFilePath){resolve(r.tempFilePath);return;}
@@ -91,3 +97,5 @@ async function privateImage(id){
  }finally{for(const filePath of temporary)if(filePath!==kept)discardDownload(filePath);}
 }
 module.exports.privateImage=privateImage;
+
+module.exports.privateMemorialProof=id=>privateImage(id,'/api/v1/memorial/me/proofs/');

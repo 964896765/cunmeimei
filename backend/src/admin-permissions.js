@@ -28,6 +28,11 @@ function taskPermission(kind) {
 }
 // Every admin route must have an explicit method and path entry. New routes fail closed.
 const routes = [
+  ['GET', /^\/admin\/api\/memorial\/queue$/, 'qualification-or-operations'],
+  ['GET', /^\/admin\/api\/memorial\/(?:authorizations|proofs)\/[0-9a-f-]{36}$/i, 'qualification'],
+  ['POST', /^\/admin\/api\/memorial\/authorizations\/[0-9a-f-]{36}$/i, 'qualification'],
+  ['GET', /^\/admin\/api\/memorial\/halls\/[0-9a-f-]{36}$/i, 'operations'],
+  ['POST', /^\/admin\/api\/memorial\/(?:halls|reports)\/[0-9a-f-]{36}$/i, 'operations'],
   ['GET', /^\/admin\/api\/publication-records\/[0-9a-f-]{36}$/i, 'operations'],
   [
     'GET',

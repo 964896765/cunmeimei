@@ -55,7 +55,7 @@ test('unavailable industry supply closes pending bookings through worker, lists 
         projectId: project.id, title: '隔离可预约供给', detail: '核对待确认预约与原服务的关联处理',
         cityCode: '441900', districtCode: '441900003', district: '中心街道', price: '80',
         fields: Object.fromEntries(workflow.fields.map(field => [field.key, '隔离服务范围与条款'])),
-        imageIds: [], clientKey: 'entry_' + ticket(), action: 'submit'
+        imageIds: [], clientKey: 'entry_' + ticket(), action: 'submit', publicationConsent: acceptedConsent()
       });
       await repo.reviewIndustryEntry(entry.id,{...completedSectorChecks(),
         revision: 1, status: 'published', textReviewed: true, scopeReviewed: true,
