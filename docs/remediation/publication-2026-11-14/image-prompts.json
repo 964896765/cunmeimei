@@ -1,0 +1,63 @@
+{
+  "tool": "built-in image_gen",
+  "source": "C:/Users/chejun/.codex/generated_images/01a1c364-2dee-7822-9f48-157ec4c09dff/exec-dd2bd919-a96e-4d9b-928f-849486c25bf9.png",
+  "generationPrompt": "Create one production UI illustration sprite atlas for a Chinese local-life mini program, a single transparent PNG canvas with exactly 3 columns by 2 rows of equal cells and generous transparent gutters. Canvas aspect ratio 3:2, six separate standalone small 3D clay/plastic objects, each centered inside its own cell, never touching cell boundaries, consistent scale, pearl white and blush peach/rose/lavender palette, soft natural studio lighting, polished restrained friendly premium app style. Top-left cell a small cream house with rose tiled gable roof and warm lit windows. Top-middle cell a blush armchair with a slim peach floor lamp on the right. Top-right cell a keyring with two silver keys and a peach miniature house keychain. Bottom-left cell a wide two-seat blush sofa with small ottoman, distinct from the armchair. Bottom-middle cell a mid-rise pearl lavender apartment building with balconies seen in gentle isometric perspective. Bottom-right cell a modern low-rise pearl pink residential building with a couple of stylized flowering pink trees, suited to a category-header decoration. Transparent background throughout, subtle contact shadows only. No text, letters, labels, badges, border, app mockup, people, watermarks or large backdrop. The six illustrations will be sliced deterministically into six equal cells and used as miniature category art, so exact isolated 3x2 grid placement is essential. Reference style is softly lit pink 3D house, furniture and keys on pearl-blush category cards.",
+  "finalEditPrompt": "Edit this six-object 3 by 2 sprite atlas. Remove ALL white background and white matte everywhere around every object. Deliver genuinely transparent alpha background, with no rectangular white tiles, no white floor, no white halo. Keep the six objects, exact cell positions, their pastel colors and soft 3D style. Preserve the 1536 by 1024 canvas and exact equal 512 by 512 cell layout. Keep only the objects and faint semi-transparent contact shadows. All empty spaces including corners, gutters, between chair and lamp, and between keys must be transparent. Object shapes, sizes and positions must remain identical for deterministic cell extraction.",
+  "transparentBackground": true,
+  "assets": [
+    {
+      "file": "C:\\Users\\chejun\\Desktop\\city-life-miniapp\\miniprogram\\assets\\publish\\new-home.png",
+      "sourceCell": {
+        "column": 0,
+        "row": 0
+      },
+      "width": 216,
+      "height": 216
+    },
+    {
+      "file": "C:\\Users\\chejun\\Desktop\\city-life-miniapp\\miniprogram\\assets\\publish\\resale.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 0
+      },
+      "width": 216,
+      "height": 216
+    },
+    {
+      "file": "C:\\Users\\chejun\\Desktop\\city-life-miniapp\\miniprogram\\assets\\publish\\keys.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 0
+      },
+      "width": 216,
+      "height": 216
+    },
+    {
+      "file": "C:\\Users\\chejun\\Desktop\\city-life-miniapp\\miniprogram\\assets\\publish\\shared-home.png",
+      "sourceCell": {
+        "column": 0,
+        "row": 1
+      },
+      "width": 216,
+      "height": 216
+    },
+    {
+      "file": "C:\\Users\\chejun\\Desktop\\city-life-miniapp\\miniprogram\\assets\\publish\\apartment.png",
+      "sourceCell": {
+        "column": 1,
+        "row": 1
+      },
+      "width": 216,
+      "height": 216
+    },
+    {
+      "file": "C:\\Users\\chejun\\Desktop\\city-life-miniapp\\miniprogram\\assets\\publish\\header.png",
+      "sourceCell": {
+        "column": 2,
+        "row": 1
+      },
+      "width": 216,
+      "height": 216
+    }
+  ]
+}

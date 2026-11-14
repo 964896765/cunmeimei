@@ -57,6 +57,7 @@ function attachProductRepository(repo,pool){
  repo.listFeed=async args=>decorate(await oldFeed(args));
  repo.getItem=async(id,{includeTest=false}={})=>{const marker=await one('SELECT is_test FROM publications WHERE id=$1 UNION ALL SELECT is_test FROM service_catalog WHERE id=$1 UNION ALL SELECT is_test FROM verified_merchants WHERE id=$1',[id]);if(marker?.is_test&&!includeTest)return null;let item=await oldItem(id);if(!item){const m=await one("SELECT m.* FROM verified_merchants m JOIN service_regions r ON r.name=m.district AND r.enabled WHERE m.id=$1 AND m.status='active'",[id]);if(m){item={id:m.id,type:'merchant',kind:'merchant',title:m.name,description:m.category,desc:m.category,detail:m.category,district:m.district,category:'本地商家',price:'',createdAt:m.created_at,services:(await query("SELECT id,title,price FROM service_catalog WHERE merchant_id=$1 AND status='published' AND public_service_source_ok(id) ORDER BY created_at DESC",[id])).rows};}}return item?(await decorate([item]))[0]:null;};
  repo.createPublication=async(uid,v)=>tx(async c=>{
+  require('./publication-notice').validate(v.publicationConsent);
   await c.query('SELECT pg_advisory_xact_lock(hashtext($1))',['draft:'+uid]);
   if(v.clientKey){await c.query('SELECT pg_advisory_xact_lock(hashtext($1))',['publication:'+uid+':'+v.clientKey]);const replay=(await c.query('SELECT * FROM publications WHERE user_id=$1 AND client_key=$2',[uid,v.clientKey])).rows[0];if(replay){if(replay.title!==v.title||replay.description!==v.description||replay.type!==v.type||replay.price!==v.price||replay.district!==v.district||!require('node:util').isDeepStrictEqual(replay.attributes,v.attributes||{})||!require('node:util').isDeepStrictEqual(replay.image_ids,v.imageIds||[]))throw new ApiError(409,'REQUEST_KEY_REUSED','提交标识已用于其他内容，请重新打开表单');return {...replay,userId:replay.user_id,detail:replay.description,imageIds:replay.image_ids};}}
   const trust=await require('./trust-repository').guard(c,uid,'publish',{...v,newSubmission:true},repo.trustOptions||{});
@@ -70,6 +71,7 @@ function attachProductRepository(repo,pool){
   const x=(await c.query(`INSERT INTO publications(user_id,type,title,description,district,price,attributes,image_ids,expires_at,is_test,client_key)
     VALUES($1,$2,$3,$4,$5,$6,$7,$8,now()+interval '60 days',$9,$10) RETURNING *`,[uid,v.type,v.title,v.description,v.district,v.price,v.attributes||{},ids,!!v.isTest,v.clientKey||null])).rows[0];
   await require('./trust-repository').persistContact(c,uid,x.id,v.contactSettings||{});
+  await require('./publication-records').persist(c,uid,x,v.publicationConsent,{contactSettings:require('./trust-policy').contactSettings(v.contactSettings||{})});
   const signals=require('./trust-policy').signals(v.title+' '+v.description);
   if((await c.query("SELECT 1 FROM publications WHERE id<>$1 AND title=$2 AND description=$3 AND created_at>now()-interval '7 days' LIMIT 1",[x.id,v.title,v.description])).rows.length)signals.push('duplicate_content');
   if((await c.query('SELECT 1 FROM content_images a JOIN content_images b ON a.content_sha256=b.content_sha256 AND a.id<>b.id WHERE a.id=ANY($1::uuid[]) LIMIT 1',[ids])).rows.length)signals.push('duplicate_image');
@@ -83,6 +85,7 @@ function attachProductRepository(repo,pool){
  });
  // Updating structured fields, photos and moderation state is one owner-locked transaction.
  repo.updatePublication=async(uid,id,v,revision)=>tx(async c=>{
+  require('./publication-notice').validate(v.publicationConsent);
   // Match account lifecycle lock order before locking the publication.
   await c.query('SELECT id FROM app_users WHERE id=$1 FOR NO KEY UPDATE',[uid]);
   const current=(await c.query('SELECT * FROM publications WHERE id=$1 AND user_id=$2 FOR UPDATE',[id,uid])).rows[0];
@@ -94,6 +97,8 @@ function attachProductRepository(repo,pool){
   const photos=await c.query('SELECT id FROM content_images WHERE user_id=$1 AND id=ANY($2::uuid[]) FOR SHARE',[uid,ids]);
   if(photos.rows.length!==ids.length)throw new ApiError(400,'IMAGE_NOT_OWNED','图片无效或不属于当前用户');
   const row=(await c.query(`UPDATE publications SET title=$3,description=$4,district=$5,price=$6,attributes=$7,image_ids=$8,status='pending',moderation_reason='',reviewed_at=NULL,revision=revision+1,updated_at=now(),expires_at=now()+interval '60 days' WHERE id=$1 AND user_id=$2 RETURNING *`,[id,uid,v.title,v.description,v.district,v.price,extras.attributes,ids])).rows[0];
+  const contacts=(await c.query('SELECT public_phone AS "publicPhone",allow_messages AS "allowMessages" FROM publication_contact_settings WHERE publication_id=$1',[id])).rows[0]||{};
+  await require('./publication-records').persist(c,uid,row,v.publicationConsent,{contactSettings:contacts});
   const signals=require('./trust-policy').signals(v.title+' '+v.description+' '+JSON.stringify(extras.attributes));
   if((await c.query("SELECT 1 FROM publications WHERE id<>$1 AND title=$2 AND description=$3 AND created_at>now()-interval '7 days' LIMIT 1",[id,v.title,v.description])).rows.length)signals.push('duplicate_content');
   if(ids.length)signals.push('image_manual_review_required');
@@ -111,6 +116,7 @@ function attachProductRepository(repo,pool){
   const photos=await c.query('SELECT id FROM content_images WHERE id=ANY($2::uuid[]) AND (user_id=$1 OR id=ANY($3::uuid[])) FOR SHARE',[uid,ids,current.image_ids]);
   if(photos.rows.length!==ids.length)throw new ApiError(400,'IMAGE_NOT_OWNED','图片无效或不属于当前服务');
   const row=(await c.query("UPDATE service_catalog SET title=$3,description=$4,price=$5,image_ids=$6,status='pending_review' WHERE id=$1 AND merchant_id=$2 RETURNING *",[id,mid,v.title,v.description,v.price,ids])).rows[0];
+  if(row)await require('./publication-records').persist(c,uid,row,v.publicationConsent,{kind:'service'});
   if(!row)return false;await c.query("INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES('service_edit_resubmitted','service',$1,'商家编辑后重新审核')",[id]);return row;
  });
  const oldManaged=repo.myManagedMerchants;
@@ -159,6 +165,7 @@ function attachProductRepository(repo,pool){
   const x=await c.query('SELECT id FROM content_images WHERE id=$1 AND user_id=$2 FOR UPDATE',[id,uid]);if(!x.rows.length)return false;
   if((await c.query('SELECT id FROM app_users WHERE avatar_image_id=$1 LIMIT 1',[id])).rows.length)return false;
   const refs=await c.query('SELECT id FROM publications WHERE $1=ANY(image_ids) LIMIT 1',[id]);if(refs.rows.length)return false;
+  if((await c.query("SELECT 1 FROM publication_confirmations WHERE content_snapshot->'imageIds' ? $1::text LIMIT 1",[id])).rows.length)return false;
   if((await c.query('SELECT user_id FROM account_drafts WHERE $1=ANY(image_ids) LIMIT 1',[id])).rows.length)return false;
   if((await c.query('SELECT id FROM service_catalog WHERE $1=ANY(image_ids) LIMIT 1',[id])).rows.length)return false;
   await c.query('DELETE FROM content_images WHERE id=$1',[id]);return true;

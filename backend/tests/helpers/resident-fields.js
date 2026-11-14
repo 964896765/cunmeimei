@@ -23,6 +23,7 @@ function residentFields(kind = 'used', imageIds = ['00000000-0000-4000-8000-0000
   if (kind === 'housing')
     Object.assign(attributes, { intent: '出租', area: '80', layout: '两室一厅' });
   return {
+    publicationConsent:require('./publication-confirmation').acceptedConsent(),
     attributes,
     imageIds: kind === 'used' ? imageIds : []
   };

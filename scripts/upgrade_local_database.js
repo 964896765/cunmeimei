@@ -25,7 +25,8 @@ async function fingerprint(pool,columns,{ignoreHistory=false}={}){
  const toolUrl=new URL(target.dsn);toolUrl.port='5432';const drillUrl=new URL(target.dsn);drillUrl.pathname='/'+name;const drillToolUrl=new URL(toolUrl);drillToolUrl.pathname='/'+name;
  const report={scope:'local development only',database:'citylife_dev',status:'running',checkedAt:new Date().toISOString(),backupFile:file};
  let lock,drill,created=false,transaction=false,stage='inspect';
- const reportPath=path.resolve(__dirname,process.argv.includes('--login')?'../docs/login-v1/local-upgrade.json':process.argv.includes('--workflows')?'../docs/business-workflows/local-upgrade.json':'../docs/product-polish/local-upgrade.json');fs.mkdirSync(path.dirname(reportPath),{recursive:true});
+ const reportIndex=process.argv.indexOf('--report');if(reportIndex>=0&&!process.argv[reportIndex+1])throw Error('Expected a report file path');
+ const reportPath=reportIndex>=0?path.resolve(process.argv[reportIndex+1]):path.resolve(__dirname,process.argv.includes('--login')?'../docs/login-v1/local-upgrade.json':process.argv.includes('--workflows')?'../docs/business-workflows/local-upgrade.json':'../docs/product-polish/local-upgrade.json');fs.mkdirSync(path.dirname(reportPath),{recursive:true});
  try{
   lock=await source.connect();await lock.query("SELECT pg_advisory_lock(hashtext('citylife-local-safe-upgrade'))");
   const status=await migrations.checkMigrations(source);assert.deepEqual(status.altered,[]);assert.deepEqual(status.unexpected,[]);

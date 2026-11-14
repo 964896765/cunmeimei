@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -17,7 +18,7 @@ async function fixture(t) {
     const response=await fetch(base+route,{
       method,
       headers:{'Content-Type':'application/json', ...(credentials.token?{Authorization:'Bearer '+credentials.token}:{}), ...(credentials.cookie?{Cookie:credentials.cookie}:{}), ...(credentials.csrf?{'X-CSRF-Token':credentials.csrf}:{})},
-      body:body===undefined?undefined:JSON.stringify(body)
+      body:body===undefined?undefined:JSON.stringify(acceptedFixtureRequest(route,method,body))
     });
     return {status:response.status,data:await response.json(),cookie:response.headers.get('set-cookie')?.split(';')[0]||''};
   };

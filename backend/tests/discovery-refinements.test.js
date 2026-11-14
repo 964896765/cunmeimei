@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -99,7 +100,7 @@ async function checkFeed(repo) {
  ];
  const ids = {};
  for (const [title,categoryId,attributes,price] of records) {
-  const item = await repo.createPublication(owner, {type:'service',title:'隔离读取夹具 '+title,description:'仅用于隔离筛选回归，不是真实岗位、房源或服务。',district:'隔离筛选验收地区',price,attributes:{categoryId,...attributes}});
+  const item = await repo.createPublication(owner,{publicationConsent:acceptedConsent(),type:'service',title:'隔离读取夹具 '+title,description:'仅用于隔离筛选回归，不是真实岗位、房源或服务。',district:'隔离筛选验收地区',price,attributes:{categoryId,...attributes}});
   await repo.reviewPublication(item.id,'published','隔离读取夹具');
   ids[title] = item.id;
  }
@@ -164,7 +165,7 @@ test('PostgreSQL filters typed activity times, sources and ranges before paginat
   for (const [infoSource,title] of [['practical','失物招领'],['curated','审核资讯'],['directory','官方指引']]) {
    assert.deepEqual((await repo.listFeed({channel:'public',refinements:{infoSource}})).map(row => row.id), [ids[title]],infoSource);
   }
-  const activity = await repo.createPublication(owner,{type:'service',title:'隔离活动读取夹具',description:'仅验证日期条件。',district:'隔离筛选验收地区',price:'',attributes:{categoryId:'C06G01S04',industryProjectId:'C06G01S04',industryFields:{startsAt:'invalid legacy string',endsAt:'invalid legacy string'}}});
+  const activity = await repo.createPublication(owner,{publicationConsent:acceptedConsent(),type:'service',title:'隔离活动读取夹具',description:'仅验证日期条件。',district:'隔离筛选验收地区',price:'',attributes:{categoryId:'C06G01S04',industryProjectId:'C06G01S04',industryFields:{startsAt:'invalid legacy string',endsAt:'invalid legacy string'}}});
   await repo.reviewPublication(activity.id,'published','隔离读取验收');
   await pool.query("INSERT INTO industry_credentials(user_id,project_id,subject,evidence_reference,status,valid_until) VALUES($1,'C06G01S04','隔离测试主体','隔离读取夹具','verified',now()+interval '1 day')",[owner]);
   await pool.query("INSERT INTO industry_entries(id,user_id,project_id,policy,channel,payload,status,client_key,request_hash,starts_at,ends_at) VALUES($1,$2,'C06G01S04','EVENT_BIZ','event','{}','published','event-read-fixture','isolated',now()+interval '1 hour',now()+interval '2 hours')",[activity.id,owner]);

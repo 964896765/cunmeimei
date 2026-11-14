@@ -64,6 +64,7 @@ function attachWorkbench(repo,pool){
    if(['benefit','promotion','advertiser','industry','industrycredential','industryreport'].includes(kind)){
     const table={benefit:'benefit_orders',promotion:'ad_campaigns',advertiser:'advertisers',industry:'industry_entries',industrycredential:'industry_credentials',industryreport:'industry_reports'}[kind];
     detail=(await c.query('SELECT * FROM '+table+' WHERE id=$1',[id])).rows[0];
+    if(kind==='industrycredential')detail.reviewRule=require('../../miniprogram/utils/industry-workflows').workflow(detail.project_id)?.reviewRule;
     if(kind==='industry')detail.workflow=require('../../miniprogram/utils/industry-workflows').workflow(detail.project_id);
     if(['industrycredential','advertiser'].includes(kind)&&!hasRole(role,'verifier'))detail={revision:detail.revision,description:'主体和专项资料仅业务核验角色读取与核查。'};
    }
@@ -81,6 +82,7 @@ function attachWorkbench(repo,pool){
    }
    if(kind==='qualification')detail.qualificationRevision=(await c.query('SELECT revision FROM qualification_checks WHERE user_id=$1 AND scope=$2',[task.userId,task.metadata.scope])).rows[0]?.revision||0;
    if(kind==='merchant')detail=hasRole(role,'verifier')?(await c.query('SELECT status,registration_code AS "registrationCode",license_holder AS "licenseHolder",evidence_reference AS "evidenceReference",license_file_id AS "licenseFileId" FROM merchant_applications WHERE id=$1',[id])).rows[0]:{description:'需要核验主体、经营资格和授权。请以业务资质核验角色读取私有材料。'};
+   if(kind==='publication')detail.reviewRule=require('./publication-records').reviewRule((await c.query('SELECT type,attributes FROM publications WHERE id=$1',[id])).rows[0]);
    await c.query("INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES('workbench_task_read',$1,$2,$3)",[kind,id,role]);
    await c.query('COMMIT');return {...task,detail};
   }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}

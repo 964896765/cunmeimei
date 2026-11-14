@@ -22,7 +22,7 @@ Page({returnToMe(){require('../../utils/navigation').personalCenter();},
   }catch(e){if(live(this,uid)&&version===this._listVersion)this.setData({loadError:e.message||'发布记录暂不可用，请重试'});}
   finally{if(live(this,uid)&&version===this._listVersion&&this.data.loading)this.setData({loading:false});}
  },
- async startEdit(e){
+ async startEdit(e){require('../../utils/publication-consent').reset(this);
   if(this.data.busy)return;
   const item=this.data.items.find(x=>x.id===e.currentTarget.dataset.id);
   if(!item||!item.canEdit)return;
@@ -38,8 +38,8 @@ Page({returnToMe(){require('../../utils/navigation').personalCenter();},
   this.setData({editing:true,editDistricts:districts,editForm:{id:item.id,type:item.type,title:item.title,detail:item.detail||item.description||'',price:item.price||'',district:item.district,revision:item.revision||1,attributes:item.attributes||{},photos:(item.imageIds||[]).map(id=>({id,path:''})),originalImageIds:item.imageIds||[]}});
   if(api.online()){const photos=await Promise.all((item.imageIds||[]).map(async id=>{try{return {id,path:await api.privateImage(id)};}catch{return {id,path:''};}}));if(live(this,uid)&&version===this._editorVersion&&this.data.editForm?.id===item.id)this.setData({'editForm.photos':this.data.editForm.photos.map(x=>photos.find(photo=>photo.id===x.id)||x)});}
  },
- editAttribute(e){this.setData({['editForm.attributes.'+e.currentTarget.dataset.field]:e.detail.value});},
- async addPhoto(){
+ editAttribute(e){require('../../utils/publication-consent').reset(this);this.setData({['editForm.attributes.'+e.currentTarget.dataset.field]:e.detail.value});},
+ async addPhoto(){require('../../utils/publication-consent').reset(this);
   if(this.data.busy||!this.data.editForm||this.data.editForm.photos.length>=6)return;
   const uid=owner(),session=context(),id=this.data.editForm.id,version=this._editorVersion;
   const active=()=>live(this,uid)&&this.data.editing&&this.data.editForm?.id===id&&version===this._editorVersion;
@@ -48,12 +48,14 @@ Page({returnToMe(){require('../../utils/navigation').personalCenter();},
    try{for(const file of r.tempFiles){if(!active()||this.data.editForm.photos.length>=6)break;const image=await api.uploadImage(file.tempFilePath,session);if(!active())break;this.setData({'editForm.photos':[...this.data.editForm.photos,{id:image.id,path:file.tempFilePath}]});}}
    catch(e){if(active())api.showError(e);}finally{if(active())this.setData({busy:false});}
   }});
- },removePhoto(e){if(this.data.busy||!this.data.editForm)return;this.setData({'editForm.photos':this.data.editForm.photos.filter((_,i)=>i!==+e.currentTarget.dataset.index)});},
+ },removePhoto(e){if(this.data.busy||!this.data.editForm)return;require('../../utils/publication-consent').reset(this);this.setData({'editForm.photos':this.data.editForm.photos.filter((_,i)=>i!==+e.currentTarget.dataset.index)});},
  editTemplateField(e){if(this.data.busy||!require('../../utils/publication-schemas').keys(this.data.editForm.type).includes(e.detail.field))return;this.setData({['editForm.attributes.'+e.detail.field]:e.detail.value});},
- changeEdit(e){if(this.data.busy)return;const key=e.currentTarget.dataset.field;if(!['title','detail','price'].includes(key))return;this.setData({['editForm.'+key]:e.detail.value});if(key==='price'&&this.data.editForm.attributes.templateVersion==='2')this.setData({'editForm.attributes.priceMode':e.detail.value==='面议'?'negotiable':'amount'});},
- changeEditDistrict(e){this.setData({'editForm.district':this.data.editDistricts[Number(e.detail.value)]});},
+ changeEdit(e){require('../../utils/publication-consent').reset(this);if(this.data.busy)return;const key=e.currentTarget.dataset.field;if(!['title','detail','price'].includes(key))return;this.setData({['editForm.'+key]:e.detail.value});if(key==='price'&&this.data.editForm.attributes.templateVersion==='2')this.setData({'editForm.attributes.priceMode':e.detail.value==='面议'?'negotiable':'amount'});},
+ changeEditDistrict(e){require('../../utils/publication-consent').reset(this);this.setData({'editForm.district':this.data.editDistricts[Number(e.detail.value)]});},
  cancelEdit(){if(!this.data.busy){this._editorVersion=(this._editorVersion||0)+1;this.setData({editing:false,editForm:null});}},
+ publicationConsentChanged(e){require('../../utils/publication-consent').changed(this,e);},
  async saveEdit(){
+  if(!require('../../utils/publication-consent').requireConsent(this))return;
   if(this.data.busy)return;
   const f=this.data.editForm;if(!f)return;
   const uid=owner(),version=this._editorVersion,active=()=>live(this,uid)&&version===this._editorVersion&&this.data.editForm?.id===f.id;
@@ -61,7 +63,7 @@ Page({returnToMe(){require('../../utils/navigation').personalCenter();},
   if(title.length<4||detail.length<10){wx.showToast({title:'标题至少4字，内容至少10字',icon:'none'});return;}
   this.setData({busy:true});
   try{
-   const value={type:f.type,title,detail,price:f.price.trim(),district:f.district,attributes:f.attributes||{},imageIds:(f.photos||[]).map(x=>x.id)};
+   const value={publicationConsent:this.data.publicationConsent,type:f.type,title,detail,price:f.price.trim(),district:f.district,attributes:f.attributes||{},imageIds:(f.photos||[]).map(x=>x.id)};
    if(api.online())await api.request('PUT','/api/v1/me/publications/'+encodeURIComponent(f.id),{...value,expectedRevision:f.revision},true,uid);
    else if(!db.updatePublication(f.id,value,f.revision))throw Error('内容已经变化，无法修改');
    if(!active())return;
@@ -69,7 +71,7 @@ Page({returnToMe(){require('../../utils/navigation').personalCenter();},
    this.setData({editing:false,editForm:null});await this.refresh();
    if(!live(this,uid))return;
    wx.showModal({title:'重新提交成功',content:api.online()?'修改后的内容需重新审核，通过前不会公开。':'修改只保存于当前设备，仍为待审核演示记录。',showCancel:false});
-  }catch(e){if(active())api.showError(e);}finally{if(live(this,uid)&&version===this._editorVersion)this.setData({busy:false});}
+  }catch(e){if(active()){require('../../utils/publication-consent').recover(this,e);api.showError(e);}}finally{if(live(this,uid)&&version===this._editorVersion)this.setData({busy:false});}
  },
  showItem(e){const item=this.data.items.find(i=>i.id===e.currentTarget.dataset.id);if(!item)return;
   wx.showModal({title:item.title,content:'状态：'+(item.statusLabel||item.status)+'\n'+item.detail+(item.moderationReason?'\n审核备注：'+item.moderationReason:''),showCancel:false});

@@ -1,4 +1,6 @@
 'use strict';
+const {completedSectorChecks}=require('./helpers/publication-confirmation');
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -32,7 +34,7 @@ test('unavailable industry supply closes pending bookings through worker, lists 
     const credential = await repo.applyIndustryCredential(owner, {
       projectId: project.id, subject: '隔离预约主体', evidenceReference: 'fixture:SOURCE-BOOKING'
     });
-    await repo.reviewIndustryCredential(credential.id, {
+    await repo.reviewIndustryCredential(credential.id,{...completedSectorChecks(),
       revision: 1, status: 'verified', manuallyVerified: true,
       validUntil: new Date(Date.now() + 86400000).toISOString(),
       response: '隔离预约范围与资质夹具核验记录'
@@ -55,7 +57,7 @@ test('unavailable industry supply closes pending bookings through worker, lists 
         fields: Object.fromEntries(workflow.fields.map(field => [field.key, '隔离服务范围与条款'])),
         imageIds: [], clientKey: 'entry_' + ticket(), action: 'submit'
       });
-      await repo.reviewIndustryEntry(entry.id, {
+      await repo.reviewIndustryEntry(entry.id,{...completedSectorChecks(),
         revision: 1, status: 'published', textReviewed: true, scopeReviewed: true,
         response: '隔离原业务内容与范围核查记录'
       }, 'operator');
@@ -203,7 +205,7 @@ test('unavailable industry supply closes pending bookings through worker, lists 
     });
 
     await context.test('ordinary paused services preserve their existing pending bookings', async () => {
-      const service = await repo.createMerchantService(owner, merchant.id, {
+      const service = await repo.createMerchantService(owner, merchant.id,{publicationConsent:acceptedConsent(),
         title: '普通商家服务', description: '已存在服务暂停后的原预约仍可处理', price: '80', imageIds: []
       });
       await repo.reviewService(service.id, 'published');

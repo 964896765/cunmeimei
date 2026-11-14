@@ -48,11 +48,11 @@ test('new drafts coexist, explicit updates affect only the current draft, and lo
 });
 test('the primary flow needs no draft, preview return retains values, and only explicit confirmation submits',async()=>{
  const c=client();await c.page.submit();assert.equal(c.requests.length,0);c.page.previewPost();await c.page.submit();assert.equal(c.requests.filter(x=>x.method==='POST').length,0);
- c.page.editPost();assert.equal(c.page.data.title,'二手手机完整测试');c.page.previewPost();await c.page.confirmSubmit();assert.equal(c.requests.filter(x=>x.method==='POST').length,1);assert.equal(Object.keys(c.store).length,0);assert.ok(c.calls.includes('/pages/my-posts/index'));await c.page.confirmSubmit();assert.equal(c.requests.filter(x=>x.method==='POST').length,1);
+ c.page.editPost();assert.equal(c.page.data.title,'二手手机完整测试');c.page.previewPost();c.page.publicationConsentChanged({detail:{consent:require('./helpers/publication-confirmation').acceptedConsent()}});await c.page.confirmSubmit();assert.equal(c.requests.filter(x=>x.method==='POST').length,1);assert.equal(Object.keys(c.store).length,0);assert.ok(c.calls.includes('/pages/my-posts/index'));c.page.publicationConsentChanged({detail:{consent:require('./helpers/publication-confirmation').acceptedConsent()}});await c.page.confirmSubmit();assert.equal(c.requests.filter(x=>x.method==='POST').length,1);
 });
 test('successful submission removes only the opened draft and preserves independent drafts',async()=>{
  const c=client();await c.page.saveDraft();const id=c.page.data.clientKey;c.drafts.save('owner-a',{...c.drafts.list('owner-a')[0],clientKey:'other_draft_kept_1234'},null);
- c.page.previewPost();await c.page.confirmSubmit();assert.equal(c.drafts.list('owner-a').length,1);assert.notEqual(c.drafts.list('owner-a')[0].clientKey,id);
+ c.page.previewPost();c.page.publicationConsentChanged({detail:{consent:require('./helpers/publication-confirmation').acceptedConsent()}});await c.page.confirmSubmit();assert.equal(c.drafts.list('owner-a').length,1);assert.notEqual(c.drafts.list('owner-a')[0].clientKey,id);
 });
 test('storage failures and account switches never claim save success or exit automatically',async()=>{
  const c=client();c.page.setField({currentTarget:{dataset:{field:'title'}},detail:{value:'等待保存的新标题'}});c.page.goBack();c.failStorage();await c.page.saveAndExit();assert.equal(c.page.data.showExitDialog,true);assert.match(c.page.data.draftError,/quota/);assert.equal(c.calls.includes('back'),false);c.changeOwner();assert.equal(await c.page.saveDraft(),false);assert.equal(c.store['city_life_drafts_owner-b'],undefined);
@@ -79,7 +79,7 @@ test('unchanged empty forms and unchanged restored drafts leave directly, while 
  fresh.page.setField({currentTarget:{dataset:{field:'title'}},detail:{value:'保留当前预览内容'}});fresh.page.previewPost();fresh.page.goBack();assert.equal(fresh.page.data.preview,false);assert.equal(fresh.page.data.showExitDialog,false);assert.equal(fresh.page.data.title,'保留当前预览内容');
 });
 test('submission failure retains both the modified form and its saved source draft for retry',async()=>{
- const c=client();await c.page.saveDraft();const original=JSON.stringify(c.drafts.list('owner-a'));c.page.setField({currentTarget:{dataset:{field:'title'}},detail:{value:'提交失败仍需保留'}});c.page.previewPost();c.api.request=async()=>{throw Error('network failed');};await c.page.confirmSubmit();assert.equal(c.page.data.preview,true);assert.equal(c.page.data.title,'提交失败仍需保留');assert.equal(c.page.data.submitting,false);assert.equal(JSON.stringify(c.drafts.list('owner-a')),original);assert.equal(c.calls.includes('/pages/my-posts/index'),false);
+ const c=client();await c.page.saveDraft();const original=JSON.stringify(c.drafts.list('owner-a'));c.page.setField({currentTarget:{dataset:{field:'title'}},detail:{value:'提交失败仍需保留'}});c.page.previewPost();c.api.request=async()=>{throw Error('network failed');};c.page.publicationConsentChanged({detail:{consent:require('./helpers/publication-confirmation').acceptedConsent()}});await c.page.confirmSubmit();assert.equal(c.page.data.preview,true);assert.equal(c.page.data.title,'提交失败仍需保留');assert.equal(c.page.data.submitting,false);assert.equal(JSON.stringify(c.drafts.list('owner-a')),original);assert.equal(c.calls.includes('/pages/my-posts/index'),false);
 });
 test('photo-only untitled legacy data without a client ID restores and explicitly migrates without clearing unknown records',async()=>{
  const c=client();const raw={type:'used',content:'旧草稿只有描述与照片，没有标题和编号',photos:[{id:'legacy-photo',path:'legacy-path'}],attributes:{},unknownLegacyField:'preserve-this'};
@@ -91,7 +91,7 @@ test('a revised legacy payload cannot be overwritten or deleted using its old re
 });
 
 test('account-source submission carries its observed revision while new/local publications do not pretend to own an account draft',async()=>{
- const c=client();c.page._origin={source:'account',clientKey:c.page.data.clientKey,revision:9};c.page.previewPost();await c.page.confirmSubmit();assert.equal(c.requests.find(x=>x.method==='POST').body.sourceDraftRevision,9);
- const n=client();n.page.previewPost();await n.page.confirmSubmit();assert.equal(n.requests.find(x=>x.method==='POST').body.sourceDraftRevision,undefined);
+ const c=client();c.page._origin={source:'account',clientKey:c.page.data.clientKey,revision:9};c.page.previewPost();c.page.publicationConsentChanged({detail:{consent:require('./helpers/publication-confirmation').acceptedConsent()}});await c.page.confirmSubmit();assert.equal(c.requests.find(x=>x.method==='POST').body.sourceDraftRevision,9);
+ const n=client();n.page.previewPost();n.page.publicationConsentChanged({detail:{consent:require('./helpers/publication-confirmation').acceptedConsent()}});await n.page.confirmSubmit();assert.equal(n.requests.find(x=>x.method==='POST').body.sourceDraftRevision,undefined);
  for(const revision of [0,-1,1.5,'1'])assert.throws(()=>publicationExtras({...sample(),clientKey:'draft_revision_test_123',sourceDraftRevision:revision}));
 });

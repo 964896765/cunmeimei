@@ -1,0 +1,1277 @@
+{
+  "checkedAt": "2026-11-14T04:54:15.257Z",
+  "projects": 418,
+  "structurallyPublishable": 415,
+  "closedForumEntries": 3,
+  "residentForms": 40,
+  "industryForms": 375,
+  "routes": 27,
+  "contrastsChecked": 180,
+  "minimumContrast": 4.93,
+  "sourceFiles": 934,
+  "sourceBytes": 2676018,
+  "assetBytes": 1128960,
+  "packageMeasurement": "uncompressed source only; WeChat compiled/upload package not measured",
+  "contrasts": [
+    {
+      "theme": "prism",
+      "route": "home",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 17.79
+    },
+    {
+      "theme": "prism",
+      "route": "home",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 12.18
+    },
+    {
+      "theme": "prism",
+      "route": "home",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 5.54
+    },
+    {
+      "theme": "prism",
+      "route": "home",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.15
+    },
+    {
+      "theme": "prism",
+      "route": "home",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.28
+    },
+    {
+      "theme": "prism",
+      "route": "home",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.19
+    },
+    {
+      "theme": "prism",
+      "route": "discover",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 17.79
+    },
+    {
+      "theme": "prism",
+      "route": "discover",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 12.18
+    },
+    {
+      "theme": "prism",
+      "route": "discover",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 5.54
+    },
+    {
+      "theme": "prism",
+      "route": "discover",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.15
+    },
+    {
+      "theme": "prism",
+      "route": "discover",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.28
+    },
+    {
+      "theme": "prism",
+      "route": "discover",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.19
+    },
+    {
+      "theme": "prism",
+      "route": "publish",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 17.79
+    },
+    {
+      "theme": "prism",
+      "route": "publish",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 12.18
+    },
+    {
+      "theme": "prism",
+      "route": "publish",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 5.54
+    },
+    {
+      "theme": "prism",
+      "route": "publish",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.15
+    },
+    {
+      "theme": "prism",
+      "route": "publish",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.28
+    },
+    {
+      "theme": "prism",
+      "route": "publish",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.19
+    },
+    {
+      "theme": "prism",
+      "route": "messages",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 17.79
+    },
+    {
+      "theme": "prism",
+      "route": "messages",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 12.18
+    },
+    {
+      "theme": "prism",
+      "route": "messages",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 5.54
+    },
+    {
+      "theme": "prism",
+      "route": "messages",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.15
+    },
+    {
+      "theme": "prism",
+      "route": "messages",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.28
+    },
+    {
+      "theme": "prism",
+      "route": "messages",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.19
+    },
+    {
+      "theme": "prism",
+      "route": "me",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 17.79
+    },
+    {
+      "theme": "prism",
+      "route": "me",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 12.18
+    },
+    {
+      "theme": "prism",
+      "route": "me",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 5.54
+    },
+    {
+      "theme": "prism",
+      "route": "me",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.15
+    },
+    {
+      "theme": "prism",
+      "route": "me",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.28
+    },
+    {
+      "theme": "prism",
+      "route": "me",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.19
+    },
+    {
+      "theme": "dark",
+      "route": "home",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.89
+    },
+    {
+      "theme": "dark",
+      "route": "home",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.75
+    },
+    {
+      "theme": "dark",
+      "route": "home",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 7.55
+    },
+    {
+      "theme": "dark",
+      "route": "home",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.32
+    },
+    {
+      "theme": "dark",
+      "route": "home",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.38
+    },
+    {
+      "theme": "dark",
+      "route": "home",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.63
+    },
+    {
+      "theme": "dark",
+      "route": "discover",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.89
+    },
+    {
+      "theme": "dark",
+      "route": "discover",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.75
+    },
+    {
+      "theme": "dark",
+      "route": "discover",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 7.55
+    },
+    {
+      "theme": "dark",
+      "route": "discover",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.32
+    },
+    {
+      "theme": "dark",
+      "route": "discover",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.38
+    },
+    {
+      "theme": "dark",
+      "route": "discover",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.63
+    },
+    {
+      "theme": "dark",
+      "route": "publish",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.89
+    },
+    {
+      "theme": "dark",
+      "route": "publish",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.75
+    },
+    {
+      "theme": "dark",
+      "route": "publish",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 7.55
+    },
+    {
+      "theme": "dark",
+      "route": "publish",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.32
+    },
+    {
+      "theme": "dark",
+      "route": "publish",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.38
+    },
+    {
+      "theme": "dark",
+      "route": "publish",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.63
+    },
+    {
+      "theme": "dark",
+      "route": "messages",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.89
+    },
+    {
+      "theme": "dark",
+      "route": "messages",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.75
+    },
+    {
+      "theme": "dark",
+      "route": "messages",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 7.55
+    },
+    {
+      "theme": "dark",
+      "route": "messages",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.32
+    },
+    {
+      "theme": "dark",
+      "route": "messages",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.38
+    },
+    {
+      "theme": "dark",
+      "route": "messages",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.63
+    },
+    {
+      "theme": "dark",
+      "route": "me",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.89
+    },
+    {
+      "theme": "dark",
+      "route": "me",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.75
+    },
+    {
+      "theme": "dark",
+      "route": "me",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 7.55
+    },
+    {
+      "theme": "dark",
+      "route": "me",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.32
+    },
+    {
+      "theme": "dark",
+      "route": "me",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.38
+    },
+    {
+      "theme": "dark",
+      "route": "me",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.63
+    },
+    {
+      "theme": "clear",
+      "route": "home",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "clear",
+      "route": "home",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "clear",
+      "route": "home",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "clear",
+      "route": "home",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "home",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.53
+    },
+    {
+      "theme": "clear",
+      "route": "home",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "discover",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "clear",
+      "route": "discover",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "clear",
+      "route": "discover",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "clear",
+      "route": "discover",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "discover",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.53
+    },
+    {
+      "theme": "clear",
+      "route": "discover",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "publish",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "clear",
+      "route": "publish",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "clear",
+      "route": "publish",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "clear",
+      "route": "publish",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "publish",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.53
+    },
+    {
+      "theme": "clear",
+      "route": "publish",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "messages",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "clear",
+      "route": "messages",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "clear",
+      "route": "messages",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "clear",
+      "route": "messages",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "messages",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.53
+    },
+    {
+      "theme": "clear",
+      "route": "messages",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "me",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "clear",
+      "route": "me",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "clear",
+      "route": "me",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "clear",
+      "route": "me",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 8.79
+    },
+    {
+      "theme": "clear",
+      "route": "me",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 7.53
+    },
+    {
+      "theme": "clear",
+      "route": "me",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 8.79
+    },
+    {
+      "theme": "quiet",
+      "route": "home",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 11.97
+    },
+    {
+      "theme": "quiet",
+      "route": "home",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.01
+    },
+    {
+      "theme": "quiet",
+      "route": "home",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.11
+    },
+    {
+      "theme": "quiet",
+      "route": "home",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 6.42
+    },
+    {
+      "theme": "quiet",
+      "route": "home",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 5.11
+    },
+    {
+      "theme": "quiet",
+      "route": "home",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.87
+    },
+    {
+      "theme": "quiet",
+      "route": "discover",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 11.97
+    },
+    {
+      "theme": "quiet",
+      "route": "discover",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.01
+    },
+    {
+      "theme": "quiet",
+      "route": "discover",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.11
+    },
+    {
+      "theme": "quiet",
+      "route": "discover",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 6.42
+    },
+    {
+      "theme": "quiet",
+      "route": "discover",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 5.11
+    },
+    {
+      "theme": "quiet",
+      "route": "discover",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.87
+    },
+    {
+      "theme": "quiet",
+      "route": "publish",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 11.97
+    },
+    {
+      "theme": "quiet",
+      "route": "publish",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.01
+    },
+    {
+      "theme": "quiet",
+      "route": "publish",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.11
+    },
+    {
+      "theme": "quiet",
+      "route": "publish",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 6.42
+    },
+    {
+      "theme": "quiet",
+      "route": "publish",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 5.11
+    },
+    {
+      "theme": "quiet",
+      "route": "publish",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.87
+    },
+    {
+      "theme": "quiet",
+      "route": "messages",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 11.97
+    },
+    {
+      "theme": "quiet",
+      "route": "messages",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.01
+    },
+    {
+      "theme": "quiet",
+      "route": "messages",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.11
+    },
+    {
+      "theme": "quiet",
+      "route": "messages",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 6.42
+    },
+    {
+      "theme": "quiet",
+      "route": "messages",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 5.11
+    },
+    {
+      "theme": "quiet",
+      "route": "messages",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.87
+    },
+    {
+      "theme": "quiet",
+      "route": "me",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 11.97
+    },
+    {
+      "theme": "quiet",
+      "route": "me",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.01
+    },
+    {
+      "theme": "quiet",
+      "route": "me",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.11
+    },
+    {
+      "theme": "quiet",
+      "route": "me",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 6.42
+    },
+    {
+      "theme": "quiet",
+      "route": "me",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 5.11
+    },
+    {
+      "theme": "quiet",
+      "route": "me",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 6.87
+    },
+    {
+      "theme": "warm",
+      "route": "home",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.48
+    },
+    {
+      "theme": "warm",
+      "route": "home",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.16
+    },
+    {
+      "theme": "warm",
+      "route": "home",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.13
+    },
+    {
+      "theme": "warm",
+      "route": "home",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "home",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 4.93
+    },
+    {
+      "theme": "warm",
+      "route": "home",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "discover",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.48
+    },
+    {
+      "theme": "warm",
+      "route": "discover",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.16
+    },
+    {
+      "theme": "warm",
+      "route": "discover",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.13
+    },
+    {
+      "theme": "warm",
+      "route": "discover",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "discover",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 4.93
+    },
+    {
+      "theme": "warm",
+      "route": "discover",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "publish",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.48
+    },
+    {
+      "theme": "warm",
+      "route": "publish",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.16
+    },
+    {
+      "theme": "warm",
+      "route": "publish",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.13
+    },
+    {
+      "theme": "warm",
+      "route": "publish",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "publish",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 4.93
+    },
+    {
+      "theme": "warm",
+      "route": "publish",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "messages",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.48
+    },
+    {
+      "theme": "warm",
+      "route": "messages",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.16
+    },
+    {
+      "theme": "warm",
+      "route": "messages",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.13
+    },
+    {
+      "theme": "warm",
+      "route": "messages",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "messages",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 4.93
+    },
+    {
+      "theme": "warm",
+      "route": "messages",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "me",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 12.48
+    },
+    {
+      "theme": "warm",
+      "route": "me",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 9.16
+    },
+    {
+      "theme": "warm",
+      "route": "me",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.13
+    },
+    {
+      "theme": "warm",
+      "route": "me",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 5.91
+    },
+    {
+      "theme": "warm",
+      "route": "me",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 4.93
+    },
+    {
+      "theme": "warm",
+      "route": "me",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 5.91
+    },
+    {
+      "theme": "gentle",
+      "route": "home",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "gentle",
+      "route": "home",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "gentle",
+      "route": "home",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "gentle",
+      "route": "home",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.02
+    },
+    {
+      "theme": "gentle",
+      "route": "home",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.01
+    },
+    {
+      "theme": "gentle",
+      "route": "home",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.91
+    },
+    {
+      "theme": "gentle",
+      "route": "discover",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "gentle",
+      "route": "discover",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "gentle",
+      "route": "discover",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "gentle",
+      "route": "discover",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.02
+    },
+    {
+      "theme": "gentle",
+      "route": "discover",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.01
+    },
+    {
+      "theme": "gentle",
+      "route": "discover",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.91
+    },
+    {
+      "theme": "gentle",
+      "route": "publish",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "gentle",
+      "route": "publish",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "gentle",
+      "route": "publish",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "gentle",
+      "route": "publish",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.02
+    },
+    {
+      "theme": "gentle",
+      "route": "publish",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.01
+    },
+    {
+      "theme": "gentle",
+      "route": "publish",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.91
+    },
+    {
+      "theme": "gentle",
+      "route": "messages",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "gentle",
+      "route": "messages",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "gentle",
+      "route": "messages",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "gentle",
+      "route": "messages",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.02
+    },
+    {
+      "theme": "gentle",
+      "route": "messages",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.01
+    },
+    {
+      "theme": "gentle",
+      "route": "messages",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.91
+    },
+    {
+      "theme": "gentle",
+      "route": "me",
+      "foreground": "ink",
+      "background": "surface",
+      "ratio": 15.59
+    },
+    {
+      "theme": "gentle",
+      "route": "me",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 10.94
+    },
+    {
+      "theme": "gentle",
+      "route": "me",
+      "foreground": "muted",
+      "background": "surface",
+      "ratio": 6.02
+    },
+    {
+      "theme": "gentle",
+      "route": "me",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.02
+    },
+    {
+      "theme": "gentle",
+      "route": "me",
+      "foreground": "link",
+      "background": "soft",
+      "ratio": 6.01
+    },
+    {
+      "theme": "gentle",
+      "route": "me",
+      "foreground": "on-action",
+      "background": "action",
+      "ratio": 9.91
+    }
+  ]
+}

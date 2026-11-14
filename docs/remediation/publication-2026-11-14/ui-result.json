@@ -1,0 +1,36 @@
+{
+  "status": "pass",
+  "checks": [
+    "all 27 industries remain available in the directory",
+    "four publishing tools start collapsed",
+    "grid button expands all four real tool entries",
+    "publishing guide opens all twelve notice chapters",
+    "housing industry selection uses the existing catalog",
+    "five actual housing projects have matched illustrations",
+    "search finds a real project across the 418-item catalog",
+    "search cancellation restores the selected industry",
+    "publication confirmation starts unchecked",
+    "unchecked preview has no consent payload",
+    "disabled submit creates no server confirmation",
+    "returning to edit clears confirmation",
+    "reopened preview requires a new checkbox confirmation",
+    "stale notice rejection preserves the form",
+    "stale notice reload requires a fresh explicit checkbox",
+    "actual submit enters platform review",
+    "actual UI submission stores one confirmation bound to its owner",
+    "confirmation stores the submitted content snapshot",
+    "industry submission also starts with an unchecked confirmation",
+    "admin archive displays the recorded notice version",
+    "no captured mini-program runtime exceptions"
+  ],
+  "passed": 21,
+  "exceptions": [],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "physicalDevice": false,
+  "isolatedPostgres": true,
+  "checkbox": "explicit native component change callback fixture",
+  "checkedAt": "2026-11-14T04:53:35.375Z"
+}

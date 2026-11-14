@@ -40,12 +40,12 @@ async function main(){
   const uid=await repo.upsertIdentity('dev_local','reference-owner');
   const other=await repo.upsertIdentity('dev_local','reference-reader');
   await repo.updateProfile(uid,{displayName:'隔离验收账号'});
-  const publication=await repo.createPublication(uid,{type:'used',title:'隔离验收 · 二手信息',description:'本记录仅用于页面和入口检查，属于隔离测试内容。',district:'中心街道',price:'80',attributes:{categoryId:'C04G01S01',condition:'几乎全新',cityCode:'441900',districtCode:'441900003'}});
+  const publication=await repo.createPublication(uid,{publicationConsent:require('../backend/tests/helpers/publication-confirmation').acceptedConsent(),type:'used',title:'隔离验收 · 二手信息',description:'本记录仅用于页面和入口检查，属于隔离测试内容。',district:'中心街道',price:'80',attributes:{categoryId:'C04G01S01',condition:'几乎全新',cityCode:'441900',districtCode:'441900003'}});
   await repo.reviewPublication(publication.id,'published','隔离测试信息');
   const application=await repo.createMerchant(uid,{name:'隔离验收商家',category:'维修',district:'中心街道'});
   await repo.submitMerchantEvidence(uid,application.id,{registrationCode:'ISOLATED-REFERENCE-001',licenseHolder:'隔离验收主体',evidenceReference:'仅用于本机读取测试'});
   const merchant=await repo.approveMerchantApplication(application.id,'隔离读取夹具，不是真实资质',true);
-  const service=await repo.createMerchantService(uid,merchant.id,{title:'隔离验收服务',description:'本记录仅用于预约及商家页面检查，不代表真实供给。',price:'100'});
+  const service=await repo.createMerchantService(uid,merchant.id,{publicationConsent:require('../backend/tests/helpers/publication-confirmation').acceptedConsent(),title:'隔离验收服务',description:'本记录仅用于预约及商家页面检查，不代表真实供给。',price:'100'});
   await repo.reviewService(service.id,'published');
   await repo.setPublicLocation(service.id,{kind:'service',cityCode:'441900',districtCode:'441900003',latitude:23.02,longitude:113.75,precision:'approximate',approved:true,categoryId:'C03',verificationNote:'隔离测试坐标'});
   const contact=(await pool.query("INSERT INTO contact_requests(publication_id,requester_id,owner_id,message,response,status) VALUES($1,$2,$3,'隔离联系申请','隔离已接受记录','accepted') RETURNING id",[publication.id,other,uid])).rows[0].id;

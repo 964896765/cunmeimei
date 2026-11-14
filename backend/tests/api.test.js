@@ -1,10 +1,11 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 const legalConfig={operatorName:'Isolated operator',contactEmail:'privacy@example.test'},legal=require('../src/legal-documents').documents(legalConfig),accepted={consent:true,termsVersion:legal.termsVersion,privacyVersion:legal.privacyVersion,legalHash:legal.hash};
 const test=require('node:test');const assert=require('node:assert/strict');
 const {createApp}=require('../src/server');const {createMemoryRepository}=require('../src/memory-repository');
 async function setup(t){const repo=createMemoryRepository();const server=createApp({legalConfig,repo,areas:['中心街道','北城区'],allowDevLogin:true,adminPassword:'super-secret-admin-password',wechatAppId:'test-appid',wechatSecret:'only-server-secret',fetchWechat:async()=>({ok:true,json:async()=>({openid:'openid-12345678'})})});await new Promise(ok=>server.listen(0,'127.0.0.1',ok));t.after(()=>new Promise(ok=>server.close(ok)));const url='http://127.0.0.1:'+server.address().port;
- const http=async(p,method='GET',body,token='',cookie='',csrf='')=>{const res=await fetch(url+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body?JSON.stringify(body):undefined});return {status:res.status,data:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};};
+ const http=async(p,method='GET',body,token='',cookie='',csrf='')=>{const res=await fetch(url+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body?JSON.stringify(acceptedFixtureRequest(p,method,body)):undefined});return {status:res.status,data:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};};
  return {repo,http};}
 test('health, auth, moderation isolation, merchant and booking security',async t=>{
  const {repo,http}=await setup(t);

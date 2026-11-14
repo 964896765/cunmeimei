@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 // Opt-in integration suite. ONLY uses PG_TEST_DATABASE_URL; runs in disposable isolated schema.
 const test=require('node:test'),assert=require('node:assert/strict'),crypto=require('node:crypto');
@@ -34,7 +35,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.equal(await repo.setCategoryEnabled('job',true),null);
 
    // V0.9: disabled regions must not expose previously approved content or bookable services.
-   const hiddenItem=await repo.createPublication(hiddenAuthor,{type:'used',title:'hidden region sample',description:'kept for author, hidden from public feed',district:'东城街道',price:'10'});
+   const hiddenItem=await repo.createPublication(hiddenAuthor,{publicationConsent:acceptedConsent(),type:'used',title:'hidden region sample',description:'kept for author, hidden from public feed',district:'东城街道',price:'10'});
    assert.equal(await repo.reviewPublication(hiddenItem.id,'published',''),true);
    assert.equal(await repo.getItem(hiddenItem.id),null);
    assert.equal((await repo.listFeed({area:'全部地区'})).some(x=>x.id===hiddenItem.id),false);
@@ -62,7 +63,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
      assert.equal(await repo.authenticate(oneTimeToken),null);
    } finally { await secondPoolRepo.close(); }
    const first=await repo.upsertIdentity('dev_local','first'),second=await repo.upsertIdentity('dev_local','second');
-   const note=await repo.createPublication(first,{type:'used',title:'回归用二手',description:'数据库撤回内容回归用描述',district:'中心街道',price:'¥10'});
+   const note=await repo.createPublication(first,{publicationConsent:acceptedConsent(),type:'used',title:'回归用二手',description:'数据库撤回内容回归用描述',district:'中心街道',price:'¥10'});
    assert.equal(note.status,'pending');
    assert.equal(await repo.withdrawPublication(second,note.id),false,'non-owner cannot withdraw');
    assert.equal(await repo.withdrawPublication(first,note.id),true);
@@ -71,19 +72,19 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.equal(await repo.getItem(note.id),null,'withdrawn content never public');
    // V0.11: revised published content is invisible until reapproved; concurrent edits reject stale revisions.
    const editImage=await repo.uploadContentImage(first,await require('sharp')({create:{width:20,height:20,channels:3,background:'#33aaaa'}}).png().toBuffer());
-   const revised=await repo.createPublication(first,{...residentFields('used',[editImage.id]),type:'used',title:'公开前旧标题',description:'需要在修改后重新审核的公开帖子',district:'中心街道',price:'100'});
+   const revised=await repo.createPublication(first,{publicationConsent:acceptedConsent(),...residentFields('used',[editImage.id]),type:'used',title:'公开前旧标题',description:'需要在修改后重新审核的公开帖子',district:'中心街道',price:'100'});
    assert.equal(revised.revision,1);
    assert.equal(await repo.reviewPublication(revised.id,'published',''),true);
    assert.ok(await repo.getItem(revised.id));
-   const changed=await repo.updatePublication(first,revised.id,{type:'used',title:'审核中新标题',description:'重新审核通过之前不可对外展示的正文',district:'中心街道',price:'90'},1);
+   const changed=await repo.updatePublication(first,revised.id,{publicationConsent:acceptedConsent(),type:'used',title:'审核中新标题',description:'重新审核通过之前不可对外展示的正文',district:'中心街道',price:'90'},1);
    assert.equal(changed.status,'pending');assert.equal(changed.revision,2);
    assert.equal(await repo.getItem(revised.id),null);
-   assert.deepEqual(await repo.updatePublication(first,revised.id,{type:'used',title:'覆盖',description:'不能由旧版本直接覆盖内容',district:'中心街道',price:'90'},1),{error:'revision_conflict'});
-   assert.equal(await repo.updatePublication(second,revised.id,{type:'used',title:'不能编辑',description:'其他用户不应该编辑这些内容',district:'中心街道',price:'90'},2),false);
+   assert.deepEqual(await repo.updatePublication(first,revised.id,{publicationConsent:acceptedConsent(),type:'used',title:'覆盖',description:'不能由旧版本直接覆盖内容',district:'中心街道',price:'90'},1),{error:'revision_conflict'});
+   assert.equal(await repo.updatePublication(second,revised.id,{publicationConsent:acceptedConsent(),type:'used',title:'不能编辑',description:'其他用户不应该编辑这些内容',district:'中心街道',price:'90'},2),false);
    assert.equal(await repo.reviewPublication(revised.id,'published',''),true);
    assert.equal((await repo.getItem(revised.id)).title,'审核中新标题');
    // V0.13: public service-demand posts are not bookable catalog services.
-   const demand=await repo.createPublication(first,{type:'service',title:'请求附近维修师傅',description:'用户发布的是求助需求，不是商家提供的可预约服务',district:'中心街道',price:'100'});
+   const demand=await repo.createPublication(first,{publicationConsent:acceptedConsent(),type:'service',title:'请求附近维修师傅',description:'用户发布的是求助需求，不是商家提供的可预约服务',district:'中心街道',price:'100'});
    assert.equal(await repo.reviewPublication(demand.id,'published',''),true);
    assert.equal((await repo.getItem(demand.id)).kind,'listing');
    assert.equal((await repo.listFeed({type:'service'})).find(x=>x.id===demand.id).kind,'listing');
@@ -91,7 +92,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.equal((await repo.getItem(s)).kind,'service');
    // V0.10: PostgreSQL pages are distinct and details work independently of pagination.
    for(let i=0;i<25;i++){
-     const p=await repo.createPublication(first,{type:'used',title:'分页记录'+String(i).padStart(2,'0'),description:'用于测试 PostgreSQL 分页的完整内容',district:'中心街道',price:'5'});
+     const p=await repo.createPublication(first,{publicationConsent:acceptedConsent(),type:'used',title:'分页记录'+String(i).padStart(2,'0'),description:'用于测试 PostgreSQL 分页的完整内容',district:'中心街道',price:'5'});
      assert.equal(await repo.reviewPublication(p.id,'published',''),true);
    }
    const pgFirst=await repo.listFeed({type:'used',limit:12,offset:0});
@@ -140,7 +141,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.ok(verified?.id);
    const worker=await repo.upsertIdentity('dev_local','v20-worker');
    assert.ok(await repo.addMerchantMember(first,verified.id,worker,'staff'));
-   const merchantService=await repo.createMerchantService(first,verified.id,{title:'V20维修服务',description:'测试商家员工权限撤销后的订单安全性',price:'50'});
+   const merchantService=await repo.createMerchantService(first,verified.id,{publicationConsent:acceptedConsent(),title:'V20维修服务',description:'测试商家员工权限撤销后的订单安全性',price:'50'});
    assert.ok(merchantService?.id);
    assert.equal(await repo.reviewService(merchantService.id,'published'),true);
    const staffSlot=await repo.createBooking(second,{
@@ -154,7 +155,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.equal((await repo.actOnMerchantBooking(first,verified.id,staffSlot.id,'complete')).status,'completed');
    // A concurrently paused service may retain a reservation that won earlier,
    // but no new reservations may succeed after the pause has committed.
-   const pausedService=await repo.createMerchantService(first,verified.id,{title:'V20并发暂停',description:'并发预约时立即暂停新请求的服务',price:'60'});
+   const pausedService=await repo.createMerchantService(first,verified.id,{publicationConsent:acceptedConsent(),title:'V20并发暂停',description:'并发预约时立即暂停新请求的服务',price:'60'});
    assert.ok(pausedService?.id);
    assert.equal(await repo.reviewService(pausedService.id,'published'),true);
    const simultaneous=await Promise.all([
@@ -172,11 +173,11 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
    assert.equal(await repo.removeMerchantMember(first,verified.id,revokedManager),true);
    assert.equal(await repo.changeMerchantServiceStatus(revokedManager,verified.id,pausedService.id,'resubmit'),null);
    assert.equal((await pool.query('SELECT status FROM service_catalog WHERE id=$1',[pausedService.id])).rows[0].status,'draft');
-   assert.equal((await repo.changeMerchantServiceStatus(first,verified.id,pausedService.id,'resubmit')).status,'pending_review');
+   assert.equal((await repo.changeMerchantServiceStatus(first,verified.id,pausedService.id,'resubmit',acceptedConsent())).status,'pending_review');
    assert.equal(await repo.changeMerchantServiceStatus(revokedManager,verified.id,pausedService.id,'pause'),null);
    await t.test('city code filtering precedes pagination and legacy rows are never guessed into a city',async()=>{
     for(const [cityCode,title]of [['441900','city geo one'],['440100','city geo other'],['','city geo legacy']]){
-     const row=await repo.createPublication(first,{type:'used',title,description:'isolated geographic fixture only',district:'中心街道',price:'10',attributes:cityCode?{cityCode}:{}});await repo.reviewPublication(row.id,'published','');
+     const row=await repo.createPublication(first,{publicationConsent:acceptedConsent(),type:'used',title,description:'isolated geographic fixture only',district:'中心街道',price:'10',attributes:cityCode?{cityCode}:{}});await repo.reviewPublication(row.id,'published','');
     }
     const rows=await repo.listFeed({cityCode:'441900',type:'used',q:'city geo',limit:1});assert.equal(rows.length,1);assert.equal(rows[0].title,'city geo one');
     assert.equal((await repo.listFeed({cityCode:'441900',type:'used',q:'city geo',limit:1,offset:1})).length,0);
@@ -238,7 +239,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
      const row=(await pool.query("INSERT INTO service_catalog(title,description,district,price,status,is_test,created_at) VALUES($1,'isolated search-filter fixture','中心街道','20',$2,$3,now()-$4::interval) RETURNING id",[title,status,isTest,age])).rows[0];records[title]=row.id;
      await repo.setPublicLocation(row.id,{kind:'service',cityCode,districtCode:'',latitude,longitude:113,precision:'approximate',approved,verificationNote:'isolated search filter fixture'});
     }
-    const personal=await repo.createPublication(first,{type:'service',title:'filter private demand',description:'isolated private location must never appear',district:'中心街道',price:'20',attributes:{cityCode:'441900'}});await repo.reviewPublication(personal.id,'published','');
+    const personal=await repo.createPublication(first,{publicationConsent:acceptedConsent(),type:'service',title:'filter private demand',description:'isolated private location must never appear',district:'中心街道',price:'20',attributes:{cityCode:'441900'}});await repo.reviewPublication(personal.id,'published','');
     await repo.setPublicLocation(personal.id,{kind:'service',cityCode:'441900',districtCode:'',latitude:23,longitude:113,precision:'approximate',approved:true,verificationNote:'synthetic malformed metadata for privacy boundary test'});
     const args={q:'filter ',cityCode:'441900',sort:'latest',days:7,radiusKm:50,latitude:23,longitude:113,limit:1};
     assert.deepEqual((await repo.listFeed(args)).map(x=>x.id),[records['filter near one']]);
@@ -258,7 +259,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
     try{
      const login=await fetch(base+'/admin/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:'isolated-geo-admin-password'})});const cookie=login.headers.get('set-cookie').split(';')[0],csrf=(await login.json()).csrf;
      await repo.verifyPhone(first,'13900000001','wechat_phone','isolated-provider-fixture');await pool.query("UPDATE publications SET created_at=now()-interval '2 days' WHERE user_id=$1",[first]);
-     const publication=await repo.createPublication(first,{type:'used',title:'private address must stay private',description:'isolated fixture content',district:'中心街道',price:'10'});await repo.reviewPublication(publication.id,'published','');
+     const publication=await repo.createPublication(first,{publicationConsent:acceptedConsent(),type:'used',title:'private address must stay private',description:'isolated fixture content',district:'中心街道',price:'10'});await repo.reviewPublication(publication.id,'published','');
      const payload={kind:'service',cityCode:'441900',latitude:23,longitude:113,precision:'public_business',approved:true,verificationNote:'isolated map fixture validation'};
      const send=(id,data,token=csrf)=>fetch(base+'/admin/api/map-locations/'+id,{method:'PUT',headers:{'Content-Type':'application/json',Cookie:cookie,'X-CSRF-Token':token},body:JSON.stringify(data)});
      assert.equal((await send(publication.id,payload,'')).status,403);assert.equal((await send(publication.id,payload)).status,409);
@@ -273,7 +274,7 @@ test('real PostgreSQL: migration, concurrent slot claim, expiry and schema check
     const owner=await repo.upsertIdentity('dev_local','sort-fixture-owner'),fan=await repo.upsertIdentity('dev_local','sort-fixture-fan');
     const records=[];
     for(const [i,price]of ['100','20','面议'].entries()){
-     const row=await repo.createPublication(owner,{type:'used',title:'sort-real-'+i,description:'isolated sorting fixture',district:'中心街道',price});
+     const row=await repo.createPublication(owner,{publicationConsent:acceptedConsent(),type:'used',title:'sort-real-'+i,description:'isolated sorting fixture',district:'中心街道',price});
      await repo.reviewPublication(row.id,'published','');await pool.query("UPDATE publications SET created_at=now()-$2::interval WHERE id=$1",[row.id,(3-i)+' hours']);records.push(row);
     }
     await repo.saveItem(fan,records[0].id,true);

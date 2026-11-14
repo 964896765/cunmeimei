@@ -14,7 +14,7 @@
   <text class="field-label">内容照片</text><view class="edit-photos"><view wx:for="{{editForm.photos}}" wx:key="id"><image wx:if="{{item.path}}" src="{{item.path}}" mode="aspectFill"/><text wx:else>照片已保存</text><text class="link" data-index="{{index}}" bindtap="removePhoto">移除</text></view><button wx:if="{{editForm.photos.length<6}}" class="btn light" disabled="{{busy}}" bindtap="addPhoto">添加照片</button></view>
   <text class="field-label">平台发布范围</text>
   <picker mode="selector" range="{{editDistricts}}" bindchange="changeEditDistrict"><view class="field picker-field">{{editForm.district}} <text>⌄</text></view></picker>
-  <button class="btn" bindtap="saveEdit" loading="{{busy}}" disabled="{{busy}}">保存并重新提交审核</button>
+  <publication-confirmation id="publication-confirmation" revision="{{consentRevision}}" disabled="{{submitting||saving||busy||uploading}}" color="{{themeColor}}" large-text="{{displayPreferences.largeText}}" bind:change="publicationConsentChanged"/><button class="btn" bindtap="saveEdit" loading="{{busy}}" disabled="{{busy||!publicationConsent}}">确认并重新提交审核</button>
  </view>
  <view wx:if="{{!editing&&items.length>0}}" class="section">
   <view class="card published" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="showItem">

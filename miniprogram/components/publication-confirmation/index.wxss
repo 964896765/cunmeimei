@@ -1,0 +1,14 @@
+:host { display:block; }
+.publication-confirmation { margin:28rpx 0; padding:26rpx; border:1rpx solid var(--border); border-radius:28rpx; background:var(--surface); text-align:left; }
+.confirmation-title { color:var(--ink); font-size:32rpx; font-weight:650; line-height:1.5; }
+.confirmation-description { margin-top:10rpx; color:var(--muted); font-size:26rpx; line-height:1.6; }
+.confirmation-choice { display:flex; align-items:flex-start; gap:12rpx; margin-top:20rpx; color:var(--ink); font-size:28rpx; line-height:1.65; }
+.confirmation-choice checkbox { flex-shrink:0; transform:scale(.82); transform-origin:left top; margin-top:4rpx; width:42rpx; }
+.confirmation-choice text { flex:1; min-width:0; }
+.confirmation-link { display:block; min-height:76rpx; margin:8rpx 0 0; padding:16rpx 0; border:0; background:transparent; color:var(--link); font-size:25rpx; text-align:left; line-height:1.6; }
+.confirmation-link::after,.confirmation-retry::after { border:0; }
+.confirmation-link text,.confirmation-status { color:var(--muted); font-size:25rpx; line-height:1.6; }
+.confirmation-retry { display:inline-block; margin:0 0 0 12rpx; padding:12rpx; background:var(--soft); color:var(--link); font-size:25rpx; }
+.large-text .confirmation-title { font-size:38rpx; }
+.large-text .confirmation-choice { font-size:34rpx; }
+.large-text .confirmation-description,.large-text .confirmation-link,.large-text .confirmation-link text,.large-text .confirmation-status { font-size:30rpx; }

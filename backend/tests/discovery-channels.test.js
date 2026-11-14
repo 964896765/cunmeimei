@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -23,7 +24,7 @@ async function checkGroupedQueries(repo) {
   const records = [];
   for (const category of catalog.categories) {
     const project = category.groups[0].items[0];
-    const publication = await repo.createPublication(owner, {
+    const publication = await repo.createPublication(owner,{publicationConsent:acceptedConsent(),
       type:'service', district:'频道验收地区', title:'隔离频道验收 ' + category.id,
       description:'仅用于验证按行业归并后的读取和分页，属于隔离测试数据。', price:'',
       attributes:{categoryId:project.id, cityCode:'310100', districtCode:'310101'}

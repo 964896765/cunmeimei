@@ -33,9 +33,10 @@ function pgOperations(pool){
    const photos=await c.query('SELECT id FROM content_images WHERE user_id=$1 AND id=ANY($2::uuid[]) FOR SHARE',[uid,ids]);
    if(photos.rows.length!==ids.length)throw new (require('./rules').ApiError)(400,'IMAGE_NOT_OWNED','图片无效或不属于当前用户');
    const created=(await c.query("INSERT INTO service_catalog(merchant_id,title,description,price,district,status,image_ids) SELECT id,$2,$3,$4,district,'pending_review',$5 FROM verified_merchants WHERE id=$1 AND status='active' RETURNING *",[mid,v.title,v.description,v.price,ids])).rows[0];
+   if(created)await require('./publication-records').persist(c,uid,created,v.publicationConsent,{kind:'service'});
    return service(created);
   });},
-  async changeMerchantServiceStatus(uid,mid,sid,action){
+  async changeMerchantServiceStatus(uid,mid,sid,action,consent){
    const from=action==='pause'?'published':'draft';
    const to=action==='pause'?'draft':'pending_review';
    return wrap(async c=>{
@@ -57,6 +58,7 @@ function pgOperations(pool){
     if(!row)return false;
     await c.query('INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES($1,$2,$3,$4)',
       [action==='pause'?'merchant_service_paused':'merchant_service_resubmitted','service',sid,'merchant='+mid]);
+    if(action==='resubmit')await require('./publication-records').persist(c,uid,row,consent,{kind:'service'});
     return service(row);
    });
   },

@@ -1,4 +1,6 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -39,7 +41,7 @@ test('query product accepts reviewed practical information and rejects public in
     const response = await fetch(origin + path, {
       method,
       headers:{'Content-Type':'application/json', ...(token ? {Authorization:'Bearer ' + token} : {})},
-      body:body === undefined ? undefined : JSON.stringify(body)
+      body:body === undefined ? undefined : JSON.stringify(acceptedFixtureRequest(path,method,body))
     });
     return {status:response.status, data:await response.json()};
   }
@@ -65,7 +67,7 @@ test('query product accepts reviewed practical information and rejects public in
 test('public lookup hides old forum entries while their owner can still access the original record', async () => {
   const repo = createMemoryRepository();
   await repo.seedRegions(['中心街道']);
-  const old = await repo.createPublication('owner', {type:'community', district:'中心街道', title:'历史社群帖子', description:'保留历史记录', attributes:{categoryId:'C08G02S05'}});
+  const old = await repo.createPublication('owner',{publicationConsent:acceptedConsent(),type:'community', district:'中心街道', title:'历史社群帖子', description:'保留历史记录', attributes:{categoryId:'C08G02S05'}});
   repo.__publications.find(item => item.id === old.id).status = 'published';
   assert.equal((await repo.listFeed({})).length, 0);
   assert.equal(await repo.getItem(old.id), null);

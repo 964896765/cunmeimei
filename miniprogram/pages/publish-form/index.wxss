@@ -96,3 +96,8 @@
 .form-hint { font-size:24rpx; line-height:1.7; }
 .publish-form .quiet-input,.amount-box { border-radius:14rpx; }
 .form-actions { padding-top:24rpx; }
+
+.publish-form .preview-actions { flex-direction:column; gap:8rpx; margin-top:12rpx; padding:0; background:transparent; }
+.publish-form .preview-actions .primary { width:100%; flex:none; }
+.publish-form .preview-actions .primary[disabled] { color:var(--muted)!important; background:var(--soft)!important; opacity:1; }
+.publish-form .preview-actions .secondary { width:100%; flex:none; min-height:68rpx; padding:12rpx; border:0!important; background:transparent; color:var(--muted); }

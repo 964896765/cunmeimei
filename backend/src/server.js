@@ -73,6 +73,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   if(m==='GET'&&p==='/admin'){return adminHtml(res);}
   if(m==='GET'&&p==='/admin/app.js'){return adminScript(res);}
   if(m==='GET'&&p==='/admin/review-dialog.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/review-dialog.js')));}
+  if(m==='GET'&&p==='/admin/publication-records.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/publication-records.js')));}
   if(m==='GET'&&p==='/admin/workflows.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/workflows.js')));}
   if(m==='GET'&&p==='/admin/home-content.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/home-content.js')));}
   if(m==='GET'&&p==='/admin/app.css'){res.writeHead(200,{'Content-Type':'text/css; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/app.css')));}
@@ -86,6 +87,8 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   if(m==='GET'&&p==='/api/v1/health'){return json(res,200,{ok:true,version:require('../package.json').version});}
   if(m==='GET'&&p==='/api/v1/ready'){try{await repo.ping();if(typeof repo.verifySchema==='function')await repo.verifySchema();return json(res,200,{ready:true});}catch{return json(res,503,{ready:false,error:'DEPENDENCY_UNAVAILABLE'});}}
   if(m==='GET'&&p==='/api/v1/config'){const regions=await allRegions();const categories=await repo.listCategories();return json(res,200,{areas:regions.filter(r=>r.enabled).map(r=>r.name),categories,features:{forumPublishing:false,publicInteractions:false,practicalInformation:true,benefitMode:'points_only',bookingPurpose:'service_request',businessProgressPurpose:'mutual_progress_record',publishingApproved:!production||platformPublishApproved,industryWorkflows:!!repo.saveIndustryEntry,businessProgress:!!repo.createBusinessCase,industryServiceBooking:!!repo.connectIndustryService,benefitRedemption:!!repo.redeemBenefit,selfPromotion:!!repo.applyPromotion,jobs:!!repo.saveIndustryEntry,payments:false,realtimeChat:false,textContactChat:!!repo.sendChat,phoneVerification:phoneConfigured,identityVerification:'manual_external_evidence',machineImageReview:'not_configured_manual_required',merchantCertification:'manual_review',merchantOperations:true,reports:true,licenseUpload:production?'disabled_pending_security_review':'private_development',bookingSlots:'single_capacity_30min_hold'}});}
+  if(m==='GET'&&p==='/api/v1/publication-notice')return json(res,200,require('./publication-notice').document());
+  if(m==='GET'&&/^\/admin\/api\/publication-records\/[0-9a-f-]{36}$/i.test(p)){admin(req);const records=await repo.publicationRecords(p.split('/').at(-1));if(!records)fail(404,'NOT_FOUND','发布信息不存在');return json(res,200,records);}
   if(m==='GET'&&p==='/api/v1/legal')return json(res,200,{...legalDocs,wechatAvailable:!!wechatAppId&&!!wechatSecret});
   if(m==='POST'&&p==='/api/v1/auth/wechat'){limitLogin(req);const v=await body(req),consent=require('./legal-documents').consent(v,legalDocs),code=text(v.code,512,4);return json(res,200,await issueSession('wechat_miniapp',await wechatAuthenticate(code),consent));}
   if(m==='POST'&&p==='/api/v1/dev/login'){
@@ -257,14 +260,14 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   }
   if(m==='GET'&&p==='/api/v1/me'){return json(res,200,{userId:await user(req)});}
   if(m==='POST'&&p==='/api/v1/auth/logout'){await user(req);await repo.revokeSession(sha256(req.headers.authorization.slice(7)));return json(res,200,{ok:true});}
-  if(m==='POST'&&p==='/api/v1/publications'){const uid=await user(req);const input=await body(req);const v={...publication(input,await activeAreas()),...require('./product-repository').validatePublicationSubmission(input),isTest:testData(req)};if(!await canSubmit(v.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放发布');return json(res,201,{publication:await repo.createPublication(uid,v)});}
+  if(m==='POST'&&p==='/api/v1/publications'){const uid=await user(req);const input=await body(req);const v={...publication(input,await activeAreas()),...require('./product-repository').validatePublicationSubmission(input),publicationConsent:require('./publication-notice').validate(input.publicationConsent),isTest:testData(req)};if(!await canSubmit(v.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放发布');return json(res,201,{publication:await repo.createPublication(uid,v)});}
   if(m==='GET'&&p==='/api/v1/me/publications'){return json(res,200,{items:await repo.myPublications(await user(req))});}
   if(m==='PUT'&&/^\/api\/v1\/me\/publications\/[0-9a-f-]{36}$/i.test(p)){
    const uid=await user(req),id=p.split('/')[5],input=await body(req);
    if(!uuid(id))fail(400,'INVALID_ID','信息编号无效');
    if(!Number.isSafeInteger(input.expectedRevision)||input.expectedRevision<1||input.expectedRevision>1000000)
     fail(400,'INVALID_REVISION','编辑版本号无效');
-   const value={...publication(input,await activeAreas()),...require('./product-repository').publicationExtras(input,{validateForm:false}),replaceAttributes:Object.hasOwn(input,'attributes'),replaceImages:Object.hasOwn(input,'imageIds')};
+   const value={...publication(input,await activeAreas()),...require('./product-repository').publicationExtras(input,{validateForm:false}),replaceAttributes:Object.hasOwn(input,'attributes'),replaceImages:Object.hasOwn(input,'imageIds'),publicationConsent:require('./publication-notice').validate(input.publicationConsent)};
    if(!await canSubmit(value.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放编辑');
    const result=await repo.updatePublication(uid,id,value,input.expectedRevision);
    if(result?.error==='revision_conflict')fail(409,'PUBLICATION_CHANGED','内容已被其他操作更新，请重新打开编辑');
@@ -314,7 +317,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
     await repo.assertTrust?.(uid,'publish',{type:'service'});
     if(!await canSubmit('service'))fail(403,'CATEGORY_CLOSED','服务项目发布已暂停');
     const owned=(await repo.myManagedMerchants(uid)).find(x=>x.id===mid);if(owned&&!(await activeAreas()).includes(owned.district))fail(403,'REGION_CLOSED','此地区暂不接收新的服务项目');
-    const created=await repo.createMerchantService(uid,mid,service(await body(req)));if(!created)fail(403,'MERCHANT_FORBIDDEN','没有管理服务项目的权限');return json(res,201,{service:created});
+    const input=await body(req);const created=await repo.createMerchantService(uid,mid,{...service(input),publicationConsent:require('./publication-notice').validate(input.publicationConsent)});if(!created)fail(403,'MERCHANT_FORBIDDEN','没有管理服务项目的权限');return json(res,201,{service:created});
    }
    if(m==='POST'&&resource==='members'){
     const v=await body(req);if(!uuid(v.userId)||!['manager','staff'].includes(v.role))fail(400,'INVALID_MEMBER','员工身份或角色无效');
@@ -329,7 +332,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const v=await body(req);
    if(!['pause','resubmit'].includes(v.action))fail(400,'INVALID_ACTION','服务操作不允许');
    if(v.action==='resubmit'&&!await canSubmit('service'))fail(403,'CATEGORY_CLOSED','服务类目暂不接收重新提交');
-   const result=await repo.changeMerchantServiceStatus(uid,mid,sid,v.action);
+   const result=await repo.changeMerchantServiceStatus(uid,mid,sid,v.action,v.publicationConsent);
    if(result===null)fail(403,'MERCHANT_FORBIDDEN','只有本店店主或经理可以管理服务状态');
    if(!result)fail(409,'STALE_SERVICE','服务状态已变化，或该服务不属于当前商家');
    return json(res,200,{service:result});
@@ -339,7 +342,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const result=await repo.removeMerchantMember(uid,mid,target);if(result===null)fail(403,'MERCHANT_FORBIDDEN','只有店主可以管理员工');if(!result)fail(409,'STALE_MEMBER','员工不存在或已移除');return json(res,200,{ok:true});
   }
   if(m==='PUT'&&/^\/api\/v1\/merchants\/[0-9a-f-]{36}\/services\/[0-9a-f-]{36}$/i.test(p)){
-   const uid=await user(req),parts=p.split('/'),result=await repo.editMerchantService?.(uid,parts[4],parts[6],service(await body(req)));
+   const uid=await user(req),parts=p.split('/'),input=await body(req),result=await repo.editMerchantService?.(uid,parts[4],parts[6],{...service(input),publicationConsent:require('./publication-notice').validate(input.publicationConsent)});
    if(!result)fail(403,'MERCHANT_FORBIDDEN','无权修改或该服务不能由商家恢复');return json(res,200,{service:result});
   }
   if(m==='POST'&&/^\/api\/v1\/merchants\/[0-9a-f-]{36}\/bookings\/[0-9a-f-]{36}\/action$/i.test(p)){
@@ -433,9 +436,9 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    const note=text(v.note||'',500,5);if(!await repo.reportDecision(v.id,v.decision,note,repo.__publications))fail(409,'STALE_REVIEW','举报已被处理');return json(res,200,{ok:true});
   }
   if(m==='POST'&&p==='/admin/api/review'){admin(req,true);const v=await body(req);const id=text(v.id,36,36);if(!/^[0-9a-f-]{36}$/i.test(id))fail(400,'INVALID_ID','记录标识无效');const reason=text(v.reason||'',500);let ok=false;
-   if(v.target==='publication'&&['published','rejected'].includes(v.status)){if(v.status==='published')await repo.assertContentReview?.(id,v);ok=await repo.reviewPublication(id,v.status,reason,v.expectedRevision??null);}
+   if(v.target==='publication'&&['published','rejected'].includes(v.status)){if(v.status==='published')await repo.assertContentReview?.(id,v);ok=await repo.reviewPublication(id,v.status,reason,v.expectedRevision??null,v,admin(req).role);}
    else if(v.target==='merchant'&&['in_review','needs_documents','rejected'].includes(v.status))ok=await repo.reviewMerchant(id,v.status,reason);
-   else fail(400,'INVALID_STATUS','审核动作不允许');if(!ok)fail(409,'STALE_REVIEW','审核状态已变化或记录不存在');if(v.target==='publication'&&v.status==='published')await repo.recordContentChecks?.(id,v,admin(req).role);return json(res,200,{ok:true});
+   else fail(400,'INVALID_STATUS','审核动作不允许');if(!ok)fail(409,'STALE_REVIEW','审核状态已变化或记录不存在');return json(res,200,{ok:true});
   }
   fail(404,'NOT_FOUND','接口不存在');
  }catch(err){if(err.code==='P0001'&&['ACCOUNT_INACTIVE','ACCOUNT_CLOSED'].includes(err.message))err=new ApiError(403,err.message,'账号已关闭或受限，请重新登录确认状态');if(!res.headersSent){if(!(err instanceof ApiError))console.error('[api-error]',{name:err.name,code:/^[A-Z0-9_]{1,40}$/.test(err.code||'')?err.code:'INTERNAL_ERROR'});json(res,err.status||500,{error:err.code||'SERVER_ERROR',message:err instanceof ApiError?err.message:'服务器内部错误'});}else res.end();}}

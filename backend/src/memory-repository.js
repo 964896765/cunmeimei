@@ -81,6 +81,7 @@ function createMemoryRepository(){
  async recordAdminAccess(event){audits.push({action:'admin_access',...clone(event),time:when()});},
  async close(){}
  };
+ require('./publication-records').attachMemory(repository,pubs,audits,services);
  return require('./booking-submissions').attachMemoryBookingSubmissions(repository);
 }
 module.exports={createMemoryRepository};

@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const test=require('node:test'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {content}=require('../src/home-content');
 const state=require('../../miniprogram/utils/publication-readiness'),catalog=require('../../miniprogram/utils/classification-contract');
@@ -24,7 +25,7 @@ test('real PostgreSQL whole-product polish: home publishing, review, ads, report
   repo=createPgRepository(dsn,{options});await repo.seedRegions(['中心街道']);
   app=createApp({repo,areas:['中心街道'],allowDevLogin:true,adminPassword:'local-polish-operator-secret',verificationAdminPassword:'local-polish-verifier-secret'});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));
   const base='http://127.0.0.1:'+app.address().port;
-  async function req(route,method='GET',body,auth={}){const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(auth.token?{Authorization:'Bearer '+auth.token}:{}),...(auth.cookie?{Cookie:auth.cookie,'X-CSRF-Token':auth.csrf}:{})},body:body===undefined?undefined:JSON.stringify(body)});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}
+  async function req(route,method='GET',body,auth={}){const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(auth.token?{Authorization:'Bearer '+auth.token}:{}),...(auth.cookie?{Cookie:auth.cookie,'X-CSRF-Token':auth.csrf}:{})},body:body===undefined?undefined:JSON.stringify(acceptedFixtureRequest(route,method,body))});return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};}
   const login=async devUser=>(await req('/api/v1/dev/login','POST',{devUser})).data;
   const owner=await login('polish-content-owner'),reader=await login('polish-content-reader'),other=await login('polish-content-outsider');
   const operatorLogin=await req('/admin/api/login','POST',{password:'local-polish-operator-secret'}),operator={cookie:operatorLogin.cookie,csrf:operatorLogin.data.csrf};

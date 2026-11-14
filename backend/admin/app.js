@@ -45,11 +45,13 @@ async function openTask(kind,id){
   if(d.openAppealId)actions.append(button('查看关联积分申诉',()=>openTask('rewardappeal',d.openAppealId)));
   if(canRole('operator')&&d.status==='reversal_pending'&&!d.openAppealId)actions.append(button('重试账本冲正',async()=>{const reason=await adminPrompt('填写已核实的重试原因');if(reason)await finish('/admin/api/points/rewards/'+id+'/reverse',{revision:d.revision,confirmed:true,reason},'重试贡献冲正；余额不足仍保留待办');}));
  }
+ if(['publication','service'].includes(kind))publicationRecordsButton(root,id);
  if(kind==='publication'){
+  const sectorChecks=publicationReviewFields(root,d.reviewRule);
 
   const textCheck=document.createElement('input'),imageCheck=document.createElement('input');textCheck.type=imageCheck.type='checkbox';
   for(const [input,label] of [[textCheck,'已检查正文和业务规则'],[imageCheck,'已逐张检查原图']]){const l=cell('label');l.append(input,document.createTextNode(label));root.append(l);}
-  actions.append(button('审核通过',async()=>{if(!textCheck.checked||d.imageIds?.length&&!imageCheck.checked)throw Error('请先实际完成文字与图片检查');await finish('/admin/api/review',{target:'publication',id,status:'published',expectedRevision:d.revision,textReviewed:true,imagesReviewed:imageCheck.checked},'审核通过');}));
+  actions.append(button('审核通过',async()=>{if(!textCheck.checked||d.imageIds?.length&&!imageCheck.checked)throw Error('请先实际完成文字与图片检查');await finish('/admin/api/review',{target:'publication',id,status:'published',expectedRevision:d.revision,textReviewed:true,imagesReviewed:imageCheck.checked,...sectorChecks()},'审核通过');}));
   actions.append(button('退回并说明',async()=>{const reason=await adminPrompt('填写修改原因');if(reason)await finish('/admin/api/review',{target:'publication',id,status:'rejected',expectedRevision:d.revision,reason},'退回信息');}));
   actions.append(button('紧急下架',async()=>{const reason=await adminPrompt('填写已核实的下架原因（至少8字）');if(reason)await finish('/admin/api/emergency-remove',{id,reason},'紧急下架');},true));
  }
@@ -115,7 +117,8 @@ async function reload(){
   if(canRole('verifier')&&x.type==='housing')actions.append(button('核验本条房源材料',async()=>{const reference=await adminPrompt('已实际核验的外部材料工单编号'),reason=await adminPrompt('房源产权或授权核验过程'),validUntil=await adminPrompt('材料真实有效期 YYYY-MM-DD');if(!reference||!reason||!validUntil)return;const scope='publication:'+x.id,prior=(trust.qualifications||[]).find(q=>q.userId===x.userId&&q.scope===scope);await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope,reference,reason,validUntil,status:'verified',revision:prior?.revision||0,manuallyVerified:true},'核验此条房源材料');}));
   if(x.attributes)r.append(cell('p',Object.values(x.attributes).filter(Boolean).join(' · '),'muted'));
   for(const id of x.imageIds||[]){if(!/^[a-f0-9-]{36}$/i.test(id))continue;const image=document.createElement('img');image.src='/admin/api/media/'+id+'?size=thumb';image.alt='待审核内容图片';image.className='content-preview';r.append(image);}
-  if(canAdmin('operations'))for(const [status,label] of [['published','通过发布'],['rejected','驳回']])actions.append(button(label,async()=>{const reason=await adminPrompt('审核备注')||'';if(status==='published'&&!await adminConfirm('我已实际检查文字、每张图片及适用业务材料。规则提示不等于内容已被机器判定安全，确认继续？'))return;await process('/admin/api/review',{target:'publication',id:x.id,status,reason,expectedRevision:x.revision,textReviewed:status==='published',imagesReviewed:status==='published'},label);},status==='rejected'));
+  if(canAdmin('operations'))actions.append(button('读取并逐项审核',()=>openTask('publication',x.id)));
+  if(canAdmin('operations'))publicationRecordsButton(r,x.id);
   r.append(actions);
  });
  renderItems('merchants',queue.merchantApplications||[],(root,x)=>{

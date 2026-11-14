@@ -34,3 +34,8 @@ body { background:radial-gradient(ellipse at 90% 0,rgba(249,229,238,.7),transpar
 button { background-image:linear-gradient(110deg,#A73660,#A13E65); }
 button.secondary,button.danger { background-image:none; }
 .admin-nav a { border-color:#F0E7ED; border-radius:12px; background:#FFFFFF; }
+
+.publication-records { margin-top:20px; padding:20px; border:1px solid var(--border,#eae6e9); border-radius:18px; background:#fff; }
+.publication-records details { margin:12px 0; }
+.publication-records pre { white-space:pre-wrap; overflow-wrap:anywhere; font:13px/1.7 ui-monospace,monospace; color:#66616b; }
+.publication-review-check { display:flex; align-items:flex-start; gap:10px; margin:12px 0; }

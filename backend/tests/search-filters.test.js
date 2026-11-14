@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 const test=require('node:test'),assert=require('node:assert/strict');
 const {feedUrl}=require('../../miniprogram/utils/feed-query');
 const business=require('../../miniprogram/utils/business-templates');
@@ -13,11 +14,11 @@ test('seven template search channels share codes with discovery and retain legac
 test('picture filtering is validated and applied before feed pagination',async t=>{
  const repo=require('../src/memory-repository').createMemoryRepository(),app=require('../src/server').createApp({repo,areas:['中心街道']});
  await new Promise(r=>app.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>{app.closeAllConnections();app.close(r);}));const base='http://127.0.0.1:'+app.address().port;
- const withPhoto=await repo.createPublication('owner',{type:'used',title:'二手手机有图',description:'手机',district:'中心街道',imageIds:['00000000-0000-4000-8000-000000000001']});
- const noPhoto=await repo.createPublication('owner',{type:'used',title:'二手手机无图',description:'手机',district:'中心街道'});
+ const withPhoto=await repo.createPublication('owner',{publicationConsent:acceptedConsent(),type:'used',title:'二手手机有图',description:'手机',district:'中心街道',imageIds:['00000000-0000-4000-8000-000000000001']});
+ const noPhoto=await repo.createPublication('owner',{publicationConsent:acceptedConsent(),type:'used',title:'二手手机无图',description:'手机',district:'中心街道'});
  await repo.reviewPublication(withPhoto.id,'published','');await repo.reviewPublication(noPhoto.id,'published','');
  const r=await fetch(base+feedUrl({q:'手机',images:'with',pageSize:1}));assert.equal(r.status,200);const body=await r.json();assert.deepEqual(body.items.map(x=>x.id),[withPhoto.id]);assert.equal(body.pagination.hasMore,false);
- const pending=await repo.createPublication('owner',{type:'used',title:'未审核手机',description:'手机',district:'中心街道',imageIds:['00000000-0000-4000-8000-000000000002']});
+ const pending=await repo.createPublication('owner',{publicationConsent:acceptedConsent(),type:'used',title:'未审核手机',description:'手机',district:'中心街道',imageIds:['00000000-0000-4000-8000-000000000002']});
  assert.ok(!(await repo.listFeed({q:'手机',images:'with'})).some(x=>x.id===pending.id));
  for(const value of ['none','true',''])assert.equal((await fetch(base+'/api/v1/feed?images='+value)).status,400);
  assert.throws(()=>feedUrl({images:'invalid'}));

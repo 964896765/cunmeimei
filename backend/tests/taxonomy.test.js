@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test'),assert=require('node:assert/strict');
 const {createApp}=require('../src/server');
@@ -7,7 +8,7 @@ test('V0.6: administrator changes survive API reads, affect submissions, protect
  const repo=createMemoryRepository();const app=createApp({repo,areas:['中心街道','北城区'],allowDevLogin:true,adminPassword:'super-secret-admin-password'});
  await new Promise(r=>app.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>app.close(r)));
  const root='http://127.0.0.1:'+app.address().port;
- const req=async(p,method='GET',body,{token='',cookie='',csrf=''}={})=>{const res=await fetch(root+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body?JSON.stringify(body):undefined});return {status:res.status,data:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};};
+ const req=async(p,method='GET',body,{token='',cookie='',csrf=''}={})=>{const res=await fetch(root+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body?JSON.stringify(acceptedFixtureRequest(p,method,body)):undefined});return {status:res.status,data:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};};
  const initial=await req('/api/v1/config');assert.deepEqual(initial.data.areas,['中心街道','北城区']);
  assert.equal(initial.data.categories.find(c=>c.id==='job').enabled,false);
  const a=await req('/admin/api/login','POST',{password:'super-secret-admin-password'});

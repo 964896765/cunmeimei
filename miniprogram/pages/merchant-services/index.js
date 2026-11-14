@@ -20,6 +20,7 @@ Page({data:{items:[],title:'',description:'',price:'面议',editingId:'',merchan
   if(this.serviceBusy||this.data.saving||this.data.uploading)return;
   const serviceId=e.currentTarget.dataset.id, action=e.currentTarget.dataset.action;
   if(!['pause','resubmit'].includes(action)||!serviceId||!this.data.canEdit)return;
+  if(action==='resubmit')return this.editService(e);
   const uid=owner(),session=context(),merchantId=this.data.merchantId;this.serviceBusy=true;
   const labels=action==='pause'?['暂停该服务？','暂停后不再接受新的预约，已有预约仍需正常处理。']:['重新提交审核？','提交后需平台审核通过才能再次上架。'];
   const answer=await new Promise(resolve=>wx.showModal({title:labels[0],content:labels[1],success:result=>resolve(!!result.confirm),fail:()=>resolve(false)}));
@@ -31,15 +32,15 @@ Page({data:{items:[],title:'',description:'',price:'面议',editingId:'',merchan
    await this.load();
   }catch(error){if(live(this,uid))api.showError(error);}finally{if(live(this,uid))this.serviceBusy=false;}
  },
- async editService(e){
+ async editService(e){require('../../utils/publication-consent').reset(this);
   if(this.data.uploading||this.data.saving)return;const item=this.data.items.find(x=>x.id===e.currentTarget.dataset.id);if(!item||!this.data.canEdit)return;
   const uid=owner(),version=this._editorVersion=(this._editorVersion||0)+1;
   this.setData({editingId:item.id,title:item.title,description:item.description,price:item.price,photos:(item.imageIds||[]).map(id=>({id,path:''})),error:''});wx.pageScrollTo({scrollTop:9999,duration:200});
   const photos=await Promise.all((item.imageIds||[]).map(async id=>{try{return {id,path:await api.privateImage(id)};}catch{return {id,path:''};}}));
   if(live(this,uid)&&version===this._editorVersion&&this.data.editingId===item.id)this.setData({photos:this.data.photos.map(x=>photos.find(p=>p.id===x.id)||x)});
  },
- cancelEdit(){if(this.data.uploading||this.data.saving)return;this._editorVersion=(this._editorVersion||0)+1;this.setData({editingId:'',title:'',description:'',price:'面议',photos:[],error:''});},
- choosePhotos(){
+ cancelEdit(){require('../../utils/publication-consent').reset(this);if(this.data.uploading||this.data.saving)return;this._editorVersion=(this._editorVersion||0)+1;this.setData({editingId:'',title:'',description:'',price:'面议',photos:[],error:''});},
+ choosePhotos(){require('../../utils/publication-consent').reset(this);
   if(this.data.uploading||this.data.saving||!this.data.canEdit||this.data.photos.length>=6)return;
   const uid=owner(),session=context(),id=this.data.editingId,version=this._editorVersion,active=()=>live(this,uid)&&version===this._editorVersion&&id===this.data.editingId;
   require('../../utils/image-picker').chooseImages({count:6-this.data.photos.length,success:async r=>{
@@ -48,16 +49,18 @@ Page({data:{items:[],title:'',description:'',price:'面议',editingId:'',merchan
    catch(e){if(active())this.setData({error:e.message+'，可以重试上传'});}finally{if(active())this.setData({uploading:false});}
   }});
  },
- removePhoto(e){if(this.data.uploading||this.data.saving)return;this.setData({photos:this.data.photos.filter((_,i)=>i!==+e.currentTarget.dataset.index)});},
+ removePhoto(e){require('../../utils/publication-consent').reset(this);if(this.data.uploading||this.data.saving)return;this.setData({photos:this.data.photos.filter((_,i)=>i!==+e.currentTarget.dataset.index)});},
  previewPhoto(e){const urls=this.data.photos.map(x=>x.path).filter(Boolean);if(urls.length)wx.previewImage({current:e.currentTarget.dataset.path,urls});},
- input(e){const field=e.currentTarget.dataset.field;if(this.data.saving||this.data.uploading||!['title','description','price'].includes(field))return;this.setData({[field]:e.detail.value});},
+ input(e){require('../../utils/publication-consent').reset(this);const field=e.currentTarget.dataset.field;if(this.data.saving||this.data.uploading||!['title','description','price'].includes(field))return;this.setData({[field]:e.detail.value});},
+ publicationConsentChanged(e){require('../../utils/publication-consent').changed(this,e);},
  async submit(){
+  if(!require('../../utils/publication-consent').requireConsent(this))return;
   if(this.data.saving||this.data.uploading||!this.data.canEdit)return;
   const uid=owner(),version=this._editorVersion,id=this.data.editingId,merchantId=this.data.merchantId,active=()=>live(this,uid)&&version===this._editorVersion&&id===this.data.editingId&&merchantId===this.data.merchantId;
   this.setData({saving:true,error:''});
   try{
-   await api.request(id?'PUT':'POST','/api/v1/merchants/'+encodeURIComponent(merchantId)+'/services'+(id?'/'+encodeURIComponent(id):''),{title:this.data.title,description:this.data.description,price:this.data.price,imageIds:this.data.photos.map(x=>x.id)},true,uid);
+   await api.request(id?'PUT':'POST','/api/v1/merchants/'+encodeURIComponent(merchantId)+'/services'+(id?'/'+encodeURIComponent(id):''),{publicationConsent:this.data.publicationConsent,title:this.data.title,description:this.data.description,price:this.data.price,imageIds:this.data.photos.map(x=>x.id)},true,uid);
    if(!active())return;this.setData({editingId:'',title:'',description:'',price:'面议',photos:[]});wx.showToast({title:'已提交服务审核'});await this.load();
-  }catch(e){if(active())this.setData({error:e.message});}finally{if(live(this,uid)&&version===this._editorVersion)this.setData({saving:false});}
+  }catch(e){if(active()){require('../../utils/publication-consent').recover(this,e);this.setData({error:e.message});}}finally{if(live(this,uid)&&version===this._editorVersion)this.setData({saving:false});}
  }
 });

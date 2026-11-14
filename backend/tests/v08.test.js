@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');
 const assert=require('node:assert/strict');
@@ -13,7 +14,7 @@ async function setup(t){
  t.after(()=>new Promise(ok=>server.close(ok)));
  const base='http://127.0.0.1:'+server.address().port;
  const call=async(path,{method='GET',body,token,cookie,csrf}={})=>{
-  const res=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body===undefined?undefined:JSON.stringify(body)});
+  const res=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:body===undefined?undefined:JSON.stringify(acceptedFixtureRequest(path,method,body))});
   return {status:res.status,data:await res.json(),cookie:res.headers.get('set-cookie')?.split(';')[0]||''};
  };
  return {repo,call};

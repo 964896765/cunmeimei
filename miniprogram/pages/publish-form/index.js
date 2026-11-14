@@ -10,7 +10,7 @@ const clone=value=>JSON.parse(JSON.stringify(value));
 function cachedPhotoPath(path){if(!path)return '';try{wx.getFileSystemManager().accessSync(path);return path;}catch{return '';}}
 function fingerprint(d){return JSON.stringify([d.kind,d.title,d.detail,d.price,d.district,d.attributes,d.photos.map(x=>x.id),d.clientKey,d.contactSettings]);}
 Page({
- data:{contactSettings:{publicPhone:false,allowMessages:true,phoneConsent:false},trust:{},loading:true,loadFailed:false,showForm:false,kind:'used',projectName:'信息',breadcrumb:'',title:'',detail:'',price:'',amount:'',district:'',districts:[],attributes:{},photos:[],photoCount:0,canAddPhoto:true,clientKey:'',agreed:false,preview:false,error:'',submitting:false,uploading:false,saving:false,previewFields:[],previewFieldCount:0,publisherName:'',scopeRequired:false,showExitDialog:false,fromDraft:false,draftError:'',publishCities:geography.cities.map(x=>({code:x.code,name:x.name})),publishCityName:'',administrativeDistricts:[],publishDistrictName:'',focusedField:'',online:api.online()},
+ data:{publicationConsent:null,consentRevision:0,contactSettings:{publicPhone:false,allowMessages:true,phoneConsent:false},trust:{},loading:true,loadFailed:false,showForm:false,kind:'used',projectName:'信息',breadcrumb:'',title:'',detail:'',price:'',amount:'',district:'',districts:[],attributes:{},photos:[],photoCount:0,canAddPhoto:true,clientKey:'',agreed:false,preview:false,error:'',submitting:false,uploading:false,saving:false,previewFields:[],previewFieldCount:0,publisherName:'',scopeRequired:false,showExitDialog:false,fromDraft:false,draftError:'',publishCities:geography.cities.map(x=>({code:x.code,name:x.name})),publishCityName:'',administrativeDistricts:[],publishDistrictName:'',focusedField:'',online:api.online()},
  async onLoad(options){this._options=options||{};this._openedFromDraft=['local','account'].includes(this._options.restore);this._sessionImageIds=new Set();await this.initialize();},
  onShow(){require('../../utils/theme').apply(this);if(this._draftOwner)api.request('GET','/api/v1/me/trust',null,true,this._draftOwner).then(trust=>{if(this.active())this.setData({trust});}).catch(()=>{});if(this._draftOwner&&owner()!==this._draftOwner){this._suspended=true;this.setData({error:'账号已切换，请返回后重新打开表单。',showForm:false});}},
  onHide(){},
@@ -70,7 +70,8 @@ Page({
   this.syncFormContext();this.markClean();
  },
  markClean(){this._initialSnapshot=fingerprint(this.data);this._dirty=false;wx.disableAlertBeforeUnload?.();},
- changed(){this.setData({photoCount:this.data.photos.length,canAddPhoto:this.data.photos.length<6});this._dirty=fingerprint(this.data)!==this._initialSnapshot;this.setData({preview:false,agreed:false,error:'',draftError:''});if(this._dirty)wx.enableAlertBeforeUnload?.({message:'当前修改尚未保存，离开可能丢失填写内容。'});else wx.disableAlertBeforeUnload?.();},
+ publicationConsentChanged(e){require('../../utils/publication-consent').changed(this,e);},
+ changed(){require('../../utils/publication-consent').reset(this);this.setData({photoCount:this.data.photos.length,canAddPhoto:this.data.photos.length<6});this._dirty=fingerprint(this.data)!==this._initialSnapshot;this.setData({preview:false,agreed:false,error:'',draftError:''});if(this._dirty)wx.enableAlertBeforeUnload?.({message:'当前修改尚未保存，离开可能丢失填写内容。'});else wx.disableAlertBeforeUnload?.();},
  editable(){return this.active()&&this.data.showForm&&!this.data.preview&&!this.data.submitting&&!this.data.loading&&!this.data.saving&&!this.data.showExitDialog;},
  setField(e){const key=e.currentTarget.dataset.field;if(!this.editable()||!['title','detail'].includes(key))return;this.setData({[key]:e.detail.value});this.changed();},
  async saveDraft(){
@@ -91,14 +92,14 @@ Page({
   finally{if(this.active())this.setData({saving:false});}
  },
  validate(){const d=this.data;let error=schemas.formError(d.kind,{...d,imageIds:d.photos.map(x=>x.id)});if(!error&&!geography.findCity(d.attributes.cityCode))error='请确认这条信息所属的城市。';if(!error&&d.attributes.districtCode&&geography.findDistrict(d.attributes.districtCode)?.cityCode!==d.attributes.cityCode)error='区县或镇街与所选城市不一致。';if(!error&&!d.districts.includes(d.district)){this.setData({scopeRequired:true});error='请选择平台已开放的发布范围。';}if(!error&&(d.uploading||d.photos.some(x=>!x.id||!x.path)))error='请等待照片上传完成，或重试读取失败的照片。';this.setData({error});return !error;},
- previewPost(){
+ previewPost(){require('../../utils/publication-consent').reset(this);
   if(!this.editable()||this.data.uploading||!this.validate())return;
   const facts=display.describe(this.data.kind,this.data.attributes,this.data.price,this.data.district);this.setData({preview:true,agreed:false,previewFields:facts.displayFields,previewFieldCount:facts.displayFieldCount,previewPrice:facts.priceText,previewLocation:facts.locationText,photoCount:this.data.photos.length,focusedField:''});wx.pageScrollTo({scrollTop:0,duration:0});
   if(api.hasSession())api.request('GET','/api/v1/me/profile',null,true,this._draftOwner).then(p=>{if(this.active())this.setData({publisherName:p.displayName||''});}).catch(()=>{});
  },
- editPost(){if(this.data.submitting)return;this.setData({preview:false,agreed:false,error:''});wx.pageScrollTo({scrollTop:0,duration:0});},
+ editPost(){if(this.data.submitting)return;require('../../utils/publication-consent').reset(this);this.setData({preview:false,agreed:false,error:''});wx.pageScrollTo({scrollTop:0,duration:0});},
  setAgree(e){if(this.data.preview&&!this.data.submitting)this.setData({agreed:!!e.detail.value.length});},
- confirmSubmit(){if(!this.data.preview||this.data.submitting)return;this.setData({agreed:true});return this.submit();},
+ confirmSubmit(){if(!this.data.preview||this.data.submitting||!require('../../utils/publication-consent').requireConsent(this))return;return this.submit();},
  goBack(){if(this.busy())return;if(this.data.preview){this.editPost();return;}if(this._dirty)this.setData({showExitDialog:true,draftError:''});else this.leave();},
  busy(){if(this.data.submitting||this.data.saving||this.data.uploading){wx.showToast({title:'请等待当前操作完成',icon:'none'});return true;}return false;},
  continueEditing(){if(!this.data.saving)this.setData({showExitDialog:false,draftError:''});},
@@ -126,10 +127,10 @@ Page({
  previewPhoto(e){const urls=this.data.photos.map(x=>x.path).filter(Boolean);if(urls.length)wx.previewImage({current:e.currentTarget.dataset.path||urls[0],urls});},
  async submit(){
   if(this._submitted||!this.data.showForm||!this.active()||!this.data.preview||this.data.submitting||this.data.uploading||this.data.saving||!this.validate())return;
-  if(!this.data.agreed){this.setData({error:'请点击“确认提交审核”确认本次发布。'});return;}
+  if(!require('../../utils/publication-consent').requireConsent(this))return;
   this.setData({submitting:true,error:''});const d=clone(this.data);
   try{
-   await api.request('POST','/api/v1/publications',{...(this._origin?.source==='account'?{sourceDraftRevision:this._origin.revision}:{}),clientKey:d.clientKey,type:d.kind,title:d.title.trim(),detail:d.detail.trim(),price:d.price.trim(),district:d.district,attributes:d.attributes,contactSettings:d.contactSettings,imageIds:d.photos.map(x=>x.id)},true,this._draftOwner);
+   await api.request('POST','/api/v1/publications',{...(this._origin?.source==='account'?{sourceDraftRevision:this._origin.revision}:{}),publicationConsent:d.publicationConsent,clientKey:d.clientKey,type:d.kind,title:d.title.trim(),detail:d.detail.trim(),price:d.price.trim(),district:d.district,attributes:d.attributes,contactSettings:d.contactSettings,imageIds:d.photos.map(x=>x.id)},true,this._draftOwner);
    if(!this.active())return;this._submitted=true;this._sessionImageIds.clear();wx.disableAlertBeforeUnload?.();
    // Remove only the explicitly opened local draft, with its concurrency revision.
    try{
@@ -140,7 +141,7 @@ Page({
     }
    }catch{/* The server committed; local cleanup failure must not turn it into a failed submission. */}
    this.setData({showForm:false});wx.redirectTo({url:'/pages/my-posts/index'});
-  }catch(e){if(this.active())this.setData({error:e.message});}
+  }catch(e){if(this.active()){require('../../utils/publication-consent').recover(this,e);this.setData({error:e.message});}}
   finally{if(this.active())this.setData({submitting:false});}
  }
 });

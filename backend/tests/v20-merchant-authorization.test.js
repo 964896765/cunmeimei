@@ -1,4 +1,6 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const {createApp}=require('../src/server');
@@ -12,7 +14,7 @@ async function fixture(t){
  t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base=`http://127.0.0.1:${app.address().port}`;
  async function req(route,method='GET',data,credentials={}){
-  const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(credentials.token?{Authorization:'Bearer '+credentials.token}:{}),...(credentials.cookie?{Cookie:credentials.cookie}:{}),...(credentials.csrf?{'X-CSRF-Token':credentials.csrf}:{})},body:data===undefined?undefined:JSON.stringify(data)});
+  const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(credentials.token?{Authorization:'Bearer '+credentials.token}:{}),...(credentials.cookie?{Cookie:credentials.cookie}:{}),...(credentials.csrf?{'X-CSRF-Token':credentials.csrf}:{})},body:data===undefined?undefined:JSON.stringify(acceptedFixtureRequest(route,method,data))});
   return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};
  }
  async function login(id){const res=await req('/api/v1/dev/login','POST',{devUser:id});assert.equal(res.status,200);return res.data;}
@@ -88,7 +90,7 @@ test('V0.20 PostgreSQL transaction contract: authorized staff checks permission 
 
 test('V0.20 PostgreSQL transaction contract: revoked manager cannot create new service',async()=>{
  const {pool,calls}=fakePool(false);
- const result=await pgOperations(pool).createMerchantService('revoked','merchant',{title:'测试',description:'描述',price:'30'});
+ const result=await pgOperations(pool).createMerchantService('revoked','merchant',{publicationConsent:acceptedConsent(),title:'测试',description:'描述',price:'30'});
  assert.equal(result,null);
  assert.match(calls[1].sql,/mm.role IN \('owner','manager'\)/);
  assert.ok(!calls.some(x=>x.sql.includes('INSERT INTO service_catalog')));

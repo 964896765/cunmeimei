@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');const assert=require('node:assert/strict');const crypto=require('node:crypto');
 const {publicationExtras}=require('../src/product-repository');
@@ -15,7 +16,7 @@ test('real PostgreSQL product capabilities: media, saved items, notifications, c
   await require('../src/schema-migrations').applyMigrations(pool);repo=createPgRepository(dsn,{options});await repo.seedRegions(['中心街道']);
   app=createApp({repo,areas:['中心街道'],allowDevLogin:true,superAdminPassword:'local-product-test-password'});await new Promise(r=>app.listen(0,'127.0.0.1',r));
   const base='http://127.0.0.1:'+app.address().port;
-  async function req(route,method='GET',body,auth={}){const response=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(auth.token?{Authorization:'Bearer '+auth.token}:{}),...(auth.cookie?{Cookie:auth.cookie,'X-CSRF-Token':auth.csrf}:{})},body:body===undefined?undefined:JSON.stringify(body)});return {status:response.status,data:await response.json(),cookie:response.headers.get('set-cookie')?.split(';')[0]};}
+  async function req(route,method='GET',body,auth={}){const response=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(auth.token?{Authorization:'Bearer '+auth.token}:{}),...(auth.cookie?{Cookie:auth.cookie,'X-CSRF-Token':auth.csrf}:{})},body:body===undefined?undefined:JSON.stringify(acceptedFixtureRequest(route,method,body))});return {status:response.status,data:await response.json(),cookie:response.headers.get('set-cookie')?.split(';')[0]};}
   const login=async name=>(await req('/api/v1/dev/login','POST',{devUser:name})).data;
   const owner=await login('product-owner'),buyer=await login('product-buyer'),other=await login('product-other');
   const adminLogin=await req('/admin/api/login','POST',{role:'superadmin',password:'local-product-test-password'});const admin={cookie:adminLogin.cookie,csrf:adminLogin.data.csrf};

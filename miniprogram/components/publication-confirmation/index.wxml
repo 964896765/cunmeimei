@@ -1,0 +1,9 @@
+<view class="publication-confirmation {{largeText?'large-text':''}}">
+ <view class="confirmation-title">信息发布确认</view>
+ <view class="confirmation-description">请确认本条信息真实、合法、有效。</view>
+ <checkbox-group bindchange="change"><label class="confirmation-choice"><checkbox value="publication" checked="{{checked}}" disabled="{{disabled||loading||!document}}" color="{{color}}"/><text>我承诺本条信息真实合法，不存在虚假宣传、诈骗或侵权内容。</text></label></checkbox-group>
+ <button class="confirmation-link" bindtap="read">《信息发布须知》<text> · 查看完整内容</text></button>
+ <view wx:if="{{loading}}" class="confirmation-status" role="status">正在读取发布须知…</view>
+ <view wx:if="{{error}}" class="confirmation-status" role="alert">{{error}}<button class="confirmation-retry" bindtap="load">重新读取</button></view>
+ <slot/>
+</view>

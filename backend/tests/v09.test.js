@@ -1,4 +1,6 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const legalConfig={operatorName:'Isolated operator',contactEmail:'privacy@example.test'},legal=require('../src/legal-documents').documents(legalConfig),accepted={consent:true,termsVersion:legal.termsVersion,privacyVersion:legal.privacyVersion,legalHash:legal.hash};
 const test=require('node:test');
 const assert=require('node:assert/strict');
@@ -12,7 +14,7 @@ async function fixture(t,overrides={}){
  t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base='http://127.0.0.1:'+app.address().port;
  const call=async(path,method='GET',body,access={})=>{
-  const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(access.token?{Authorization:'Bearer '+access.token}:{}),...(access.cookie?{Cookie:access.cookie}:{}),...(access.csrf?{'X-CSRF-Token':access.csrf}:{})},body:body===undefined?undefined:JSON.stringify(body)});
+  const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(access.token?{Authorization:'Bearer '+access.token}:{}),...(access.cookie?{Cookie:access.cookie}:{}),...(access.csrf?{'X-CSRF-Token':access.csrf}:{})},body:body===undefined?undefined:JSON.stringify(acceptedFixtureRequest(path,method,body))});
   return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]||''};
  };
  return {repo,call};
@@ -22,7 +24,7 @@ test('V0.9 disabling a region hides prior approved listings and service detail; 
  const {repo,call}=await fixture(t);
  await repo.seedRegions(['中心街道','北城区']);
  const user=await repo.upsertIdentity('dev_local','region-test');
- const listing=await repo.createPublication(user,{type:'used',title:'区域回归测试商品',description:'地区停用可见性校验内容',district:'北城区',price:'20'});
+ const listing=await repo.createPublication(user,{publicationConsent:acceptedConsent(),type:'used',title:'区域回归测试商品',description:'地区停用可见性校验内容',district:'北城区',price:'20'});
  assert.equal(await repo.reviewPublication(listing.id,'published',''),true);
  const service=await repo.addTestService({district:'北城区',title:'区域测试维修服务',description:'已发布的服务项目示例',price:'50'});
  assert.ok((await call('/api/v1/feed')).data.items.some(x=>x.id===listing.id));

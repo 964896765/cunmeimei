@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const {pgOperations}=require('../src/operations-pg');
@@ -10,6 +11,7 @@ function fakePool({authorized=true,hasService=true,auditFailure=false}={}){
  const client={async query(sql,args){
   calls.push({sql,args});
   if(sql.includes('SELECT mm.role'))return {rows:authorized?[{role:'manager'}]:[]};
+  if(sql.includes('coalesce(max(content_revision)'))return {rows:[{revision:1}]};
   if(sql.includes('UPDATE service_catalog'))return {rows:hasService?[{id:'service-id',merchant_id:'shop',status:args[2]}]:[]};
   if(auditFailure&&sql.includes('INSERT INTO admin_audit_events'))throw new Error('audit unavailable');
   return {rows:[]};
@@ -36,7 +38,7 @@ test('V0.21: authorized manager locks membership before changing service state',
  for(const [action,expectedStatus,expectedOrigin] of [
   ['pause','draft','published'],['resubmit','pending_review','draft']]){
   const {pool,calls}=fakePool();
-  const result=await pgOperations(pool).changeMerchantServiceStatus('manager','shop','service-id',action);
+  const result=await pgOperations(pool).changeMerchantServiceStatus('manager','shop','service-id',action,require('./helpers/publication-confirmation').acceptedConsent());
   assert.equal(result.status,expectedStatus);
   const lockIndex=calls.findIndex(c=>c.sql.includes('SELECT mm.role'));
   const updateIndex=calls.findIndex(c=>c.sql.includes('UPDATE service_catalog'));
@@ -70,7 +72,7 @@ test('V0.21 HTTP: role revocation takes effect before service resubmission',asyn
  t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base=`http://127.0.0.1:${app.address().port}`;
  async function req(route,method='GET',data,credentials={}){
-  const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(credentials.token?{Authorization:'Bearer '+credentials.token}:{}),...(credentials.cookie?{Cookie:credentials.cookie}:{}),...(credentials.csrf?{'X-CSRF-Token':credentials.csrf}:{})},body:data===undefined?undefined:JSON.stringify(data)});
+  const r=await fetch(base+route,{method,headers:{'Content-Type':'application/json',...(credentials.token?{Authorization:'Bearer '+credentials.token}:{}),...(credentials.cookie?{Cookie:credentials.cookie}:{}),...(credentials.csrf?{'X-CSRF-Token':credentials.csrf}:{})},body:data===undefined?undefined:JSON.stringify(acceptedFixtureRequest(route,method,data))});
   return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};
  }
  async function login(n){const r=await req('/api/v1/dev/login','POST',{devUser:n});assert.equal(r.status,200);return r.data;}

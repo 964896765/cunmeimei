@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -64,7 +65,7 @@ test('V0.17 merchant cannot confirm a pending appointment after its scheduled st
  await repo.submitMerchantEvidence(owner,application.id,{registrationCode:'TEST-CONTRACT-CODE',licenseHolder:'模拟公司',evidenceReference:'offline-only-v17'});
  const merchant=await repo.approveMerchantApplication(application.id,'人工离线核验测试',true);
  assert.ok(merchant.id);
- const svc=await repo.createMerchantService(owner,merchant.id,{title:'上门清洁预约',description:'预约确认的时间边界验证',price:'100'});
+ const svc=await repo.createMerchantService(owner,merchant.id,{publicationConsent:acceptedConsent(),publicationConsent:require('./helpers/publication-confirmation').acceptedConsent(),title:'上门清洁预约',description:'预约确认的时间边界验证',price:'100'});
  assert.equal(await repo.reviewService(svc.id,'published'),true);
  const original=Date.now;try{
   Date.now=()=>START;

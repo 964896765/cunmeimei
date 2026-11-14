@@ -1,17 +1,18 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 const test=require('node:test'),assert=require('node:assert/strict');
 const {createApp}=require('../src/server'),{createMemoryRepository}=require('../src/memory-repository');
 
 test('V0.10: paginated public feed is stable, honors moderation and region settings; old details remain accessible',async t=>{
  const repo=createMemoryRepository();await repo.seedRegions(['中心街道','北城区']);
  const uid=await repo.upsertIdentity('dev_local','paging-user');
- const old=await repo.createPublication(uid,{type:'used',title:'最老的一条公开信息',description:'确保百条之后仍然能通过详情编号访问',district:'中心街道',price:'10'});
+ const old=await repo.createPublication(uid,{publicationConsent:acceptedConsent(),type:'used',title:'最老的一条公开信息',description:'确保百条之后仍然能通过详情编号访问',district:'中心街道',price:'10'});
  assert.equal(await repo.reviewPublication(old.id,'published',''),true);
  for(let i=0;i<115;i++){
-  const row=await repo.createPublication(uid,{type:'used',title:'公开分页记录'+String(i).padStart(3,'0'),description:'这是分页和地区展示测试使用的演示信息',district:i%2?'北城区':'中心街道',price:'20'});
+  const row=await repo.createPublication(uid,{publicationConsent:acceptedConsent(),type:'used',title:'公开分页记录'+String(i).padStart(3,'0'),description:'这是分页和地区展示测试使用的演示信息',district:i%2?'北城区':'中心街道',price:'20'});
   assert.equal(await repo.reviewPublication(row.id,'published',''),true);
  }
- const pending=await repo.createPublication(uid,{type:'used',title:'未审核的内容不可公开',description:'仅供本人和后台查看的未审内容',district:'中心街道',price:'100'});
+ const pending=await repo.createPublication(uid,{publicationConsent:acceptedConsent(),type:'used',title:'未审核的内容不可公开',description:'仅供本人和后台查看的未审内容',district:'中心街道',price:'100'});
  const app=createApp({repo,areas:['中心街道','北城区'],adminPassword:'test-admin-password-secure'});
  await new Promise(r=>app.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>app.close(r)));
  const base=`http://127.0.0.1:${app.address().port}`;

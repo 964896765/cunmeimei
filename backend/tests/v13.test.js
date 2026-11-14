@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const {toPublicItem}=require('../src/public-item');
@@ -20,7 +21,7 @@ test('V0.13: publication service demand is a listing, catalog service is bookabl
 test('V0.13: published service demand cannot be booked or falsely reported as a catalog service',async t=>{
  const repo=createMemoryRepository();await repo.seedRegions(['中心街道']);
  const author=await repo.upsertIdentity('dev_local','service-demand-user');
- const demand=await repo.createPublication(author,{type:'service',title:'求助找上门清洁阿姨',description:'家里需要大扫除，寻找附近保洁师傅',district:'中心街道',price:'100'});
+ const demand=await repo.createPublication(author,{publicationConsent:acceptedConsent(),type:'service',title:'求助找上门清洁阿姨',description:'家里需要大扫除，寻找附近保洁师傅',district:'中心街道',price:'100'});
  assert.equal(await repo.reviewPublication(demand.id,'published',''),true);
  const offered=await repo.addTestService({title:'上门保洁可预约',description:'商家提供的真实服务项目',district:'中心街道',price:'150'});
  const server=createApp({repo,areas:['中心街道'],allowDevLogin:true});

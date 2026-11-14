@@ -10,7 +10,7 @@ async function setup(t){
  t.after(()=>new Promise(resolve=>server.close(resolve)));
  const base='http://127.0.0.1:'+server.address().port;
  async function call(path,opts={}){
-  const res=await fetch(base+path,{method:opts.method||'GET',headers:{'Content-Type':'application/json',...(opts.token?{Authorization:'Bearer '+opts.token}:{}),...(opts.cookie?{Cookie:opts.cookie}:{}),...(opts.csrf?{'X-CSRF-Token':opts.csrf}:{})},body:opts.body===undefined?undefined:JSON.stringify(opts.body)});
+  const res=await fetch(base+path,{method:opts.method||'GET',headers:{'Content-Type':'application/json',...(opts.token?{Authorization:'Bearer '+opts.token}:{}),...(opts.cookie?{Cookie:opts.cookie}:{}),...(opts.csrf?{'X-CSRF-Token':opts.csrf}:{})},body:opts.body===undefined?undefined:JSON.stringify(require('./helpers/publication-confirmation').acceptedFixtureRequest(path,opts.method||'GET',opts.body))});
   return {status:res.status,data:await res.json(),cookie:(res.headers.get('set-cookie')||'').split(';')[0]};
  }
  const login=async name=>(await call('/api/v1/dev/login',{method:'POST',body:{devUser:name}})).data.token;

@@ -13,7 +13,7 @@
     <view class="preview-section"><view class="preview-heading">详细描述</view><view class="preview-description">{{detail}}</view></view>
     <view class="preview-section"><view class="preview-heading">{{kind==='used'?'交易地区':kind==='housing'?'房源地区':'信息所属地区'}}</view><view class="preview-location"><view class="location-line-icon" aria-hidden="true"></view>{{previewLocation}}</view><view class="form-hint">仅展示公开区域，不公开个人详细住址。</view></view>
     <view wx:if="{{publisherName}}" class="publisher-row"><view class="person-line-icon" aria-hidden="true"></view><text>{{publisherName}}</text></view>
-    <view class="form-hint">电话{{contactSettings.publicPhone?'已单独授权公开':'不公开'}} · {{contactSettings.allowMessages?'可发起私信申请':'不接收新的陌生人申请'}}</view><view class="preview-review-note">请核对信息是否真实准确。提交后进入平台审核，审核通过后才会公开展示。</view>
+    <view class="form-hint">电话{{contactSettings.publicPhone?'已单独授权公开':'不公开'}} · {{contactSettings.allowMessages?'可发起私信申请':'不接收新的陌生人申请'}}</view>
    </view>
    <view wx:else class="form-fields">
     <view class="context-row"><view class="category-path">{{breadcrumb}}</view></view>
@@ -31,7 +31,7 @@
     <view class="field-group contact-settings"><privacy-mask label="联系方式由你逐条授权" description="手机号默认隐藏，可随时撤回本条授权。"/><text class="form-label">联系设置</text><view class="contact-setting-row"><view><text>公开联系电话</text><view class="form-hint">{{trust.phoneVerified?trust.maskedPhone+' · 仅本条授权':'需先验证手机号，默认不公开'}}</view></view><button class="contact-toggle" bindtap="togglePublicPhone" aria-pressed="{{contactSettings.publicPhone}}">{{contactSettings.publicPhone?'已开启':'未开启'}}</button></view><view class="contact-setting-row"><text>陌生人可以私信我</text><switch color="{{themeColor}}" checked="{{contactSettings.allowMessages}}" bindchange="changeAllowMessages"/></view><button class="verification-link" bindtap="openVerification">查看手机号与认证状态</button></view>
     <view class="form-hint safety-note">请确认发布内容真实、准确，不包含敏感个人信息。</view>
    </view>
-   <view wx:if="{{preview}}" class="form-actions preview-actions"><button class="secondary" disabled="{{submitting}}" bindtap="editPost">返回修改</button><button class="primary" loading="{{submitting}}" disabled="{{submitting}}" bindtap="confirmSubmit">确认提交审核</button></view>
+   <view wx:if="{{preview}}"><publication-confirmation id="publication-confirmation" revision="{{consentRevision}}" disabled="{{submitting||saving||uploading}}" color="{{themeColor}}" large-text="{{displayPreferences.largeText}}" bind:change="publicationConsentChanged"><view class="form-actions preview-actions"><button class="primary" loading="{{submitting}}" disabled="{{submitting||!publicationConsent}}" bindtap="confirmSubmit">确认并提交审核</button><button class="secondary" disabled="{{submitting}}" bindtap="editPost">返回修改</button></view></publication-confirmation></view>
    <view wx:else class="form-actions"><button class="primary" disabled="{{submitting||uploading||saving}}" bindtap="previewPost">下一步 · 预览</button></view>
   </block>
  </view>

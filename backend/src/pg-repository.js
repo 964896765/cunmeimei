@@ -127,7 +127,18 @@ function createPgRepository(connectionString, options={}){
   await c.query('COMMIT');return !!changed.rowCount;
  }catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
  async queue(){const ps=(await many("SELECT * FROM publications WHERE status='pending' AND NOT EXISTS(SELECT 1 FROM industry_entries e WHERE e.id=publications.id) ORDER BY created_at ASC LIMIT 100")).map(pub);const ms=(await many("SELECT * FROM merchant_applications WHERE status IN ('pending','in_review','needs_documents') ORDER BY created_at ASC LIMIT 100")).map(application);return {publications:ps,merchantApplications:ms};},
- async reviewPublication(id,status,reason,expectedRevision=null){const c=await pool.connect();try{await c.query('BEGIN');const r=await c.query("UPDATE publications SET status=$2,moderation_reason=$3,reviewed_at=now() WHERE id=$1 AND status='pending' AND ($4::integer IS NULL OR revision=$4) RETURNING id",[id,status,reason,expectedRevision]);if(r.rowCount)await c.query('INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES($1,$2,$3,$4)',[status,'publication',id,reason]);await c.query('COMMIT');return !!r.rowCount;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
+ async reviewPublication(id,status,reason,expectedRevision=null,checks=null,actor='operator'){
+  const client=await pool.connect();
+  try{
+   await client.query('BEGIN');
+   const current=(await client.query('SELECT * FROM publications WHERE id=$1 FOR UPDATE',[id])).rows[0];
+   if(!current||current.status!=='pending'||expectedRevision!==null&&current.revision!==expectedRevision){await client.query('COMMIT');return false;}
+   if(status==='published'&&checks)require('./publication-records').assertReview(require('./publication-records').reviewRule(current),checks);
+   await client.query('UPDATE publications SET status=$2,moderation_reason=$3,reviewed_at=now() WHERE id=$1',[id,status,reason]);
+   await client.query('INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES($1,$2,$3,$4)',[status,'publication',id,JSON.stringify({reason,role:actor,revision:current.revision,...(checks?{checks,reviewRule:require('./publication-records').reviewRule(current)}:{})})]);
+   await client.query('COMMIT');return true;
+  }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
+ },
  async reviewMerchant(id,status,note){const c=await pool.connect();try{await c.query('BEGIN');const r=await c.query("UPDATE merchant_applications SET status=$2,reviewer_note=$3,updated_at=now() WHERE id=$1 AND status IN ('pending','in_review','needs_documents') RETURNING id",[id,status,note]);if(r.rowCount)await c.query('INSERT INTO admin_audit_events(action,target_type,target_id,notes) VALUES($1,$2,$3,$4)',[status,'merchant',id,note]);await c.query('COMMIT');return !!r.rowCount;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
  async stats(){const rows=await many("SELECT (SELECT count(*)::int FROM publications WHERE status='pending') AS \"pendingPublications\",(SELECT count(*)::int FROM publications WHERE status='published') AS published,(SELECT count(*)::int FROM merchant_applications) AS \"merchantApplications\",(SELECT count(*)::int FROM app_users) AS users");return rows[0];},
  async close(){await pool.end();}
@@ -146,6 +157,7 @@ function createPgRepository(connectionString, options={}){
  require('./business-cases').attachBusinessCases(trusted,pool);
  require('./industry-services').attachIndustryServices(trusted,pool);
  require('./booking-source-lifecycle').attachBookingSourceLifecycle(trusted,pool);
+ require('./publication-records').attach(trusted,pool);
  return require('./maintenance').attachMaintenance(trusted,pool);
 }
 module.exports={createPgRepository,literalSearchPattern};

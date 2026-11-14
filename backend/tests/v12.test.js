@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedConsent}=require('./helpers/publication-confirmation');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {createMemoryRepository} = require('../src/memory-repository');
@@ -34,8 +35,8 @@ test('V0.12: PostgreSQL pattern escapes LIKE wildcards and backslashes', () => {
 test('V0.12: public search treats percent and underscore as ordinary text', async t => {
   const {repo, call}=await start(t);
   const uid=await repo.upsertIdentity('dev_local','filter-user');
-  const regular=await repo.createPublication(uid,{type:'used',district:'中心街道',title:'普通书桌',description:'一张普通书桌出售',price:'100'});
-  const marked=await repo.createPublication(uid,{type:'used',district:'中心街道',title:'限时 50%_优惠',description:'搜索通配符应该只匹配正文实际字符',price:'100'});
+  const regular=await repo.createPublication(uid,{publicationConsent:acceptedConsent(),type:'used',district:'中心街道',title:'普通书桌',description:'一张普通书桌出售',price:'100'});
+  const marked=await repo.createPublication(uid,{publicationConsent:acceptedConsent(),type:'used',district:'中心街道',title:'限时 50%_优惠',description:'搜索通配符应该只匹配正文实际字符',price:'100'});
   await repo.reviewPublication(regular.id,'published','');
   await repo.reviewPublication(marked.id,'published','');
   for (const q of ['%', '_']) {

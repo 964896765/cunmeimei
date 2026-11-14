@@ -1,4 +1,5 @@
 'use strict';
+const {acceptedFixtureRequest}=require('./helpers/publication-confirmation');
 const {residentFields}=require('./helpers/resident-fields');
 const test=require('node:test');const assert=require('node:assert/strict');
 const {createApp}=require('../src/server');const {createMemoryRepository}=require('../src/memory-repository');
@@ -6,7 +7,7 @@ async function setup(t){
  const repo=createMemoryRepository();const app=createApp({repo,areas:['中心街道'],superAdminPassword:'test-strong-admin-password',allowDevLogin:true});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));t.after(()=>new Promise(resolve=>app.close(resolve)));
  const base='http://127.0.0.1:'+app.address().port;
  async function api(p,method='GET',payload,token='',cookie='',csrf=''){
-  const r=await fetch(base+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:payload===undefined?undefined:JSON.stringify(payload)});
+  const r=await fetch(base+p,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{}),...(cookie?{Cookie:cookie}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},body:payload===undefined?undefined:JSON.stringify(acceptedFixtureRequest(p,method,payload))});
   return {status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]};
  }
  async function auth(name){const r=await api('/api/v1/dev/login','POST',{devUser:name});assert.equal(r.status,200);return r.data;}
