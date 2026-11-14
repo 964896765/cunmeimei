@@ -8,7 +8,7 @@ const catalog = require("../miniprogram/utils/classification-contract");
 const assets = require("../miniprogram/utils/category-art");
 const output = path.resolve(
   __dirname,
-  "../docs/design/category-resources-2026-11-15",
+  "../docs/design/3d-blending-2026-11-15",
 );
 const pause = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -196,10 +196,11 @@ async function main() {
       return counts;
     }, {});
     check(
-      stages.draft3d === 76 &&
+      stages.styled3d === 4 &&
+        stages.draft3d === 72 &&
         stages.placeholder === 337 &&
         stages.existing === 5,
-      "display uses 76 drafts, 337 supplied placeholders and 5 existing housing illustrations",
+      "display uses 4 transparent 3D illustrations, 72 source drafts, 337 placeholders and 5 existing housing illustrations",
     );
 
     await (await page.$(".publish-search-entry")).trigger("tap");
@@ -285,7 +286,7 @@ async function main() {
       );
       await poll(
         () => image.data(),
-        (data) => data.imageReady && data.stage === "draft3d",
+        (data) => data.imageReady && data.stage === "styled3d",
         "themed image load",
       );
       check(

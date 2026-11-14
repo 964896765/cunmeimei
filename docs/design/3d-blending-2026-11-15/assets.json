@@ -1,0 +1,49 @@
+{
+  "tool": "built-in imagegen",
+  "items": [
+    {
+      "id": "C04G01S01",
+      "path": "/category-art/assets/3d-v1/C04G01S01.webp",
+      "stage": "styled3d",
+      "transparent": true,
+      "width": 384,
+      "height": 384,
+      "bytes": 18724,
+      "sourceSha256": "f698825cd40f0400d576f478b87a18717eaaee0f3a8f9c7c7695b15e2e25f284",
+      "sha256": "8838838818659ddb66b1605293969177f50f0ded0ab0e210247149f64fe320fe"
+    },
+    {
+      "id": "C04G01S02",
+      "path": "/category-art/assets/3d-v1/C04G01S02.webp",
+      "stage": "styled3d",
+      "transparent": true,
+      "width": 384,
+      "height": 384,
+      "bytes": 25604,
+      "sourceSha256": "f4abaf33cdd7004261cd4e9e864c193081fce721625ae94916abbc961aef0e52",
+      "sha256": "5c3e6b9c193ad9c4dbf4fdcc7a88b145310aa26534bf86d612dcd5c115eb9a8c"
+    },
+    {
+      "id": "C04G01S03",
+      "path": "/category-art/assets/3d-v1/C04G01S03.webp",
+      "stage": "styled3d",
+      "transparent": true,
+      "width": 384,
+      "height": 384,
+      "bytes": 16772,
+      "sourceSha256": "1e12573b65c5948d17204a77728c5f11d4e7cacfbe5c54bbf4b60340b367dd4e",
+      "sha256": "078fd28b461dd6c40f0fa122129467114474839cfc00b6ea8884f052d4819e1b"
+    },
+    {
+      "id": "C04G01S04",
+      "path": "/category-art/assets/3d-v1/C04G01S04.webp",
+      "stage": "styled3d",
+      "transparent": true,
+      "width": 384,
+      "height": 384,
+      "bytes": 26894,
+      "sourceSha256": "e27d153192210266443079d7cc1b14fca05d9654ac452728accd99926a22ee0c",
+      "sha256": "28633d9ae400c28a4f5bb4fb1056ffa91326d95e46b5ccd55f63b29da84873da"
+    }
+  ]
+}

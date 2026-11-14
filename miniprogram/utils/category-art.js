@@ -2,6 +2,7 @@
 
 const registry = require("./classification-contract");
 const draftIds = new Set(require("../data/category-art-drafts"));
+const styledIds = new Set(["C04G01S01", "C04G01S02", "C04G01S03", "C04G01S04"]);
 const memorialIds = new Set([
   "memorial-create",
   "memorial-manage",
@@ -17,6 +18,13 @@ function describe(id) {
   }
   const project = registry.find(id);
   if (!project?.groupId) return null;
+  if (styledIds.has(id)) {
+    return {
+      path: "/category-art/assets/3d-v1/" + id + ".webp",
+      stage: "styled3d",
+      transparent: true,
+    };
+  }
   return {
     path:
       "/category-art/assets/categories/" +

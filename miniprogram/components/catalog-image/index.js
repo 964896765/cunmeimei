@@ -6,6 +6,7 @@ Component({
     fallbackSrc: { type: String, value: "" },
     preferFallback: { type: Boolean, value: false },
     muted: { type: Boolean, value: false },
+    blendMatte: { type: Boolean, value: false },
   },
   data: { src: "", usingFallback: true, stage: "fallback", imageReady: false },
   observers: {

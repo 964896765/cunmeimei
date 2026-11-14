@@ -1,5 +1,6 @@
 :host { display:block; }
 .catalog-image { display:block; width:100%; height:100%; }
 .catalog-image.muted { filter:grayscale(1); }
+.catalog-image.blend-matte { mix-blend-mode:multiply; -webkit-mask-image:radial-gradient(ellipse at center,#000 56%,transparent 78%); mask-image:radial-gradient(ellipse at center,#000 56%,transparent 78%); }
 .missing-art { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
 .missing-art>view { width:34%; height:34%; border:2rpx solid var(--muted,#777); border-radius:12rpx; }

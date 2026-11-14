@@ -10,6 +10,7 @@ const catalog = require("../../miniprogram/utils/classification-contract");
 const assets = require("../../miniprogram/utils/category-art");
 const root = path.resolve(__dirname, "../..");
 const manifest = require("../../docs/design/category-resources-2026-11-15/source-manifest.json");
+const styled = require("../../docs/design/3d-blending-2026-11-15/assets.json");
 
 test("supplied map covers exactly 418 existing projects and preserves 76 draft / 342 placeholder stages", async () => {
   assert.deepEqual(manifest.counts, {
@@ -33,13 +34,14 @@ test("supplied map covers exactly 418 existing projects and preserves 76 draft /
     assert.equal(project.categoryId, item.industry_id);
     assert.equal(project.groupId, item.group_id);
     const descriptor = assets.describe(item.category_id);
-    assert.equal(descriptor.path, item.runtime_path);
+    const refined = styled.items.find((asset) => asset.id === item.category_id);
+    assert.equal(descriptor.path, refined ? refined.path : item.runtime_path);
     const expectedStage =
       item.asset_status === "3D拼版裁切初稿" ? "draft3d" : "placeholder";
-    assert.equal(descriptor.stage, expectedStage);
-    drafts += Number(descriptor.stage === "draft3d");
+    assert.equal(descriptor.stage, refined ? "styled3d" : expectedStage);
+    drafts += Number(expectedStage === "draft3d");
     const bytes = fs.readFileSync(
-      path.join(root, "miniprogram", descriptor.path),
+      path.join(root, "miniprogram", item.runtime_path),
     );
     assert.equal(
       crypto.createHash("sha256").update(bytes).digest("hex"),
@@ -54,6 +56,34 @@ test("supplied map covers exactly 418 existing projects and preserves 76 draft /
   assert.equal(drafts, 76);
   assert.equal(assets.describe("C01"), null);
   assert.equal(assets.describe("../private"), null);
+});
+
+test("the four renewed digital illustrations have real transparency and preserved asset identity", async () => {
+  assert.equal(styled.items.length, 4);
+  for (const item of styled.items) {
+    const descriptor = assets.describe(item.id);
+    assert.equal(descriptor.path, item.path);
+    assert.equal(descriptor.stage, "styled3d");
+    assert.equal(descriptor.transparent, true);
+    const bytes = fs.readFileSync(path.join(root, "miniprogram", item.path));
+    assert.equal(
+      crypto.createHash("sha256").update(bytes).digest("hex"),
+      item.sha256,
+    );
+    const { data, info } = await require("sharp")(bytes)
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    assert.equal(info.width, 384);
+    assert.equal(info.height, 384);
+    assert.equal(info.channels, 4);
+    let clear = 0;
+    for (let index = 3; index < data.length; index += 4)
+      clear += Number(data[index] === 0);
+    assert.ok(clear > info.width * info.height * 0.25);
+    assert.equal(data[3], 0);
+    assert.equal(data[data.length - 1], 0);
+  }
 });
 
 test("resources occupy a separate package, retain all original routes and keep the existing housing artwork", () => {
@@ -140,7 +170,7 @@ test("cards keep original housing art, respond to category changes and handle mi
   const { instance } = component();
   instance.refresh();
   assert.equal(instance.data.src, assets.describe("C04G01S01").path);
-  assert.equal(instance.data.stage, "draft3d");
+  assert.equal(instance.data.stage, "styled3d");
   instance.properties.assetId = "C05G01S01";
   instance.properties.preferFallback = true;
   instance.properties.fallbackSrc = "/assets/publish/new-home.png";
