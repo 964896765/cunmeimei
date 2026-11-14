@@ -3,6 +3,11 @@
   "navigationStyle": "custom",
   "disableScroll": true,
   "usingComponents": {
-    "page-header": "/components/page-header/index"
+    "page-header": "/components/page-header/index",
+    "catalog-image": "/category-art/components/catalog-image/index",
+    "catalog-image-fallback": "/components/catalog-image/index"
+  },
+  "componentPlaceholder": {
+    "catalog-image": "catalog-image-fallback"
   }
 }

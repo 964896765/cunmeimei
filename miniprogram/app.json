@@ -94,5 +94,12 @@
     "bottom-sheet": "/components/bottom-sheet/index",
     "brand-scene": "/components/brand-scene/index",
     "publication-confirmation": "/components/publication-confirmation/index"
-  }
+  },
+  "subPackages": [
+    {
+      "root": "category-art",
+      "name": "category-art",
+      "pages": []
+    }
+  ]
 }

@@ -8,9 +8,9 @@
   <block wx:elif="{{mode==='portal'}}">
    <view class="memorial-intro"><view class="memorial-flower" aria-hidden="true">✾</view><view class="memorial-heading">悼念专区</view><view class="memorial-subtitle">缅怀逝者 · 留存思念</view><view class="memorial-rule"></view><text>让那些珍贵的回忆，安静地留在这里。</text></view>
    <view wx:if="{{!publicEnabled}}" class="memorial-status" role="status">专区正在内部验收，公开浏览尚未开放。</view>
-   <button class="memorial-entry" bindtap="openCreate"><view class="memorial-entry-icon memorial-book" aria-hidden="true"></view><view><text class="memorial-title">创建纪念馆</text><text class="memorial-muted">为亲友留存珍贵回忆</text></view><text class="memorial-arrow">›</text></button>
-   <button class="memorial-entry" disabled="{{!publicEnabled}}" bindtap="openBrowse"><view class="memorial-entry-icon memorial-heart" aria-hidden="true">♡</view><view><text class="memorial-title">追思纪念</text><text class="memorial-muted">留下思念与祝福</text></view><text class="memorial-arrow">›</text></button>
-   <button class="memorial-entry" bindtap="openManage"><view class="memorial-entry-icon memorial-book" aria-hidden="true"></view><view><text class="memorial-title">纪念馆管理</text><text class="memorial-muted">管理已创建的纪念页面</text></view><text class="memorial-arrow">›</text></button>
+   <button class="memorial-entry" bindtap="openCreate"><catalog-image class="memorial-entry-icon" asset-id="memorial-create" fallback-src="/assets/icons/publish-guide-{{iconPalette}}.png" muted="{{true}}"/><view><text class="memorial-title">创建纪念馆</text><text class="memorial-muted">为亲友留存珍贵回忆</text></view><text class="memorial-arrow">›</text></button>
+   <button class="memorial-entry" disabled="{{!publicEnabled}}" bindtap="openBrowse"><catalog-image class="memorial-entry-icon" asset-id="memorial-remembrance" fallback-src="/assets/icons/home-{{iconPalette}}.png" muted="{{true}}"/><view><text class="memorial-title">追思纪念</text><text class="memorial-muted">留下思念与祝福</text></view><text class="memorial-arrow">›</text></button>
+   <button class="memorial-entry" bindtap="openManage"><catalog-image class="memorial-entry-icon" asset-id="memorial-manage" fallback-src="/assets/icons/publish-drafts-{{iconPalette}}.png" muted="{{true}}"/><view><text class="memorial-title">纪念馆管理</text><text class="memorial-muted">管理已创建的纪念页面</text></view><text class="memorial-arrow">›</text></button>
    <view class="memorial-footer">静静怀念 · 珍藏回忆</view>
   </block>
   <block wx:elif="{{mode==='form'&&!privateLocked}}">
