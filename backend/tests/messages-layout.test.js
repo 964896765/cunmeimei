@@ -5,14 +5,28 @@ const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve
 const event=dataset=>({currentTarget:{dataset}});
 function client(request){
  let definition;const state={owner:'owner-a:token',session:true},badges=[],modals=[],routes=[],app={globalData:{}};
- const sandbox={Page:v=>definition=v,require:name=>name.endsWith('/api')?{request,hasSession:()=>state.session,showError(){}}:name.endsWith('/tab-bar')?{context:()=>state.owner,setUnread:n=>badges.push(n)}:name.endsWith('/message-view')?view:{apply(){}},wx:{showModal:v=>modals.push(v),showToast(){},navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url),stopPullDownRefresh(){}},getApp:()=>app};
+ const sandbox={Page:v=>definition=v,require:name=>name.endsWith('/page-layout')?{show(){},hide(){},measure(){},header(){},scroll(){}}:name.endsWith('/api')?{request,hasSession:()=>state.session,showError(){}}:name.endsWith('/tab-bar')?{context:()=>state.owner,setUnread:n=>badges.push(n)}:name.endsWith('/message-view')?view:{apply(){}},wx:{showModal:v=>modals.push(v),showToast(){},navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url),stopPullDownRefresh(){}},getApp:()=>app};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/messages/index.js'),'utf8'),sandbox);
- const page={data:structuredClone(definition.data),setData:v=>Object.assign(page.data,v)};
+ const page={data:structuredClone(definition.data),setData:(v,done)=>{Object.assign(page.data,v);done?.();}};
  for(const [key,value]of Object.entries(definition))if(typeof value==='function')page[key]=value.bind(page);
  return {page,state,badges,modals,routes,app};
 }
 const notice={id:'n1',targetKind:'booking',targetId:'b1',title:'预约动态',body:'预约已确认',createdAt:new Date().toISOString(),readAt:null};
 const contact={id:'c1',title:'真实信息',message:'申请内容',response:'',status:'pending',outgoing:false,blocked:false,createdAt:new Date().toISOString()};
+
+test('conversation and notification offsets restore independently during rapid switching',()=>{
+ const {page}=client(async()=>({items:[]}));
+ page._messageOffsets={contacts:500,notices:0};
+ const callbacks=[];
+ page.setData=(value,done)=>{Object.assign(page.data,value);if(done)callbacks.push(done);};
+ page.tab(event({tab:'notices'}));
+ assert.equal(page.data.listScrollTop,1);
+ page.tab(event({tab:'contacts'}));
+ callbacks[0]();
+ assert.equal(page.data.listScrollTop,501);
+ callbacks[1]();
+ assert.equal(page.data.listScrollTop,500);
+});
 test('points notices filter actual ledger changes and navigate to their own record view',async()=>{
  const entry={...notice,targetKind:'points-ledger',targetId:'ledger-1'};
  const c=client(async(method,url)=>method==='POST'?{ok:true}:url.includes('notifications')?{items:[entry],unread:1,hasMore:false}:{items:[]});await c.page.refresh();c.page.filterNotices(event({category:'points'}));assert.equal(c.page.data.visibleNotices.length,1);

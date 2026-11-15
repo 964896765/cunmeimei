@@ -1,3 +1,4 @@
+const pageLayout=require('../../utils/page-layout');
 const api=require('../../utils/api');
 const tabs=require('../../utils/tab-bar');
 const view=require('../../utils/message-view');
@@ -7,16 +8,23 @@ function contactTask(page,id){
  return {active,confirmed:()=>active()&&owner===tabs.context(),uid:uid||'guest',finish(){if(active()){page.contactTask=null;page.setData({contactBusyId:''});}}};
 }
 Page({
- data:{tab:'contacts',items:[],contacts:[],visibleContacts:[],visibleNotices:[],pendingContacts:0,contactPage:0,contactsHasMore:false,contactsLoading:false,contactFilter:'all',noticeFilter:'all',query:'',searchOpen:false,expandedId:'',unread:0,page:0,hasMore:false,loading:false,reading:false,error:'',contactBusyId:'',contactError:'',hasSession:api.hasSession()},
- onShow(){this.disposed=false;require('../../utils/theme').apply(this);this.refresh();},
- onUnload(){this.disposed=true;this.version=(this.version||0)+1;},
+ onReady(){pageLayout.measure(this);},
+ onResize(){pageLayout.measure(this);},
+ headerMeasured(e){pageLayout.header(this,e);},
+
+ data:{layoutStyle:'',listScrollTop:0,refreshing:false,tab:'contacts',items:[],contacts:[],visibleContacts:[],visibleNotices:[],pendingContacts:0,contactPage:0,contactsHasMore:false,contactsLoading:false,contactFilter:'all',noticeFilter:'all',query:'',searchOpen:false,expandedId:'',unread:0,page:0,hasMore:false,loading:false,reading:false,error:'',contactBusyId:'',contactError:'',hasSession:api.hasSession()},
+ onShow(){pageLayout.show(this,{tabBar:true});this.disposed=false;require('../../utils/theme').apply(this);this.refresh();},
+ onHide(){pageLayout.hide(this);},
+ onUnload(){pageLayout.hide(this);this.disposed=true;this.version=(this.version||0)+1;},
  onPullDownRefresh(){return this.refresh().finally(()=>wx.stopPullDownRefresh());},
+ onListScroll(e){this._messageOffsets=this._messageOffsets||{};this._messageOffsets[this.data.tab]=e.detail.scrollTop;},
+ async refreshList(){this.setData({refreshing:true});try{await this.refresh();}finally{if(!this.disposed)this.setData({refreshing:false});}},
  async signin(){try{await api.login();return this.refresh();}catch(e){api.showError(e);}},
  valid(version,owner){return !this.disposed&&version===this.version&&owner===tabs.context();},
  filter(){this.setData({visibleContacts:view.filterContacts(this.data.contacts,this.data.query,this.data.contactFilter),visibleNotices:this.data.items.filter(x=>this.data.noticeFilter==='all'||x.category===this.data.noticeFilter)});},
  async refresh(){
   const version=this.version=(this.version||0)+1,owner=tabs.context();
-  if(this.owner!==owner){this.owner=owner;this.contactTask=null;this.contactResponse=null;this.setData({contactPage:0,contactsHasMore:false,contactsLoading:false,items:[],contacts:[],visibleContacts:[],visibleNotices:[],unread:0,pendingContacts:0,expandedId:'',query:'',searchOpen:false,page:0,hasMore:false,reading:false,contactBusyId:'',contactError:''});}
+  if(this.owner!==owner){this._listPositionVersion=(this._listPositionVersion||0)+1;this._messageOffsets={};this.owner=owner;this.contactTask=null;this.contactResponse=null;this.setData({listScrollTop:0,contactPage:0,contactsHasMore:false,contactsLoading:false,items:[],contacts:[],visibleContacts:[],visibleNotices:[],unread:0,pendingContacts:0,expandedId:'',query:'',searchOpen:false,page:0,hasMore:false,reading:false,contactBusyId:'',contactError:''});}
   if(!api.hasSession()){this.setData({contactPage:0,contactsHasMore:false,contactsLoading:false,hasSession:false,items:[],contacts:[],visibleContacts:[],visibleNotices:[],unread:0,pendingContacts:0,loading:false,error:'',page:0,hasMore:false});tabs.setUnread(0,this);return;}
   this.setData({hasSession:true,loading:true,error:''});
   try{
@@ -27,7 +35,12 @@ Page({
    this.filter();tabs.setUnread(r.unread,this,owner);
   }catch(e){if(this.valid(version,owner))this.setData({loading:false,error:e.message});}
  },
- tab(e){const tab=e.currentTarget.dataset.tab;if(!['contacts','notices'].includes(tab))return;this.setData({tab});},
+ tab(e){
+  const tab=e.currentTarget.dataset.tab;
+  if(!['contacts','notices'].includes(tab)||tab===this.data.tab)return;
+  const top=this._messageOffsets?.[tab]||0,version=this._listPositionVersion=(this._listPositionVersion||0)+1;
+  this.setData({tab,listScrollTop:top+1},()=>{if(!this.disposed&&this.data.tab===tab&&version===this._listPositionVersion)this.setData({listScrollTop:top});});
+ },
  toggleSearch(){this.setData({searchOpen:!this.data.searchOpen,query:''});this.filter();},
  search(e){this.setData({query:String(e.detail.value||'').slice(0,100)});this.filter();},
  showPending(){this.setData({tab:'contacts',contactFilter:'pending'});this.filter();},

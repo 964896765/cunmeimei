@@ -1,6 +1,6 @@
-<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
- <page-header id="navigation-header" title="消息" continuous="{{true}}" large-text="{{displayPreferences.largeText}}"/>
- <view class="container messages-page">
+<view class="theme-root messages-root layout-fixed {{themeClass}}" style="{{themeStyle}};{{layoutStyle}}">
+ <page-header id="navigation-header" bind:measure="headerMeasured" title="消息" continuous="{{true}}" large-text="{{displayPreferences.largeText}}"/>
+ <view class="container messages-page layout-body">
   <view class="message-toolbar">
    <view class="message-tabs" role="tablist">
     <view class="message-tab {{tab==='contacts'?'active':''}}" role="tab" aria-selected="{{tab==='contacts'}}" data-tab="contacts" bindtap="tab">会话<text wx:if="{{pendingContacts}}" class="segment-count" aria-label="{{pendingContacts}}条待处理联系">{{pendingContacts}}</text></view>
@@ -10,6 +10,7 @@
    <button wx:else class="toolbar-action read-all" disabled="{{!hasSession||!unread||reading}}" bindtap="readAll">{{reading?'处理中':'全部已读'}}</button>
   </view>
   <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><search-bar value="{{query}}" placeholder="搜索当前联系记录" focused="{{true}}" max-length="{{100}}" bind:input="search" bind:search="filter"/></view>
+  <scroll-view class="message-list-scroll layout-scroll" scroll-y="{{true}}" scroll-top="{{listScrollTop}}" show-scrollbar="{{false}}" enhanced="{{true}}" bindscroll="onListScroll" refresher-enabled="{{hasSession}}" refresher-triggered="{{refreshing}}" bindrefresherrefresh="refreshList"><view class="message-scroll-content">
   <view wx:if="{{!hasSession}}" class="state-panel message-login"><brand-scene class="message-art" variant="chat"/><view class="section-title">登录后查看消息</view><text>审核结果、预约动态和联系申请都在这里。</text><button class="btn" bindtap="signin">登录查看</button></view>
   <block wx:else>
    <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
@@ -54,5 +55,6 @@
     <button wx:if="{{hasMore}}" class="load-notices filter-link" disabled="{{loading}}" bindtap="more">{{loading?'正在加载…':'加载更早通知'}}</button>
    </block>
   </block>
+  </view></scroll-view>
  </view>
 </view>

@@ -1,3 +1,4 @@
+const pageLayout=require('../../utils/page-layout');
 const nav = require('../../utils/navigation');
 const api = require('../../utils/api');
 const shortcuts = require('../../utils/shortcuts');
@@ -6,8 +7,13 @@ const present = require('../../utils/presentation');
 const {feedUrl} = require('../../utils/feed-query');
 
 Page({
+ onReady(){pageLayout.measure(this);},
+ onResize(){pageLayout.measure(this);},
+ headerMeasured(e){pageLayout.header(this,e);},
+ onPageScroll(e){pageLayout.scroll(this,e);},
+
   data: {
-    region:'选择城市', areas:[], quickItems:[], quickPages:[], quickPage:0,
+    layoutStyle:'',pageCompact:false,region:'选择城市', areas:[], quickItems:[], quickPages:[], quickPage:0,
     loading:true, error:'', news:[], banners:[], bannerIndex:0, feed:[], featured:[],
     feedTab:'recommended', guidePhotoFailed:false,
     feedTabs:[{id:'recommended',label:'精选推荐'},{id:'latest',label:'最新发布'},{id:'popular',label:'热门信息'},{id:'merchant',label:'本地商家'}],
@@ -18,7 +24,7 @@ Page({
     ]
   },
   onShow() {
-    this.visible = true;
+    this.visible = true;pageLayout.show(this,{tabBar:true,threshold:8,dock:'.feed-tabs'});
     require('../../utils/theme').apply(this);
     const list = shortcuts.items(shortcuts.load().slice(0,shortcuts.max));
     this.setData({quickItems:list, quickPages:shortcuts.pages(list), quickPage:0, region:require('../../utils/geo-context').current().label});
@@ -30,7 +36,7 @@ Page({
   },
   onPullDownRefresh() { return this.load().finally(() => wx.stopPullDownRefresh()); },
   onHide() {
-    this.visible = false;
+    pageLayout.hide(this);this.visible = false;
     this.version = (this.version || 0) + 1;
     clearTimeout(this.refreshTimer);
   },

@@ -1,3 +1,4 @@
+@import "../../styles/page-layout.wxss";
 page{height:100%}.chat-page{min-height:100vh;display:flex;flex-direction:column}.chat-note{text-align:center;color:var(--muted);background:var(--soft);font-size:22rpx;padding:18rpx}.chat-history{flex:1;min-height:180rpx;padding:28rpx;box-sizing:border-box}.chat-bubble{max-width:78%;width:max-content;background:var(--surface);border-radius:20rpx 20rpx 20rpx 4rpx;padding:21rpx 25rpx;margin:22rpx 0;color:var(--ink);font-size:26rpx;line-height:1.7;word-break:break-all}.chat-bubble.self{background:var(--soft);border-radius:20rpx 20rpx 4rpx 20rpx;margin-left:auto}.chat-compose{display:flex;align-items:center;gap:14rpx;padding:16rpx 25rpx 32rpx;background:var(--surface);border-top:1rpx solid var(--border)}.chat-input{flex:1;height:88rpx;min-height:88rpx;line-height:normal;padding:0 21rpx;border:1rpx solid var(--border);border-radius:22rpx;font-size:25rpx}.send{font-size:23rpx;padding:14rpx 25rpx}
 
 .chat-context{display:flex;align-items:center;justify-content:space-between;gap:20rpx;background:var(--surface);padding:24rpx}.chat-safety,.report-message{background:transparent;color:var(--muted);font-size:24rpx;margin:0;padding:10rpx;min-height:44px}.chat-safety::after,.report-message::after{border:0}.initial-contact{padding:20rpx 28rpx;color:var(--muted);font-size:24rpx;line-height:1.8}.chat-held{color:var(--danger);font-size:22rpx;margin-top:12rpx}.chat-line{margin:12rpx 0}.chat-line .report-message{margin-top:-18rpx}.chat-compose{position:sticky;bottom:0;padding-bottom:calc(24rpx + env(safe-area-inset-bottom))}
@@ -12,3 +13,8 @@ page{height:100%}.chat-page{min-height:100vh;display:flex;flex-direction:column}
 .chat-input { height:96rpx; min-height:96rpx; font-size:30rpx; border-radius:14rpx; }
 .send { min-height:96rpx; padding:18rpx 24rpx; font-size:28rpx; border-radius:14rpx; }
 .initial-contact { padding:24rpx 32rpx; font-size:26rpx; }
+
+page { height:100%; overflow:hidden; }
+.chat-root .chat-page { min-height:0; }
+.chat-context,.chat-compose,.chat-page>.chat-note,.chat-page>.inline-feedback { flex-shrink:0; }
+.chat-compose { position:relative; padding-bottom:calc(20rpx + var(--page-safe-bottom,env(safe-area-inset-bottom))); }

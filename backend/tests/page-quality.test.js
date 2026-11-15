@@ -22,6 +22,7 @@ function client(name, request, session = true) {
    if (name.endsWith('/public-cache')) return require('../../miniprogram/utils/public-cache');
    if (name.endsWith('/browse-query')) return require('../../miniprogram/utils/browse-query');
    if (name.endsWith('/auth-intent')) return {isReturning:()=>false};
+   if (name.endsWith('/page-layout')) return {show(){},hide(){},measure(){},header(){},scroll(){}};
    if (name.endsWith('/api')) return api;
    if (name.endsWith('/navigation')) return {search:(...args)=>routes.push(args),detail:id=>routes.push(id)};
    if (name.endsWith('/theme')) return {apply() {}};

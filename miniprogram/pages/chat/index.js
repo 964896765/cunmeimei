@@ -1,14 +1,22 @@
+const pageLayout=require('../../utils/page-layout');
 'use strict';
 const api=require('../../utils/api'),tabs=require('../../utils/tab-bar');
 const uid=()=>wx.getStorageSync('city_life_user_id')||'guest';
 const ownerKey=()=>JSON.stringify([uid(),!!wx.getStorageSync('city_life_acceptance_mode')]);
 const freshKey=()=> 'msg_'+Date.now()+'_'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
 Page({
- data:{id:'',chat:null,messages:[],draft:'',loading:false,sending:false,error:'',sendError:'',warning:'',hasSession:false,permissionsReady:false,safetyBusy:false,reportBusy:false,reportDraft:'',reportError:''},
+ onReady(){pageLayout.measure(this);},
+ onResize(){pageLayout.measure(this);},
+ headerMeasured(e){pageLayout.header(this,e);},
+ onHistoryScroll(e){if(e.detail.scrollTop<(this._chatLastTop||0)-2)this._chatReadingHistory=true;this._chatLastTop=e.detail.scrollTop;},
+ historyAtBottom(){this._chatReadingHistory=false;},
+ scrollLatest(){this.setData({chatScrollAnchor:''},()=>this.setData({chatScrollAnchor:'chat-history-end'}));},
+
+ data:{layoutStyle:'',chatScrollAnchor:'',id:'',chat:null,messages:[],draft:'',loading:false,sending:false,error:'',sendError:'',warning:'',hasSession:false,permissionsReady:false,safetyBusy:false,reportBusy:false,reportDraft:'',reportError:''},
  onLoad(q){const id=q.id||'';this.setData({id});if(!/^[0-9a-f-]{36}$/i.test(id))this.setData({error:'会话标识无效，演示记录不会当作真实聊天发送。'});},
- onShow(){this._visible=true;require('../../utils/theme').apply(this);this.refresh();clearInterval(this._timer);this._timer=setInterval(()=>{if(this._visible&&!this.data.sending)this.refresh(true);},8000);},
- onHide(){this._visible=false;clearInterval(this._timer);this._version=(this._version||0)+1;this._readPromise=null;},
- onUnload(){this._disposed=true;clearInterval(this._timer);this._version=(this._version||0)+1;},
+ onShow(){pageLayout.show(this,{keyboard:true,tabBar:false});this._visible=true;require('../../utils/theme').apply(this);this.refresh();clearInterval(this._timer);this._timer=setInterval(()=>{if(this._visible&&!this.data.sending)this.refresh(true);},8000);},
+ onHide(){pageLayout.hide(this);this._visible=false;clearInterval(this._timer);this._version=(this._version||0)+1;this._readPromise=null;},
+ onUnload(){pageLayout.hide(this);this._disposed=true;clearInterval(this._timer);this._version=(this._version||0)+1;},
  valid(owner,id=this.data.id){return !this._disposed&&owner===ownerKey()&&id===this.data.id;},
  syncOwner(){
   const owner=ownerKey();
@@ -27,7 +35,7 @@ Page({
    try{
     const chat=await api.request('GET','/api/v1/me/chats/'+id,null,true,uid());
     if(!this.valid(owner,id)||version!==this._version)return;
-    this.setData({chat,messages:chat.items||[],hasSession:true,permissionsReady:true,error:'',loading:false});wx.setNavigationBarTitle({title:'站内会话'});
+    const last=this.data.messages[this.data.messages.length-1]?.id;this.setData({chat,messages:chat.items||[],hasSession:true,permissionsReady:true,error:'',loading:false},()=>{if(!this._chatReadingHistory&&last!==chat.items?.[chat.items.length-1]?.id)this.scrollLatest();});wx.setNavigationBarTitle({title:'站内会话'});
    }catch(e){if(this.valid(owner,id)&&version===this._version){const denied=['CHAT_UNAVAILABLE','NOT_FOUND','ACCOUNT_CLOSED','ACCOUNT_INACTIVE','SESSION_EXPIRED','LOGIN_REQUIRED'].includes(e.code);this.setData({chat:denied?null:this.data.chat?{...this.data.chat,canSend:false}:null,...(denied?{messages:[]}:{}),permissionsReady:false,error:e.message,loading:false});}}
   })().finally(()=>{if(this._readPromise===attempt)this._readPromise=null;});
   this._readPromise=attempt;return attempt;
@@ -46,7 +54,7 @@ Page({
    if(!active())return;if(this._sendAttempt===sent)this._sendAttempt=null;
    const unchanged=this._draftRevision===revision&&this.data.draft===raw;
    this.setData({...(unchanged?{draft:''}:{}),warning:[r.message?.warning||'',unchanged?'':'上条消息已提交，当前输入内容已保留。'].filter(Boolean).join(' ')});
-   await this.refresh(true,true);
+   this._chatReadingHistory=false;await this.refresh(true,true);
   }catch(e){if(active()){const restricted=['CHAT_BLOCKED','CHAT_NOT_ACCEPTED','CONTACT_RESTRICTED','PHONE_VERIFICATION_REQUIRED','ACCOUNT_CLOSED','ACCOUNT_INACTIVE'].includes(e.code);this.setData({sendError:e.message,...(restricted?{chat:{...this.data.chat,canSend:false},permissionsReady:false}:{})});if(e.code==='PHONE_VERIFICATION_REQUIRED')require('../../utils/verification').open();}}
   finally{if(active()){this._sendTask=null;this.setData({sending:false});}}
  },

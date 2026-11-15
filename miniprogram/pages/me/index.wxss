@@ -159,3 +159,8 @@
 .service-center-card>.center-entry-copy,.service-center-card>.center-chevron,.service-icon-frame { position:relative; z-index:1; }
 .theme-dark .points-entry { background:var(--soft); border-color:var(--border); }
 .theme-dark .service-center-card { border-color:var(--border); }
+
+.me-root .me-page { padding-bottom:calc(24rpx + var(--page-bottom,90px)); }
+.profile-compact .main-center .profile-avatar { width:96rpx; height:96rpx; }
+.profile-compact .main-center .profile-name { font-size:38rpx; }
+.large-text.profile-compact .main-center .profile-name { font-size:44rpx; }

@@ -1,3 +1,4 @@
+const pageLayout=require('../../utils/page-layout');
 const regionPref = require('../../utils/region');
 const api = require('../../utils/api');
 const nav = require('../../utils/navigation');
@@ -12,7 +13,10 @@ const discoverySorts=require('../../utils/discovery-sorts');
 function currentContext(){const b=geoContext.current?.()||{};return JSON.stringify([b.cityCode,b.districtCode,...['city_life_user_id','city_life_v2_auth_token','city_life_acceptance_mode'].map(key=>wx.getStorageSync(key)||'')]);}
 
 Page({
- data: {filterTitle:'招聘筛选',panelFilters:refinementDefinitions.panel('job'),refinements:{},quickFilters:refinementDefinitions.chips('job'),quickShowsDays:true,refinementCategories:browse.categoryColumns('','job').columns,refinementCategoryValue:[0,0,0],quickOpen:false,quickKey:'',quickTitle:'',quickHint:'',quickOptions:[],quickBusy:false,quickError:'',
+ onReady(){pageLayout.measure(this);},
+ onResize(){pageLayout.measure(this);},
+
+ data: {layoutStyle:'',pageCompact:false,filterTitle:'招聘筛选',panelFilters:refinementDefinitions.panel('job'),refinements:{},quickFilters:refinementDefinitions.chips('job'),quickShowsDays:true,refinementCategories:browse.categoryColumns('','job').columns,refinementCategoryValue:[0,0,0],quickOpen:false,quickKey:'',quickTitle:'',quickHint:'',quickOptions:[],quickBusy:false,quickError:'',
   dateOptions:require('../../utils/search-filters').dateOptions,dateLabels:require('../../utils/search-filters').dateOptions.map(x=>x.label),dateIndex:0,limitReached:false,days:0,images:'all',publicOnly:false,
   headerHeight:88,channels:registry.channels||[],immersed:false,unavailable:'',categoryId:'',categoryName:'',types: catalog.groupOptions, type: 'job', areas: ['全部地区'], area: '全部地区', q: '',
   filtered: [], count: 0, hasMore: false, loading: false, error: '', sortIndex: 0,
@@ -20,16 +24,18 @@ Page({
  },
  onShow() {
   require('../../utils/theme').apply(this);
-  this.active=true;this.restoreNavigation();
+  pageLayout.show(this,{tabBar:true,sentinel:'.discover-sticky-sentinel',dock:'.discover-sticky'});this.active=true;this.restoreNavigation();
   return this.initialize();
  },
  onHide() {
+  pageLayout.hide(this);
   this.closeQuickFilter();this.closeFilters();this.closeSort();
   this.active=false;this.restoreNavigation();
   clearTimeout(this.searchTimer);
   this.searchTimer = null;
  },
  onUnload() {
+  pageLayout.hide(this);
   this.quickAttempt=(this.quickAttempt||0)+1;this.sortAttempt=(this.sortAttempt||0)+1;this.sortOrigin=null;
   this.active=false;this.restoreNavigation();
   this.unloaded = true;
@@ -178,7 +184,7 @@ Page({
   return this.filter();
  },
  chooseCity(){wx.navigateTo({url:'/pages/regions/index?returnTo=previous'});},
- headerMeasured(e){this.setData({headerHeight:e.detail.height});},
+ headerMeasured(e){this.setData({headerHeight:e.detail.height});pageLayout.header(this,e);},
  changeArea(e) {
   const area = e.currentTarget.dataset.area;
   regionPref.save(area, this.data.areas.filter(x => x !== '全部地区'));
@@ -278,7 +284,7 @@ Page({
  openSearch(){nav.search(this.data.type,this.data.q,this.data.categoryId,{cityCode:this.data.cityCode,districtCode:this.data.districtCode,days:this.data.days,images:this.data.images,sort:this.data.sortCode,radiusKm:this.data.radiusKm||0,...((this.data.sortCode==='distance'||this.data.radiusKm>0)?this.sortOrigin:{}),refinements:this.data.refinements,fromDiscover:true,events:{browseSearchApplied:value=>{if(this.unloaded||browse.signature({...this.data,sort:this.data.sortCode,...(this.sortOrigin||{})})===browse.signature(value))return;const c=browse.common(value);if(!c.cityCode&&this.data.cityCode)return;this.sortOrigin=browse.origin(value);this.setData({radiusKm:value.radiusKm||0,...c,refinements:c.refinements||{},sortCode:c.sort,sortLabel:discoverySorts.labels[c.sort],sortIndex:0,categoryName:browse.category(c.categoryId).name,categoryIconId:browse.category(c.categoryId).industryId,dateIndex:this.data.dateOptions.findIndex(x=>x.value===c.days)});this.searchPending=true;}}});},
  openMap(){this.restoreNavigation();const query={type:this.data.type,q:this.data.q,categoryId:this.data.categoryId,cityCode:this.data.cityCode,districtCode:this.data.districtCode,days:this.data.days,images:this.data.images,sourceSort:this.data.sortCode,sourceRadius:this.data.radiusKm||0,refinements:JSON.stringify(this.data.refinements),sort:['latest','recommended'].includes(this.data.sortCode)?this.data.sortCode:'recommended'};wx.navigateTo({url:'/pages/map/index?'+Object.entries(query).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&')});},
  restoreNavigation(){this.scrollAnchor=null;if(this.data.immersed)this.setData({immersed:false});if(this.barHidden){require('../../utils/tab-bar').visibility(this,false);this.barHidden=false;}},
- onPageScroll(e){if(!this.active||this.data.sortOpen||this.data.filterOpen||this.data.quickOpen)return;const y=Math.max(0,e.scrollTop||0);if(y<20){this.restoreNavigation();this.scrollAnchor=y;return;}if(this.scrollAnchor===null||this.scrollAnchor===undefined){this.scrollAnchor=y;return;}const distance=y-this.scrollAnchor;if(Math.abs(distance)<24)return;this.scrollAnchor=y;const hidden=distance>0;if(hidden===this.data.immersed)return;this.setData({immersed:hidden});this.barHidden=hidden;require('../../utils/tab-bar').visibility(this,hidden);},
+ onPageScroll(e){pageLayout.scroll(this,e);},
  async hydrateSaved(items,version,scope){
   const ids=items.map(x=>x.id);if(!ids.length)return true;this.savedVersions=this.savedVersions||{};const tickets=Object.fromEntries(ids.map(id=>[id,this.savedVersions[id]||0]));
   try{const result=await api.request('GET','/api/v1/me/saved-state?ids='+ids.map(encodeURIComponent).join(','),null,true);if(this.unloaded||version!==this.reqVersion||scope!==currentContext()||!Array.isArray(result.savedIds))return false;const saved=new Set(result.savedIds);this.setData({filtered:this.data.filtered.map(x=>ids.includes(x.id)&&(this.savedVersions[x.id]||0)===tickets[x.id]?{...x,isSaved:saved.has(x.id),favoriteKnown:true}:x)});return true;}catch{return false;}

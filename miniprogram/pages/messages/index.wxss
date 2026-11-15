@@ -1,3 +1,5 @@
+@import "../../styles/page-layout.wxss";
+page { height:100%; overflow:hidden; }
 .messages-page { padding:24rpx 32rpx calc(48rpx + 56px + env(safe-area-inset-bottom)); }
 .message-toolbar { display:flex; align-items:center; gap:12rpx; margin:8rpx 0 26rpx; }
 .message-tabs { flex:1; display:flex; align-items:center; padding:3rpx; border-radius:70rpx; background:var(--surface); box-shadow:var(--elevation); }
@@ -72,3 +74,7 @@
 .message-login .btn { margin-top:46rpx; }
 .large-text .message-login .section-title { font-size:48rpx; }
 .large-text .message-login>text { font-size:32rpx; }
+
+.messages-root .messages-page { padding:16rpx 32rpx 0; }
+.message-toolbar,.contact-search { flex-shrink:0; }
+.message-scroll-content { padding-bottom:24rpx; }

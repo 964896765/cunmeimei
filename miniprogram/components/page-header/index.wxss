@@ -23,3 +23,5 @@
 @media (min-width:390px) { .brand-name { font-size:30rpx; } .brand-subtitle { font-size:20rpx; } }
 .header-large-text .brand-name { font-size:32rpx; }
 .header-large-text .brand-subtitle { display:none; }
+
+.header-collapsed .nav-title { visibility:hidden; }

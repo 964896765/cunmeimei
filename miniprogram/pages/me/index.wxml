@@ -1,5 +1,5 @@
-<view class="theme-root continuous-page {{themeClass}}" style="{{themeStyle}}">
-<page-header id="navigation-header" continuous="{{true}}" title="{{mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='saved'?'管理我的收藏':'个人中心'}}" back="{{mode==='saved'||mode==='points'||mode==='service'}}" large-text="{{displayPreferences.largeText}}" bind:back="back"/> 
+<view class="theme-root me-root continuous-page {{pageCompact?'profile-compact':''}} {{themeClass}}" style="{{themeStyle}};{{layoutStyle}}">
+<page-header id="navigation-header" bind:measure="headerMeasured" continuous="{{true}}" title="{{mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='saved'?'管理我的收藏':'个人中心'}}" back="{{mode==='saved'||mode==='points'||mode==='service'}}" large-text="{{displayPreferences.largeText}}" bind:back="back"/>
 <view class="container me-page">
  <view wx:if="{{mode!=='main'&&mode!=='saved'&&mode!=='points'&&mode!=='service'}}" class="subpage-heading">
   <view class="section-title">{{mode==='profile'?'个人资料':mode==='account'?'账号与安全':mode==='saved'?'管理我的收藏':mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='history'?'浏览记录':mode==='help'?'帮助与申诉':settingsTitle}}</view>

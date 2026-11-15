@@ -68,3 +68,19 @@
 .guide-photo .guide-action { display:none; }
 .feed-tab+.feed-tab::after { content:''; position:absolute; left:0; top:28rpx; bottom:28rpx; border-left:1rpx solid var(--border); }
 .merchant-invitation,.news-strip { box-shadow:var(--elevation); }
+
+.home-page { overflow-anchor:none; }
+.home-search-slot { transition:height 160ms ease; position:relative; z-index:10; height:108rpx; }
+.large-text .home-search-slot { height:calc(128rpx + 40px); }
+.home-search-slot.is-compact { height:0; z-index:60; background:transparent; border:0; box-shadow:none; }
+.home-search-slot.is-compact .home-search-row { position:fixed; top:var(--page-status,0px); left:32rpx; right:var(--page-capsule,96px); background:var(--background); height:var(--page-nav,44px); flex-wrap:nowrap; gap:12rpx; margin-bottom:0; }
+.home-search-slot.is-compact .home-city { max-width:34%; min-height:40px; font-size:24rpx; }
+.home-search-slot.is-compact search-bar { flex-basis:0; --search-height:36px; }
+.home-page .feed-tabs { position:sticky; top:var(--page-header,88px); z-index:20; background:var(--surface); border-bottom:1rpx solid var(--border); box-shadow:0 4rpx 10rpx #45323f08; }
+.home-page .portal-page { padding-bottom:calc(24rpx + var(--page-bottom,90px)); }
+.large-text .home-search-slot.is-compact .home-city { font-size:28rpx; }
+.large-text .home-search-slot.is-compact search-bar { --search-font:28rpx; }
+
+.home-compact .featured-section { min-height:calc(var(--page-viewport) - var(--page-header) - var(--page-dock) - var(--page-bottom)); }
+
+.reduce-motion .home-search-slot { transition:none; }

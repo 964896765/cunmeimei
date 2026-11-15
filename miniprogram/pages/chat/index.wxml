@@ -1,13 +1,15 @@
-<view class="theme-root {{themeClass}}" style="{{themeStyle}}">
- <page-header id="navigation-header" title="站内会话" continuous="{{true}}" large-text="{{displayPreferences.largeText}}" back="{{true}}" native-back="{{true}}"/><view class="chat-page">
+<view class="theme-root chat-root layout-fixed {{themeClass}}" style="{{themeStyle}};{{layoutStyle}}">
+ <page-header id="navigation-header" bind:measure="headerMeasured" title="站内会话" continuous="{{true}}" large-text="{{displayPreferences.largeText}}" back="{{true}}" native-back="{{true}}"/><view class="chat-page layout-body">
+ <view wx:if="{{chat}}" class="chat-context"><view bindtap="openItem" role="button"><view class="section-title">{{chat.title}}</view><view class="notice">{{chat.publicationStatus==='published'?'关联信息展示中':'关联信息已结束或不可见'}} · {{chat.ended?'会话已结束':'站内文字会话'}}</view></view><button class="chat-safety" bindtap="safetyAction" disabled="{{safetyBusy}}">安全操作</button></view>
+ <scroll-view class="chat-history-scroll layout-scroll" scroll-y="{{true}}" scroll-into-view="{{chatScrollAnchor}}" show-scrollbar="{{false}}" enhanced="{{true}}" bindscroll="onHistoryScroll" bindscrolltolower="historyAtBottom" lower-threshold="40">
  <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重新读取" bind:action="refresh"/>
  <feedback-state wx:if="{{sendError}}" kind="error" description="{{sendError}} 输入内容已保留。" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试发送" bind:action="submit" action-disabled="{{sending||!chat.canSend}}"/>
  <feedback-state wx:if="{{reportError}}" kind="error" description="{{reportError}} 举报描述已保留，可从原举报入口重试。" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
- <view wx:if="{{chat}}" class="chat-context"><view bindtap="openItem" role="button"><view class="section-title">{{chat.title}}</view><view class="notice">{{chat.publicationStatus==='published'?'关联信息展示中':'关联信息已结束或不可见'}} · {{chat.ended?'会话已结束':'站内文字会话'}}</view></view><button class="chat-safety" bindtap="safetyAction" disabled="{{safetyBusy}}">安全操作</button></view>
  <view class="chat-note">仅支持文字；请勿发送外部链接、验证码或诱导转账信息。</view>
  <view wx:if="{{chat.initialMessage}}" class="initial-contact"><text>最初的联系申请：{{chat.initialMessage}}</text><view wx:if="{{chat.initialResponse}}">发布者回复：{{chat.initialResponse}}</view></view>
  <view class="chat-history"><view wx:for="{{messages}}" wx:key="id" class="chat-line"><view class="chat-bubble {{item.mine?'self':''}}"><text selectable="true">{{item.body}}</text><view wx:if="{{item.status==='held'}}" class="chat-held">待人工复核，尚未送达</view></view><button wx:if="{{!item.mine}}" class="report-message" data-type="message" data-id="{{item.id}}" bindtap="report">举报</button></view></view>
+ <view id="chat-history-end"></view></scroll-view>
  <view wx:if="{{warning}}" class="inline-feedback">{{warning}}</view>
  <view wx:if="{{chat&&!chat.canSend}}" class="chat-note">{{chat.sendRestriction==='PHONE_VERIFICATION_REQUIRED'?'请先验证手机号再发送消息':chat.status==='pending'?'发布者接受联系后才能聊天':'会话已关闭或受到联系限制'}}</view>
- <view class="chat-compose"><input class="chat-input" maxlength="1000" value="{{draft}}" bindinput="input" disabled="{{!chat.canSend}}" placeholder="输入文字消息"/><button class="btn send" bindtap="submit" loading="{{sending}}" disabled="{{sending||!chat.canSend}}">发送</button></view>
+ <view class="chat-compose"><input class="chat-input" adjust-position="{{false}}" maxlength="1000" value="{{draft}}" bindinput="input" disabled="{{!chat.canSend}}" placeholder="输入文字消息"/><button class="btn send" bindtap="submit" loading="{{sending}}" disabled="{{sending||!chat.canSend}}">发送</button></view>
 </view></view>

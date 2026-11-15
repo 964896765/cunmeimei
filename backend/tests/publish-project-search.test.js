@@ -89,3 +89,33 @@ test('publish draft count rejects stale reloads and account-switched results',as
  const failed=page.loadDraftCount();pending[3].reject(Error('offline'));await failed;
  assert.equal(page.data.draftCount,null);
 });
+
+test('vertical browse gestures collapse the hero and restore it only at the active column top',()=>{
+ const {page}=publish();
+ const touch=(region,x,y)=>({currentTarget:{dataset:{region}},touches:[{clientX:x,clientY:y}]});
+ page.onBrowseTouchStart(touch('project',100,400));
+ page.onBrowseTouchMove(touch('project',102,350));
+ assert.equal(page.data.heroCollapsed,true);
+ page._projectOffset=100;
+ page.onBrowseTouchStart(touch('project',100,300));
+ page.onBrowseTouchMove(touch('project',101,350));
+ assert.equal(page.data.heroCollapsed,true);
+ page.onProjectScroll({detail:{scrollTop:0}});
+ assert.equal(page.data.heroCollapsed,false);
+ page.onBrowseTouchStart(touch('industry',100,300));
+ page.onBrowseTouchMove(touch('industry',180,305));
+ assert.equal(page.data.heroCollapsed,false);
+ page.onBrowseTouchMove(touch('industry',101,250));
+ assert.equal(page.data.heroCollapsed,true);
+});
+
+test('search restores hero state while tool menu opening preserves directory space',()=>{
+ const {page}=publish();
+ page.toggleTools();assert.equal(page.data.toolsOpen,true);assert.equal(page.data.heroCollapsed,false);
+ page.closeTools();assert.equal(page.data.toolsOpen,false);
+ page.toggleProjectSearch();assert.equal(page.data.heroCollapsed,true);
+ page.setHeroCollapsed(false);assert.equal(page.data.heroCollapsed,true);
+ page.closeProjectSearch();assert.equal(page.data.heroCollapsed,false);
+ page.setHeroCollapsed(true);page.toggleProjectSearch();page.closeProjectSearch();
+ assert.equal(page.data.heroCollapsed,true);
+});
