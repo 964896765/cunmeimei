@@ -9,8 +9,15 @@ Component({
     preferFallback: { type: Boolean, value: false },
     muted: { type: Boolean, value: false },
     blendMatte: { type: Boolean, value: false },
+    dark: { type: Boolean, value: false },
   },
-  data: { src: "", usingFallback: true, stage: "", imageReady: false },
+  data: {
+    src: "",
+    usingFallback: true,
+    stage: "",
+    frame: "plain",
+    imageReady: false,
+  },
   observers: {
     "assetId,fallbackSrc,preferFallback": function () {
       if (this.attachedToPage) this.refresh();
@@ -33,6 +40,7 @@ Component({
       this.setData({
         src,
         usingFallback,
+        frame: usingFallback ? "plain" : descriptor.frame,
         imageReady: src === this.data.src && this.data.imageReady,
         stage: this.properties.preferFallback
           ? "existing"
@@ -46,6 +54,7 @@ Component({
       this.setData({
         src: this.data.usingFallback ? "" : this.properties.fallbackSrc,
         usingFallback: true,
+        frame: "plain",
         imageReady: false,
       });
     },

@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-11-15T01:32:09.637Z",
+  "scope": {
+    "industries": 27,
+    "groups": 83,
+    "projects": 418
+  },
+  "unit": {
+    "tests": 515,
+    "passed": 497,
+    "failed": 0,
+    "skipped": 18,
+    "sha256": "b0981079d6067a51801760cab53b35399657bd49120165200ae7b3d3ad0833c5"
+  },
+  "nativeUi": {
+    "checks": 50,
+    "categoryImageCallbacks": 418,
+    "runtimeExceptions": 0,
+    "categoryTraversalCheckedAt": "2026-11-15T01:22:37.510Z",
+    "stateCheckedAt": "2026-11-15T01:29:53.807Z"
+  },
+  "displayStages": {
+    "draft3d": 72,
+    "styled3d": 4,
+    "existing": 5,
+    "placeholder": 337
+  },
+  "frames": {
+    "food": 18,
+    "profession": 26,
+    "service": 17,
+    "transparent": 4,
+    "goods": 11,
+    "plain": 5,
+    "symbol": 337
+  },
+  "sourcePackageBytes": {
+    "main": 2082847,
+    "category-art": 1903574
+  },
+  "compiledUploadMeasured": false,
+  "physicalDevice": false,
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "sourceHashes": {
+    "miniprogram/category-art/components/catalog-image/index.js": "d548dfc690d5830b7b7766ad66304b3966f6c7ba7f00e24ff4b6b481d0702b1a",
+    "miniprogram/category-art/components/catalog-image/index.wxml": "2d921bcdf700a99717f71cd3c99ef3abdfb55b3daa94e7983c64d531a44d84cb",
+    "miniprogram/category-art/components/catalog-image/index.wxss": "f4922c4801c09d922d23617e74ffda7133b3b358c687607ff2e4509b858728aa",
+    "miniprogram/components/catalog-image/index.js": "33b14d1824b0cd73cd4a214d48ccd6afad5d266ec386b9b31f6b035b3b8cce58",
+    "miniprogram/components/catalog-image/index.wxml": "2d921bcdf700a99717f71cd3c99ef3abdfb55b3daa94e7983c64d531a44d84cb",
+    "miniprogram/components/catalog-image/index.wxss": "4cf8700dc266ed9e984be0615f8f7a33a2d4644e1234f4be840037d1738ed4fe",
+    "miniprogram/pages/memorial/index.wxml": "b9cf83992232ae4a6aa30cc815f6ade005cf9ad9527f309c92954e4a0b13585e",
+    "miniprogram/pages/publish/index.wxml": "70aa88ea70a8864c5a7a4e5079236e5692f3b3334ca17482ac3252874be0711e",
+    "miniprogram/pages/publish/index.wxss": "b18e2a9ed49d0c410012e2b9a68836bf0c4715a60743b60fe514b331946346bd",
+    "miniprogram/utils/category-art.js": "3b8d1f18f753a0e5785433078f84b824b05843a67af07a472f07b509384de882",
+    "miniprogram/styles/catalog-art.wxss": "07a1630b1f94a7d5a5c5c0bb155053dadaccb9f468d909e2efd293147a2440e0"
+  },
+  "pending": {
+    "dedicated3dReplacements": 337,
+    "draftFinalization": 72,
+    "visualSignOff": "awaiting user review",
+    "physicalDevice": "pending"
+  },
+  "rollbackBaseline": "f235f5d"
+}

@@ -28,6 +28,12 @@ test("supplied map covers exactly 418 existing projects and preserves 76 draft /
     catalog.projects.map((item) => item.id).sort(),
   );
   let drafts = 0;
+  const draftFrames = {
+    C01: "food",
+    C02: "profession",
+    C03: "service",
+    C04: "goods",
+  };
   for (const item of manifest.items) {
     const project = catalog.find(item.category_id);
     assert.equal(project.name, item.category_name);
@@ -39,6 +45,9 @@ test("supplied map covers exactly 418 existing projects and preserves 76 draft /
     const expectedStage =
       item.asset_status === "3D拼版裁切初稿" ? "draft3d" : "placeholder";
     assert.equal(descriptor.stage, refined ? "styled3d" : expectedStage);
+    const originalFrame =
+      expectedStage === "draft3d" ? draftFrames[item.industry_id] : "symbol";
+    assert.equal(descriptor.frame, refined ? "transparent" : originalFrame);
     drafts += Number(expectedStage === "draft3d");
     const bytes = fs.readFileSync(
       path.join(root, "miniprogram", item.runtime_path),
@@ -65,6 +74,7 @@ test("the four renewed digital illustrations have real transparency and preserve
     assert.equal(descriptor.path, item.path);
     assert.equal(descriptor.stage, "styled3d");
     assert.equal(descriptor.transparent, true);
+    assert.equal(descriptor.frame, "transparent");
     const bytes = fs.readFileSync(path.join(root, "miniprogram", item.path));
     assert.equal(
       crypto.createHash("sha256").update(bytes).digest("hex"),
@@ -105,6 +115,7 @@ test("resources occupy a separate package, retain all original routes and keep t
   ]) {
     const descriptor = assets.describe(id);
     assert.equal(descriptor.stage, "placeholder");
+    assert.equal(descriptor.frame, "symbol");
     assert.ok(fs.existsSync(path.join(root, "miniprogram", descriptor.path)));
   }
   assert.equal(catalog.categories.length, 27);
@@ -171,12 +182,20 @@ test("cards keep original housing art, respond to category changes and handle mi
   instance.refresh();
   assert.equal(instance.data.src, assets.describe("C04G01S01").path);
   assert.equal(instance.data.stage, "styled3d");
+  assert.equal(instance.data.frame, "transparent");
+  instance.properties.assetId = "C01G01S01";
+  instance.refresh();
+  assert.equal(instance.data.frame, "food");
+  instance.properties.assetId = "C15G01S01";
+  instance.refresh();
+  assert.equal(instance.data.frame, "symbol");
   instance.properties.assetId = "C05G01S01";
   instance.properties.preferFallback = true;
   instance.properties.fallbackSrc = "/assets/publish/new-home.png";
   instance.refresh();
   assert.equal(instance.data.src, "/assets/publish/new-home.png");
   assert.equal(instance.data.stage, "existing");
+  assert.equal(instance.data.frame, "plain");
   instance.imageLoaded();
   assert.equal(instance.data.imageReady, true);
   instance.refresh();
@@ -188,6 +207,7 @@ test("cards keep original housing art, respond to category changes and handle mi
   assert.equal(instance.data.imageReady, false);
   instance.imageFailed();
   assert.equal(instance.data.src, instance.properties.fallbackSrc);
+  assert.equal(instance.data.frame, "plain");
   instance.imageFailed();
   assert.equal(instance.data.src, "");
 });

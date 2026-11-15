@@ -3,6 +3,7 @@
 const registry = require("./classification-contract");
 const draftIds = new Set(require("../data/category-art-drafts"));
 const styledIds = new Set(["C04G01S01", "C04G01S02", "C04G01S03", "C04G01S04"]);
+const draftFrames = { C01: "food", C02: "profession", C03: "service", C04: "goods" };
 const memorialIds = new Set([
   "memorial-create",
   "memorial-manage",
@@ -14,6 +15,7 @@ function describe(id) {
     return {
       path: "/category-art/assets/memorial/" + id + ".webp",
       stage: "placeholder",
+      frame: "symbol",
     };
   }
   const project = registry.find(id);
@@ -23,6 +25,7 @@ function describe(id) {
       path: "/category-art/assets/3d-v1/" + id + ".webp",
       stage: "styled3d",
       transparent: true,
+      frame: "transparent",
     };
   }
   return {
@@ -33,6 +36,7 @@ function describe(id) {
       id +
       ".webp",
     stage: draftIds.has(id) ? "draft3d" : "placeholder",
+    frame: draftIds.has(id) ? draftFrames[project.categoryId] || "goods" : "symbol",
   };
 }
 

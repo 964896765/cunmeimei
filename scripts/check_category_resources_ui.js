@@ -4,11 +4,12 @@ const fs = require("node:fs");
 const path = require("node:path");
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
+const sharp = require("../backend/node_modules/sharp");
 const catalog = require("../miniprogram/utils/classification-contract");
 const assets = require("../miniprogram/utils/category-art");
 const output = path.resolve(
   __dirname,
-  "../docs/design/3d-blending-2026-11-15",
+  "../docs/design/category-fusion-2026-11-15",
 );
 const pause = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -88,6 +89,45 @@ async function main() {
       await pause(150);
       await mini.screenshot({ path: path.join(output, name) });
     };
+    const system = await mini.systemInfo();
+    const reviewPanels = new Map();
+    const captureGroup = async (page, group) => {
+      const scroller = await page.$(".project-content");
+      await scroller.scrollTo(0, 0);
+      await pause(100);
+      const grid = await page.$(".project-grid");
+      const offset = await scroller.offset();
+      const size = await scroller.size();
+      const gridOffset = await grid.offset();
+      const gridSize = await grid.size();
+      const start = Math.max(0, gridOffset.top - offset.top);
+      const positions = [start];
+      if (gridSize.height > size.height)
+        positions.push(start + gridSize.height - size.height);
+      for (const [index, position] of positions.entries()) {
+        await scroller.scrollTo(0, position);
+        await pause(120);
+        const bytes = Buffer.from(await mini.screenshot(), "base64");
+        const { width } = await sharp(bytes).metadata();
+        const scale = width / system.windowWidth;
+        const panel = await sharp(bytes)
+          .extract({
+            left: Math.ceil(offset.left * scale),
+            top: Math.ceil(offset.top * scale),
+            width: Math.floor(size.width * scale),
+            height: Math.floor(size.height * scale),
+          })
+          .resize(300, 500, { fit: "contain", background: "#ffffff" })
+          .png()
+          .toBuffer();
+        const industry = group.id.slice(0, 3);
+        if (!reviewPanels.has(industry)) reviewPanels.set(industry, []);
+        reviewPanels.get(industry).push({
+          input: panel,
+          label: group.id + (index ? " bottom" : " top"),
+        });
+      }
+    };
     let page = await go("/pages/publish/index");
     const initial = await page.data();
     check(
@@ -98,15 +138,6 @@ async function main() {
       initial.memorialPublic === false,
       "the public memorial entrance stays closed",
     );
-    const selectedScreens = new Set([
-      "C01",
-      "C02",
-      "C03",
-      "C04",
-      "C05",
-      "C15",
-      "C23",
-    ]);
     for (const category of initial.categories) {
       if ((await page.data()).selectedCategory !== category.id) {
         await (
@@ -168,14 +199,21 @@ async function main() {
               : assets.describe(item.assetId).path,
           );
           assert.equal(item.usingFallback, item.preferFallback);
+          assert.equal(
+            item.frame,
+            item.preferFallback ? "plain" : assets.describe(item.assetId).frame,
+          );
+          assert.equal(item.blendMatte, true);
           rendered.set(item.assetId, {
             id: item.assetId,
             path: item.src,
             stage: item.stage,
+            frame: item.frame,
             nativeImageLoaded: item.imageReady,
           });
         }
-        if (index === 0 && selectedScreens.has(category.id)) {
+        await captureGroup(page, group);
+        if (index === 0) {
           await scroller.scrollTo(0, 0);
           await screenshot("publish-" + category.id + ".png");
         }
@@ -187,6 +225,39 @@ async function main() {
         "native images rendered for " + category.id + " " + category.name,
       );
     }
+    for (const [industry, panels] of reviewPanels) {
+      const rows = Math.ceil(panels.length / 3);
+      const composites = [];
+      for (const [index, panel] of panels.entries()) {
+        const left = (index % 3) * 308;
+        const top = Math.floor(index / 3) * 536;
+        composites.push({ input: panel.input, left, top: top + 28 });
+        composites.push({
+          input: Buffer.from(
+            '<svg width="300" height="28"><text x="8" y="20" font-size="18" font-family="sans-serif" fill="#242329">' +
+              panel.label +
+              "</text></svg>",
+          ),
+          left,
+          top,
+        });
+      }
+      await sharp({
+        create: {
+          width: 924,
+          height: rows * 536,
+          channels: 3,
+          background: "#ffffff",
+        },
+      })
+        .composite(composites)
+        .jpeg({ quality: 88 })
+        .toFile(path.join(output, "review-" + industry + ".jpg"));
+    }
+    check(
+      reviewPanels.size === 27,
+      "captured complete group review sheets for all 27 industries",
+    );
     check(
       rendered.size === 418,
       "all 418 projects have actual native image-load callbacks",
@@ -204,12 +275,44 @@ async function main() {
     );
 
     await (await page.$(".publish-search-entry")).trigger("tap");
-    const searchInput = await poll(
-      () => page.$(".project-search-input"),
-      Boolean,
-      "search input",
-    );
-    await searchInput.input("二手手机");
+    const typeQuery = async (query) => {
+      const input = await poll(
+        () => page.$(".project-search-input"),
+        Boolean,
+        "search input",
+      );
+      await input.input(query);
+      await poll(
+        () => page.data(),
+        (data) => data.projectQuery === query,
+        "search query " + query,
+      );
+      await pause(180);
+    };
+    for (const [query, frame] of [
+      ["川湘菜", "food"],
+      ["日常保洁", "service"],
+      ["医院", "symbol"],
+    ]) {
+      await typeQuery(query);
+      const image = await poll(
+        () => page.$(".project-result-art"),
+        Boolean,
+        "search " + query,
+      );
+      await poll(
+        () => image.data(),
+        (data) => data.imageReady && data.frame === frame,
+        "search frame " + query,
+      );
+      await mini.callWxMethod("hideKeyboard");
+      await screenshot("search-" + frame + ".png");
+      check(
+        (await image.data()).frame === frame,
+        "search uses the matching " + frame + " framing",
+      );
+    }
+    await typeQuery("二手手机");
     const result = await poll(
       () => page.$(".project-result-art"),
       Boolean,
@@ -296,6 +399,42 @@ async function main() {
       await screenshot(
         largeText ? "publish-large-text.png" : "publish-dark.png",
       );
+      for (const category of ["C01", "C03", "C15", "C23"]) {
+        await (
+          await page.$('.industry-choice[data-id="' + category + '"]')
+        ).trigger("tap");
+        await poll(
+          () => page.data(),
+          (data) => data.selectedCategory === category,
+          "themed category " + category,
+        );
+        await pause(180);
+        const images = await poll(
+          () => page.$$(".project-asset"),
+          (images) => images.length > 0,
+          "themed category artwork",
+        );
+        const scroller = await page.$(".project-content");
+        const viewport = await scroller.size();
+        const scrollHeight = await scroller.scrollHeight();
+        for (let top = 0; top < scrollHeight; top += viewport.height * 0.8) {
+          await scroller.scrollTo(0, top);
+          await pause(120);
+        }
+        const themedData = await poll(
+          () => Promise.all(images.map((image) => image.data())),
+          (data) => data.every((item) => item.imageReady && item.dark === (theme === "dark")),
+          "themed source framing",
+        );
+        await scroller.scrollTo(0, 0);
+        await screenshot(
+          "publish-" + (largeText ? "large" : "dark") + "-" + category + ".png",
+        );
+        check(
+          themedData.every((item) => item.imageReady && item.dark === (theme === "dark")),
+          "source artwork renders in " + theme + " for " + category,
+        );
+      }
     }
     await mini.evaluate(
       (uid) =>

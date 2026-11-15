@@ -7,8 +7,15 @@ Component({
     preferFallback: { type: Boolean, value: false },
     muted: { type: Boolean, value: false },
     blendMatte: { type: Boolean, value: false },
+    dark: { type: Boolean, value: false },
   },
-  data: { src: "", usingFallback: true, stage: "fallback", imageReady: false },
+  data: {
+    src: "",
+    usingFallback: true,
+    stage: "fallback",
+    frame: "plain",
+    imageReady: false,
+  },
   observers: {
     "assetId,fallbackSrc,preferFallback": function () {
       if (this.attachedToPage) this.refresh();

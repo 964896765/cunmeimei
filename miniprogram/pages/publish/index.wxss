@@ -54,9 +54,9 @@ page { height:100%; overflow:hidden; }
 .project-visual { display:flex; align-items:center; justify-content:center; height:96rpx; margin-bottom:4rpx; }
 .project-visual.has-art { height:118rpx; background:linear-gradient(140deg,#fff6fb,#f3dfed); }
 .project-art { display:block; width:100%; height:138rpx; }
-.project-visual.has-resource { height:138rpx; background:linear-gradient(140deg,#fff6fb,#f3dfed); }
-.project-asset { display:block; width:100%; height:138rpx; }
-.project-result-art { display:block; flex-shrink:0; width:88rpx; height:88rpx; border-radius:18rpx; overflow:hidden; }
+.project-visual.has-resource { height:138rpx; background:radial-gradient(ellipse at 50% 44%,#fff9fc 0%,#f7eaf3 72%,var(--soft) 100%); }
+.project-asset { --catalog-art-size:138rpx; display:block; width:100%; height:138rpx; }
+.project-result-art { --catalog-art-size:88rpx; display:block; flex-shrink:0; width:88rpx; height:88rpx; border-radius:18rpx; overflow:hidden; background:var(--soft); }
 .project-row-copy { min-width:0; width:100%; padding:0 22rpx 0 16rpx; }
 .project-name { display:block; color:var(--ink); font-size:28rpx; font-weight:650; line-height:1.45; overflow-wrap:anywhere; }
 .project-summary { display:block; margin-top:5rpx; color:var(--muted); font-size:22rpx; line-height:1.5; }

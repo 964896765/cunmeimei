@@ -1,0 +1,20 @@
+:host { display:block; }
+.catalog-frame { display:flex; align-items:center; justify-content:center; width:100%; height:100%; overflow:hidden; }
+.subject-window { position:relative; flex-shrink:0; width:var(--catalog-art-size,100%); height:100%; max-width:100%; overflow:hidden; }
+.catalog-image { display:block; width:100%; height:100%; }
+.is-muted { filter:grayscale(1); }
+
+/* Frame the square source itself so the blend follows the illustration edges. */
+.is-blended .frame-food,.is-blended .frame-profession,.is-blended .frame-service,.is-blended .frame-goods,.is-blended .frame-symbol {
+ -webkit-mask-image:radial-gradient(ellipse closest-side,#000 60%,transparent 100%);
+ mask-image:radial-gradient(ellipse closest-side,#000 60%,transparent 100%);
+}
+.is-blended .frame-food .catalog-image { transform:translateY(-2%) scale(1.1); -webkit-mask-image:linear-gradient(#000 85%,transparent 89%); mask-image:linear-gradient(#000 85%,transparent 89%); }
+.is-blended .frame-profession .catalog-image { transform:translateY(-1%) scale(1.26); }
+.is-blended .frame-service .catalog-image { transform:translateY(7%) scale(1.12); }
+.is-blended .frame-goods .catalog-image { transform:translateY(2%) scale(1.12); }
+.is-blended .frame-symbol .catalog-image { transform:translateY(3%) scale(1.32); }
+.is-blended:not(.is-dark) .frame-food,.is-blended:not(.is-dark) .frame-profession,.is-blended:not(.is-dark) .frame-service,.is-blended:not(.is-dark) .frame-goods,.is-blended:not(.is-dark) .frame-symbol { mix-blend-mode:multiply; }
+.is-blended.is-dark .frame-food,.is-blended.is-dark .frame-profession,.is-blended.is-dark .frame-service,.is-blended.is-dark .frame-goods,.is-blended.is-dark .frame-symbol { background:#f9f3f7; filter:brightness(.72) saturate(.88); }
+.missing-art { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
+.missing-art>view { width:34%; height:34%; border:2rpx solid var(--muted,#777); border-radius:12rpx; }
