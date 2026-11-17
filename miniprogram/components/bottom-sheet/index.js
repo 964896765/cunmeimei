@@ -1,7 +1,9 @@
 Component({
+  options: { multipleSlots: true },
   properties: {
     open: Boolean,
     label: String,
+    structured: Boolean,
     dismissible: Boolean
   },
   methods: {

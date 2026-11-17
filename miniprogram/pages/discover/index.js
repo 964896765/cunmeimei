@@ -16,7 +16,7 @@ Page({
  onReady(){pageLayout.measure(this);},
  onResize(){pageLayout.measure(this);},
 
- data: {layoutStyle:'',pageCompact:false,filterTitle:'招聘筛选',panelFilters:refinementDefinitions.panel('job'),refinements:{},quickFilters:refinementDefinitions.chips('job'),quickShowsDays:true,refinementCategories:browse.categoryColumns('','job').columns,refinementCategoryValue:[0,0,0],quickOpen:false,quickKey:'',quickTitle:'',quickHint:'',quickOptions:[],quickBusy:false,quickError:'',
+ data: {layoutStyle:'',pageCompact:false,selectedConditions:[],filterTitle:'招聘筛选',panelFilters:refinementDefinitions.panel('job'),refinements:{},quickFilters:refinementDefinitions.chips('job'),quickShowsDays:true,refinementCategories:browse.categoryColumns('','job').columns,refinementCategoryValue:[0,0,0],quickOpen:false,quickKey:'',quickTitle:'',quickHint:'',quickOptions:[],quickBusy:false,quickError:'',
   dateOptions:require('../../utils/search-filters').dateOptions,dateLabels:require('../../utils/search-filters').dateOptions.map(x=>x.label),dateIndex:0,limitReached:false,days:0,images:'all',publicOnly:false,
   headerHeight:88,channels:registry.channels||[],immersed:false,unavailable:'',categoryId:'',categoryName:'',types: catalog.groupOptions, type: 'job', areas: ['全部地区'], area: '全部地区', q: '',
   filtered: [], count: 0, hasMore: false, loading: false, error: '', sortIndex: 0,
@@ -94,9 +94,9 @@ Page({
   }
  },
  clearFilters() {
-  this.setData({...browse.reset({...this.data,sort:this.data.sortCode}),area:'全部地区',dateIndex:0,sortCode:'recommended',sortLabel:discoverySorts.labels.recommended,sortIndex:0});this.sortOrigin=null;this.syncSortOptions();return this.filter();
+  this.setData({...browse.reset({...this.data,sort:this.data.sortCode}),area:this.data.cityCode?'全市范围':'全部地区',dateIndex:0,sortCode:'latest',sortLabel:discoverySorts.labels.latest,sortIndex:0});this.sortOrigin=null;this.syncSortOptions();return this.filter();
  },
- removeCondition(e){this.setData(browse.remove({...this.data,sort:this.data.sortCode},e.detail.key));return this.filter();},
+ removeCondition(e){const key=e.detail?.key||e.currentTarget?.dataset?.key;if(!key)return;this.setData(browse.remove({...this.data,sort:this.data.sortCode},key));if(key==='radiusKm'&&this.data.sortCode!=='distance')this.sortOrigin=null;return this.filter();},
  confirmSearch() { return this.filter(); },
  browseAll(){nav.discover('all','',{cityCode:this.data.cityCode,districtCode:''});},
  clearIndustry(){this.setData({categoryId:'',categoryName:''});return this.filter();},
@@ -114,7 +114,8 @@ Page({
   const quickFilters=refinementDefinitions.chips(this.data.type,refinements,this.data);
   const panelFilters=refinementDefinitions.panel(this.data.type,refinements,this.data);
   const filterTitle=(registry.channels.find(item=>item.id===this.data.type)?.name||'信息')+'筛选';
-  this.setData({refinements,quickFilters,panelFilters,filterTitle,quickShowsDays:quickFilters.some(item=>item.key==='days'),refinementCategories:categories.columns,refinementCategoryValue:categories.value});
+  const selectedConditions=[...(this.data.categoryId?[{key:'categoryId',label:this.data.categoryName}]:[]),...(this.data.districtCode?[{key:'districtCode',label:this.data.area}]:[]),...browse.extras({...this.data,refinements})];
+  this.setData({refinements,quickFilters,panelFilters,filterTitle,selectedConditions,quickShowsDays:quickFilters.some(item=>item.key==='days'),refinementCategories:categories.columns,refinementCategoryValue:categories.value},()=>pageLayout.measure(this));
  },
  refinementCategoryColumn(e) {
   const id=this.data.refinementCategories[e.detail.column]?.[e.detail.value]?.id||'';
@@ -151,7 +152,7 @@ Page({
   const options = inPanel
    ? this.data.panelFilters.find(field => field.key === key)?.options
    : this.data.quickOptions;
-  if (!options?.some(option => option.value === value)) return;
+  if (!options?.some(option => option.value === value && !option.disabled)) return;
   const attempt = this.quickAttempt = (this.quickAttempt || 0) + 1;
   const scope = currentContext();
   const type = this.data.type;
@@ -191,7 +192,7 @@ Page({
   this.setData({area,...(this.data.cityCode?{districtCode:browse.districts(this.data.cityCode).find(d=>d.name===area)?.code||''}:{})});
   return this.filter();
  },
- syncSortOptions(){const options=discoverySorts.options(this.data.type);const current=options.find(x=>x.code===this.data.sortCode);if(!current?.enabled)this.setData({sortCode:'latest',sortLabel:'最新发布',sortIndex:0});this.setData({sortOptions:options});this.syncRefinements();},
+ syncSortOptions(){const options=discoverySorts.options(this.data.type).filter(option=>option.enabled);const current=options.find(x=>x.code===this.data.sortCode);if(!current)this.setData({sortCode:'latest',sortLabel:'最新发布',sortIndex:0});this.setData({sortOptions:options});this.syncRefinements();},
  openFilters(){this.closeQuickFilter();this.closeSort();this.restoreNavigation();this.setData({filterOpen:true});require('../../utils/tab-bar').visibility(this,true);this.filterBarHidden=true;},
  closeFilters(){this.quickAttempt=(this.quickAttempt||0)+1;this.setData({filterOpen:false,quickBusy:false,quickError:''});if(this.filterBarHidden){require('../../utils/tab-bar').visibility(this,!!this.data.immersed);this.filterBarHidden=false;}},
  chooseNearby(){this.openSort();return this.selectSort({currentTarget:{dataset:{code:'distance'}}});},

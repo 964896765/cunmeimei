@@ -164,3 +164,23 @@
 .profile-compact .main-center .profile-avatar { width:96rpx; height:96rpx; }
 .profile-compact .main-center .profile-name { font-size:38rpx; }
 .large-text.profile-compact .main-center .profile-name { font-size:44rpx; }
+.main-center .workspace-item { margin:0; border-top:0; border-bottom:0; border-left:0; border-radius:0; background:transparent; line-height:1.5; }
+.workspace-item::after { border:0; }
+.workspace-item:active,.personal-function-grid button:active,.center-menu-row:active,.hub-row:active { background:var(--soft); }
+.personal-message-entry { position:relative; }
+.personal-unread { position:absolute; top:0; right:12rpx; z-index:1; min-width:32rpx; height:32rpx; padding:0 7rpx; border:2rpx solid var(--surface); border-radius:18rpx; background:var(--action); color:var(--on-action); font-size:20rpx; line-height:28rpx; }
+.hub-intro .body-copy { font-size:32rpx; font-weight:600; color:var(--ink); }
+.hub-section { padding:24rpx; border-color:var(--border); }
+.hub-section>.section-title { font-size:30rpx; }
+.service-hub-actions { gap:16rpx; margin-bottom:4rpx; }
+.service-hub-actions button { min-height:128rpx; border:1rpx solid var(--border); background:var(--background); color:var(--ink); }
+.service-hub-actions button text { margin-top:6rpx; }
+.service-hub-actions button:last-child { grid-column:1 / -1; }
+.me-page .hub-row { min-height:128rpx; padding:24rpx 0; }
+.me-page .center-menu-row[disabled] { opacity:.6; }
+.large-text .service-hub-actions { grid-template-columns:1fr; }
+.large-text .main-center .points-entry { display:flex; align-items:center; gap:16rpx; padding:20rpx; min-height:100rpx; }
+.large-text .points-entry .points-icon { width:44rpx; height:44rpx; margin:0; }
+.large-text .points-entry .points-title { flex:1; min-width:0; font-size:32rpx; }
+.large-text .points-entry .points-action { flex:0 0 auto; padding:10rpx 20rpx; font-size:28rpx; white-space:nowrap; }
+.large-text .main-center .workspace-item:nth-child(2n) { border-right:0; }

@@ -1,0 +1,2629 @@
+{
+  "tool": "Blender 5.1 Cycles",
+  "generator": "scripts/render_category_scenes.py",
+  "specifications": "scripts/category-scene-specs.json",
+  "provenance": "Project-authored geometry and materials",
+  "items": [
+    {
+      "id": "C05G01S03",
+      "name": "住宅整租",
+      "path": "/category-art/assets/categories/C05/C05G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3942,
+      "sha256": "b187f84aa196e6afc516015bf822181292efe0d61df312d2251f24dd10bbd849",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "key"
+      ]
+    },
+    {
+      "id": "C05G01S04",
+      "name": "住宅合租",
+      "path": "/category-art/assets/categories/C05/C05G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4228,
+      "sha256": "a285df747be2ef0254c5f0041a9b3b5d15140ebcedb9039f3b102e27d3fde56d",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "adult",
+        "child"
+      ]
+    },
+    {
+      "id": "C05G02S02",
+      "name": "写字楼租赁",
+      "path": "/category-art/assets/categories/C05/C05G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3328,
+      "sha256": "23bd12f528f1b8142e1840ec837bfe885e54eff1b2ce43fff5f6225b3f09aac5",
+      "previousSha256": "a2b25f32f2bfa4b916fdca2558482fda80547f75598d1a0cb7b3905785f328c8",
+      "models": [
+        "tower",
+        "case"
+      ]
+    },
+    {
+      "id": "C05G02S03",
+      "name": "厂房仓库租赁",
+      "path": "/category-art/assets/categories/C05/C05G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3826,
+      "sha256": "bb6e10b814c25eec809e8ce0f06ba3474b6df7784891d5d0f64c016c62ab79fd",
+      "previousSha256": "a2b25f32f2bfa4b916fdca2558482fda80547f75598d1a0cb7b3905785f328c8",
+      "models": [
+        "warehouse",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C05G03S01",
+      "name": "房产经纪",
+      "path": "/category-art/assets/categories/C05/C05G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3536,
+      "sha256": "83b02207c2013884624f8ed4f814fd95977c68754ee0ed661fc05a2e8d061a1e",
+      "previousSha256": "af46e57bea513ea3d5ecd9ab822966b9b45e3f4cb27bdf8b923284b348715bfc",
+      "models": [
+        "house",
+        "paper"
+      ]
+    },
+    {
+      "id": "C05G03S04",
+      "name": "房屋评估",
+      "path": "/category-art/assets/categories/C05/C05G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4076,
+      "sha256": "b25363a2488a8b9a93347ae7fd2f7c1c44bd4200ff73c1439492ae924b70e491",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "magnifier"
+      ]
+    },
+    {
+      "id": "C05G03S05",
+      "name": "房屋验收",
+      "path": "/category-art/assets/categories/C05/C05G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3608,
+      "sha256": "54ef83752ce72635375cdd59fb1f9690c877e3ae1908272dd65c2bbd2537d42b",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "certificate"
+      ]
+    },
+    {
+      "id": "C06G02S01",
+      "name": "剧本杀",
+      "path": "/category-art/assets/categories/C06/C06G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3262,
+      "sha256": "af2f57320b5787bb3a2596abfa17ef6a9c127ac2f3829e51f4b256a955d74959",
+      "previousSha256": "f7c31380f8569b97d4caf8d6f9acd8626f3853fef74729913d4f43e8be155a4e",
+      "models": [
+        "book",
+        "mic"
+      ]
+    },
+    {
+      "id": "C06G02S02",
+      "name": "密室逃脱",
+      "path": "/category-art/assets/categories/C06/C06G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3650,
+      "sha256": "d7b52415d4f7c4ec52752eca7e3b33b4f0c83d49f66f0897793e96a60c6840e6",
+      "previousSha256": "a2b25f32f2bfa4b916fdca2558482fda80547f75598d1a0cb7b3905785f328c8",
+      "models": [
+        "key",
+        "clock"
+      ]
+    },
+    {
+      "id": "C06G02S08",
+      "name": "电竞网咖",
+      "path": "/category-art/assets/categories/C06/C06G02S08.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3892,
+      "sha256": "0447c189a1fdc60f33d4b51fd93446450c209574d285b0d1e02005f9fb8b23e2",
+      "previousSha256": "7600908860117be7a6fa3e47ec559a9d8918850e0368f4c055e268faec9c00f4",
+      "models": [
+        "screen",
+        "game"
+      ]
+    },
+    {
+      "id": "C07G01S03",
+      "name": "百货零售",
+      "path": "/category-art/assets/categories/C07/C07G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3734,
+      "sha256": "89717abfd36c635a73aa190252dc0d5866cdcb8e2971ff62b067b41df6200c73",
+      "previousSha256": "8ffdfcdd25bfd1416c3e5c59d0afe181232059655c14f9ba0025f73452508240",
+      "models": [
+        "bag",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C07G03S08",
+      "name": "潮玩文创",
+      "path": "/category-art/assets/categories/C07/C07G03S08.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3552,
+      "sha256": "45dbba46e7c2aecbf836dc0901179a7db46e3df69dde481d53c5e544bda478d0",
+      "previousSha256": "1e377a1d3d9f4f525492b48fd93323a97d21abec644dcc087e9d2308f0599405",
+      "models": [
+        "blocks",
+        "game"
+      ]
+    },
+    {
+      "id": "C08G01S01",
+      "name": "失物招领",
+      "path": "/category-art/assets/categories/C08/C08G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4972,
+      "sha256": "c8d1f10e1098389f6d4b68fc005eda5bb8cecb9d6ba2eebb74d08b3aecdf145d",
+      "previousSha256": "a2b25f32f2bfa4b916fdca2558482fda80547f75598d1a0cb7b3905785f328c8",
+      "models": [
+        "key",
+        "magnifier",
+        "paper"
+      ]
+    },
+    {
+      "id": "C08G02S02",
+      "name": "同城活动",
+      "path": "/category-art/assets/categories/C08/C08G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3850,
+      "sha256": "7034d49c66d743bfee952ff1533a24ea87a21dee9e66fabbaccb9b307db5b02f",
+      "previousSha256": "cc08f04441d707b662988bbaaf05e6eb31267f26ddd15d7908f6bb7676933e12",
+      "models": [
+        "balloon",
+        "mic"
+      ]
+    },
+    {
+      "id": "C08G02S04",
+      "name": "公益活动",
+      "path": "/category-art/assets/categories/C08/C08G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3758,
+      "sha256": "82d912a2eff73df08a0cd5a7c5c4d91188ac7f3c046f0f82da557bf1e222f4b9",
+      "previousSha256": "e098e55304a3a9808c74d8f60a6d4840ba06d7c5abc7d99d417cbc4e0e6bdb5d",
+      "models": [
+        "heart",
+        "flower"
+      ]
+    },
+    {
+      "id": "C09G02S01",
+      "name": "客运班车",
+      "path": "/category-art/assets/categories/C09/C09G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3852,
+      "sha256": "8b99ce53a521bc32ae30856491632ed308412bbb4b55aae3d04d5f6fe740da43",
+      "previousSha256": "9022788f4c07fedff8f8b17c9d4e76e4ba04d74b2d515d7d7a2225c3ee4a0294",
+      "models": [
+        "bus",
+        "case"
+      ]
+    },
+    {
+      "id": "C09G02S05",
+      "name": "顺风拼车",
+      "path": "/category-art/assets/categories/C09/C09G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3930,
+      "sha256": "2892f39b1dca9192d431da2472a79d22a09c15d2a798b0b07ba2f86a8f395ab3",
+      "previousSha256": "5977f36f5fc666aa2a35fc647811c7db4f62f00c492884248574d2c3d9d90abc",
+      "models": [
+        "car",
+        "adult"
+      ]
+    },
+    {
+      "id": "C09G03S01",
+      "name": "汽车租赁",
+      "path": "/category-art/assets/categories/C09/C09G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3810,
+      "sha256": "f312606ba8cf3bffd237eb021ccd692659d08f5799951b3820292ae548ff8ae3",
+      "previousSha256": "a2b25f32f2bfa4b916fdca2558482fda80547f75598d1a0cb7b3905785f328c8",
+      "models": [
+        "car",
+        "key"
+      ]
+    },
+    {
+      "id": "C09G03S03",
+      "name": "停车场",
+      "path": "/category-art/assets/categories/C09/C09G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3590,
+      "sha256": "ebbb5dbfb5396d194c7bae32d5c4fba7c607dc895b8c7769a1c58185ddc5e817",
+      "previousSha256": "eb81280ba363443118d15f4e4e27a9705d1f43944485bd76b05d6debc977aed1",
+      "models": [
+        "car",
+        "paper"
+      ]
+    },
+    {
+      "id": "C10G01S04",
+      "name": "钣金喷漆",
+      "path": "/category-art/assets/categories/C10/C10G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3510,
+      "sha256": "e34dafc9fddea143aa781950c4eff18f83644125ef0a6e7c4ab500eaf125ae61",
+      "previousSha256": "5977f36f5fc666aa2a35fc647811c7db4f62f00c492884248574d2c3d9d90abc",
+      "models": [
+        "car",
+        "brush"
+      ]
+    },
+    {
+      "id": "C10G03S01",
+      "name": "新车销售",
+      "path": "/category-art/assets/categories/C10/C10G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3702,
+      "sha256": "1a86cdb9488043458328bac06621ed552bb3e36244329bdfaeee5727763bf8e3",
+      "previousSha256": "ec801abc2e9110884a83fe993394a352bef631fb28f978ad622eecb842177bd1",
+      "models": [
+        "car",
+        "certificate"
+      ]
+    },
+    {
+      "id": "C10G03S04",
+      "name": "电动自行车维修",
+      "path": "/category-art/assets/categories/C10/C10G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 6398,
+      "sha256": "4f7c76429418b39f26fdbcf388b5fa6abfc2b60341a3203801ba22cf68883ea2",
+      "previousSha256": "eb148a9fc43736994d35a227b782ecab6dbaf40a732fafd8ad165230ccf1f3e3",
+      "models": [
+        "bike",
+        "tools"
+      ]
+    },
+    {
+      "id": "C11G01S02",
+      "name": "生活美容",
+      "path": "/category-art/assets/categories/C11/C11G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3560,
+      "sha256": "715b0914b9755a3f63ff8ab43774250f00f6d07307ad7839798c499cc54b8296",
+      "previousSha256": "69991ed7a85bc056fc8c0c8b24a6b8b910ec452caa48c3da752258cf7fab86c0",
+      "models": [
+        "cosmetic",
+        "flower"
+      ]
+    },
+    {
+      "id": "C11G01S04",
+      "name": "头皮护理",
+      "path": "/category-art/assets/categories/C11/C11G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3460,
+      "sha256": "179d1db4d2c21694569c80396820457bad957cdcd6cbd39433131b2c71d9ce47",
+      "previousSha256": "4c7a8b0fc0758c28e9d1f84428e75ad1833393e51acd5370b79bae689af9dd55",
+      "models": [
+        "comb",
+        "cosmetic"
+      ]
+    },
+    {
+      "id": "C11G02S04",
+      "name": "化妆造型",
+      "path": "/category-art/assets/categories/C11/C11G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3746,
+      "sha256": "2fa27c4df850c64bc52a77471dbf5fa1a653e1568f90edb2ae4ea5e2a9ec01fc",
+      "previousSha256": "61f31d4bda290f28a735fb2c226259e8bba1061d4c6850de2e951d153396a1be",
+      "models": [
+        "lipstick",
+        "lens"
+      ]
+    },
+    {
+      "id": "C11G03S02",
+      "name": "非医疗脱毛",
+      "path": "/category-art/assets/categories/C11/C11G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2636,
+      "sha256": "24746782d01f3e84cb76fe84c895fa1a813f911a5916ff60dc806ad04b659378",
+      "previousSha256": "4c7a8b0fc0758c28e9d1f84428e75ad1833393e51acd5370b79bae689af9dd55",
+      "models": [
+        "epilator",
+        "torch"
+      ]
+    },
+    {
+      "id": "C12G01S01",
+      "name": "亲子乐园",
+      "path": "/category-art/assets/categories/C12/C12G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4720,
+      "sha256": "9a0ea7901fe89e139aaf442657a143da1c8d796fcda9dea3ac9ca369183a5be0",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "slide",
+        "balloon"
+      ]
+    },
+    {
+      "id": "C12G01S02",
+      "name": "儿童游乐",
+      "path": "/category-art/assets/categories/C12/C12G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3768,
+      "sha256": "03cdf6b6b6552f68d6d01475ad74e16f19d33edc57eede580558b5581a775583",
+      "previousSha256": "498a0b80cf33bda1c33f2097219d4e7ff84c69fa37dc68c72a1cb39aa4da189a",
+      "models": [
+        "blocks",
+        "slide"
+      ]
+    },
+    {
+      "id": "C12G01S03",
+      "name": "儿童摄影",
+      "path": "/category-art/assets/categories/C12/C12G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3566,
+      "sha256": "bb7996b5e98cf49923c7ce22680675fac870e3c513f1f863890cd55e624cfda0",
+      "previousSha256": "72b589cde45909eabfbaa441dc49e8d0abac72e305af55834a1c232df47b1e2f",
+      "models": [
+        "camera",
+        "blocks"
+      ]
+    },
+    {
+      "id": "C12G01S04",
+      "name": "儿童生日派对",
+      "path": "/category-art/assets/categories/C12/C12G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3824,
+      "sha256": "61de1a8955faf9163ad58acf221fdf7a0204977f4723c8018cba2ff602d47d99",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "cake",
+        "balloon"
+      ]
+    },
+    {
+      "id": "C12G01S05",
+      "name": "亲子体验活动",
+      "path": "/category-art/assets/categories/C12/C12G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4206,
+      "sha256": "58e5e278614583ac9e4d600974bc8949b22d100ef0f86a3950a93e3076385cf3",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "adult",
+        "child",
+        "palette"
+      ]
+    },
+    {
+      "id": "C12G02S01",
+      "name": "母婴护理",
+      "path": "/category-art/assets/categories/C12/C12G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2978,
+      "sha256": "8b6ced0ec85aa7fa09c471fda99faac1b5870fd89b74ca38633106a34c3f521d",
+      "previousSha256": "5cdcc56bcfe705fe2377e376955142380abdf3635c17ca3ff0c1be981acce562",
+      "models": [
+        "bottle",
+        "crib"
+      ]
+    },
+    {
+      "id": "C12G02S02",
+      "name": "月子中心",
+      "path": "/category-art/assets/categories/C12/C12G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3932,
+      "sha256": "5105c4f93dd2fcc45d447d12da6673328801e02958e47ac04e2eaf2b960ca41a",
+      "previousSha256": "5cdcc56bcfe705fe2377e376955142380abdf3635c17ca3ff0c1be981acce562",
+      "models": [
+        "crib",
+        "house"
+      ]
+    },
+    {
+      "id": "C12G02S03",
+      "name": "产后照护",
+      "path": "/category-art/assets/categories/C12/C12G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5004,
+      "sha256": "b17d97e4d1316725380371ee9ea7d94f720690a62106fab6233dc5b889cb678e",
+      "previousSha256": "5cdcc56bcfe705fe2377e376955142380abdf3635c17ca3ff0c1be981acce562",
+      "models": [
+        "chair",
+        "heart",
+        "bottle"
+      ]
+    },
+    {
+      "id": "C12G02S04",
+      "name": "婴儿洗护",
+      "path": "/category-art/assets/categories/C12/C12G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3450,
+      "sha256": "eb17dedf1af0b20eb1b2926d81c30088b00038c501c8cd6aee489f00c8fe89fe",
+      "previousSha256": "e0617eb680a5545ef434674f1e09a408b9a344a3186f0877feca43f64ee7f495",
+      "models": [
+        "bath",
+        "bottle"
+      ]
+    },
+    {
+      "id": "C12G02S05",
+      "name": "托育机构",
+      "path": "/category-art/assets/categories/C12/C12G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4026,
+      "sha256": "06da09c07f2c3e1fddda539c3aefbfdb9a275b7c4202bb7d428cda57e6c87adb",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "crib",
+        "blocks"
+      ]
+    },
+    {
+      "id": "C12G03S01",
+      "name": "儿童游泳",
+      "path": "/category-art/assets/categories/C12/C12G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2078,
+      "sha256": "00fd91b7fa3eb4def01d5386ac6bf457bab5d6940cd93e48629ef1cd49f7961c",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "pool",
+        "ball"
+      ]
+    },
+    {
+      "id": "C12G03S02",
+      "name": "幼儿早期启蒙",
+      "path": "/category-art/assets/categories/C12/C12G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2832,
+      "sha256": "ebe39e78900250c2c183eebd2dc58e5e7a544d3a5e48ba066c8310f8f5b2caa5",
+      "previousSha256": "a95e92e08e934d41c956c8b6f6a3a7ab14036de4014aad65e0da82b32efa8ea7",
+      "models": [
+        "open-book",
+        "blocks"
+      ]
+    },
+    {
+      "id": "C12G03S03",
+      "name": "亲子研学",
+      "path": "/category-art/assets/categories/C12/C12G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4126,
+      "sha256": "3154fee8c2004e0addb43d5f625b9d05471f194ff4307559a19eccfcc6a000c0",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "backpack",
+        "globe"
+      ]
+    },
+    {
+      "id": "C13G01S01",
+      "name": "语言培训",
+      "path": "/category-art/assets/categories/C13/C13G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3676,
+      "sha256": "cee4f50f86d80220d521bece20ffe9e8f1d5f5c4a631e4b639261d8202221b28",
+      "previousSha256": "e80806f54df791acba62fa841e227368d7ff44645556d84c5dd6496b90e09511",
+      "models": [
+        "book",
+        "globe"
+      ]
+    },
+    {
+      "id": "C13G01S03",
+      "name": "美术培训",
+      "path": "/category-art/assets/categories/C13/C13G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2892,
+      "sha256": "ac0e252ad9924edeab466014d5c0b8d85bf191d2d8207f108452ca50ceb7ad49",
+      "previousSha256": "1e377a1d3d9f4f525492b48fd93323a97d21abec644dcc087e9d2308f0599405",
+      "models": [
+        "palette",
+        "brush"
+      ]
+    },
+    {
+      "id": "C13G02S05",
+      "name": "留学服务",
+      "path": "/category-art/assets/categories/C13/C13G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3736,
+      "sha256": "908427d527cd92178ebeefcf1003adb2e0578684487ca86d394ab2c1c26ca8b0",
+      "previousSha256": "77241f0976c1a36d5991916075ebaf38836a1a544bdcb3cf4564fb514b8bdb8f",
+      "models": [
+        "passport",
+        "plane"
+      ]
+    },
+    {
+      "id": "C13G02S06",
+      "name": "家教服务",
+      "path": "/category-art/assets/categories/C13/C13G02S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2860,
+      "sha256": "7c2ab5cc79bcd092ad4379b65760cb152db432bcfa5ab029e911ee76a890ccdf",
+      "previousSha256": "e80806f54df791acba62fa841e227368d7ff44645556d84c5dd6496b90e09511",
+      "models": [
+        "open-book",
+        "child"
+      ]
+    },
+    {
+      "id": "C13G03S01",
+      "name": "驾驶培训",
+      "path": "/category-art/assets/categories/C13/C13G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3384,
+      "sha256": "bcd9dbc18481f5890ea1822d1f3a38221478732ffbcb9e8a4a24027dcb81bce6",
+      "previousSha256": "ec801abc2e9110884a83fe993394a352bef631fb28f978ad622eecb842177bd1",
+      "models": [
+        "car",
+        "book"
+      ]
+    },
+    {
+      "id": "C13G03S02",
+      "name": "学习托管",
+      "path": "/category-art/assets/categories/C13/C13G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4546,
+      "sha256": "8157d262bba6ef857d9060137128b8606e0e330fbb53efe872be5957c9483720",
+      "previousSha256": "deb3f0b2aabf93465287aecd5f1df11d57cdd7100b5dd857d0d7b33914b15289",
+      "models": [
+        "chair",
+        "book",
+        "clock"
+      ]
+    },
+    {
+      "id": "C13G03S03",
+      "name": "成人兴趣课程",
+      "path": "/category-art/assets/categories/C13/C13G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3196,
+      "sha256": "a4cfbb116c2dce9ec45979da16c8830b1fce93bd5d74c6a12b821b5092656599",
+      "previousSha256": "1e377a1d3d9f4f525492b48fd93323a97d21abec644dcc087e9d2308f0599405",
+      "models": [
+        "palette",
+        "camera"
+      ]
+    },
+    {
+      "id": "C14G01S01",
+      "name": "整屋装修",
+      "path": "/category-art/assets/categories/C14/C14G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3930,
+      "sha256": "7192fe43413122ca594c433acc630a5585ca44033f18de158c005d57640a0428",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "tools"
+      ]
+    },
+    {
+      "id": "C14G01S02",
+      "name": "局部改造",
+      "path": "/category-art/assets/categories/C14/C14G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3622,
+      "sha256": "28472dcd389398a826d903b312c0c0a073e03bf806b34457455141870a212e0d",
+      "previousSha256": "c4d9f33cf52a62b424b64fa9c02423b1d88b96c7af119bd84790aad7bdc74d46",
+      "models": [
+        "tools",
+        "brush"
+      ]
+    },
+    {
+      "id": "C14G01S04",
+      "name": "装修监理",
+      "path": "/category-art/assets/categories/C14/C14G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3324,
+      "sha256": "1362efe7540bf55f3e80b86e529c64ab3d120224b261fe404956f05a29c47388",
+      "previousSha256": "c4d9f33cf52a62b424b64fa9c02423b1d88b96c7af119bd84790aad7bdc74d46",
+      "models": [
+        "certificate",
+        "tools"
+      ]
+    },
+    {
+      "id": "C14G02S02",
+      "name": "水电安装",
+      "path": "/category-art/assets/categories/C14/C14G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3888,
+      "sha256": "dfd3aa539b82f1c601557e9daf566718c7914d79bb37274261f370b0d5139287",
+      "previousSha256": "662640378b8b1511ea4528b29128f51741e1f8bfe2059356cf53d8da04afc59e",
+      "models": [
+        "tools",
+        "faucet"
+      ]
+    },
+    {
+      "id": "C14G03S04",
+      "name": "窗帘软装",
+      "path": "/category-art/assets/categories/C14/C14G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3554,
+      "sha256": "8fdef90ae1795bf9a0f9272db1ed42517eaa96d964abc022b49da023d0589223",
+      "previousSha256": "3909885c0bd8a58365ed416e6393d52d7d255ab24dab49fe897fcb1947b01f79",
+      "models": [
+        "curtain",
+        "sofa"
+      ]
+    },
+    {
+      "id": "C14G03S05",
+      "name": "智能家居安装",
+      "path": "/category-art/assets/categories/C14/C14G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4068,
+      "sha256": "09c29759005a324baab6ce92171f1afa8f3712bbfc40e223bf8463e13645c20b",
+      "previousSha256": "5585d9a2b9bad115aadeca36ae110fb49b0cdd1bcc4ca14f203fb660200b4d76",
+      "models": [
+        "house",
+        "screen"
+      ]
+    },
+    {
+      "id": "C15G01S03",
+      "name": "专科门诊",
+      "path": "/category-art/assets/categories/C15/C15G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3868,
+      "sha256": "91727796ba7ad3453b19df8b7a48a4a9d78fa02ed1a68a3f0b312cc6323360b2",
+      "previousSha256": "f1a5aad97f5498f075d5e8016c13f43bc8aaf7bb5ca11290646a4d3d758a1503",
+      "models": [
+        "medical",
+        "chair"
+      ]
+    },
+    {
+      "id": "C15G01S04",
+      "name": "口腔医疗",
+      "path": "/category-art/assets/categories/C15/C15G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3282,
+      "sha256": "4f51964efcb36f6a7c1301ddc544e44f912cb7a13de015a2179307e1df9ca4b7",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "tooth",
+        "medical"
+      ]
+    },
+    {
+      "id": "C15G01S05",
+      "name": "眼科视光",
+      "path": "/category-art/assets/categories/C15/C15G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4906,
+      "sha256": "fcf3faecafdcbf0f17fe90a217e582a782af6b147fe9bd24f47821699885f650",
+      "previousSha256": "feb4f266699e47f5438475e21b33472ede60693bd5df3eeefba51df03157ad2e",
+      "models": [
+        "lens",
+        "paper"
+      ]
+    },
+    {
+      "id": "C15G02S01",
+      "name": "健康体检",
+      "path": "/category-art/assets/categories/C15/C15G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4112,
+      "sha256": "59fc013844660d2c78fd83a1e3a2b90a96d5ad6be97df65f7c539d1f6df45443",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "medical",
+        "magnifier"
+      ]
+    },
+    {
+      "id": "C15G02S02",
+      "name": "康复医疗",
+      "path": "/category-art/assets/categories/C15/C15G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5516,
+      "sha256": "19cf1c49fae9198fdfcfae031835e2bc0d05ddb0134806f7fdf1a990f2669fa4",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "wheelchair",
+        "mat"
+      ]
+    },
+    {
+      "id": "C15G02S05",
+      "name": "医疗护理机构",
+      "path": "/category-art/assets/categories/C15/C15G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3990,
+      "sha256": "f4091051d4317f7a1e8a913d4f696cc5119ac512334c3f57ac279f7e300108e9",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "bed",
+        "medical"
+      ]
+    },
+    {
+      "id": "C15G03S01",
+      "name": "医疗美容机构",
+      "path": "/category-art/assets/categories/C15/C15G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5260,
+      "sha256": "5d9b6b3f435a049fc07e9b81f70ce9e4a72b77c0845bd0a8416dad3b49eaaac4",
+      "previousSha256": "69991ed7a85bc056fc8c0c8b24a6b8b910ec452caa48c3da752258cf7fab86c0",
+      "models": [
+        "lens",
+        "cosmetic",
+        "medical"
+      ]
+    },
+    {
+      "id": "C15G03S03",
+      "name": "互联网诊疗机构",
+      "path": "/category-art/assets/categories/C15/C15G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3406,
+      "sha256": "2fe1ae4fd4014d2163a0a4242568af19ff85d365ed614df9f024fe32a3287b3f",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "laptop",
+        "medical"
+      ]
+    },
+    {
+      "id": "C16G01S06",
+      "name": "文旅演艺",
+      "path": "/category-art/assets/categories/C16/C16G01S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3448,
+      "sha256": "cae0f075578da4e0884b0b68fcc4687a9c3eb52a02dbc29fd3b25d8e7e0ed455",
+      "previousSha256": "f7c31380f8569b97d4caf8d6f9acd8626f3853fef74729913d4f43e8be155a4e",
+      "models": [
+        "curtain",
+        "mic"
+      ]
+    },
+    {
+      "id": "C16G02S01",
+      "name": "旅行社服务",
+      "path": "/category-art/assets/categories/C16/C16G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4136,
+      "sha256": "7389a3bccb52119a1fcdd46ef8888b9b516c163b1f4beeb81420a569ddc2f4b2",
+      "previousSha256": "30782e7052c224381b7cffb9f9af824efa01aa00820e75bd50b3a130ad613641",
+      "models": [
+        "case",
+        "globe"
+      ]
+    },
+    {
+      "id": "C16G02S02",
+      "name": "旅游定制",
+      "path": "/category-art/assets/categories/C16/C16G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5656,
+      "sha256": "7acb5946e24f72b4602d69ff17edc68814361d8f49e2f2d1ede565a40df3f661",
+      "previousSha256": "6f68f4678ba004f1ecb699e20c7fb72282dd90384d4f910f1b8412d645a24573",
+      "models": [
+        "globe",
+        "paper",
+        "key"
+      ]
+    },
+    {
+      "id": "C16G02S04",
+      "name": "跟团线路",
+      "path": "/category-art/assets/categories/C16/C16G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4082,
+      "sha256": "afc9b07dd7f7b36416fd9d52221e16261161717c7494a254ed871c02c817807c",
+      "previousSha256": "9022788f4c07fedff8f8b17c9d4e76e4ba04d74b2d515d7d7a2225c3ee4a0294",
+      "models": [
+        "bus",
+        "globe"
+      ]
+    },
+    {
+      "id": "C16G02S05",
+      "name": "出境旅游咨询",
+      "path": "/category-art/assets/categories/C16/C16G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3818,
+      "sha256": "ac2557a656f53e4f17545ef6597ae15a0aac0e9308c85bb334ffa4c1e8410378",
+      "previousSha256": "b6289af0ee8ba6926dd39ec1000ab2b4258b9337222e77a10a0483e927649414",
+      "models": [
+        "passport",
+        "headset"
+      ]
+    },
+    {
+      "id": "C16G03S01",
+      "name": "旅游摄影",
+      "path": "/category-art/assets/categories/C16/C16G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4102,
+      "sha256": "9f289dc00f0ca2bde0cc5769553cb5e1d7928743bf734a681167e51039b031d8",
+      "previousSha256": "72b589cde45909eabfbaa441dc49e8d0abac72e305af55834a1c232df47b1e2f",
+      "models": [
+        "camera",
+        "tent"
+      ]
+    },
+    {
+      "id": "C16G03S02",
+      "name": "旅游签证咨询",
+      "path": "/category-art/assets/categories/C16/C16G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2912,
+      "sha256": "63963b807cca53304e2fac97f39ba57c129c937926d7471a7a4b546c959f0276",
+      "previousSha256": "b6289af0ee8ba6926dd39ec1000ab2b4258b9337222e77a10a0483e927649414",
+      "models": [
+        "passport",
+        "certificate"
+      ]
+    },
+    {
+      "id": "C16G03S03",
+      "name": "景区接驳服务",
+      "path": "/category-art/assets/categories/C16/C16G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3750,
+      "sha256": "9ec3abaef8a4a664ee7a7b165e24643b1eab33268b994c4fb3d5d32b3c4c9e7e",
+      "previousSha256": "00caa15ae1a97fcb51628daa81301436daf39a8338d3144994fa7eb2f6041eba",
+      "models": [
+        "bus",
+        "house"
+      ]
+    },
+    {
+      "id": "C17G01S03",
+      "name": "商务酒店",
+      "path": "/category-art/assets/categories/C17/C17G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4038,
+      "sha256": "c939da482b5c5bc4e7ee5eb63db71679fffff88b829dc827c161881b0a4c18d3",
+      "previousSha256": "2b1def85e2f3bc9559bc075949cdab15a864ecdc7d8cdfaee983a7c5d4b4be28",
+      "models": [
+        "bed",
+        "case"
+      ]
+    },
+    {
+      "id": "C17G01S05",
+      "name": "度假酒店",
+      "path": "/category-art/assets/categories/C17/C17G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3856,
+      "sha256": "a0983de72562bd0a379a348cc9eec13c0777e903e0bbda09a80a33fc05870407",
+      "previousSha256": "b6289af0ee8ba6926dd39ec1000ab2b4258b9337222e77a10a0483e927649414",
+      "models": [
+        "bed",
+        "plant"
+      ]
+    },
+    {
+      "id": "C17G01S06",
+      "name": "电竞酒店",
+      "path": "/category-art/assets/categories/C17/C17G01S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3804,
+      "sha256": "4e556586f0b14c1d5b41c7a6df6a9c2349892d301e3e6d3fe3b7565a964edff4",
+      "previousSha256": "7600908860117be7a6fa3e47ec559a9d8918850e0368f4c055e268faec9c00f4",
+      "models": [
+        "bed",
+        "game"
+      ]
+    },
+    {
+      "id": "C17G02S01",
+      "name": "民宿客栈",
+      "path": "/category-art/assets/categories/C17/C17G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3704,
+      "sha256": "0fe1d28f2895259cd51d05f3510151a870ed76f8dd78c0515b61acd0230b0e2a",
+      "previousSha256": "af46e57bea513ea3d5ecd9ab822966b9b45e3f4cb27bdf8b923284b348715bfc",
+      "models": [
+        "house",
+        "plant"
+      ]
+    },
+    {
+      "id": "C17G02S02",
+      "name": "公寓酒店",
+      "path": "/category-art/assets/categories/C17/C17G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3476,
+      "sha256": "17518491fb14d6cd84035b8f99a7487d99786e3441f50ea0ef8d703187bacd08",
+      "previousSha256": "de32fe155c0e9acfc147edf1a69b2028cbba4301036b870ef83edf410316c3e8",
+      "models": [
+        "tower",
+        "bed"
+      ]
+    },
+    {
+      "id": "C17G02S03",
+      "name": "亲子酒店",
+      "path": "/category-art/assets/categories/C17/C17G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3526,
+      "sha256": "ea72b1f669498ffc3017be56e32aa6ec0d03851b44c58ae5752fc85bf1210b61",
+      "previousSha256": "b264f94e3f9ffc0a5695dac9b141ba462e5047f129b20db173705154a115f638",
+      "models": [
+        "bed",
+        "blocks"
+      ]
+    },
+    {
+      "id": "C17G02S04",
+      "name": "温泉酒店",
+      "path": "/category-art/assets/categories/C17/C17G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4052,
+      "sha256": "0f713ee13f02aaf90825decaf02b3189f5a5d507fc46885b3e2685c132fbf8d5",
+      "previousSha256": "dabd8052cdd0cf44d54c4154525c6e98888d86ef9a310dec877c01fe30a86ae0",
+      "models": [
+        "bath",
+        "flower"
+      ]
+    },
+    {
+      "id": "C17G02S05",
+      "name": "青年旅舍",
+      "path": "/category-art/assets/categories/C17/C17G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4032,
+      "sha256": "4f5a805be04134f553966f7e15c2f0ede3a74c45688e15a90c254415fc6a27b5",
+      "previousSha256": "a64607a60aa6f2c95938a43182e163f0e5287b67f9681cefe3fbe1bd82e31c8e",
+      "models": [
+        "bed",
+        "backpack"
+      ]
+    },
+    {
+      "id": "C17G03S01",
+      "name": "钟点住宿",
+      "path": "/category-art/assets/categories/C17/C17G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3696,
+      "sha256": "e7bd4a06c810a3ae13b470ab4ce93e8e243004be9f1c6c951e9c81e8987bef35",
+      "previousSha256": "a64607a60aa6f2c95938a43182e163f0e5287b67f9681cefe3fbe1bd82e31c8e",
+      "models": [
+        "bed",
+        "clock"
+      ]
+    },
+    {
+      "id": "C17G03S02",
+      "name": "长住酒店",
+      "path": "/category-art/assets/categories/C17/C17G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3454,
+      "sha256": "03cbb04fdb53aa8f2ef5bad6d6d94c7db55a609591178a18bac554455607f2e5",
+      "previousSha256": "2b1def85e2f3bc9559bc075949cdab15a864ecdc7d8cdfaee983a7c5d4b4be28",
+      "models": [
+        "bed",
+        "book"
+      ]
+    },
+    {
+      "id": "C18G01S02",
+      "name": "私人教练",
+      "path": "/category-art/assets/categories/C18/C18G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3630,
+      "sha256": "6e2b9ce4b0203b186188030457b71e5eb039e977efa556fc30c9f6004dd6d920",
+      "previousSha256": "08ddb554b9df50e2bebd608b9a4e4709728d1e08258526af2e9801c6e6e46061",
+      "models": [
+        "dumbbell",
+        "clock"
+      ]
+    },
+    {
+      "id": "C18G01S03",
+      "name": "瑜伽",
+      "path": "/category-art/assets/categories/C18/C18G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2746,
+      "sha256": "a7c033e06fd7df37d651bd281a59c474e2ad596a0bf630fddcec5de96ee8f5b0",
+      "previousSha256": "78a89cb56998ba0ef3a97e3a7f84f28fc1e44599a8d0021f77d252b421146209",
+      "models": [
+        "mat",
+        "water"
+      ]
+    },
+    {
+      "id": "C18G02S02",
+      "name": "羽毛球场馆",
+      "path": "/category-art/assets/categories/C18/C18G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4314,
+      "sha256": "6a36362825e7c84ab743cddc32171e8037ac334b94a47d4d37c18ba4f5925b00",
+      "previousSha256": "5322d241a7865ecdbcb10941a64ac6f4eebe5a74a48448f6ff1fe7df148ee4fe",
+      "models": [
+        "racket",
+        "ball"
+      ]
+    },
+    {
+      "id": "C18G02S07",
+      "name": "匹克球场馆",
+      "path": "/category-art/assets/categories/C18/C18G02S07.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5780,
+      "sha256": "1adb27bd3799ee9406a42731e39f36bd73872270100ec79ecde3f47188ff92db",
+      "previousSha256": "4f0959f14ba17e1f5406d660b10b1d313c36d1ec40eeef3a88c5094cad9ba829",
+      "models": [
+        "racket",
+        "certificate",
+        "ball"
+      ]
+    },
+    {
+      "id": "C18G03S03",
+      "name": "户外运动社群",
+      "path": "/category-art/assets/categories/C18/C18G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4036,
+      "sha256": "3d5f22a13a7ab5985c47b98bd14c5e7768bbcce6c353efb49d530c04af42af98",
+      "previousSha256": "5322d241a7865ecdbcb10941a64ac6f4eebe5a74a48448f6ff1fe7df148ee4fe",
+      "models": [
+        "tent",
+        "backpack"
+      ]
+    },
+    {
+      "id": "C19G01S04",
+      "name": "婚礼花艺",
+      "path": "/category-art/assets/categories/C19/C19G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4696,
+      "sha256": "c167a57a233c252344a45a03935ab23f35f1c1b5abe84d4ab193673378ba6d5d",
+      "previousSha256": "18bb7f77dc7ccd03626ce7ee32a0bdbb5847c99e9fd9090f282ada57ba5e9ba2",
+      "models": [
+        "flower",
+        "ring"
+      ]
+    },
+    {
+      "id": "C19G01S05",
+      "name": "婚车服务",
+      "path": "/category-art/assets/categories/C19/C19G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3928,
+      "sha256": "4f5dc8e5042baff70c5b02d48fe4583676df3c55280e62c4d4bba3559df86614",
+      "previousSha256": "5977f36f5fc666aa2a35fc647811c7db4f62f00c492884248574d2c3d9d90abc",
+      "models": [
+        "car",
+        "flower"
+      ]
+    },
+    {
+      "id": "C19G01S06",
+      "name": "求婚策划",
+      "path": "/category-art/assets/categories/C19/C19G01S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4310,
+      "sha256": "121cb63f324bfa715a2084afeea4fb6b11bf3803dd34a041a9679a0086315885",
+      "previousSha256": "b3eb0b5459b2890cf766625a1a7070c78084e03eb72063d7f5195179e81ee2fe",
+      "models": [
+        "ring",
+        "balloon"
+      ]
+    },
+    {
+      "id": "C19G02S01",
+      "name": "婚纱摄影",
+      "path": "/category-art/assets/categories/C19/C19G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3888,
+      "sha256": "bbab249e1e167fa29559bf7288b527ce028dee33685a02c3187cde0f3454feb4",
+      "previousSha256": "72b589cde45909eabfbaa441dc49e8d0abac72e305af55834a1c232df47b1e2f",
+      "models": [
+        "camera",
+        "ring"
+      ]
+    },
+    {
+      "id": "C19G02S02",
+      "name": "婚礼跟拍",
+      "path": "/category-art/assets/categories/C19/C19G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3842,
+      "sha256": "4336edea6e531b26ab657c916057e61742e6fc8fbd2b5bb7297a1bcb9f8b0733",
+      "previousSha256": "18bb7f77dc7ccd03626ce7ee32a0bdbb5847c99e9fd9090f282ada57ba5e9ba2",
+      "models": [
+        "camera",
+        "flower"
+      ]
+    },
+    {
+      "id": "C19G02S03",
+      "name": "婚礼摄像",
+      "path": "/category-art/assets/categories/C19/C19G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4014,
+      "sha256": "02393bce98dab9c1078cb1036d817c2432af937056aa86411370c24c30198495",
+      "previousSha256": "72b589cde45909eabfbaa441dc49e8d0abac72e305af55834a1c232df47b1e2f",
+      "models": [
+        "video",
+        "ring"
+      ]
+    },
+    {
+      "id": "C19G02S04",
+      "name": "新娘跟妆",
+      "path": "/category-art/assets/categories/C19/C19G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3332,
+      "sha256": "a048d8f7a0148d459a20fe01f45d1ed33eca2d20f435a152497a910a41d8a0a4",
+      "previousSha256": "61f31d4bda290f28a735fb2c226259e8bba1061d4c6850de2e951d153396a1be",
+      "models": [
+        "lipstick",
+        "flower"
+      ]
+    },
+    {
+      "id": "C19G03S02",
+      "name": "婚戒珠宝",
+      "path": "/category-art/assets/categories/C19/C19G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4246,
+      "sha256": "c61781008ba34f2cc0cbbd7909113684cf6ec3ccb1b41df9dcff7764fb3cbacf",
+      "previousSha256": "ac9e528035b19715be8fbf32c99bcdb695f0c8d5846d73b505eb2c8a9d425f50",
+      "models": [
+        "ring",
+        "case"
+      ]
+    },
+    {
+      "id": "C19G03S04",
+      "name": "婚礼请柬",
+      "path": "/category-art/assets/categories/C19/C19G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3498,
+      "sha256": "38dc3efaef74ed1e6eeae5b3aa229a91fafa74eb980907eb1beec7f50aff96b7",
+      "previousSha256": "18bb7f77dc7ccd03626ce7ee32a0bdbb5847c99e9fd9090f282ada57ba5e9ba2",
+      "models": [
+        "envelope",
+        "flower"
+      ]
+    },
+    {
+      "id": "C20G01S01",
+      "name": "工商登记代理",
+      "path": "/category-art/assets/categories/C20/C20G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3120,
+      "sha256": "ca9f7079ef1dae12b1a52cd901804bdc9c477223df6d2cf1c408c48a1b83161b",
+      "previousSha256": "de32fe155c0e9acfc147edf1a69b2028cbba4301036b870ef83edf410316c3e8",
+      "models": [
+        "paper",
+        "case"
+      ]
+    },
+    {
+      "id": "C20G01S03",
+      "name": "税务咨询",
+      "path": "/category-art/assets/categories/C20/C20G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3336,
+      "sha256": "7aabf911763e0de31f938fdffa8881cead877bdedffa918cfbc34dba939b0fc1",
+      "previousSha256": "9071f87caff41cb395423fe406b1337a245775ccdac9d363252fd44fe4592e6f",
+      "models": [
+        "paper",
+        "magnifier"
+      ]
+    },
+    {
+      "id": "C20G01S05",
+      "name": "知识产权服务",
+      "path": "/category-art/assets/categories/C20/C20G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2660,
+      "sha256": "f0bcbcf0109df9c8c4106aa5786e70d81d1c9d6524053350544f966cf5457a3b",
+      "previousSha256": "7d380dfe08366e41e9c28f562013c7cb431d47d81962e3f4a0130f3f65fa2ab3",
+      "models": [
+        "certificate",
+        "shield"
+      ]
+    },
+    {
+      "id": "C20G02S01",
+      "name": "广告设计",
+      "path": "/category-art/assets/categories/C20/C20G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3232,
+      "sha256": "cb07ad597191cd561c2cc67bf702a86b9560dbe5fef6868358416ddc2cc927e0",
+      "previousSha256": "746eb25abfa6e50450dbb449fc6a418dbc6abfd70d34e80e9207b781c76e76f2",
+      "models": [
+        "palette",
+        "screen"
+      ]
+    },
+    {
+      "id": "C20G02S04",
+      "name": "商务摄影",
+      "path": "/category-art/assets/categories/C20/C20G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3694,
+      "sha256": "6da6bb7e1be50d323253c5dfe994fd828b8951932d7689e885990e22bc6ca73f",
+      "previousSha256": "72b589cde45909eabfbaa441dc49e8d0abac72e305af55834a1c232df47b1e2f",
+      "models": [
+        "camera",
+        "case"
+      ]
+    },
+    {
+      "id": "C20G02S06",
+      "name": "活动策划",
+      "path": "/category-art/assets/categories/C20/C20G02S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2868,
+      "sha256": "80ff8daf3144545b3fba02dbbe1e90443d98284659d58da24d91921710407c94",
+      "previousSha256": "5f3ffdbe058936a64f33d7e4f405c9024b4e9140838aae74ee79dee9a38fb083",
+      "models": [
+        "mic",
+        "clock"
+      ]
+    },
+    {
+      "id": "C20G03S01",
+      "name": "人力资源服务",
+      "path": "/category-art/assets/categories/C20/C20G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3774,
+      "sha256": "35097686e6fb9f65e4189ac958c5f66a6565ac9c2e322f1cbb09c8ad8953ad9f",
+      "previousSha256": "08507c44fb9da31d2e1c6896a5c70de242ffefbe63951c7039144a3403832e5e",
+      "models": [
+        "adult",
+        "case"
+      ]
+    },
+    {
+      "id": "C20G03S02",
+      "name": "企业培训",
+      "path": "/category-art/assets/categories/C20/C20G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2742,
+      "sha256": "6085cc17c508ba276b7a25a3d04e25134884f7876aa4c9f39acb5e70ce40a7c5",
+      "previousSha256": "a81bb41afc48275aea20a476685028c76b721af955fbb8d7ac496eb69eda07eb",
+      "models": [
+        "book",
+        "certificate"
+      ]
+    },
+    {
+      "id": "C20G03S03",
+      "name": "IT技术服务",
+      "path": "/category-art/assets/categories/C20/C20G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3656,
+      "sha256": "85614cfae7065be5b539cbd7d7d9ecbf5bcd632ad2e664019af22f70716686a5",
+      "previousSha256": "3f28894a9dc862d8fc76749f8a375377e47cfca2f12616b90b489c1c4179c22f",
+      "models": [
+        "laptop",
+        "tools"
+      ]
+    },
+    {
+      "id": "C20G03S05",
+      "name": "办公设备租赁",
+      "path": "/category-art/assets/categories/C20/C20G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3650,
+      "sha256": "d2efe2570edcc5d93477aba1b4b367c0f13933c17c46aad9c9eb77ce21dded77",
+      "previousSha256": "3184057b2dbd58b971e2802aa478f242f0c26857008fff5a8625c50ab16cb227",
+      "models": [
+        "screen",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C20G03S06",
+      "name": "管理咨询",
+      "path": "/category-art/assets/categories/C20/C20G03S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3588,
+      "sha256": "c2dbec9e51d33266a2672e452f78301b658481e581aeac4c2779a1aa3dea2871",
+      "previousSha256": "9071f87caff41cb395423fe406b1337a245775ccdac9d363252fd44fe4592e6f",
+      "models": [
+        "paper",
+        "headset"
+      ]
+    },
+    {
+      "id": "C21G01S01",
+      "name": "宠物诊疗",
+      "path": "/category-art/assets/categories/C21/C21G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4394,
+      "sha256": "ccfdb70acf66a11acdf5b872b0ad4fa47b98968bf7166bdb9788a9fdd365f55b",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "dog",
+        "medical"
+      ]
+    },
+    {
+      "id": "C21G01S02",
+      "name": "宠物疫苗服务",
+      "path": "/category-art/assets/categories/C21/C21G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4212,
+      "sha256": "fcd325ec03d0916ca4dee564107589f1b29da7cd3434a2972f46a717a7f92613",
+      "previousSha256": "47b3dfdbdf6b5e954a1b94f8d4cc9735219032e0151e3715e009551561c53415",
+      "models": [
+        "cat",
+        "syringe"
+      ]
+    },
+    {
+      "id": "C21G01S03",
+      "name": "宠物健康检查",
+      "path": "/category-art/assets/categories/C21/C21G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4884,
+      "sha256": "8a3d989f434f9e81e87066dba9c9409278eceea0e3eaa3381aa70a7818298154",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "cat",
+        "magnifier"
+      ]
+    },
+    {
+      "id": "C21G02S01",
+      "name": "宠物洗护",
+      "path": "/category-art/assets/categories/C21/C21G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4190,
+      "sha256": "eec8b9e03831e24e545905ec24288a248b05fdcfc9e32109d48590935ebef7b9",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "dog",
+        "bath"
+      ]
+    },
+    {
+      "id": "C21G02S02",
+      "name": "宠物美容",
+      "path": "/category-art/assets/categories/C21/C21G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4774,
+      "sha256": "065930e047ff4e82e79aa0ab81e602ed6c539b21bc5e3979304778fe8d7a2acf",
+      "previousSha256": "69991ed7a85bc056fc8c0c8b24a6b8b910ec452caa48c3da752258cf7fab86c0",
+      "models": [
+        "cat",
+        "scissors"
+      ]
+    },
+    {
+      "id": "C21G02S03",
+      "name": "宠物寄养",
+      "path": "/category-art/assets/categories/C21/C21G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4372,
+      "sha256": "0e85c47dd6369c4463f4983479939052a7d6a86db63e972167bfe1860206fa29",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "house",
+        "dog",
+        "bowls"
+      ]
+    },
+    {
+      "id": "C21G02S04",
+      "name": "宠物训练",
+      "path": "/category-art/assets/categories/C21/C21G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4162,
+      "sha256": "0cbb138c060f16fe516b31749e58b11b9d9714dee364ff24acf72895a567d9b1",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "dog",
+        "ball",
+        "certificate"
+      ]
+    },
+    {
+      "id": "C21G02S05",
+      "name": "宠物用品店",
+      "path": "/category-art/assets/categories/C21/C21G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3714,
+      "sha256": "ca82155d0db5e788d85d6c66a045b3a5773b303493e4b57297b0887d45571440",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "carrier",
+        "paw"
+      ]
+    },
+    {
+      "id": "C21G02S06",
+      "name": "宠物食品店",
+      "path": "/category-art/assets/categories/C21/C21G02S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2844,
+      "sha256": "c470558ffaca4d915673f5d26e2053871e92c1fe49e76f256148e0ede3e4a3f9",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "bowls",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C21G02S07",
+      "name": "宠物摄影",
+      "path": "/category-art/assets/categories/C21/C21G02S07.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4168,
+      "sha256": "117741de6348700263ce3e32071ee40495f7fec5b68c240ea9dec9e3246263bf",
+      "previousSha256": "72b589cde45909eabfbaa441dc49e8d0abac72e305af55834a1c232df47b1e2f",
+      "models": [
+        "dog",
+        "camera"
+      ]
+    },
+    {
+      "id": "C21G03S01",
+      "name": "宠物领养信息",
+      "path": "/category-art/assets/categories/C21/C21G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4422,
+      "sha256": "b7a811d43c1c73ec1c5faa4c8492d3bb32abffbba3c4d5f7224e9941ba17a8f0",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "cat",
+        "heart"
+      ]
+    },
+    {
+      "id": "C21G03S02",
+      "name": "寻宠启事",
+      "path": "/category-art/assets/categories/C21/C21G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5114,
+      "sha256": "c2b20d49878e42444cb4f4778f0d2f111a7b585f8baf452bebafb3c1c7b82095",
+      "previousSha256": "8c349796c090f6786165655b5181794e2ec1a5d25f589acdcc5c9c986cb437e4",
+      "models": [
+        "dog",
+        "magnifier",
+        "paper"
+      ]
+    },
+    {
+      "id": "C21G03S03",
+      "name": "宠物善终服务",
+      "path": "/category-art/assets/categories/C21/C21G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4292,
+      "sha256": "6fc43fe544341f154548ee2b6881ce7f85b77a629ee07b24358b4017053faef8",
+      "previousSha256": "b159a53440954a327343aca96aa8c67d00caceb655ae7571e0f370106c388e30",
+      "models": [
+        "lily",
+        "paw"
+      ]
+    },
+    {
+      "id": "C22G01S02",
+      "name": "社区日间照料",
+      "path": "/category-art/assets/categories/C22/C22G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4684,
+      "sha256": "86338938f6c691714de2791a76b52c428d939de4b1298ef1109a53c121a7b04b",
+      "previousSha256": "c31f47be945cc4702d46fe311d7b584b22bedc299ea220a7d01f193ce4b29dfe",
+      "models": [
+        "chair",
+        "clock"
+      ]
+    },
+    {
+      "id": "C22G01S03",
+      "name": "居家养老服务",
+      "path": "/category-art/assets/categories/C22/C22G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4088,
+      "sha256": "496e7429b717a94ac88dfe3dde72f5f915176c55f722d59665cbbd1a53dc3b49",
+      "previousSha256": "0bce222ce8bf71c62d321a85be19b4aa88848303c2eb630c9fee37a921a1243e",
+      "models": [
+        "house",
+        "chair"
+      ]
+    },
+    {
+      "id": "C22G02S02",
+      "name": "陪诊服务",
+      "path": "/category-art/assets/categories/C22/C22G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3752,
+      "sha256": "526b39e3fe0636249ef06715f1b11b63e99b744e58dafabb3056157dfcb5af92",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "adult",
+        "medical"
+      ]
+    },
+    {
+      "id": "C22G03S01",
+      "name": "康复辅具",
+      "path": "/category-art/assets/categories/C22/C22G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5358,
+      "sha256": "80df7ba00aaab199a9e7a69f6d47cb58689c34046c9aa5aa6b6e5bb028d1bee2",
+      "previousSha256": "88c21a94736924c015609469e8aaca075abddf64390b4098c204c25859b0cbe2",
+      "models": [
+        "wheelchair",
+        "tools"
+      ]
+    },
+    {
+      "id": "C22G03S03",
+      "name": "居家适老化改造",
+      "path": "/category-art/assets/categories/C22/C22G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4444,
+      "sha256": "499f19ec47277c403a541110a4e8a0728ea0299a56ab9fabe9ec2f38b5422cbc",
+      "previousSha256": "c4d9f33cf52a62b424b64fa9c02423b1d88b96c7af119bd84790aad7bdc74d46",
+      "models": [
+        "house",
+        "wheelchair"
+      ]
+    },
+    {
+      "id": "C22G03S04",
+      "name": "无障碍设施改造",
+      "path": "/category-art/assets/categories/C22/C22G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5462,
+      "sha256": "59e682b74767a376bd9e3cb429d1c28d75a8176eb0fe1aa7792dd20d1f1435c9",
+      "previousSha256": "c4d9f33cf52a62b424b64fa9c02423b1d88b96c7af119bd84790aad7bdc74d46",
+      "models": [
+        "wheelchair",
+        "house",
+        "tools"
+      ]
+    },
+    {
+      "id": "C22G03S05",
+      "name": "助残服务",
+      "path": "/category-art/assets/categories/C22/C22G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5322,
+      "sha256": "ad97e80df936b62217ebe7848e995a9d8be1d0a397329caec794698916a0aec6",
+      "previousSha256": "5617d9b97c991bfb42897fb23000dcf46a27546a30cb33478ab9e70cc21b776e",
+      "models": [
+        "wheelchair",
+        "heart"
+      ]
+    },
+    {
+      "id": "C23G01S04",
+      "name": "遗体告别",
+      "path": "/category-art/assets/categories/C23/C23G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4062,
+      "sha256": "60f265b4b05292b4221b076081d0a9c3266db3e99bb958d5c6fe19db8b6cae2d",
+      "previousSha256": "4f3ae0e04b3aba335fc9e04bfff2edadea261941bc75e33eecebbfc55555d1d7",
+      "models": [
+        "lily",
+        "envelope"
+      ]
+    },
+    {
+      "id": "C23G01S05",
+      "name": "遗体火化",
+      "path": "/category-art/assets/categories/C23/C23G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4408,
+      "sha256": "51e5fb7f09b353a3695c1b249385490098f37b579ba766bcdba986830cdf0a12",
+      "previousSha256": "4f3ae0e04b3aba335fc9e04bfff2edadea261941bc75e33eecebbfc55555d1d7",
+      "models": [
+        "lily",
+        "house"
+      ]
+    },
+    {
+      "id": "C23G02S03",
+      "name": "生态安葬",
+      "path": "/category-art/assets/categories/C23/C23G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4124,
+      "sha256": "289fd802afde1941d705b667bb4af93e59ec160cc482d34736e44afd8fbae275",
+      "previousSha256": "5be97a16a39bd25116624ef1bbf40af17b73821c6aaf6e9a29e9e1032572ccfe",
+      "models": [
+        "plant",
+        "lily"
+      ]
+    },
+    {
+      "id": "C23G03S01",
+      "name": "丧事礼仪协助",
+      "path": "/category-art/assets/categories/C23/C23G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4018,
+      "sha256": "8509e8dd0d65a959ab7f8eea4091a717ca646a08df760447e1341dfec9db99da",
+      "previousSha256": "922aa7f0eb5c7ef780d7d940622a73a6b28e1ccf058adcf9353d15ee9f36bcdb",
+      "models": [
+        "lily",
+        "paper"
+      ]
+    },
+    {
+      "id": "C23G03S05",
+      "name": "惠民殡葬政策",
+      "path": "/category-art/assets/categories/C23/C23G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3344,
+      "sha256": "4b563f096929b8525782cd5aa4ee9ecfd650ae946202265e0af06942a4539fc4",
+      "previousSha256": "f5f06c1c583241df4ad9f1ee3d8fc7e4c991c37446bfc50f3823128ba209c235",
+      "models": [
+        "certificate",
+        "lily"
+      ]
+    },
+    {
+      "id": "C24G01S02",
+      "name": "快递取件",
+      "path": "/category-art/assets/categories/C24/C24G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3838,
+      "sha256": "5eddca682f6044481a78085053b530ae56369f2ece73c3a839fdaa40fb54c3eb",
+      "previousSha256": "292e9264722c22c27c81b44627662bd540abe20ec75ac5e349aba6b1b9c242b9",
+      "models": [
+        "parcel",
+        "key"
+      ]
+    },
+    {
+      "id": "C24G01S03",
+      "name": "同城即时配送",
+      "path": "/category-art/assets/categories/C24/C24G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 6006,
+      "sha256": "9933d54a3f432b95791e21018d09e44335f7c6a8774c7a44200d99d3a9a857b7",
+      "previousSha256": "722d6bfdb9704fac7da97ef1ce3e50598dcec97dee2ac6fb2f4db60653646993",
+      "models": [
+        "bike",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C24G01S04",
+      "name": "跑腿代办",
+      "path": "/category-art/assets/categories/C24/C24G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3562,
+      "sha256": "64f39567a2e0e9af7bb7623c69467ed3b1ad42d97e22a0fd8ed5993e1e246e77",
+      "previousSha256": "3a98bc14450c1011e133e81fac734a670f3af644b8c8ac44f36b01060671f556",
+      "models": [
+        "parcel",
+        "clock"
+      ]
+    },
+    {
+      "id": "C24G01S05",
+      "name": "快递驿站",
+      "path": "/category-art/assets/categories/C24/C24G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3600,
+      "sha256": "0892b7549fd0a85c5ebc118f683732ef06adeb0f18b38e9be9bba01664895d9f",
+      "previousSha256": "292e9264722c22c27c81b44627662bd540abe20ec75ac5e349aba6b1b9c242b9",
+      "models": [
+        "warehouse",
+        "envelope"
+      ]
+    },
+    {
+      "id": "C24G01S06",
+      "name": "智能快递柜",
+      "path": "/category-art/assets/categories/C24/C24G01S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3074,
+      "sha256": "5471b4fe711b43651b003ff1f3e938708a30a56018e202cc1512a611a67f7835",
+      "previousSha256": "292e9264722c22c27c81b44627662bd540abe20ec75ac5e349aba6b1b9c242b9",
+      "models": [
+        "locker",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C24G02S02",
+      "name": "大件搬运",
+      "path": "/category-art/assets/categories/C24/C24G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3906,
+      "sha256": "275a396d14bb45969578159e3fe2887e879fc6d47396e3c20252a6ec69167574",
+      "previousSha256": "292e9264722c22c27c81b44627662bd540abe20ec75ac5e349aba6b1b9c242b9",
+      "models": [
+        "parcel",
+        "tools"
+      ]
+    },
+    {
+      "id": "C24G02S04",
+      "name": "同城货运",
+      "path": "/category-art/assets/categories/C24/C24G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3408,
+      "sha256": "a97c1b13366c999aed441e87fa29dbbe6295cb83b42be5fd859730507f3a3cc5",
+      "previousSha256": "2e8e4e5fef83f41d1bdea1f9b746add3132f8c7870c38ab0abe9331ad9fc6292",
+      "models": [
+        "truck",
+        "house"
+      ]
+    },
+    {
+      "id": "C24G02S05",
+      "name": "长途货运",
+      "path": "/category-art/assets/categories/C24/C24G02S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4060,
+      "sha256": "544a71e41f134f7e11ddb4a4b3ecba170c7b0d12338d0b2ed7bc76f6b3ac65cf",
+      "previousSha256": "2e8e4e5fef83f41d1bdea1f9b746add3132f8c7870c38ab0abe9331ad9fc6292",
+      "models": [
+        "truck",
+        "globe"
+      ]
+    },
+    {
+      "id": "C24G03S03",
+      "name": "电商仓配",
+      "path": "/category-art/assets/categories/C24/C24G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4248,
+      "sha256": "7fb1e02744f769bcd447dae5b7d257f86f3f25f55ba6c2419763020e547aca3f",
+      "previousSha256": "292e9264722c22c27c81b44627662bd540abe20ec75ac5e349aba6b1b9c242b9",
+      "models": [
+        "warehouse",
+        "screen"
+      ]
+    },
+    {
+      "id": "C24G03S04",
+      "name": "国际货运",
+      "path": "/category-art/assets/categories/C24/C24G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3708,
+      "sha256": "5ffdfbdd3c8b48792b265e476ec491248b4971f1744ed124240b6af88f8a76fd",
+      "previousSha256": "2e8e4e5fef83f41d1bdea1f9b746add3132f8c7870c38ab0abe9331ad9fc6292",
+      "models": [
+        "truck",
+        "plane"
+      ]
+    },
+    {
+      "id": "C24G03S05",
+      "name": "行李寄存",
+      "path": "/category-art/assets/categories/C24/C24G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3840,
+      "sha256": "b7989955b45d7dbe32265f26782eff3b45fe994b5dd45751f932b9c84b8b0f95",
+      "previousSha256": "30782e7052c224381b7cffb9f9af824efa01aa00820e75bd50b3a130ad613641",
+      "models": [
+        "case",
+        "locker"
+      ]
+    },
+    {
+      "id": "C25G01S03",
+      "name": "农机维修",
+      "path": "/category-art/assets/categories/C25/C25G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3874,
+      "sha256": "b716da673d9c2f4f39614a99d3473479cd997320520adbf634d759ea4fa3c14c",
+      "previousSha256": "9526e04359d0e51c1c935b876ec2545f68e9712c95bc433d0ed7be2cb88ac566",
+      "models": [
+        "tractor",
+        "tools"
+      ]
+    },
+    {
+      "id": "C25G01S06",
+      "name": "农技咨询",
+      "path": "/category-art/assets/categories/C25/C25G01S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3566,
+      "sha256": "edea381339b33fbd143df186243d21a1724d6a1647d70dad91de300578966f5a",
+      "previousSha256": "ffa816a4899f3fba90fecbd414af5242040f155134d612b4e09e92cbebe5b74a",
+      "models": [
+        "plant",
+        "book"
+      ]
+    },
+    {
+      "id": "C25G03S01",
+      "name": "农资农具",
+      "path": "/category-art/assets/categories/C25/C25G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3728,
+      "sha256": "d864b96e65dde77d3b28ca836336a0fd1269873ebf3b450a30b0639d409c5b30",
+      "previousSha256": "256a16f42df862a591a8de21ffbc0501056ccdee121622a02517cd55a3590ba0",
+      "models": [
+        "tools",
+        "plant"
+      ]
+    },
+    {
+      "id": "C25G03S02",
+      "name": "农机租赁",
+      "path": "/category-art/assets/categories/C25/C25G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3930,
+      "sha256": "1d8a4d7d47d9361ee1bb9215b32c123e79c3f7a9ece72be9c4363588db116074",
+      "previousSha256": "9526e04359d0e51c1c935b876ec2545f68e9712c95bc433d0ed7be2cb88ac566",
+      "models": [
+        "tractor",
+        "key"
+      ]
+    },
+    {
+      "id": "C25G03S03",
+      "name": "乡村合作社",
+      "path": "/category-art/assets/categories/C25/C25G03S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4264,
+      "sha256": "3b5c794fca241c8c956747df89d45e027ce2a0f5e5a674258e1e74dbcfac8047",
+      "previousSha256": "b0257ccb61c5a905ac0e456eeb65cb4cb8f70f79cbd74c975d0f5fb32e2de0fe",
+      "models": [
+        "house",
+        "grain"
+      ]
+    },
+    {
+      "id": "C25G03S04",
+      "name": "特色农产品供销",
+      "path": "/category-art/assets/categories/C25/C25G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5002,
+      "sha256": "9297a90dedd92a067c37388737221dab132b59d314dab504f6c5ae25902b68e7",
+      "previousSha256": "852f07ac9f877191e799e381cd4e5fa45c83bc8d5a12d50b149a24bb6a8da399",
+      "models": [
+        "grain",
+        "parcel"
+      ]
+    },
+    {
+      "id": "C25G03S05",
+      "name": "农村土地流转信息",
+      "path": "/category-art/assets/categories/C25/C25G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3640,
+      "sha256": "5d424bc8e2ed1741675b010f1e728c6dba66f12bdabc2df3d2a16bd291393e18",
+      "previousSha256": "b0257ccb61c5a905ac0e456eeb65cb4cb8f70f79cbd74c975d0f5fb32e2de0fe",
+      "models": [
+        "plant",
+        "paper"
+      ]
+    },
+    {
+      "id": "C26G01S01",
+      "name": "政务大厅查询",
+      "path": "/category-art/assets/categories/C26/C26G01S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2980,
+      "sha256": "8abcb3469299c501c58c75bc6e24ed2b7007406cbad84baa1d6d9acaf8d1f018",
+      "previousSha256": "88136cce4cb391264032f57823b4a268709575051c3092506848ef0da51957b7",
+      "models": [
+        "tower",
+        "paper"
+      ]
+    },
+    {
+      "id": "C26G01S03",
+      "name": "社保医保指引",
+      "path": "/category-art/assets/categories/C26/C26G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2718,
+      "sha256": "39ffc3e983ca1ab61c860370a4f6bac3d1f73ef5235814f1298baf99f61e434f",
+      "previousSha256": "882cf9e477ceb61abccc9aca80bf2c8ba4d775509d8cb7fdbd40cf7d99d6bdd9",
+      "models": [
+        "shield",
+        "paper"
+      ]
+    },
+    {
+      "id": "C26G01S04",
+      "name": "公积金指引",
+      "path": "/category-art/assets/categories/C26/C26G01S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3546,
+      "sha256": "f0a085ec948fddf7364c9ae338b4f73eade26a9f2d7779e9071d2f309a49d4cd",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "shield"
+      ]
+    },
+    {
+      "id": "C26G01S05",
+      "name": "婚姻登记指引",
+      "path": "/category-art/assets/categories/C26/C26G01S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 2976,
+      "sha256": "df3af37187db1a29cb301c50c1305a1c03809316d39c4d7dbeb9e768eb0ab1cb",
+      "previousSha256": "b3eb0b5459b2890cf766625a1a7070c78084e03eb72063d7f5195179e81ee2fe",
+      "models": [
+        "certificate",
+        "heart"
+      ]
+    },
+    {
+      "id": "C26G01S06",
+      "name": "养老待遇指引",
+      "path": "/category-art/assets/categories/C26/C26G01S06.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3742,
+      "sha256": "655f8888c3b612644b0851e8ab5ef4a01f15b9d813d59e25655e667a66a341ae",
+      "previousSha256": "0bce222ce8bf71c62d321a85be19b4aa88848303c2eb630c9fee37a921a1243e",
+      "models": [
+        "seated",
+        "paper"
+      ]
+    },
+    {
+      "id": "C26G02S01",
+      "name": "税务办事指引",
+      "path": "/category-art/assets/categories/C26/C26G02S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3106,
+      "sha256": "33d80d5fbeb9b3004ffe3605a3f97a59da423f32a1d0301b595acc4c31c81c28",
+      "previousSha256": "9071f87caff41cb395423fe406b1337a245775ccdac9d363252fd44fe4592e6f",
+      "models": [
+        "paper",
+        "screen"
+      ]
+    },
+    {
+      "id": "C26G02S03",
+      "name": "住房保障指引",
+      "path": "/category-art/assets/categories/C26/C26G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3924,
+      "sha256": "83f046def938922ed33574941d3a8b3048ec49cfafc152d87a21dbc8ad4d36e5",
+      "previousSha256": "e38a92948cdffe70d97b5aee70a2fbf1da68a54e89080586e5e05ffe80ee81e8",
+      "models": [
+        "house",
+        "certificate",
+        "shield"
+      ]
+    },
+    {
+      "id": "C26G03S01",
+      "name": "政务热线查询",
+      "path": "/category-art/assets/categories/C26/C26G03S01.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3948,
+      "sha256": "b0f180c0cc6b59bcefed53a95213d0ec76eacb7c681f5be0efd738ca0227b173",
+      "previousSha256": "88136cce4cb391264032f57823b4a268709575051c3092506848ef0da51957b7",
+      "models": [
+        "headset",
+        "paper"
+      ]
+    },
+    {
+      "id": "C26G03S02",
+      "name": "公共医疗机构查询",
+      "path": "/category-art/assets/categories/C26/C26G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3850,
+      "sha256": "8de5ae9add1a284752880b359d47dc747c7ef811bd10891f71b9776396c9ac66",
+      "previousSha256": "59c39328dd4cd54a072274c958d18b9f78911aabfb9e147995e705aa559730fd",
+      "models": [
+        "house",
+        "medical"
+      ]
+    },
+    {
+      "id": "C26G03S04",
+      "name": "残障福利政策指引",
+      "path": "/category-art/assets/categories/C26/C26G03S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3860,
+      "sha256": "eb41a18c74a810318aab1c7281930d55e271cea7fd9ac5694ce03806565b6ff4",
+      "previousSha256": "c31f47be945cc4702d46fe311d7b584b22bedc299ea220a7d01f193ce4b29dfe",
+      "models": [
+        "paper",
+        "wheelchair"
+      ]
+    },
+    {
+      "id": "C26G03S05",
+      "name": "民政救助指引",
+      "path": "/category-art/assets/categories/C26/C26G03S05.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3282,
+      "sha256": "befa923c3c3bc07d671427d1dac07a88ebbb70a29de8d1521f7cb8e1771424dd",
+      "previousSha256": "88136cce4cb391264032f57823b4a268709575051c3092506848ef0da51957b7",
+      "models": [
+        "heart",
+        "envelope"
+      ]
+    },
+    {
+      "id": "C27G01S02",
+      "name": "自助银行ATM",
+      "path": "/category-art/assets/categories/C27/C27G01S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3006,
+      "sha256": "563af09484f6a2c445d636a3bbcd3141598d7a3f61677563332f9b7203304fa9",
+      "previousSha256": "f91281fb7140b7f3e5bbe068f5964620293b79c3beb5030c688c3fcb643b2742",
+      "models": [
+        "atm",
+        "paper"
+      ]
+    },
+    {
+      "id": "C27G01S03",
+      "name": "支付服务网点",
+      "path": "/category-art/assets/categories/C27/C27G01S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 4036,
+      "sha256": "d200632ad73cf1583c2c9ac642f614183b50a126bf03db4212511191665d8e52",
+      "previousSha256": "9dea9647e78beddf51fed95a2a7b3aaa41727522e43400868c6ef38b31800986",
+      "models": [
+        "screen",
+        "case"
+      ]
+    },
+    {
+      "id": "C27G02S02",
+      "name": "车险机构",
+      "path": "/category-art/assets/categories/C27/C27G02S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3102,
+      "sha256": "c5bab2bb0a4ae5638ecff457465bdaea1d2a16f1a514cd6bd1656d68a8324375",
+      "previousSha256": "ec801abc2e9110884a83fe993394a352bef631fb28f978ad622eecb842177bd1",
+      "models": [
+        "shield",
+        "car"
+      ]
+    },
+    {
+      "id": "C27G02S03",
+      "name": "财产保险机构",
+      "path": "/category-art/assets/categories/C27/C27G02S03.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3026,
+      "sha256": "49a7d027924ca92b3e2df1d942c9ab181559bf94c70cfe9305148df04fec9ad8",
+      "previousSha256": "452ea89bc2ecaa025924a539da41e850fd3795ae21fd84025a6de3576ab07e5c",
+      "models": [
+        "shield",
+        "house"
+      ]
+    },
+    {
+      "id": "C27G02S04",
+      "name": "健康保险机构",
+      "path": "/category-art/assets/categories/C27/C27G02S04.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 3150,
+      "sha256": "6d53bdf46a2bf597fd6d169cba05f020d229978dda1767f3e6f14172231bfab7",
+      "previousSha256": "452ea89bc2ecaa025924a539da41e850fd3795ae21fd84025a6de3576ab07e5c",
+      "models": [
+        "shield",
+        "medical"
+      ]
+    },
+    {
+      "id": "C27G03S02",
+      "name": "普惠金融政策指引",
+      "path": "/category-art/assets/categories/C27/C27G03S02.webp",
+      "stage": "rendered3d",
+      "transparent": true,
+      "width": 160,
+      "height": 160,
+      "bytes": 5134,
+      "sha256": "cf32d5e3fde54abbf5cb9f14fb2b5d7d152cd7d9e1db17037acc3d378c5504a2",
+      "previousSha256": "4eaa659d94edf1bdd0e160ca9cbbaa431eff5f385e5df03061c3f5f9ca59d44d",
+      "models": [
+        "grain",
+        "shield"
+      ]
+    }
+  ]
+}

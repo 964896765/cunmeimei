@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),vm=require(
 const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b});return {promise,resolve,reject};};
 function client(request){
  let definition;const state={owner:'one:token',session:true},routes=[],modals=[],badges=[],app={globalData:{}};
- const sandbox={Page:value=>definition=value,require:name=>name.endsWith('/page-layout')?{show(){},hide(){},measure(){},header(){},scroll(){}}:name.endsWith('/api')?{request,hasSession:()=>state.session,online:()=>true,showError(){},logout:async()=>{state.session=false;state.owner='guest:'}}:name.endsWith('/points-workspace')?{initialState:{},open(){this.setData({mode:'points'});}}:name.endsWith('/personal-profile')?{fields:p=>({displayName:p.displayName||'附近的街坊',bio:p.bio||'',profileCityName:'',avatarImageId:p.avatarImageId||''}),avatar(){}}:name.endsWith('/tab-bar')?{context:()=>state.owner,setUnread:n=>badges.push(n)}:name.endsWith('/theme')?{current:()=>({theme:'prism'}),apply(){}}:name.endsWith('/recent')?{ids:()=>['item-1']}:name.endsWith('/presentation')?{item:x=>x}:{},getApp:()=>app,wx:{showModal:v=>modals.push(v),getStorageSync:()=>state.owner,showToast(){},navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url)}};
+ const sandbox={Page:value=>definition=value,require:name=>name.endsWith('/page-layout')?{show(){},hide(){},measure(){},header(){},scroll(){}}:name.endsWith('/api')?{request,hasSession:()=>state.session,online:()=>true,showError(){},logout:async()=>{state.session=false;state.owner='guest:'}}:name.endsWith('/points-workspace')?{initialState:{},open(){this.setData({mode:'points'});}}:name.endsWith('/personal-profile')?{fields:p=>({displayName:p.displayName||'附近的街坊',bio:p.bio||'',profileCityName:'',avatarImageId:p.avatarImageId||''}),avatar(){}}:name.endsWith('/privacy-settings')?{async openPrivacy(section){this.setData({mode:'privacy',settingsSection:section});}}:name.endsWith('/tab-bar')?{context:()=>state.owner,setUnread:n=>badges.push(n)}:name.endsWith('/theme')?{current:()=>({theme:'prism'}),apply(){}}:name.endsWith('/recent')?{ids:()=>state.recentIds||['item-1'],clear:()=>{state.historyCleared=true;}}:name.endsWith('/presentation')?{item:x=>x}:{},getApp:()=>app,wx:{showModal:v=>modals.push(v),getStorageSync:()=>state.owner,showToast(){},navigateTo:v=>routes.push(v.url),switchTab:v=>routes.push(v.url)}};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.js'),'utf8'),sandbox);
  const page={data:structuredClone(definition.data),setData:v=>Object.assign(page.data,v)};
  for(const [name,fn]of Object.entries(definition))if(typeof fn==='function')page[name]=fn.bind(page);
@@ -77,4 +77,72 @@ test('service center is a single independent card directly below the points cent
  assert.match(main,/id="service-center-entry" class="service-center-card"/);
  assert.equal((main.match(/bindtap="openServiceCenter"/g)||[]).length,1);
  assert.ok(!main.slice(main.indexOf('class="center-menu personal-services"')).includes('id="service-center-entry"'));
+});
+
+test('nested personal settings return to their parent and retain the main scroll position',async()=>{
+ const {page,state}=client(async(method,url)=>responses(url));
+ await page.refresh();
+ page.sectionScrollTop=420;
+ page.openAccount();
+ await page.openPersonalData();
+ assert.equal(page.data.mode,'privacy');
+ await page.back();
+ assert.equal(page.data.mode,'account');
+ await page.back();
+ assert.equal(page.data.mode,'main');
+ assert.equal(page.sectionScrollTop,420);
+ await page.openClosure();
+ assert.equal(page.data.requestKindIndex,3);
+ assert.equal(page.data.settingsSection,'data');
+ assert.equal(state.session,true);
+});
+
+test('returning to favorites rejects older requests for the same account and view',async()=>{
+ const first=deferred(),second=deferred();let calls=0;
+ const {page}=client(()=>++calls===1?first.promise:second.promise);
+ const a=page.showFavorites();
+ const b=page.showFavorites();
+ second.resolve({items:[{id:'newer'}],hasMore:false});await b;
+ first.resolve({items:[{id:'older'}],hasMore:false});await a;
+ assert.equal(page.data.items.length,1);
+ assert.equal(page.data.items[0].id,'newer');
+});
+
+test('favorite removal prevents duplicate writes and restores the control after failure',async()=>{
+ const gate=deferred(),calls=[];
+ const {page}=client(async(method,url)=>{calls.push([method,url]);return gate.promise;});
+ page.data.mode='saved';page.data.items=[{id:'saved-1',isSaved:true}];
+ const pending=page.removeSaved({detail:{id:'saved-1'}});
+ await page.removeSaved({detail:{id:'saved-1'}});
+ assert.equal(calls.length,1);
+ assert.equal(page.data.items[0].favoriteBusy,true);
+ gate.reject(Error('网络不可用'));await pending;
+ assert.equal(page.data.items.length,1);
+ assert.equal(page.data.items[0].favoriteBusy,false);
+});
+
+test('history revalidates all thirty local records and ignores stale clear confirmations',async()=>{
+ const calls=[],{page,state,modals}=client(async(method,url)=>{calls.push(url);return {item:{id:url.split('/').at(-1)}};});
+ state.recentIds=Array.from({length:30},(_,index)=>'record-'+index);
+ await page.showHistory();
+ assert.equal(calls.length,30);assert.equal(page.data.items.length,30);
+ page.clearHistory();state.owner='two:token';modals.at(-1).success({confirm:true});
+ assert.equal(state.historyCleared,undefined);
+ state.owner='one:token';page.clearHistory();page.openHelp();modals.at(-1).success({confirm:true});
+ assert.equal(state.historyCleared,undefined);
+});
+
+test('removing a favorite repairs the last loaded page before offset pagination continues',async()=>{
+ const records=Array.from({length:25},(_,index)=>({id:'saved-'+index}));
+ const {page}=client(async(method,url)=>{
+  if(method==='DELETE'){records.splice(records.findIndex(item=>url.includes(item.id+'/saved')),1);return {saved:false};}
+  if(url.includes('/me/saved?')){const offset=(Number(new URL(url,'http://test').searchParams.get('page'))-1)*20;return {items:records.slice(offset,offset+20),hasMore:offset+20<records.length};}
+  return responses(url);
+ });
+ await page.refresh();await page.showFavorites();
+ assert.equal(page.data.items.length,20);
+ await page.removeSaved({detail:{id:'saved-5'}});
+ assert.ok(page.data.items.some(item=>item.id==='saved-20'),'the shifted item is recovered');
+ await page.loadSaved();
+ assert.deepEqual(Array.from(page.data.items,item=>item.id),records.map(item=>item.id));
 });

@@ -1,0 +1,18 @@
+{
+  "uniqueImages": 418,
+  "duplicates": [],
+  "stages": {
+    "draft3d": 72,
+    "styled3d": 4,
+    "placeholder": 179,
+    "rendered3d": 163
+  },
+  "newSceneCount": 163,
+  "newSceneBytes": 630304,
+  "previousSceneBytes": 641710,
+  "mainSourceBytes": 2071826,
+  "subpackageSourceBytes": 1892168,
+  "packageLimit": 2097152,
+  "compiledUploadMeasured": false,
+  "checkedAt": "2026-11-17T20:17:40.606Z"
+}

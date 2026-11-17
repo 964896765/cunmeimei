@@ -1,6 +1,8 @@
 :host { display:block; }
 .sheet-overlay { position:fixed; inset:0; z-index:1400; display:flex; align-items:flex-end; justify-content:center; }
 .sheet-scrim { position:absolute; inset:0; background:rgba(36,35,41,.32); }
-.sheet-panel { position:relative; width:100%; max-width:750rpx; box-sizing:border-box; padding:16rpx 32rpx calc(28rpx + env(safe-area-inset-bottom)); border-radius:28rpx 28rpx 0 0; background:var(--surface); color:var(--ink); }
+.sheet-panel { position:relative; display:flex; flex-direction:column; width:100%; max-width:750rpx; max-height:88vh; box-sizing:border-box; padding:16rpx 32rpx calc(28rpx + env(safe-area-inset-bottom)); border-radius:28rpx 28rpx 0 0; background:var(--surface); color:var(--ink); }
 .sheet-handle { width:64rpx; height:8rpx; margin:0 auto 24rpx; border-radius:4rpx; background:var(--border); }
-.sheet-content { max-height:75vh; }
+.sheet-content { min-height:0; max-height:75vh; }
+.structured-sheet { height:88vh; overflow:hidden; }
+.structured-sheet .sheet-content { flex:1; height:0; min-height:0; overflow:hidden; }

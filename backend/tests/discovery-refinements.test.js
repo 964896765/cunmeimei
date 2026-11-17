@@ -50,6 +50,17 @@ test('funnel panels match the real fields of every channel and include a common 
  assert.ok(!housing.find(field=>field.key==='price').options.some(option=>option.value==='2000_3000'));
 });
 
+test('housing panels distinguish rental and sale units and active labels use the selected channel',()=>{
+ const undecided=definitions.panel('housing').find(field=>field.key==='price');
+ assert.ok(undecided.options.filter(option=>option.value).every(option=>option.disabled));
+ const rental=definitions.panel('housing',{intent:'出租'}).find(field=>field.key==='price');
+ assert.equal(rental.label,'租金');
+ assert.ok(rental.options.filter(option=>option.value).every(option=>!option.disabled));
+ assert.equal(definitions.extras({intent:'出租',price:'2000_3000'},'housing').find(row=>row.key==='refinement:price').label,'租金：2000–3000元');
+ assert.equal(definitions.extras({price:'100_500'},'used')[0].label,'价格：100–500元');
+ assert.deepEqual(browse.remove({type:'housing',refinements:{intent:'出租',price:'2000_3000'}},'refinement:intent'),{refinements:{}});
+});
+
 test('query, route, active tags and reset preserve the same normalized business conditions', () => {
  const refinements = {supply:'bookable',price:'100_500'};
  const value = {type:'service',cityCode:'310100',refinements};

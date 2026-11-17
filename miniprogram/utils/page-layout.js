@@ -64,7 +64,7 @@ function scroll(page, event) {
   const top = state.scrollTop = Math.max(0, event.scrollTop || 0);
   const threshold = state.threshold ?? state.collapseAt ?? 64;
   const compact = page.data.pageCompact ? top > Math.max(0, threshold - 8) : top >= threshold;
-  if (compact !== page.data.pageCompact) page.setData({ pageCompact: compact });
+  if (compact !== page.data.pageCompact) page.setData({ pageCompact: compact }, () => measure(page));
 }
 
 module.exports = { show, hide, header, measure, scroll };

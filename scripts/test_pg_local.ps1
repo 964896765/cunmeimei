@@ -1,5 +1,5 @@
 # V0.25: isolated local PostgreSQL; project-scoped disposable named volume.
-param([switch]$FullRegression, [switch]$RecoveryOnly, [switch]$UiAcceptance, [switch]$WorkflowUi, [switch]$LoginUi, [switch]$CentersUi, [switch]$NavigationUi)
+param([switch]$FullRegression, [switch]$RecoveryOnly, [switch]$UiAcceptance, [switch]$WorkflowUi, [switch]$LoginUi, [switch]$CentersUi, [switch]$NavigationUi, [switch]$ExperienceUi)
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $compose = Join-Path $root 'infrastructure/compose.postgres-test.yml'
@@ -33,9 +33,11 @@ try {
   $env:PG_TEST_DATABASE_URL = "postgres://citylife_test:$encoded@127.0.0.1:$testPort/citylife_test"
   Push-Location (Join-Path $root 'backend')
   try {
-    npm install
-    if ($LASTEXITCODE -ne 0) { throw 'npm install failed.' }
-    if (-not $RecoveryOnly) {
+    if (-not $ExperienceUi) {
+      npm install
+      if ($LASTEXITCODE -ne 0) { throw 'npm install failed.' }
+    }
+    if (-not $RecoveryOnly -and -not $ExperienceUi) {
       npm run verify:pg
       if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL integration test failed.' }
     }
@@ -71,6 +73,10 @@ try {
     if ($NavigationUi) {
       node ../scripts/check_navigation_filters_ui.js
       if ($LASTEXITCODE -ne 0) { throw 'Navigation and filter UI acceptance failed.' }
+    }
+    if ($ExperienceUi) {
+      node ../scripts/check_experience_refinement_ui.js
+      if ($LASTEXITCODE -ne 0) { throw 'Experience native acceptance failed.' }
     }
   } finally { Pop-Location }
 } catch {

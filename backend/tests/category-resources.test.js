@@ -11,6 +11,27 @@ const assets = require("../../miniprogram/utils/category-art");
 const root = path.resolve(__dirname, "../..");
 const manifest = require("../../docs/design/category-resources-2026-11-15/source-manifest.json");
 const styled = require("../../docs/design/3d-blending-2026-11-15/assets.json");
+const scenes = require("../../docs/design/experience-refinement-2026-11-18/assets.json");
+
+test("all category images have distinct content and rendered replacements retain transparent edges",async()=>{
+ const hashes=new Set();
+ for(const project of catalog.projects){
+  const descriptor=assets.describe(project.id);
+  const bytes=fs.readFileSync(path.join(root,"miniprogram",descriptor.path));
+  const hash=crypto.createHash("sha256").update(bytes).digest("hex");
+  assert.ok(!hashes.has(hash),project.id+" duplicates another category image");
+  hashes.add(hash);
+  if(descriptor.stage==="rendered3d"){
+   const {data,info}=await require("sharp")(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+   let clear=0,opaque=0;
+   for(let i=3;i<data.length;i+=info.channels){clear+=Number(data[i]===0);opaque+=Number(data[i]>245);}
+   assert.ok(clear>info.width*info.height*.15,project.id+" needs transparent padding");
+   assert.ok(opaque>16,project.id+" has no visible subject");
+  }
+ }
+ assert.equal(hashes.size,418);
+ assert.equal(scenes.items.filter(item=>item.id.startsWith("C12")||item.id.startsWith("C21")).length,26);
+});
 
 test("supplied map covers exactly 418 existing projects and preserves 76 draft / 342 placeholder stages", async () => {
   assert.deepEqual(manifest.counts, {
@@ -44,23 +65,24 @@ test("supplied map covers exactly 418 existing projects and preserves 76 draft /
     assert.equal(descriptor.path, refined ? refined.path : item.runtime_path);
     const expectedStage =
       item.asset_status === "3D拼版裁切初稿" ? "draft3d" : "placeholder";
-    assert.equal(descriptor.stage, refined ? "styled3d" : expectedStage);
+    const scene = scenes.items.find(asset => asset.id === item.category_id);
+    assert.equal(descriptor.stage, scene ? "rendered3d" : refined ? "styled3d" : expectedStage);
     const originalFrame =
       expectedStage === "draft3d" ? draftFrames[item.industry_id] : "symbol";
-    assert.equal(descriptor.frame, refined ? "transparent" : originalFrame);
+    assert.equal(descriptor.frame, scene || refined ? "transparent" : originalFrame);
     drafts += Number(expectedStage === "draft3d");
     const bytes = fs.readFileSync(
       path.join(root, "miniprogram", item.runtime_path),
     );
     assert.equal(
       crypto.createHash("sha256").update(bytes).digest("hex"),
-      item.sha256,
+      scene ? scene.sha256 : item.sha256,
     );
     const decoded = await require("sharp")(bytes)
       .raw()
       .toBuffer({ resolveWithObject: true });
-    assert.equal(decoded.info.width, 256);
-    assert.equal(decoded.info.height, 256);
+    assert.equal(decoded.info.width, scene ? 160 : 256);
+    assert.equal(decoded.info.height, scene ? 160 : 256);
   }
   assert.equal(drafts, 76);
   assert.equal(assets.describe("C01"), null);
@@ -107,7 +129,7 @@ test("resources occupy a separate package, retain all original routes and keep t
   assert.ok(manifest.resourceSubpackageBytes < 2 * 1024 * 1024);
   assert.equal(manifest.existingHousingOverrides.length, 5);
   for (const id of manifest.existingHousingOverrides)
-    assert.equal(assets.describe(id).stage, "placeholder");
+    assert.equal(assets.describe(id).stage, scenes.items.some(item=>item.id===id)?"rendered3d":"placeholder");
   for (const id of [
     "memorial-create",
     "memorial-manage",

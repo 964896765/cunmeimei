@@ -1,0 +1,3868 @@
+[
+  {
+    "id": "C05G01S03",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "key",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C05G01S04",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "child",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C05G02S02",
+    "parts": [
+      {
+        "model": "tower",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C05G02S03",
+    "parts": [
+      {
+        "model": "warehouse",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C05G03S01",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C05G03S04",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C05G03S05",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C06G02S01",
+    "parts": [
+      {
+        "model": "book",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "mic",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C06G02S02",
+    "parts": [
+      {
+        "model": "key",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C06G02S08",
+    "parts": [
+      {
+        "model": "screen",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "game",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C07G01S03",
+    "parts": [
+      {
+        "model": "bag",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C07G03S08",
+    "parts": [
+      {
+        "model": "blocks",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "game",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C08G01S01",
+    "parts": [
+      {
+        "model": "key",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "paper",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C08G02S02",
+    "parts": [
+      {
+        "model": "balloon",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "mic",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C08G02S04",
+    "parts": [
+      {
+        "model": "heart",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C09G02S01",
+    "parts": [
+      {
+        "model": "bus",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C09G02S05",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C09G03S01",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "key",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C09G03S03",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C10G01S04",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C10G03S01",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C10G03S04",
+    "parts": [
+      {
+        "model": "bike",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C11G01S02",
+    "parts": [
+      {
+        "model": "cosmetic",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C11G01S04",
+    "parts": [
+      {
+        "model": "comb",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "cosmetic",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C11G02S04",
+    "parts": [
+      {
+        "model": "lipstick",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "lens",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C11G03S02",
+    "parts": [
+      {
+        "model": "epilator",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "torch",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G01S01",
+    "parts": [
+      {
+        "model": "slide",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "balloon",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G01S02",
+    "parts": [
+      {
+        "model": "blocks",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "slide",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G01S03",
+    "parts": [
+      {
+        "model": "camera",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "blocks",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G01S04",
+    "parts": [
+      {
+        "model": "cake",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "balloon",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G01S05",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "child",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "palette",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C12G02S01",
+    "parts": [
+      {
+        "model": "bottle",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "crib",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G02S02",
+    "parts": [
+      {
+        "model": "crib",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "house",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G02S03",
+    "parts": [
+      {
+        "model": "chair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "heart",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "bottle",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C12G02S04",
+    "parts": [
+      {
+        "model": "bath",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "bottle",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G02S05",
+    "parts": [
+      {
+        "model": "crib",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "blocks",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G03S01",
+    "parts": [
+      {
+        "model": "pool",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G03S02",
+    "parts": [
+      {
+        "model": "open-book",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "blocks",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C12G03S03",
+    "parts": [
+      {
+        "model": "backpack",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C13G01S01",
+    "parts": [
+      {
+        "model": "book",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C13G01S03",
+    "parts": [
+      {
+        "model": "palette",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C13G02S05",
+    "parts": [
+      {
+        "model": "passport",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "plane",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C13G02S06",
+    "parts": [
+      {
+        "model": "open-book",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "child",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C13G03S01",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "book",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C13G03S02",
+    "parts": [
+      {
+        "model": "chair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "book",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "clock",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C13G03S03",
+    "parts": [
+      {
+        "model": "palette",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "camera",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C14G01S01",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C14G01S02",
+    "parts": [
+      {
+        "model": "tools",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C14G01S04",
+    "parts": [
+      {
+        "model": "certificate",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C14G02S02",
+    "parts": [
+      {
+        "model": "tools",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "faucet",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C14G03S04",
+    "parts": [
+      {
+        "model": "curtain",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "sofa",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C14G03S05",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "screen",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G01S03",
+    "parts": [
+      {
+        "model": "medical",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "chair",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G01S04",
+    "parts": [
+      {
+        "model": "tooth",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G01S05",
+    "parts": [
+      {
+        "model": "lens",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G02S01",
+    "parts": [
+      {
+        "model": "medical",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G02S02",
+    "parts": [
+      {
+        "model": "wheelchair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "mat",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G02S05",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C15G03S01",
+    "parts": [
+      {
+        "model": "lens",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "cosmetic",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "medical",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C15G03S03",
+    "parts": [
+      {
+        "model": "laptop",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G01S06",
+    "parts": [
+      {
+        "model": "curtain",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "mic",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G02S01",
+    "parts": [
+      {
+        "model": "case",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G02S02",
+    "parts": [
+      {
+        "model": "globe",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "key",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C16G02S04",
+    "parts": [
+      {
+        "model": "bus",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G02S05",
+    "parts": [
+      {
+        "model": "passport",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "headset",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G03S01",
+    "parts": [
+      {
+        "model": "camera",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tent",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G03S02",
+    "parts": [
+      {
+        "model": "passport",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C16G03S03",
+    "parts": [
+      {
+        "model": "bus",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "house",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G01S03",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G01S05",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "plant",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G01S06",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "game",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G02S01",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "plant",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G02S02",
+    "parts": [
+      {
+        "model": "tower",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "bed",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G02S03",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "blocks",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G02S04",
+    "parts": [
+      {
+        "model": "bath",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G02S05",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "backpack",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G03S01",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C17G03S02",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "book",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C18G01S02",
+    "parts": [
+      {
+        "model": "dumbbell",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C18G01S03",
+    "parts": [
+      {
+        "model": "mat",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "water",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C18G02S02",
+    "parts": [
+      {
+        "model": "racket",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C18G02S07",
+    "parts": [
+      {
+        "model": "racket",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "ball",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C18G03S03",
+    "parts": [
+      {
+        "model": "tent",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "backpack",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G01S04",
+    "parts": [
+      {
+        "model": "flower",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "ring",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G01S05",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G01S06",
+    "parts": [
+      {
+        "model": "ring",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "balloon",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G02S01",
+    "parts": [
+      {
+        "model": "camera",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "ring",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G02S02",
+    "parts": [
+      {
+        "model": "camera",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G02S03",
+    "parts": [
+      {
+        "model": "video",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "ring",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G02S04",
+    "parts": [
+      {
+        "model": "lipstick",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G03S02",
+    "parts": [
+      {
+        "model": "ring",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C19G03S04",
+    "parts": [
+      {
+        "model": "envelope",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G01S01",
+    "parts": [
+      {
+        "model": "paper",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G01S03",
+    "parts": [
+      {
+        "model": "paper",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G01S05",
+    "parts": [
+      {
+        "model": "certificate",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G02S01",
+    "parts": [
+      {
+        "model": "palette",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "screen",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G02S04",
+    "parts": [
+      {
+        "model": "camera",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G02S06",
+    "parts": [
+      {
+        "model": "mic",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G03S01",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G03S02",
+    "parts": [
+      {
+        "model": "book",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G03S03",
+    "parts": [
+      {
+        "model": "laptop",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G03S05",
+    "parts": [
+      {
+        "model": "screen",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C20G03S06",
+    "parts": [
+      {
+        "model": "paper",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "headset",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G01S01",
+    "parts": [
+      {
+        "model": "dog",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G01S02",
+    "parts": [
+      {
+        "model": "cat",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "syringe",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G01S03",
+    "parts": [
+      {
+        "model": "cat",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G02S01",
+    "parts": [
+      {
+        "model": "dog",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "bath",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G02S02",
+    "parts": [
+      {
+        "model": "cat",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "scissors",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G02S03",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "dog",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "bowls",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C21G02S04",
+    "parts": [
+      {
+        "model": "dog",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "certificate",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C21G02S05",
+    "parts": [
+      {
+        "model": "carrier",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paw",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G02S06",
+    "parts": [
+      {
+        "model": "bowls",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G02S07",
+    "parts": [
+      {
+        "model": "dog",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "camera",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G03S01",
+    "parts": [
+      {
+        "model": "cat",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "heart",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C21G03S02",
+    "parts": [
+      {
+        "model": "dog",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "paper",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C21G03S03",
+    "parts": [
+      {
+        "model": "lily",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paw",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C22G01S02",
+    "parts": [
+      {
+        "model": "chair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C22G01S03",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "chair",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C22G02S02",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C22G03S01",
+    "parts": [
+      {
+        "model": "wheelchair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C22G03S03",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "wheelchair",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C22G03S04",
+    "parts": [
+      {
+        "model": "wheelchair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "house",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "tools",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C22G03S05",
+    "parts": [
+      {
+        "model": "wheelchair",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "heart",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C23G01S04",
+    "parts": [
+      {
+        "model": "lily",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "envelope",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C23G01S05",
+    "parts": [
+      {
+        "model": "lily",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "house",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C23G02S03",
+    "parts": [
+      {
+        "model": "plant",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C23G03S01",
+    "parts": [
+      {
+        "model": "lily",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C23G03S05",
+    "parts": [
+      {
+        "model": "certificate",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G01S02",
+    "parts": [
+      {
+        "model": "parcel",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "key",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G01S03",
+    "parts": [
+      {
+        "model": "bike",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G01S04",
+    "parts": [
+      {
+        "model": "parcel",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G01S05",
+    "parts": [
+      {
+        "model": "warehouse",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "envelope",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G01S06",
+    "parts": [
+      {
+        "model": "locker",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G02S02",
+    "parts": [
+      {
+        "model": "parcel",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G02S04",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "house",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G02S05",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G03S03",
+    "parts": [
+      {
+        "model": "warehouse",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "screen",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G03S04",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "plane",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C24G03S05",
+    "parts": [
+      {
+        "model": "case",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "locker",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G01S03",
+    "parts": [
+      {
+        "model": "tractor",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G01S06",
+    "parts": [
+      {
+        "model": "plant",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "book",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G03S01",
+    "parts": [
+      {
+        "model": "tools",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "plant",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G03S02",
+    "parts": [
+      {
+        "model": "tractor",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "key",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G03S03",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "grain",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G03S04",
+    "parts": [
+      {
+        "model": "grain",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C25G03S05",
+    "parts": [
+      {
+        "model": "plant",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G01S01",
+    "parts": [
+      {
+        "model": "tower",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G01S03",
+    "parts": [
+      {
+        "model": "shield",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G01S04",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G01S05",
+    "parts": [
+      {
+        "model": "certificate",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "heart",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G01S06",
+    "parts": [
+      {
+        "model": "seated",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G02S01",
+    "parts": [
+      {
+        "model": "paper",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "screen",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G02S03",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      },
+      {
+        "model": "shield",
+        "position": [
+          -0.75,
+          -0.05,
+          0.05
+        ],
+        "scale": 0.46
+      }
+    ]
+  },
+  {
+    "id": "C26G03S01",
+    "parts": [
+      {
+        "model": "headset",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G03S02",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G03S04",
+    "parts": [
+      {
+        "model": "paper",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "wheelchair",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C26G03S05",
+    "parts": [
+      {
+        "model": "heart",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "envelope",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C27G01S02",
+    "parts": [
+      {
+        "model": "atm",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C27G01S03",
+    "parts": [
+      {
+        "model": "screen",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "case",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C27G02S02",
+    "parts": [
+      {
+        "model": "shield",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "car",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C27G02S03",
+    "parts": [
+      {
+        "model": "shield",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "house",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C27G02S04",
+    "parts": [
+      {
+        "model": "shield",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  },
+  {
+    "id": "C27G03S02",
+    "parts": [
+      {
+        "model": "grain",
+        "position": [
+          -0.18,
+          0.12,
+          0
+        ],
+        "scale": 0.94
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.68,
+          -0.38,
+          0.05
+        ],
+        "scale": 0.55
+      }
+    ]
+  }
+]

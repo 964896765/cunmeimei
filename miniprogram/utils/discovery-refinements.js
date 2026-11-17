@@ -183,14 +183,14 @@ function chips(channel, values = {}, state = {}) {
   return rows;
 }
 
-function extras(values = {}) {
+function extras(values = {}, channel = 'all') {
   return Object.entries(values || {})
     .filter(([key]) => persistentKeys.includes(key))
     .map(([key, value]) => {
       const option =
-        field(key, 'housing', values).options.find((item) => item.value === value) ||
+        field(key, channel, values).options.find((item) => item.value === value) ||
         priceBands.find((item) => item.value === value);
-      return { key: 'refinement:' + key, label: field(key).label + '：' + (option?.label || value) };
+      return { key: 'refinement:' + key, label: field(key, channel, values).label + '：' + (option?.label || value) };
     });
 }
 
@@ -199,11 +199,14 @@ function panel(channel, values = {}, state = {}) {
   if (!keys.includes('days')) keys.push('days');
   return keys.map((key) => {
     const definition = field(key, channel, values);
+    const needsIntent = channel === 'housing' && key === 'price' && !values.intent;
     const value = persistentKeys.includes(key) ? values[key] || '' : String(state[key] || '');
     return {
       ...definition,
+      hint: needsIntent ? '先选择出租、求租、出售或求购，再按对应租金或总价筛选。' : definition.hint,
       options: definition.options.map((option) => ({
         ...option,
+        disabled: needsIntent && !!option.value,
         selected: option.value === (value === '0' ? '' : value),
       })),
     };

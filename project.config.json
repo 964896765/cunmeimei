@@ -125,6 +125,10 @@
       {
         "type": "file",
         "value": "assets/icons/shortcut-more-pearl.png"
+      },
+      {
+        "type": "file",
+        "value": "assets/merchant-storefront.png"
       }
     ],
     "include": []

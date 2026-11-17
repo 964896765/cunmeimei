@@ -1,0 +1,71 @@
+{
+  "status": "pass",
+  "passed": 9,
+  "checks": [
+    "personal summary reads all 25 saved fixtures",
+    "the first favorite page exposes continuation",
+    "favorite removal persists and replenishes the visible page",
+    "continuing after removal returns all 24 remaining favorites without omissions",
+    "personal favorite count refreshes to the actual remaining total",
+    "C12 can be selected through its visible sidebar control",
+    "C21 can be selected through its visible sidebar control",
+    "large-text points navigation retains a readable horizontal action",
+    "no runtime exceptions during favorite pagination"
+  ],
+  "exceptions": [],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "metrics": {
+    "system": {
+      "brand": "devtools",
+      "model": "iPhone 12/13 (Pro)",
+      "system": "iOS 10.0.1",
+      "platform": "devtools",
+      "benchmarkLevel": -1,
+      "pixelRatio": 3,
+      "screenWidth": 390,
+      "screenHeight": 844,
+      "windowWidth": 390,
+      "windowHeight": 844,
+      "statusBarHeight": 47,
+      "safeArea": {
+        "top": 47,
+        "left": 0,
+        "right": 390,
+        "bottom": 810,
+        "width": 390,
+        "height": 763
+      },
+      "language": "zh_CN",
+      "version": "8.0.5",
+      "fontSizeSetting": 16,
+      "SDKVersion": "3.18.0",
+      "host": {
+        "env": "WeChat"
+      },
+      "enableDebug": false,
+      "mode": "default",
+      "deviceOrientation": "portrait",
+      "bluetoothEnabled": true,
+      "locationEnabled": true,
+      "wifiEnabled": true,
+      "albumAuthorized": true,
+      "cameraAuthorized": true,
+      "locationAuthorized": true,
+      "microphoneAuthorized": true,
+      "notificationAuthorized": true,
+      "notificationAlertAuthorized": true,
+      "notificationBadgeAuthorized": true,
+      "notificationSoundAuthorized": true,
+      "phoneCalendarAuthorized": true,
+      "bluetoothAuthorized": true,
+      "locationReducedAccuracy": true,
+      "devicePixelRatio": 3
+    }
+  },
+  "physicalDevice": false,
+  "backend": "isolated disposable PostgreSQL",
+  "checkedAt": "2026-11-17T20:16:09.526Z"
+}

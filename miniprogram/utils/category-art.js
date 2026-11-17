@@ -2,6 +2,7 @@
 
 const registry = require("./classification-contract");
 const draftIds = new Set(require("../data/category-art-drafts"));
+const sceneGroups = require("../data/category-art-scenes");
 const styledIds = new Set(["C04G01S01", "C04G01S02", "C04G01S03", "C04G01S04"]);
 const draftFrames = { C01: "food", C02: "profession", C03: "service", C04: "goods" };
 const memorialIds = new Set([
@@ -28,6 +29,7 @@ function describe(id) {
       frame: "transparent",
     };
   }
+  const rendered = sceneGroups[project.groupId]?.includes(Number(id.slice(-2)));
   return {
     path:
       "/category-art/assets/categories/" +
@@ -35,8 +37,9 @@ function describe(id) {
       "/" +
       id +
       ".webp",
-    stage: draftIds.has(id) ? "draft3d" : "placeholder",
-    frame: draftIds.has(id) ? draftFrames[project.categoryId] || "goods" : "symbol",
+    stage: rendered ? "rendered3d" : draftIds.has(id) ? "draft3d" : "placeholder",
+    transparent: !!rendered,
+    frame: rendered ? "transparent" : draftIds.has(id) ? draftFrames[project.categoryId] || "goods" : "symbol",
   };
 }
 
