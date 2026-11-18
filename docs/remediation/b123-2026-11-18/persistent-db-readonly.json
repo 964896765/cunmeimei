@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-18T02:50:56.465Z",
+  "scope": "existing local development database; read-only aggregate observation",
+  "readOnly": "on",
+  "counts": {
+    "publications": 97,
+    "booking_requests": 13,
+    "verified_merchants": 15,
+    "merchant_applications": 16,
+    "privacy_requests": 6,
+    "industry_entries": 0,
+    "business_cases": 0,
+    "benefit_orders": 0,
+    "content_images": 21
+  },
+  "changedCounts": [],
+  "limitation": "Matching aggregate counts do not assert byte-for-byte row equality; isolated regression fixtures were never imported into this database."
+}

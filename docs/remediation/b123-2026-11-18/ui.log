@@ -1,0 +1,36 @@
+PASS superadmin can see real benefit review actions
+PASS admin audit next page is reachable
+UI route home
+UI screenshot home-after
+UI route discover
+UI screenshot discover-after
+UI route publish
+UI screenshot publish-after
+UI route messages
+UI screenshot messages-after
+UI route me
+UI screenshot me-after
+PASS all five primary pages render
+UI route my-posts
+PASS my publications loads and retains another page
+UI screenshot my-posts-pagination
+UI route chat
+PASS chat keeps all 120 messages after a quiet refresh
+UI screenshot chat-history
+UI route publish-form
+UI route drafts
+PASS resident autosave survives page departure and restores from draft box
+UI screenshot resident-preview
+UI route industry
+UI route drafts
+PASS industry incomplete edits restore under their original project
+UI screenshot industry-preview
+PASS industry preview submission stores one versioned notice/content confirmation
+UI route publish
+UI screenshot publish-C06G02
+UI screenshot publish-C10G03
+UI screenshot publish-C15G01
+UI screenshot publish-C18G02
+UI screenshot publish-C23G02
+PASS all 418 category images load in the real simulator
+PASS no captured simulator runtime exceptions

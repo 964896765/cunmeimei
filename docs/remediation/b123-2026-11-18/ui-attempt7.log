@@ -1,0 +1,9 @@
+PASS superadmin can see real benefit review actions
+PASS admin audit next page is reachable
+Error: Failed connecting to ws://127.0.0.1:9421, check if target project window is opened with automation enabled
+    at Launcher.connectTool (C:\Users\chejun\Desktop\city-life-miniapp\backend\node_modules\miniprogram-automator\out\Launcher.js:1:3285)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Launcher.connect (C:\Users\chejun\Desktop\city-life-miniapp\backend\node_modules\miniprogram-automator\out\Launcher.js:1:2861)
+    at async Automator.connect (C:\Users\chejun\Desktop\city-life-miniapp\backend\node_modules\miniprogram-automator\out\Automator.js:1:1469)
+    at async connect (C:\Users\chejun\Desktop\city-life-miniapp\scripts\devtools_connection.js:8:12)
+    at async main (C:\Users\chejun\Desktop\city-life-miniapp\scripts\check_b123_ui.js:20:8)

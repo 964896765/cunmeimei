@@ -1,0 +1,44 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-11-18T02:46:11.239Z",
+  "checks": [
+    "superadmin can see real benefit review actions",
+    "admin audit next page is reachable",
+    "all five primary pages render",
+    "my publications loads and retains another page",
+    "chat keeps all 120 messages after a quiet refresh",
+    "resident autosave survives page departure and restores from draft box",
+    "industry incomplete edits restore under their original project",
+    "industry preview submission stores one versioned notice/content confirmation",
+    "all 418 category images load in the real simulator",
+    "no captured simulator runtime exceptions"
+  ],
+  "passed": 10,
+  "screenshots": [
+    "admin-superadmin-actions.png",
+    "home-after.png",
+    "discover-after.png",
+    "publish-after.png",
+    "messages-after.png",
+    "me-after.png",
+    "my-posts-pagination.png",
+    "chat-history.png",
+    "resident-preview.png",
+    "industry-preview.png",
+    "publish-C06G02.png",
+    "publish-C10G03.png",
+    "publish-C15G01.png",
+    "publish-C18G02.png",
+    "publish-C23G02.png"
+  ],
+  "categoryImagesLoaded": 418,
+  "exceptions": [],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "physicalDevice": false,
+  "realBackend": true,
+  "isolatedPostgres": true,
+  "identity": "runtime-only dev_local fixtures, no real WeChat authorization"
+}

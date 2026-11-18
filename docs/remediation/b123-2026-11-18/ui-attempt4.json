@@ -1,0 +1,22 @@
+{
+  "status": "incomplete",
+  "checkedAt": "2026-11-18T02:26:05.220Z",
+  "checks": [
+    "superadmin can see real benefit review actions",
+    "admin audit next page is reachable"
+  ],
+  "passed": 2,
+  "screenshots": [
+    "admin-superadmin-actions.png"
+  ],
+  "categoryImagesLoaded": 0,
+  "exceptions": [],
+  "cleanup": {
+    "authStorageUnchanged": true,
+    "runtimeOverlayRemoved": true
+  },
+  "physicalDevice": false,
+  "realBackend": true,
+  "isolatedPostgres": true,
+  "identity": "runtime-only dev_local fixtures, no real WeChat authorization"
+}
