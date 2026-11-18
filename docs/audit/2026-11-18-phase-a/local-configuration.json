@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-11-17T22:26:08.110Z",
+  "environmentSource": "backend/.env.local",
+  "values": {
+    "NODE_ENV": "development",
+    "DATA_DRIVER": "postgres",
+    "HOST": "127.0.0.1",
+    "PORT": "3100",
+    "ALLOW_DEV_LOGIN": "true",
+    "PLATFORM_PUBLISH_APPROVED": null,
+    "PLATFORM_CONTACT_APPROVED": null
+  },
+  "presence": {
+    "DATABASE_URL": true,
+    "WECHAT_APPID": false,
+    "WECHAT_SECRET": false,
+    "ADMIN_PASSWORD": true,
+    "SUPER_ADMIN_PASSWORD": false,
+    "VERIFICATION_ADMIN_PASSWORD": true,
+    "PHONE_ENCRYPTION_KEY": true,
+    "TENCENT_MAP_KEY": false,
+    "PLATFORM_OPERATOR_NAME": false,
+    "PRIVACY_CONTACT_EMAIL": false,
+    "PRIVATE_UPLOAD_DIR": false
+  },
+  "database": {
+    "configured": true,
+    "loopback": true,
+    "port": "62294"
+  },
+  "developmentPreflight": {
+    "ok": true,
+    "errors": []
+  },
+  "node": "v20.19.4",
+  "platform": "win32"
+}

@@ -1,0 +1,2044 @@
+{
+  "navigation": [
+    {
+      "file": "miniprogram/components/page-header/index.js",
+      "line": 18,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/components/page-header/index.js",
+      "line": 18,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/components/publication-confirmation/index.js",
+      "line": 25,
+      "method": "navigateTo",
+      "expression": "'/pages/legal/index?kind=publication'",
+      "literal": "/pages/legal/index?kind=publication",
+      "routePrefix": "/pages/legal/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/custom-tab-bar/index.js",
+      "line": 9,
+      "method": "switchTab",
+      "expression": "'/'+route",
+      "literal": null,
+      "routePrefix": "/",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/booking/index.js",
+      "line": 126,
+      "method": "redirectTo",
+      "expression": "'/pages/my-bookings/index'",
+      "literal": "/pages/my-bookings/index",
+      "routePrefix": "/pages/my-bookings/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 50,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index?id='+encodeURIComponent(e.currentTarget.dataset.id)",
+      "literal": null,
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 51,
+      "method": "navigateTo",
+      "expression": "'/pages/my-bookings/index'",
+      "literal": "/pages/my-bookings/index",
+      "routePrefix": "/pages/my-bookings/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 51,
+      "method": "navigateTo",
+      "expression": "'/pages/industry/index?target='+encodeURIComponent(row.source_id)",
+      "literal": null,
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 51,
+      "method": "navigateTo",
+      "expression": "'/pages/detail/index?id='+encodeURIComponent(row.publication_id)",
+      "literal": null,
+      "routePrefix": "/pages/detail/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 52,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/categories/index.js",
+      "line": 6,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/categories/index.js",
+      "line": 6,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/chat/index.js",
+      "line": 61,
+      "method": "navigateTo",
+      "expression": "'/pages/detail/index?id='+this.data.chat.publicationId",
+      "literal": null,
+      "routePrefix": "/pages/detail/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 30,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 30,
+      "method": "switchTab",
+      "expression": "'/pages/me/index'",
+      "literal": "/pages/me/index",
+      "routePrefix": "/pages/me/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 44,
+      "method": "redirectTo",
+      "expression": "'/pages/industry/index?id='+encodeURIComponent(this.itemId)",
+      "literal": null,
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 68,
+      "method": "navigateTo",
+      "expression": "'/pages/booking/index?id='+encodeURIComponent(this.itemId)",
+      "literal": null,
+      "routePrefix": "/pages/booking/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/discover/index.js",
+      "line": 187,
+      "method": "navigateTo",
+      "expression": "'/pages/regions/index?returnTo=previous'",
+      "literal": "/pages/regions/index?returnTo=previous",
+      "routePrefix": "/pages/regions/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/discover/index.js",
+      "line": 286,
+      "method": "navigateTo",
+      "expression": "'/pages/map/index?'+Object.entries(query).map(([k,v])=>k+'='+encodeURIComponent(v)).join('&')",
+      "literal": null,
+      "routePrefix": "/pages/map/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/drafts/index.js",
+      "line": 26,
+      "method": "navigateTo",
+      "expression": "row.source==='account'?'/pages/publish-form/index?restore=account':'/pages/publish-form/index?restore=local&draftId='+encodeURIComponent(row.clientKey)",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/drafts/index.js",
+      "line": 39,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/drafts/index.js",
+      "line": 39,
+      "method": "switchTab",
+      "expression": "'/pages/publish/index'",
+      "literal": "/pages/publish/index",
+      "routePrefix": "/pages/publish/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 101,
+      "method": "navigateTo",
+      "expression": "'/pages/merchant/index'",
+      "literal": "/pages/merchant/index",
+      "routePrefix": "/pages/merchant/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 184,
+      "method": "navigateTo",
+      "expression": "'/pages/information/index?id=' + encodeURIComponent(event.currentTarget.dataset.id)",
+      "literal": null,
+      "routePrefix": "/pages/information/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 185,
+      "method": "navigateTo",
+      "expression": "'/pages/information/index?cityCode=' + encodeURIComponent(require('../../utils/geo-context').current().cityCode || '')",
+      "literal": null,
+      "routePrefix": "/pages/information/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 186,
+      "method": "navigateTo",
+      "expression": "'/pages/regions/index'",
+      "literal": "/pages/regions/index",
+      "routePrefix": "/pages/regions/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 192,
+      "method": "switchTab",
+      "expression": "'/pages/publish/index'",
+      "literal": "/pages/publish/index",
+      "routePrefix": "/pages/publish/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 21,
+      "method": "navigateTo",
+      "expression": "'/pages/regions/index?returnTo=previous'",
+      "literal": "/pages/regions/index?returnTo=previous",
+      "routePrefix": "/pages/regions/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 36,
+      "method": "navigateTo",
+      "expression": "'/pages/booking/index?id='+encodeURIComponent(id)",
+      "literal": null,
+      "routePrefix": "/pages/booking/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 43,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index?'+suffix",
+      "literal": null,
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 44,
+      "method": "navigateTo",
+      "expression": "'/pages/chat/index?id='+encodeURIComponent(e.currentTarget.dataset.id)",
+      "literal": null,
+      "routePrefix": "/pages/chat/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 50,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 50,
+      "method": "switchTab",
+      "expression": "'/pages/publish/index'",
+      "literal": "/pages/publish/index",
+      "routePrefix": "/pages/publish/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 15,
+      "method": "navigateTo",
+      "expression": "'/pages/information/index?id='+encodeURIComponent(e.currentTarget.dataset.id)",
+      "literal": null,
+      "routePrefix": "/pages/information/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 16,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 16,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 16,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/legal/index.js",
+      "line": 1,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/legal/index.js",
+      "line": 1,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/login/index.js",
+      "line": 2,
+      "method": "navigateTo",
+      "expression": "'/pages/legal/index?kind='+e.detail.kind",
+      "literal": null,
+      "routePrefix": "/pages/legal/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/map/index.js",
+      "line": 31,
+      "method": "navigateTo",
+      "expression": "'/pages/regions/index?returnTo=previous'",
+      "literal": "/pages/regions/index?returnTo=previous",
+      "routePrefix": "/pages/regions/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/map/index.js",
+      "line": 33,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/map/index.js",
+      "line": 33,
+      "method": "switchTab",
+      "expression": "'/pages/discover/index'",
+      "literal": "/pages/discover/index",
+      "routePrefix": "/pages/discover/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 28,
+      "method": "navigateTo",
+      "expression": "'/pages/drafts/index'",
+      "literal": "/pages/drafts/index",
+      "routePrefix": "/pages/drafts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 29,
+      "method": "navigateTo",
+      "expression": "'/pages/legal/index?kind='+(e.currentTarget.dataset.kind==='terms'?'terms':'privacy')",
+      "literal": null,
+      "routePrefix": "/pages/legal/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 31,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index'",
+      "literal": "/pages/business/index",
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 31,
+      "method": "navigateTo",
+      "expression": "'/pages/industry/index?tab='+section",
+      "literal": null,
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 31,
+      "method": "navigateTo",
+      "expression": "'/pages/commerce/index'+(['offers','orders','promotion'].includes(tab)?'?tab='+tab:'')",
+      "literal": null,
+      "routePrefix": "/pages/commerce/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 31,
+      "method": "navigateTo",
+      "expression": "'/pages/industry/index'",
+      "literal": "/pages/industry/index",
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 70,
+      "method": "navigateTo",
+      "expression": "'/pages/my-posts/index'",
+      "literal": "/pages/my-posts/index",
+      "routePrefix": "/pages/my-posts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 70,
+      "method": "navigateTo",
+      "expression": "'/pages/my-bookings/index'",
+      "literal": "/pages/my-bookings/index",
+      "routePrefix": "/pages/my-bookings/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 70,
+      "method": "navigateTo",
+      "expression": "'/pages/merchant/index'",
+      "literal": "/pages/merchant/index",
+      "routePrefix": "/pages/merchant/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 70,
+      "method": "switchTab",
+      "expression": "'/pages/messages/index'",
+      "literal": "/pages/messages/index",
+      "routePrefix": "/pages/messages/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 291,
+      "method": "navigateTo",
+      "expression": "\"/pages/memorial/index?mode=create\"",
+      "literal": "/pages/memorial/index?mode=create",
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 294,
+      "method": "navigateTo",
+      "expression": "\"/pages/memorial/index?mode=manage\"",
+      "literal": "/pages/memorial/index?mode=manage",
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 297,
+      "method": "navigateTo",
+      "expression": "\"/pages/memorial/index?mode=browse\"",
+      "literal": "/pages/memorial/index?mode=browse",
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 300,
+      "method": "navigateTo",
+      "expression": "\"/pages/memorial/index?own=\" + event.currentTarget.dataset.id",
+      "literal": null,
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 305,
+      "method": "navigateTo",
+      "expression": "\"/pages/memorial/index?id=\" + event.currentTarget.dataset.id",
+      "literal": null,
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 478,
+      "method": "navigateTo",
+      "expression": "\"/pages/legal/index?kind=memorial\"",
+      "literal": "/pages/legal/index?kind=memorial",
+      "routePrefix": "/pages/legal/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 615,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 616,
+      "method": "switchTab",
+      "expression": "\"/pages/publish/index\"",
+      "literal": "/pages/publish/index",
+      "routePrefix": "/pages/publish/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/merchant/index.js",
+      "line": 60,
+      "method": "navigateTo",
+      "expression": "'/pages/merchant-'+kind+'/index?merchantId='+encodeURIComponent(mid)",
+      "literal": null,
+      "routePrefix": "/pages/merchant-",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/merchant-bookings/index.js",
+      "line": 11,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index?'+(row.businessCaseId?'id='+encodeURIComponent(row.businessCaseId):'sourceKind=booking&sourceId='+encodeURIComponent(row.id))",
+      "literal": null,
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 83,
+      "method": "switchTab",
+      "expression": "'/pages/me/index'",
+      "literal": "/pages/me/index",
+      "routePrefix": "/pages/me/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 84,
+      "method": "switchTab",
+      "expression": "'/pages/me/index'",
+      "literal": "/pages/me/index",
+      "routePrefix": "/pages/me/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 85,
+      "method": "navigateTo",
+      "expression": "'/pages/information/index?reportId='+encodeURIComponent(n.targetId)",
+      "literal": null,
+      "routePrefix": "/pages/information/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 86,
+      "method": "navigateTo",
+      "expression": "'/pages/commerce/index?tab='+(n.targetKind==='promotion'?'promotion':'orders')+'&focusId='+encodeURIComponent(n.targetId)",
+      "literal": null,
+      "routePrefix": "/pages/commerce/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 87,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index?id='+encodeURIComponent(n.targetId)",
+      "literal": null,
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 88,
+      "method": "navigateTo",
+      "expression": "'/pages/industry/index?target='+encodeURIComponent(n.targetId)",
+      "literal": null,
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 89,
+      "method": "navigateTo",
+      "expression": "'/pages/my-posts/index'",
+      "literal": "/pages/my-posts/index",
+      "routePrefix": "/pages/my-posts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 91,
+      "method": "navigateTo",
+      "expression": "'/pages/merchant/index'",
+      "literal": "/pages/merchant/index",
+      "routePrefix": "/pages/merchant/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 92,
+      "method": "navigateTo",
+      "expression": "'/pages/my-bookings/index'",
+      "literal": "/pages/my-bookings/index",
+      "routePrefix": "/pages/my-bookings/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 93,
+      "method": "navigateTo",
+      "expression": "'/pages/merchant-bookings/index?merchantId='+encodeURIComponent(n.targetId)",
+      "literal": null,
+      "routePrefix": "/pages/merchant-bookings/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 94,
+      "method": "navigateTo",
+      "expression": "'/pages/detail/index?id='+encodeURIComponent(n.targetId)",
+      "literal": null,
+      "routePrefix": "/pages/detail/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 95,
+      "method": "navigateTo",
+      "expression": "'/pages/my-posts/index'",
+      "literal": "/pages/my-posts/index",
+      "routePrefix": "/pages/my-posts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 108,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index?'+(row.businessCaseId?'id='+encodeURIComponent(row.businessCaseId):'sourceKind=contact&sourceId='+encodeURIComponent(row.id))",
+      "literal": null,
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 109,
+      "method": "navigateTo",
+      "expression": "'/pages/chat/index?id='+encodeURIComponent(item.id)",
+      "literal": null,
+      "routePrefix": "/pages/chat/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 110,
+      "method": "switchTab",
+      "expression": "'/pages/me/index'",
+      "literal": "/pages/me/index",
+      "routePrefix": "/pages/me/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/my-bookings/index.js",
+      "line": 17,
+      "method": "navigateTo",
+      "expression": "'/pages/business/index?'+(row.businessCaseId?'id='+encodeURIComponent(row.businessCaseId):'sourceKind=booking&sourceId='+encodeURIComponent(row.id))",
+      "literal": null,
+      "routePrefix": "/pages/business/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/my-bookings/index.js",
+      "line": 18,
+      "method": "navigateTo",
+      "expression": "'/pages/booking/index?id='+encodeURIComponent(id)",
+      "literal": null,
+      "routePrefix": "/pages/booking/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 29,
+      "method": "navigateTo",
+      "expression": "'/pages/industry/index?own='+item.id",
+      "literal": null,
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/publish/index.js",
+      "line": 115,
+      "method": "navigateTo",
+      "expression": "'/pages/industry/index?projectId='+project.id",
+      "literal": null,
+      "routePrefix": "/pages/industry/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/publish/index.js",
+      "line": 116,
+      "method": "navigateTo",
+      "expression": "'/pages/memorial/index'",
+      "literal": "/pages/memorial/index",
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/publish/index.js",
+      "line": 122,
+      "method": "navigateTo",
+      "expression": "'/pages/legal/index?kind=publication'",
+      "literal": "/pages/legal/index?kind=publication",
+      "routePrefix": "/pages/legal/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/publish/index.js",
+      "line": 124,
+      "method": "navigateTo",
+      "expression": "'/pages/drafts/index'",
+      "literal": "/pages/drafts/index",
+      "routePrefix": "/pages/drafts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 113,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 113,
+      "method": "redirectTo",
+      "expression": "'/pages/drafts/index'",
+      "literal": "/pages/drafts/index",
+      "routePrefix": "/pages/drafts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 113,
+      "method": "switchTab",
+      "expression": "'/pages/publish/index'",
+      "literal": "/pages/publish/index",
+      "routePrefix": "/pages/publish/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 143,
+      "method": "redirectTo",
+      "expression": "'/pages/my-posts/index'",
+      "literal": "/pages/my-posts/index",
+      "routePrefix": "/pages/my-posts/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/regions/index.js",
+      "line": 10,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/regions/index.js",
+      "line": 10,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 44,
+      "method": "navigateTo",
+      "expression": "'/pages/regions/index?returnTo=previous'",
+      "literal": "/pages/regions/index?returnTo=previous",
+      "routePrefix": "/pages/regions/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 45,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 45,
+      "method": "switchTab",
+      "expression": "'/pages/home/index'",
+      "literal": "/pages/home/index",
+      "routePrefix": "/pages/home/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 84,
+      "method": "navigateTo",
+      "expression": "'/pages/memorial/index?id='+e.currentTarget.dataset.id",
+      "literal": null,
+      "routePrefix": "/pages/memorial/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 9,
+      "method": "redirectTo",
+      "expression": "'/pages/publish-form/index?categoryId='+encodeURIComponent(project.id)",
+      "literal": null,
+      "routePrefix": "/pages/publish-form/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 9,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 10,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 10,
+      "method": "switchTab",
+      "expression": "'/pages/me/index'",
+      "literal": "/pages/me/index",
+      "routePrefix": "/pages/me/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/auth-intent.js",
+      "line": 11,
+      "method": "navigateTo",
+      "expression": "'/pages/login/index'",
+      "literal": "/pages/login/index",
+      "routePrefix": "/pages/login/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/auth-intent.js",
+      "line": 11,
+      "method": "redirectTo",
+      "expression": "'/pages/login/index'",
+      "literal": "/pages/login/index",
+      "routePrefix": "/pages/login/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/auth-intent.js",
+      "line": 15,
+      "method": "navigateBack",
+      "expression": "",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/auth-intent.js",
+      "line": 16,
+      "method": "switchTab",
+      "expression": "'/'+intent.route",
+      "literal": null,
+      "routePrefix": "/",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/auth-intent.js",
+      "line": 16,
+      "method": "redirectTo",
+      "expression": "intent.url",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/auth-intent.js",
+      "line": 21,
+      "method": "navigateTo",
+      "expression": "'/pages/verification/index?resume=permission'",
+      "literal": "/pages/verification/index?resume=permission",
+      "routePrefix": "/pages/verification/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 1,
+      "method": "switchTab",
+      "expression": "'/pages/discover/index'",
+      "literal": "/pages/discover/index",
+      "routePrefix": "/pages/discover/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 3,
+      "method": "navigateTo",
+      "expression": "'/pages/detail/index?id='+encodeURIComponent(id)",
+      "literal": null,
+      "routePrefix": "/pages/detail/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 4,
+      "method": "navigateTo",
+      "expression": "'/pages/chat/index?id='+encodeURIComponent(id)+'&title='+encodeURIComponent(title)",
+      "literal": null,
+      "routePrefix": "/pages/chat/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 5,
+      "method": "navigateTo",
+      "expression": "'/pages/search/index?'+Object.entries(value).map(([k,v])=>k+'='+encodeURIComponent(typeof v==='object'?JSON.stringify(v):v)).join('&')",
+      "literal": null,
+      "routePrefix": "/pages/search/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 6,
+      "method": "switchTab",
+      "expression": "'/pages/publish/index'",
+      "literal": "/pages/publish/index",
+      "routePrefix": "/pages/publish/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 8,
+      "method": "navigateTo",
+      "expression": "'/pages/categories/index'+(edit?'?mode=edit':'')",
+      "literal": null,
+      "routePrefix": "/pages/categories/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/navigation.js",
+      "line": 9,
+      "method": "switchTab",
+      "expression": "'/pages/me/index'",
+      "literal": "/pages/me/index",
+      "routePrefix": "/pages/me/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/personal-profile.js",
+      "line": 36,
+      "method": "navigateTo",
+      "expression": "'/pages/regions/index?purpose=profile&returnTo=previous'",
+      "literal": "/pages/regions/index?purpose=profile&returnTo=previous",
+      "routePrefix": "/pages/regions/index",
+      "targetRegistered": true
+    },
+    {
+      "file": "miniprogram/utils/verification.js",
+      "line": 3,
+      "method": "navigateTo",
+      "expression": "target",
+      "literal": null,
+      "routePrefix": "",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/verification.js",
+      "line": 3,
+      "method": "navigateTo",
+      "expression": "'/pages/verification/index?categoryId='+encodeURIComponent(categoryId)",
+      "literal": null,
+      "routePrefix": "/pages/verification/index",
+      "targetRegistered": null
+    },
+    {
+      "file": "miniprogram/utils/verification.js",
+      "line": 4,
+      "method": "navigateTo",
+      "expression": "'/pages/verification/index'",
+      "literal": "/pages/verification/index",
+      "routePrefix": "/pages/verification/index",
+      "targetRegistered": true
+    }
+  ],
+  "apis": [
+    {
+      "file": "miniprogram/components/publication-confirmation/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/publication-notice'"
+    },
+    {
+      "file": "miniprogram/pages/booking/index.js",
+      "line": 40,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/items/'+encodeURIComponent(id)"
+    },
+    {
+      "file": "miniprogram/pages/booking/index.js",
+      "line": 52,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/services/'+id+'/slots?date='+encodeURIComponent(date)"
+    },
+    {
+      "file": "miniprogram/pages/booking/index.js",
+      "line": 92,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/bookings'"
+    },
+    {
+      "file": "miniprogram/pages/booking/index.js",
+      "line": 118,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/booking-submissions/'+encodeURIComponent(pending.payload.clientKey)"
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 10,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/business/cases/'+encodeURIComponent(this.options.id)"
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 11,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/business/source?sourceKind='+kind+'&sourceId='+encodeURIComponent(this.options.sourceId)"
+    },
+    {
+      "file": "miniprogram/pages/business/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/business/cases?filter='+this.data.filter+'&offset='+offset"
+    },
+    {
+      "file": "miniprogram/pages/chat/index.js",
+      "line": 36,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/chats/'+id"
+    },
+    {
+      "file": "miniprogram/pages/chat/index.js",
+      "line": 53,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/chats/'+id+'/messages'"
+    },
+    {
+      "file": "miniprogram/pages/chat/index.js",
+      "line": 72,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/chats/'+id+(r.tapIndex===0?'/end':'/block')"
+    },
+    {
+      "file": "miniprogram/pages/chat/index.js",
+      "line": 88,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/reports'"
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 9,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/points/account'"
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 10,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/benefits'"
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 11,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/benefit-orders?offset='+offset"
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/promotions/context'"
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/promotions?offset='+offset"
+    },
+    {
+      "file": "miniprogram/pages/commerce/index.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/'+(tab==='orders'?'benefit-orders':'promotions')+'/'+encodeURIComponent(this.focusId)"
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 42,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/items/'+encodeURIComponent(this.itemId)"
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 56,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/items/'+this.itemId+'/saved'"
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 64,
+      "caller": "api.request",
+      "method": "this.data.faved?'DELETE':'PUT'",
+      "path": "'/api/v1/items/'+a.id+'/saved'"
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 78,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/items/'+a.id+'/contact'"
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 86,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/items/'+a.id+'/phone'"
+    },
+    {
+      "file": "miniprogram/pages/detail/index.js",
+      "line": 100,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/reports'"
+    },
+    {
+      "file": "miniprogram/pages/discover/index.js",
+      "line": 73,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/discover/index.js",
+      "line": 236,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "feedUrl({type:'all',channel:type==='all'?'':type,refinements:this.data.refinements,area,q,categoryId:this.data.categoryId,sortIndex,sort:sortCode,page,days:this.data.days,images:this.data.images,radiusKm:this.data.radiusKm||0,cityCode:this.data.cityCode,districtCode:this.data.districtCode,...((sortCode==='distance'||this.data.radiusKm>0)?this.sortOrigin:{})})"
+    },
+    {
+      "file": "miniprogram/pages/discover/index.js",
+      "line": 291,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/saved-state?ids='+ids.map(encodeURIComponent).join(',')"
+    },
+    {
+      "file": "miniprogram/pages/discover/index.js",
+      "line": 297,
+      "caller": "api.request",
+      "method": "item.isSaved?'DELETE':'PUT'",
+      "path": "'/api/v1/items/'+id+'/saved'"
+    },
+    {
+      "file": "miniprogram/pages/drafts/index.js",
+      "line": 20,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/pages/drafts/index.js",
+      "line": 34,
+      "caller": "api.request",
+      "method": "'DELETE'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 66,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 67,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/home?cityCode=' + encodeURIComponent(city.cityCode || '')"
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 68,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "feedUrl({cityCode:city.cityCode || '', sort:this.data.feedTab==='merchant'?'recommended':this.data.feedTab, channel:this.data.feedTab==='merchant'?'merchant':'', pageSize:6})"
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 114,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/home/content/' + encodeURIComponent(event.currentTarget.dataset.id)"
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 129,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/saved-state?ids=' + ids.map(encodeURIComponent).join(',')"
+    },
+    {
+      "file": "miniprogram/pages/home/index.js",
+      "line": 167,
+      "caller": "api.request",
+      "method": "item.isSaved ? 'DELETE' : 'PUT'",
+      "path": "'/api/v1/items/' + encodeURIComponent(id) + '/saved'"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 11,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/industry/me/target/'+encodeURIComponent(this.options.target)"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/industry/public/'+encodeURIComponent(this.options.id)"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 14,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/industry/me/entries/'+encodeURIComponent(this.options.own)"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 15,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/industry/me/credentials'"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 15,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/industry/entries/'+this.data.entryId+'/service'"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 15,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/merchants'"
+    },
+    {
+      "file": "miniprogram/pages/industry/index.js",
+      "line": 16,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "url"
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 10,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/home-reports/'+encodeURIComponent(this.data.reportId)"
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 11,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/home/content/'+encodeURIComponent(this.data.id)"
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/home/news?cityCode='+encodeURIComponent(this.data.cityCode)+'&page='+page"
+    },
+    {
+      "file": "miniprogram/pages/information/index.js",
+      "line": 19,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/home/content/'+id+'/reports'"
+    },
+    {
+      "file": "miniprogram/pages/legal/index.js",
+      "line": 1,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/memorial/policy'"
+    },
+    {
+      "file": "miniprogram/pages/legal/index.js",
+      "line": 1,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/publication-notice'"
+    },
+    {
+      "file": "miniprogram/pages/legal/index.js",
+      "line": 1,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/legal'"
+    },
+    {
+      "file": "miniprogram/pages/login/index.js",
+      "line": 2,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/legal'"
+    },
+    {
+      "file": "miniprogram/pages/map/index.js",
+      "line": 79,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "url"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 21,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/summary'"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 21,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me'"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 21,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/merchants'"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 21,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/merchant-application'"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 21,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/profile'"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 56,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/items/'+id"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 85,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/saved?page='+page"
+    },
+    {
+      "file": "miniprogram/pages/me/index.js",
+      "line": 100,
+      "caller": "api.request",
+      "method": "'DELETE'",
+      "path": "'/api/v1/items/'+encodeURIComponent(id)+'/saved'"
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 98,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "\"/api/v1/config\""
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 102,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "\"/api/v1/memorial/halls/\" + encodeURIComponent(this.options.id)"
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 131,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "\"/api/v1/memorial/me/halls/\" + encodeURIComponent(this.options.own)"
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 183,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "\"/api/v1/memorial/me/halls\""
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 190,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "\"/api/v1/memorial/me/reports\""
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 215,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "\"/api/v1/memorial/halls?q=\" + encodeURIComponent(this.data.query)"
+    },
+    {
+      "file": "miniprogram/pages/memorial/index.js",
+      "line": 250,
+      "caller": "api.request",
+      "method": "\"GET\"",
+      "path": "this.data.mode === \"browse\"\n          ? \"/api/v1/memorial/halls?q=\" +\n              encodeURIComponent(this.data.query) +\n              \"&page=\" +\n              page\n          : \"/api/v1/memorial/me/halls?page=\" + page"
+    },
+    {
+      "file": "miniprogram/pages/merchant/index.js",
+      "line": 14,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/merchant-application'"
+    },
+    {
+      "file": "miniprogram/pages/merchant/index.js",
+      "line": 14,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/merchant/index.js",
+      "line": 14,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/merchants'"
+    },
+    {
+      "file": "miniprogram/pages/merchant/index.js",
+      "line": 31,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/merchant-applications'"
+    },
+    {
+      "file": "miniprogram/pages/merchant/index.js",
+      "line": 44,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/merchant-applications/'+encodeURIComponent(id)+'/evidence'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-bookings/index.js",
+      "line": 25,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/merchants/'+encodeURIComponent(merchantId)+'/bookings'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-bookings/index.js",
+      "line": 41,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/merchants/'+encodeURIComponent(merchantId)+'/bookings/'+encodeURIComponent(id)+'/action'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-services/index.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/merchants/'+encodeURIComponent(merchantId)+'/services'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-services/index.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/merchants'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-services/index.js",
+      "line": 29,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/merchants/'+encodeURIComponent(merchantId)+'/services/'+encodeURIComponent(serviceId)+'/action'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-services/index.js",
+      "line": 62,
+      "caller": "api.request",
+      "method": "id?'PUT':'POST'",
+      "path": "'/api/v1/merchants/'+encodeURIComponent(merchantId)+'/services'+(id?'/'+encodeURIComponent(id):'')"
+    },
+    {
+      "file": "miniprogram/pages/merchant-team/index.js",
+      "line": 36,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/merchants/' + this.data.merchantId + '/members'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-team/index.js",
+      "line": 70,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/merchants/' + this.data.merchantId + '/members'"
+    },
+    {
+      "file": "miniprogram/pages/merchant-team/index.js",
+      "line": 98,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/merchants/' + this.data.merchantId + '/members/' + userId + '/remove'"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 31,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/notifications'"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 31,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/contacts'"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 50,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/contacts?page='+page"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 62,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/notifications?page='+page"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 71,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/notifications/read'"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 80,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/notifications/read'"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 94,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/items/'+encodeURIComponent(n.targetId)"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 105,
+      "caller": "api.request",
+      "method": "blocked?'DELETE':'POST'",
+      "path": "'/api/v1/me/contacts/'+id+'/block'"
+    },
+    {
+      "file": "miniprogram/pages/messages/index.js",
+      "line": 120,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/contacts/'+id"
+    },
+    {
+      "file": "miniprogram/pages/my-bookings/index.js",
+      "line": 26,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/bookings'"
+    },
+    {
+      "file": "miniprogram/pages/my-bookings/index.js",
+      "line": 41,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/bookings/'+encodeURIComponent(id)+'/cancel'"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 8,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/publications/'+id+'/contact-settings'"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 8,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/publications/'+id+'/contact-settings'"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 19,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/publications'"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 33,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 67,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/publications/'+encodeURIComponent(f.id)"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 70,
+      "caller": "api.request",
+      "method": "'DELETE'",
+      "path": "'/api/v1/me/media/'+id"
+    },
+    {
+      "file": "miniprogram/pages/my-posts/index.js",
+      "line": 87,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/publications/'+encodeURIComponent(id)+'/withdraw'"
+    },
+    {
+      "file": "miniprogram/pages/publish/index.js",
+      "line": 103,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 15,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/trust'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 25,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 28,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/trust'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 59,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 83,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 98,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/profile'"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 110,
+      "caller": "api.request",
+      "method": "'DELETE'",
+      "path": "'/api/v1/me/media/'+id"
+    },
+    {
+      "file": "miniprogram/pages/publish-form/index.js",
+      "line": 133,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/publications'"
+    },
+    {
+      "file": "miniprogram/pages/regions/index.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/geo/reverse?latitude='+position.latitude+'&longitude='+position.longitude"
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 29,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/config'"
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 35,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/search/popular?cityCode='+encodeURIComponent(this.data.cityCode)"
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 79,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "(this.fromMap&&this.mapBounds?browse.mapUrl({...this.data,q,bounds:this.mapBounds},page):feedUrl({...this.data,q,page,...(this.fromDiscover?{type:'all',channel:this.data.type==='all'?'':this.data.type}:{})}))"
+    },
+    {
+      "file": "miniprogram/pages/search/index.js",
+      "line": 79,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/search/events'"
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 7,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/trust'"
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 8,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/phone/wechat'"
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 11,
+      "caller": "api.request",
+      "method": "'DELETE'",
+      "path": "'/api/v1/me/phone'"
+    },
+    {
+      "file": "miniprogram/pages/verification/index.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/trust/appeals'"
+    },
+    {
+      "file": "miniprogram/utils/account-draft.js",
+      "line": 9,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/utils/account-draft.js",
+      "line": 24,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/utils/account-draft.js",
+      "line": 40,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/utils/draft-summary.js",
+      "line": 10,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/draft'"
+    },
+    {
+      "file": "miniprogram/utils/personal-profile.js",
+      "line": 15,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/profile'"
+    },
+    {
+      "file": "miniprogram/utils/personal-profile.js",
+      "line": 30,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/profile'"
+    },
+    {
+      "file": "miniprogram/utils/points-workspace.js",
+      "line": 24,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/points/account'"
+    },
+    {
+      "file": "miniprogram/utils/points-workspace.js",
+      "line": 24,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/points/rules'"
+    },
+    {
+      "file": "miniprogram/utils/points-workspace.js",
+      "line": 29,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/points/'+view+'/'+encodeURIComponent(targetId)"
+    },
+    {
+      "file": "miniprogram/utils/points-workspace.js",
+      "line": 39,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/points/'+view+'?offset='+offset"
+    },
+    {
+      "file": "miniprogram/utils/points-workspace.js",
+      "line": 63,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/points/rewards/'+draft.id+'/appeals'"
+    },
+    {
+      "file": "miniprogram/utils/points-workspace.js",
+      "line": 72,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/points/appeals/'+id+'/withdraw'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 12,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/preferences'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/privacy-requests'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/blocks'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 24,
+      "caller": "api.request",
+      "method": "'PUT'",
+      "path": "'/api/v1/me/preferences'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 34,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/account-closure'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 41,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/privacy-requests'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 61,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/data-export?section='+section+(cursor?'&cursor='+encodeURIComponent(cursor):'')"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 76,
+      "caller": "api.request",
+      "method": "'POST'",
+      "path": "'/api/v1/me/privacy-requests/'+id+'/cancel'"
+    },
+    {
+      "file": "miniprogram/utils/privacy-settings.js",
+      "line": 79,
+      "caller": "api.request",
+      "method": "'DELETE'",
+      "path": "'/api/v1/me/blocks/'+id"
+    },
+    {
+      "file": "miniprogram/utils/theme.js",
+      "line": 37,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/preferences'"
+    },
+    {
+      "file": "miniprogram/utils/verification.js",
+      "line": 3,
+      "caller": "api.request",
+      "method": "'GET'",
+      "path": "'/api/v1/me/trust'"
+    },
+    {
+      "file": "miniprogram/utils/workflow-client.js",
+      "line": 13,
+      "caller": "api.request",
+      "method": "method",
+      "path": "url"
+    }
+  ]
+}

@@ -1,0 +1,1005 @@
+{
+  "checkedAt": "2026-11-17T22:32:59.811Z",
+  "scope": "existing local development database",
+  "loopbackPort": 62246,
+  "readOnly": true,
+  "server": {
+    "version": "16.15",
+    "read_only": "on",
+    "bytes": "12983319"
+  },
+  "currentRoleCapabilities": {
+    "rolsuper": true,
+    "rolcreaterole": true,
+    "rolcreatedb": true,
+    "rolbypassrls": true
+  },
+  "migrations": {
+    "altered": [],
+    "missing": [],
+    "unexpected": [],
+    "ok": true
+  },
+  "tables": [
+    "account_closure_executions",
+    "account_drafts",
+    "account_trust",
+    "ad_archive",
+    "ad_campaigns",
+    "ad_reservations",
+    "ad_slots",
+    "admin_audit_events",
+    "advertisers",
+    "app_identities",
+    "app_sessions",
+    "app_users",
+    "benefit_offers",
+    "benefit_orders",
+    "booking_requests",
+    "booking_submissions",
+    "business_case_events",
+    "business_cases",
+    "business_categories",
+    "closed_identity_fingerprints",
+    "configuration_audit",
+    "contact_messages",
+    "contact_requests",
+    "content_comments",
+    "content_images",
+    "content_likes",
+    "content_reports",
+    "data_export_events",
+    "home_content",
+    "home_content_reports",
+    "industry_credentials",
+    "industry_entries",
+    "industry_reports",
+    "industry_responses",
+    "industry_service_links",
+    "login_consent_events",
+    "maintenance_jobs",
+    "memorial_audit",
+    "memorial_authorizations",
+    "memorial_halls",
+    "memorial_proofs",
+    "memorial_reports",
+    "memorial_submissions",
+    "memorial_tributes",
+    "merchant_applications",
+    "merchant_license_files",
+    "merchant_members",
+    "operational_alerts",
+    "phone_access_events",
+    "phone_authorization_events",
+    "phone_binding_history",
+    "phone_consent_events",
+    "points_accounts",
+    "points_holds",
+    "points_ledger",
+    "points_reward_appeals",
+    "points_reward_events",
+    "points_rule_history",
+    "points_rules",
+    "privacy_requests",
+    "public_map_locations",
+    "publication_confirmations",
+    "publication_contact_settings",
+    "publication_expiry_reminders",
+    "publication_first_approvals",
+    "publication_status_history",
+    "publications",
+    "qualification_checks",
+    "risk_cases",
+    "saved_items",
+    "schema_migrations",
+    "search_popularity_daily",
+    "service_catalog",
+    "service_regions",
+    "trust_actions",
+    "trust_appeals",
+    "user_blocks",
+    "user_notifications",
+    "user_preferences",
+    "verified_merchants",
+    "verified_phones"
+  ],
+  "indexes": [
+    {
+      "tablename": "account_closure_executions",
+      "indexname": "account_closure_executions_pkey",
+      "indexdef": "CREATE UNIQUE INDEX account_closure_executions_pkey ON public.account_closure_executions USING btree (request_id)"
+    },
+    {
+      "tablename": "account_closure_executions",
+      "indexname": "account_closure_executions_user_id_key",
+      "indexdef": "CREATE UNIQUE INDEX account_closure_executions_user_id_key ON public.account_closure_executions USING btree (user_id)"
+    },
+    {
+      "tablename": "account_drafts",
+      "indexname": "account_drafts_images",
+      "indexdef": "CREATE INDEX account_drafts_images ON public.account_drafts USING gin (image_ids)"
+    },
+    {
+      "tablename": "account_drafts",
+      "indexname": "account_drafts_pkey",
+      "indexdef": "CREATE UNIQUE INDEX account_drafts_pkey ON public.account_drafts USING btree (user_id)"
+    },
+    {
+      "tablename": "account_trust",
+      "indexname": "account_trust_pkey",
+      "indexdef": "CREATE UNIQUE INDEX account_trust_pkey ON public.account_trust USING btree (user_id)"
+    },
+    {
+      "tablename": "ad_archive",
+      "indexname": "ad_archive_pkey",
+      "indexdef": "CREATE UNIQUE INDEX ad_archive_pkey ON public.ad_archive USING btree (id)"
+    },
+    {
+      "tablename": "ad_campaigns",
+      "indexname": "ad_campaigns_pkey",
+      "indexdef": "CREATE UNIQUE INDEX ad_campaigns_pkey ON public.ad_campaigns USING btree (id)"
+    },
+    {
+      "tablename": "ad_campaigns",
+      "indexname": "campaign_request_key",
+      "indexdef": "CREATE UNIQUE INDEX campaign_request_key ON public.ad_campaigns USING btree (user_id, client_key) WHERE (client_key IS NOT NULL)"
+    },
+    {
+      "tablename": "ad_reservations",
+      "indexname": "ad_reservations_pkey",
+      "indexdef": "CREATE UNIQUE INDEX ad_reservations_pkey ON public.ad_reservations USING btree (campaign_id)"
+    },
+    {
+      "tablename": "ad_reservations",
+      "indexname": "ad_reservations_points_entry_id_key",
+      "indexdef": "CREATE UNIQUE INDEX ad_reservations_points_entry_id_key ON public.ad_reservations USING btree (points_entry_id)"
+    },
+    {
+      "tablename": "ad_slots",
+      "indexname": "ad_delivery_slot",
+      "indexdef": "CREATE INDEX ad_delivery_slot ON public.ad_slots USING btree (region, starts_at, ends_at)"
+    },
+    {
+      "tablename": "ad_slots",
+      "indexname": "ad_slots_pkey",
+      "indexdef": "CREATE UNIQUE INDEX ad_slots_pkey ON public.ad_slots USING btree (id)"
+    },
+    {
+      "tablename": "ad_slots",
+      "indexname": "ad_slots_placement_region_starts_at_ends_at_key",
+      "indexdef": "CREATE UNIQUE INDEX ad_slots_placement_region_starts_at_ends_at_key ON public.ad_slots USING btree (placement, region, starts_at, ends_at)"
+    },
+    {
+      "tablename": "admin_audit_events",
+      "indexname": "admin_audit_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX admin_audit_events_pkey ON public.admin_audit_events USING btree (id)"
+    },
+    {
+      "tablename": "advertisers",
+      "indexname": "advertiser_request_key",
+      "indexdef": "CREATE UNIQUE INDEX advertiser_request_key ON public.advertisers USING btree (user_id, client_key) WHERE (client_key IS NOT NULL)"
+    },
+    {
+      "tablename": "advertisers",
+      "indexname": "advertisers_pkey",
+      "indexdef": "CREATE UNIQUE INDEX advertisers_pkey ON public.advertisers USING btree (id)"
+    },
+    {
+      "tablename": "app_identities",
+      "indexname": "app_identities_pkey",
+      "indexdef": "CREATE UNIQUE INDEX app_identities_pkey ON public.app_identities USING btree (provider, provider_id)"
+    },
+    {
+      "tablename": "app_sessions",
+      "indexname": "app_sessions_pkey",
+      "indexdef": "CREATE UNIQUE INDEX app_sessions_pkey ON public.app_sessions USING btree (token_sha256)"
+    },
+    {
+      "tablename": "app_sessions",
+      "indexname": "idx_app_sessions_expires",
+      "indexdef": "CREATE INDEX idx_app_sessions_expires ON public.app_sessions USING btree (expires_at)"
+    },
+    {
+      "tablename": "app_users",
+      "indexname": "app_users_pkey",
+      "indexdef": "CREATE UNIQUE INDEX app_users_pkey ON public.app_users USING btree (id)"
+    },
+    {
+      "tablename": "benefit_offers",
+      "indexname": "benefit_offers_pkey",
+      "indexdef": "CREATE UNIQUE INDEX benefit_offers_pkey ON public.benefit_offers USING btree (id)"
+    },
+    {
+      "tablename": "benefit_orders",
+      "indexname": "benefit_orders_hold_id_key",
+      "indexdef": "CREATE UNIQUE INDEX benefit_orders_hold_id_key ON public.benefit_orders USING btree (hold_id)"
+    },
+    {
+      "tablename": "benefit_orders",
+      "indexname": "benefit_orders_pkey",
+      "indexdef": "CREATE UNIQUE INDEX benefit_orders_pkey ON public.benefit_orders USING btree (id)"
+    },
+    {
+      "tablename": "benefit_orders",
+      "indexname": "benefit_orders_queue",
+      "indexdef": "CREATE INDEX benefit_orders_queue ON public.benefit_orders USING btree (status, created_at)"
+    },
+    {
+      "tablename": "benefit_orders",
+      "indexname": "benefit_orders_spend_id_key",
+      "indexdef": "CREATE UNIQUE INDEX benefit_orders_spend_id_key ON public.benefit_orders USING btree (spend_id)"
+    },
+    {
+      "tablename": "benefit_orders",
+      "indexname": "benefit_orders_user_id_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX benefit_orders_user_id_client_key_key ON public.benefit_orders USING btree (user_id, client_key)"
+    },
+    {
+      "tablename": "booking_requests",
+      "indexname": "booking_requests_id_owner",
+      "indexdef": "CREATE UNIQUE INDEX booking_requests_id_owner ON public.booking_requests USING btree (id, user_id)"
+    },
+    {
+      "tablename": "booking_requests",
+      "indexname": "booking_requests_pkey",
+      "indexdef": "CREATE UNIQUE INDEX booking_requests_pkey ON public.booking_requests USING btree (id)"
+    },
+    {
+      "tablename": "booking_requests",
+      "indexname": "idx_booking_requests_user",
+      "indexdef": "CREATE INDEX idx_booking_requests_user ON public.booking_requests USING btree (user_id, created_at DESC)"
+    },
+    {
+      "tablename": "booking_requests",
+      "indexname": "idx_booking_service",
+      "indexdef": "CREATE INDEX idx_booking_service ON public.booking_requests USING btree (service_id, status, created_at DESC)"
+    },
+    {
+      "tablename": "booking_requests",
+      "indexname": "uq_booking_active_slot",
+      "indexdef": "CREATE UNIQUE INDEX uq_booking_active_slot ON public.booking_requests USING btree (service_id, requested_at) WHERE ((status)::text = ANY ((ARRAY['pending_confirm'::character varying, 'confirmed'::character varying])::text[]))"
+    },
+    {
+      "tablename": "booking_submissions",
+      "indexname": "booking_submissions_booking",
+      "indexdef": "CREATE INDEX booking_submissions_booking ON public.booking_submissions USING btree (booking_id)"
+    },
+    {
+      "tablename": "booking_submissions",
+      "indexname": "booking_submissions_id_key",
+      "indexdef": "CREATE UNIQUE INDEX booking_submissions_id_key ON public.booking_submissions USING btree (id)"
+    },
+    {
+      "tablename": "booking_submissions",
+      "indexname": "booking_submissions_pkey",
+      "indexdef": "CREATE UNIQUE INDEX booking_submissions_pkey ON public.booking_submissions USING btree (user_id, client_key)"
+    },
+    {
+      "tablename": "business_case_events",
+      "indexname": "business_case_events_actor_scope_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX business_case_events_actor_scope_client_key_key ON public.business_case_events USING btree (actor_scope, client_key)"
+    },
+    {
+      "tablename": "business_case_events",
+      "indexname": "business_case_events_history",
+      "indexdef": "CREATE INDEX business_case_events_history ON public.business_case_events USING btree (case_id, created_at, id)"
+    },
+    {
+      "tablename": "business_case_events",
+      "indexname": "business_case_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX business_case_events_pkey ON public.business_case_events USING btree (id)"
+    },
+    {
+      "tablename": "business_case_events",
+      "indexname": "business_case_one_feedback",
+      "indexdef": "CREATE UNIQUE INDEX business_case_one_feedback ON public.business_case_events USING btree (case_id, actor_id) WHERE (action = 'feedback'::text)"
+    },
+    {
+      "tablename": "business_cases",
+      "indexname": "business_cases_applicant",
+      "indexdef": "CREATE INDEX business_cases_applicant ON public.business_cases USING btree (applicant_id, updated_at DESC, id)"
+    },
+    {
+      "tablename": "business_cases",
+      "indexname": "business_cases_disputes",
+      "indexdef": "CREATE INDEX business_cases_disputes ON public.business_cases USING btree (status, updated_at) WHERE (status = 'disputed'::text)"
+    },
+    {
+      "tablename": "business_cases",
+      "indexname": "business_cases_owner",
+      "indexdef": "CREATE INDEX business_cases_owner ON public.business_cases USING btree (owner_id, updated_at DESC, id)"
+    },
+    {
+      "tablename": "business_cases",
+      "indexname": "business_cases_pkey",
+      "indexdef": "CREATE UNIQUE INDEX business_cases_pkey ON public.business_cases USING btree (id)"
+    },
+    {
+      "tablename": "business_cases",
+      "indexname": "business_cases_source_kind_source_id_key",
+      "indexdef": "CREATE UNIQUE INDEX business_cases_source_kind_source_id_key ON public.business_cases USING btree (source_kind, source_id)"
+    },
+    {
+      "tablename": "business_categories",
+      "indexname": "business_categories_pkey",
+      "indexdef": "CREATE UNIQUE INDEX business_categories_pkey ON public.business_categories USING btree (id)"
+    },
+    {
+      "tablename": "closed_identity_fingerprints",
+      "indexname": "closed_identity_fingerprints_pkey",
+      "indexdef": "CREATE UNIQUE INDEX closed_identity_fingerprints_pkey ON public.closed_identity_fingerprints USING btree (fingerprint)"
+    },
+    {
+      "tablename": "configuration_audit",
+      "indexname": "configuration_audit_pkey",
+      "indexdef": "CREATE UNIQUE INDEX configuration_audit_pkey ON public.configuration_audit USING btree (id)"
+    },
+    {
+      "tablename": "contact_messages",
+      "indexname": "contact_messages_order",
+      "indexdef": "CREATE INDEX contact_messages_order ON public.contact_messages USING btree (contact_id, created_at, id)"
+    },
+    {
+      "tablename": "contact_messages",
+      "indexname": "contact_messages_pkey",
+      "indexdef": "CREATE UNIQUE INDEX contact_messages_pkey ON public.contact_messages USING btree (id)"
+    },
+    {
+      "tablename": "contact_messages",
+      "indexname": "contact_messages_sender_id_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX contact_messages_sender_id_client_key_key ON public.contact_messages USING btree (sender_id, client_key)"
+    },
+    {
+      "tablename": "contact_requests",
+      "indexname": "contact_one_pending",
+      "indexdef": "CREATE UNIQUE INDEX contact_one_pending ON public.contact_requests USING btree (publication_id, requester_id) WHERE ((status)::text = 'pending'::text)"
+    },
+    {
+      "tablename": "contact_requests",
+      "indexname": "contact_pending_order",
+      "indexdef": "CREATE INDEX contact_pending_order ON public.contact_requests USING btree (created_at, id) WHERE ((status)::text = 'pending'::text)"
+    },
+    {
+      "tablename": "contact_requests",
+      "indexname": "contact_requests_pkey",
+      "indexdef": "CREATE UNIQUE INDEX contact_requests_pkey ON public.contact_requests USING btree (id)"
+    },
+    {
+      "tablename": "content_comments",
+      "indexname": "comment_request_key",
+      "indexdef": "CREATE UNIQUE INDEX comment_request_key ON public.content_comments USING btree (user_id, client_key) WHERE (client_key IS NOT NULL)"
+    },
+    {
+      "tablename": "content_comments",
+      "indexname": "comments_parent",
+      "indexdef": "CREATE INDEX comments_parent ON public.content_comments USING btree (parent_id) WHERE (parent_id IS NOT NULL)"
+    },
+    {
+      "tablename": "content_comments",
+      "indexname": "comments_publication",
+      "indexdef": "CREATE INDEX comments_publication ON public.content_comments USING btree (publication_id, status, created_at)"
+    },
+    {
+      "tablename": "content_comments",
+      "indexname": "content_comments_pkey",
+      "indexdef": "CREATE UNIQUE INDEX content_comments_pkey ON public.content_comments USING btree (id)"
+    },
+    {
+      "tablename": "content_images",
+      "indexname": "content_images_hash",
+      "indexdef": "CREATE INDEX content_images_hash ON public.content_images USING btree (content_sha256)"
+    },
+    {
+      "tablename": "content_images",
+      "indexname": "content_images_owner",
+      "indexdef": "CREATE INDEX content_images_owner ON public.content_images USING btree (user_id, created_at)"
+    },
+    {
+      "tablename": "content_images",
+      "indexname": "content_images_pkey",
+      "indexdef": "CREATE UNIQUE INDEX content_images_pkey ON public.content_images USING btree (id)"
+    },
+    {
+      "tablename": "content_likes",
+      "indexname": "content_likes_pkey",
+      "indexdef": "CREATE UNIQUE INDEX content_likes_pkey ON public.content_likes USING btree (user_id, publication_id)"
+    },
+    {
+      "tablename": "content_reports",
+      "indexname": "content_reports_pkey",
+      "indexdef": "CREATE UNIQUE INDEX content_reports_pkey ON public.content_reports USING btree (id)"
+    },
+    {
+      "tablename": "content_reports",
+      "indexname": "idx_reports_queue",
+      "indexdef": "CREATE INDEX idx_reports_queue ON public.content_reports USING btree (status, created_at)"
+    },
+    {
+      "tablename": "content_reports",
+      "indexname": "idx_reports_user_open_target",
+      "indexdef": "CREATE UNIQUE INDEX idx_reports_user_open_target ON public.content_reports USING btree (user_id, target_type, target_id) WHERE ((status)::text = 'pending'::text)"
+    },
+    {
+      "tablename": "data_export_events",
+      "indexname": "data_export_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX data_export_events_pkey ON public.data_export_events USING btree (id)"
+    },
+    {
+      "tablename": "data_export_events",
+      "indexname": "data_export_quota",
+      "indexdef": "CREATE INDEX data_export_quota ON public.data_export_events USING btree (user_id, created_at)"
+    },
+    {
+      "tablename": "home_content",
+      "indexname": "home_content_delivery",
+      "indexdef": "CREATE INDEX home_content_delivery ON public.home_content USING btree (city_code, status, starts_at, ends_at)"
+    },
+    {
+      "tablename": "home_content",
+      "indexname": "home_content_pkey",
+      "indexdef": "CREATE UNIQUE INDEX home_content_pkey ON public.home_content USING btree (id)"
+    },
+    {
+      "tablename": "home_content_reports",
+      "indexname": "home_content_reports_pkey",
+      "indexdef": "CREATE UNIQUE INDEX home_content_reports_pkey ON public.home_content_reports USING btree (id)"
+    },
+    {
+      "tablename": "home_content_reports",
+      "indexname": "home_report_pending",
+      "indexdef": "CREATE UNIQUE INDEX home_report_pending ON public.home_content_reports USING btree (user_id, content_id) WHERE ((status)::text = 'pending'::text)"
+    },
+    {
+      "tablename": "home_content_reports",
+      "indexname": "home_report_queue",
+      "indexdef": "CREATE INDEX home_report_queue ON public.home_content_reports USING btree (status, created_at, id)"
+    },
+    {
+      "tablename": "industry_credentials",
+      "indexname": "industry_credentials_pkey",
+      "indexdef": "CREATE UNIQUE INDEX industry_credentials_pkey ON public.industry_credentials USING btree (id)"
+    },
+    {
+      "tablename": "industry_credentials",
+      "indexname": "industry_credentials_user_id_project_id_key",
+      "indexdef": "CREATE UNIQUE INDEX industry_credentials_user_id_project_id_key ON public.industry_credentials USING btree (user_id, project_id)"
+    },
+    {
+      "tablename": "industry_entries",
+      "indexname": "industry_entries_pkey",
+      "indexdef": "CREATE UNIQUE INDEX industry_entries_pkey ON public.industry_entries USING btree (id)"
+    },
+    {
+      "tablename": "industry_entries",
+      "indexname": "industry_entries_review",
+      "indexdef": "CREATE INDEX industry_entries_review ON public.industry_entries USING btree (status, created_at)"
+    },
+    {
+      "tablename": "industry_entries",
+      "indexname": "industry_entries_user_id_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX industry_entries_user_id_client_key_key ON public.industry_entries USING btree (user_id, client_key)"
+    },
+    {
+      "tablename": "industry_reports",
+      "indexname": "industry_one_pending_report",
+      "indexdef": "CREATE UNIQUE INDEX industry_one_pending_report ON public.industry_reports USING btree (entry_id, user_id) WHERE (status = 'pending'::text)"
+    },
+    {
+      "tablename": "industry_reports",
+      "indexname": "industry_reports_pkey",
+      "indexdef": "CREATE UNIQUE INDEX industry_reports_pkey ON public.industry_reports USING btree (id)"
+    },
+    {
+      "tablename": "industry_responses",
+      "indexname": "industry_one_live_response",
+      "indexdef": "CREATE UNIQUE INDEX industry_one_live_response ON public.industry_responses USING btree (entry_id, user_id) WHERE (status = ANY (ARRAY['pending'::text, 'accepted'::text]))"
+    },
+    {
+      "tablename": "industry_responses",
+      "indexname": "industry_responses_pkey",
+      "indexdef": "CREATE UNIQUE INDEX industry_responses_pkey ON public.industry_responses USING btree (id)"
+    },
+    {
+      "tablename": "industry_responses",
+      "indexname": "industry_responses_user_id_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX industry_responses_user_id_client_key_key ON public.industry_responses USING btree (user_id, client_key)"
+    },
+    {
+      "tablename": "industry_service_links",
+      "indexname": "industry_service_current",
+      "indexdef": "CREATE UNIQUE INDEX industry_service_current ON public.industry_service_links USING btree (entry_id) WHERE active"
+    },
+    {
+      "tablename": "industry_service_links",
+      "indexname": "industry_service_links_pkey",
+      "indexdef": "CREATE UNIQUE INDEX industry_service_links_pkey ON public.industry_service_links USING btree (id)"
+    },
+    {
+      "tablename": "industry_service_links",
+      "indexname": "industry_service_links_service_id_key",
+      "indexdef": "CREATE UNIQUE INDEX industry_service_links_service_id_key ON public.industry_service_links USING btree (service_id)"
+    },
+    {
+      "tablename": "login_consent_events",
+      "indexname": "login_consent_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX login_consent_events_pkey ON public.login_consent_events USING btree (id)"
+    },
+    {
+      "tablename": "maintenance_jobs",
+      "indexname": "maintenance_jobs_pkey",
+      "indexdef": "CREATE UNIQUE INDEX maintenance_jobs_pkey ON public.maintenance_jobs USING btree (name)"
+    },
+    {
+      "tablename": "memorial_audit",
+      "indexname": "memorial_audit_hall",
+      "indexdef": "CREATE INDEX memorial_audit_hall ON public.memorial_audit USING btree (hall_id, created_at, id)"
+    },
+    {
+      "tablename": "memorial_audit",
+      "indexname": "memorial_audit_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_audit_pkey ON public.memorial_audit USING btree (id)"
+    },
+    {
+      "tablename": "memorial_authorizations",
+      "indexname": "memorial_authorizations_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_authorizations_pkey ON public.memorial_authorizations USING btree (id)"
+    },
+    {
+      "tablename": "memorial_halls",
+      "indexname": "memorial_halls_owner_id_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX memorial_halls_owner_id_client_key_key ON public.memorial_halls USING btree (owner_id, client_key)"
+    },
+    {
+      "tablename": "memorial_halls",
+      "indexname": "memorial_halls_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_halls_pkey ON public.memorial_halls USING btree (id)"
+    },
+    {
+      "tablename": "memorial_halls",
+      "indexname": "memorial_owner",
+      "indexdef": "CREATE INDEX memorial_owner ON public.memorial_halls USING btree (owner_id, updated_at DESC, id)"
+    },
+    {
+      "tablename": "memorial_halls",
+      "indexname": "memorial_public",
+      "indexdef": "CREATE INDEX memorial_public ON public.memorial_halls USING btree (updated_at DESC, id) WHERE (((status)::text = 'published'::text) AND public_allowed)"
+    },
+    {
+      "tablename": "memorial_proofs",
+      "indexname": "memorial_proofs_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_proofs_pkey ON public.memorial_proofs USING btree (id)"
+    },
+    {
+      "tablename": "memorial_reports",
+      "indexname": "memorial_pending_report",
+      "indexdef": "CREATE UNIQUE INDEX memorial_pending_report ON public.memorial_reports USING btree (hall_id, user_id) WHERE ((status)::text = 'pending'::text)"
+    },
+    {
+      "tablename": "memorial_reports",
+      "indexname": "memorial_reports_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_reports_pkey ON public.memorial_reports USING btree (id)"
+    },
+    {
+      "tablename": "memorial_submissions",
+      "indexname": "memorial_submissions_hall_id_revision_key",
+      "indexdef": "CREATE UNIQUE INDEX memorial_submissions_hall_id_revision_key ON public.memorial_submissions USING btree (hall_id, revision)"
+    },
+    {
+      "tablename": "memorial_submissions",
+      "indexname": "memorial_submissions_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_submissions_pkey ON public.memorial_submissions USING btree (id)"
+    },
+    {
+      "tablename": "memorial_tributes",
+      "indexname": "memorial_tributes_hall_id_user_id_kind_tribute_day_key",
+      "indexdef": "CREATE UNIQUE INDEX memorial_tributes_hall_id_user_id_kind_tribute_day_key ON public.memorial_tributes USING btree (hall_id, user_id, kind, tribute_day)"
+    },
+    {
+      "tablename": "memorial_tributes",
+      "indexname": "memorial_tributes_pkey",
+      "indexdef": "CREATE UNIQUE INDEX memorial_tributes_pkey ON public.memorial_tributes USING btree (id)"
+    },
+    {
+      "tablename": "merchant_applications",
+      "indexname": "idx_merchant_applications_user",
+      "indexdef": "CREATE INDEX idx_merchant_applications_user ON public.merchant_applications USING btree (user_id, created_at DESC)"
+    },
+    {
+      "tablename": "merchant_applications",
+      "indexname": "merchant_applications_pkey",
+      "indexdef": "CREATE UNIQUE INDEX merchant_applications_pkey ON public.merchant_applications USING btree (id)"
+    },
+    {
+      "tablename": "merchant_license_files",
+      "indexname": "merchant_license_files_pkey",
+      "indexdef": "CREATE UNIQUE INDEX merchant_license_files_pkey ON public.merchant_license_files USING btree (id)"
+    },
+    {
+      "tablename": "merchant_members",
+      "indexname": "idx_merchant_members_user",
+      "indexdef": "CREATE INDEX idx_merchant_members_user ON public.merchant_members USING btree (user_id, status)"
+    },
+    {
+      "tablename": "merchant_members",
+      "indexname": "merchant_members_merchant_id_user_id_key",
+      "indexdef": "CREATE UNIQUE INDEX merchant_members_merchant_id_user_id_key ON public.merchant_members USING btree (merchant_id, user_id)"
+    },
+    {
+      "tablename": "merchant_members",
+      "indexname": "merchant_members_pkey",
+      "indexdef": "CREATE UNIQUE INDEX merchant_members_pkey ON public.merchant_members USING btree (id)"
+    },
+    {
+      "tablename": "operational_alerts",
+      "indexname": "operational_alerts_job_name_key",
+      "indexdef": "CREATE UNIQUE INDEX operational_alerts_job_name_key ON public.operational_alerts USING btree (job_name)"
+    },
+    {
+      "tablename": "operational_alerts",
+      "indexname": "operational_alerts_pkey",
+      "indexdef": "CREATE UNIQUE INDEX operational_alerts_pkey ON public.operational_alerts USING btree (id)"
+    },
+    {
+      "tablename": "phone_access_events",
+      "indexname": "phone_access_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX phone_access_events_pkey ON public.phone_access_events USING btree (id)"
+    },
+    {
+      "tablename": "phone_access_events",
+      "indexname": "phone_access_quota",
+      "indexdef": "CREATE INDEX phone_access_quota ON public.phone_access_events USING btree (viewer_id, created_at)"
+    },
+    {
+      "tablename": "phone_authorization_events",
+      "indexname": "phone_authorization_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX phone_authorization_events_pkey ON public.phone_authorization_events USING btree (id)"
+    },
+    {
+      "tablename": "phone_binding_history",
+      "indexname": "phone_binding_history_lookup",
+      "indexdef": "CREATE INDEX phone_binding_history_lookup ON public.phone_binding_history USING btree (number_hmac)"
+    },
+    {
+      "tablename": "phone_binding_history",
+      "indexname": "phone_binding_history_pkey",
+      "indexdef": "CREATE UNIQUE INDEX phone_binding_history_pkey ON public.phone_binding_history USING btree (user_id, number_hmac)"
+    },
+    {
+      "tablename": "phone_consent_events",
+      "indexname": "phone_consent_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX phone_consent_events_pkey ON public.phone_consent_events USING btree (id)"
+    },
+    {
+      "tablename": "points_accounts",
+      "indexname": "points_accounts_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_accounts_pkey ON public.points_accounts USING btree (user_id)"
+    },
+    {
+      "tablename": "points_holds",
+      "indexname": "expired_points_holds",
+      "indexdef": "CREATE INDEX expired_points_holds ON public.points_holds USING btree (expires_at, id) WHERE (status = 'held'::text)"
+    },
+    {
+      "tablename": "points_holds",
+      "indexname": "points_holds_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_holds_pkey ON public.points_holds USING btree (id)"
+    },
+    {
+      "tablename": "points_ledger",
+      "indexname": "points_history",
+      "indexdef": "CREATE INDEX points_history ON public.points_ledger USING btree (user_id, created_at DESC, id)"
+    },
+    {
+      "tablename": "points_ledger",
+      "indexname": "points_ledger_idempotency_key_key",
+      "indexdef": "CREATE UNIQUE INDEX points_ledger_idempotency_key_key ON public.points_ledger USING btree (idempotency_key)"
+    },
+    {
+      "tablename": "points_ledger",
+      "indexname": "points_ledger_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_ledger_pkey ON public.points_ledger USING btree (id)"
+    },
+    {
+      "tablename": "points_ledger",
+      "indexname": "points_one_reversal",
+      "indexdef": "CREATE UNIQUE INDEX points_one_reversal ON public.points_ledger USING btree (original_id) WHERE (kind = 'reversal'::text)"
+    },
+    {
+      "tablename": "points_reward_appeals",
+      "indexname": "points_reward_appeals_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_reward_appeals_pkey ON public.points_reward_appeals USING btree (id)"
+    },
+    {
+      "tablename": "points_reward_appeals",
+      "indexname": "points_reward_appeals_user_id_client_key_key",
+      "indexdef": "CREATE UNIQUE INDEX points_reward_appeals_user_id_client_key_key ON public.points_reward_appeals USING btree (user_id, client_key)"
+    },
+    {
+      "tablename": "points_reward_appeals",
+      "indexname": "reward_appeals_owner",
+      "indexdef": "CREATE INDEX reward_appeals_owner ON public.points_reward_appeals USING btree (user_id, created_at DESC, id)"
+    },
+    {
+      "tablename": "points_reward_appeals",
+      "indexname": "reward_appeals_pending",
+      "indexdef": "CREATE INDEX reward_appeals_pending ON public.points_reward_appeals USING btree (created_at, id) WHERE (status = 'pending'::text)"
+    },
+    {
+      "tablename": "points_reward_appeals",
+      "indexname": "reward_one_decision_per_version",
+      "indexdef": "CREATE UNIQUE INDEX reward_one_decision_per_version ON public.points_reward_appeals USING btree (reward_id, source_reward_revision) WHERE (status = ANY (ARRAY['pending'::text, 'accepted'::text, 'rejected'::text]))"
+    },
+    {
+      "tablename": "points_reward_appeals",
+      "indexname": "reward_one_open_appeal",
+      "indexdef": "CREATE UNIQUE INDEX reward_one_open_appeal ON public.points_reward_appeals USING btree (reward_id) WHERE (status = 'pending'::text)"
+    },
+    {
+      "tablename": "points_reward_events",
+      "indexname": "points_reward_events_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_reward_events_pkey ON public.points_reward_events USING btree (id)"
+    },
+    {
+      "tablename": "points_reward_events",
+      "indexname": "points_reward_events_rule_code_publication_id_actor_id_key",
+      "indexdef": "CREATE UNIQUE INDEX points_reward_events_rule_code_publication_id_actor_id_key ON public.points_reward_events USING btree (rule_code, publication_id, actor_id)"
+    },
+    {
+      "tablename": "points_reward_events",
+      "indexname": "reward_active",
+      "indexdef": "CREATE INDEX reward_active ON public.points_reward_events USING btree (updated_at, id) WHERE (status = ANY (ARRAY['settled'::text, 'reversal_pending'::text]))"
+    },
+    {
+      "tablename": "points_reward_events",
+      "indexname": "reward_daily_quota",
+      "indexdef": "CREATE INDEX reward_daily_quota ON public.points_reward_events USING btree (user_id, event_day, rule_code, publication_id)"
+    },
+    {
+      "tablename": "points_reward_events",
+      "indexname": "reward_pending_due",
+      "indexdef": "CREATE INDEX reward_pending_due ON public.points_reward_events USING btree (settle_after, id) WHERE (status = ANY (ARRAY['pending'::text, 'review'::text]))"
+    },
+    {
+      "tablename": "points_rule_history",
+      "indexname": "points_rule_history_code_revision_key",
+      "indexdef": "CREATE UNIQUE INDEX points_rule_history_code_revision_key ON public.points_rule_history USING btree (code, revision)"
+    },
+    {
+      "tablename": "points_rule_history",
+      "indexname": "points_rule_history_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_rule_history_pkey ON public.points_rule_history USING btree (id)"
+    },
+    {
+      "tablename": "points_rules",
+      "indexname": "points_rules_pkey",
+      "indexdef": "CREATE UNIQUE INDEX points_rules_pkey ON public.points_rules USING btree (code)"
+    },
+    {
+      "tablename": "privacy_requests",
+      "indexname": "privacy_request_open",
+      "indexdef": "CREATE UNIQUE INDEX privacy_request_open ON public.privacy_requests USING btree (user_id, kind) WHERE ((status)::text = ANY ((ARRAY['pending'::character varying, 'reviewing'::character varying])::text[]))"
+    },
+    {
+      "tablename": "privacy_requests",
+      "indexname": "privacy_request_queue",
+      "indexdef": "CREATE INDEX privacy_request_queue ON public.privacy_requests USING btree (status, created_at)"
+    },
+    {
+      "tablename": "privacy_requests",
+      "indexname": "privacy_requests_pkey",
+      "indexdef": "CREATE UNIQUE INDEX privacy_requests_pkey ON public.privacy_requests USING btree (id)"
+    },
+    {
+      "tablename": "public_map_locations",
+      "indexname": "public_map_city_bounds",
+      "indexdef": "CREATE INDEX public_map_city_bounds ON public.public_map_locations USING btree (city_code, latitude, longitude) WHERE approved"
+    },
+    {
+      "tablename": "public_map_locations",
+      "indexname": "public_map_locations_pkey",
+      "indexdef": "CREATE UNIQUE INDEX public_map_locations_pkey ON public.public_map_locations USING btree (item_id)"
+    },
+    {
+      "tablename": "publication_confirmations",
+      "indexname": "publication_confirmations_pkey",
+      "indexdef": "CREATE UNIQUE INDEX publication_confirmations_pkey ON public.publication_confirmations USING btree (id)"
+    },
+    {
+      "tablename": "publication_confirmations",
+      "indexname": "publication_confirmations_publication_id_target_kind_conten_key",
+      "indexdef": "CREATE UNIQUE INDEX publication_confirmations_publication_id_target_kind_conten_key ON public.publication_confirmations USING btree (publication_id, target_kind, content_revision)"
+    },
+    {
+      "tablename": "publication_confirmations",
+      "indexname": "publication_confirmations_user",
+      "indexdef": "CREATE INDEX publication_confirmations_user ON public.publication_confirmations USING btree (user_id, confirmed_at DESC)"
+    },
+    {
+      "tablename": "publication_contact_settings",
+      "indexname": "publication_contact_settings_pkey",
+      "indexdef": "CREATE UNIQUE INDEX publication_contact_settings_pkey ON public.publication_contact_settings USING btree (publication_id)"
+    },
+    {
+      "tablename": "publication_expiry_reminders",
+      "indexname": "publication_expiry_reminders_pkey",
+      "indexdef": "CREATE UNIQUE INDEX publication_expiry_reminders_pkey ON public.publication_expiry_reminders USING btree (publication_id, expires_at, stage)"
+    },
+    {
+      "tablename": "publication_first_approvals",
+      "indexname": "publication_first_approvals_pkey",
+      "indexdef": "CREATE UNIQUE INDEX publication_first_approvals_pkey ON public.publication_first_approvals USING btree (publication_id)"
+    },
+    {
+      "tablename": "publication_status_history",
+      "indexname": "publication_status_history_pkey",
+      "indexdef": "CREATE UNIQUE INDEX publication_status_history_pkey ON public.publication_status_history USING btree (id)"
+    },
+    {
+      "tablename": "publication_status_history",
+      "indexname": "publication_status_history_target",
+      "indexdef": "CREATE INDEX publication_status_history_target ON public.publication_status_history USING btree (publication_id, recorded_at, id)"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "idx_publications_feed",
+      "indexdef": "CREATE INDEX idx_publications_feed ON public.publications USING btree (status, type, district, created_at DESC)"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "idx_publications_user",
+      "indexdef": "CREATE INDEX idx_publications_user ON public.publications USING btree (user_id, created_at DESC)"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "publication_pending_order",
+      "indexdef": "CREATE INDEX publication_pending_order ON public.publications USING btree (created_at, id) WHERE ((status)::text = 'pending'::text)"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "publication_request_key",
+      "indexdef": "CREATE UNIQUE INDEX publication_request_key ON public.publications USING btree (user_id, client_key) WHERE (client_key IS NOT NULL)"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "publications_expiry_scan",
+      "indexdef": "CREATE INDEX publications_expiry_scan ON public.publications USING btree (expires_at, id) WHERE (((status)::text = 'published'::text) AND (expires_at IS NOT NULL))"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "publications_pkey",
+      "indexdef": "CREATE UNIQUE INDEX publications_pkey ON public.publications USING btree (id)"
+    },
+    {
+      "tablename": "publications",
+      "indexname": "reward_milestones",
+      "indexdef": "CREATE INDEX reward_milestones ON public.publications USING btree (reviewed_at, id) WHERE (((status)::text = 'published'::text) AND (NOT is_test))"
+    },
+    {
+      "tablename": "qualification_checks",
+      "indexname": "qualification_checks_pkey",
+      "indexdef": "CREATE UNIQUE INDEX qualification_checks_pkey ON public.qualification_checks USING btree (id)"
+    },
+    {
+      "tablename": "qualification_checks",
+      "indexname": "qualification_checks_user_id_scope_key",
+      "indexdef": "CREATE UNIQUE INDEX qualification_checks_user_id_scope_key ON public.qualification_checks USING btree (user_id, scope)"
+    },
+    {
+      "tablename": "risk_cases",
+      "indexname": "risk_cases_pkey",
+      "indexdef": "CREATE UNIQUE INDEX risk_cases_pkey ON public.risk_cases USING btree (id)"
+    },
+    {
+      "tablename": "risk_cases",
+      "indexname": "risk_pending_order",
+      "indexdef": "CREATE INDEX risk_pending_order ON public.risk_cases USING btree (created_at, id) WHERE (status = 'pending'::text)"
+    },
+    {
+      "tablename": "saved_items",
+      "indexname": "saved_items_pkey",
+      "indexdef": "CREATE UNIQUE INDEX saved_items_pkey ON public.saved_items USING btree (user_id, target_id)"
+    },
+    {
+      "tablename": "schema_migrations",
+      "indexname": "schema_migrations_pkey",
+      "indexdef": "CREATE UNIQUE INDEX schema_migrations_pkey ON public.schema_migrations USING btree (name)"
+    },
+    {
+      "tablename": "search_popularity_daily",
+      "indexname": "search_popularity_daily_pkey",
+      "indexdef": "CREATE UNIQUE INDEX search_popularity_daily_pkey ON public.search_popularity_daily USING btree (city_code, term, day)"
+    },
+    {
+      "tablename": "service_catalog",
+      "indexname": "idx_service_catalog_merchant",
+      "indexdef": "CREATE INDEX idx_service_catalog_merchant ON public.service_catalog USING btree (merchant_id, status)"
+    },
+    {
+      "tablename": "service_catalog",
+      "indexname": "service_catalog_pkey",
+      "indexdef": "CREATE UNIQUE INDEX service_catalog_pkey ON public.service_catalog USING btree (id)"
+    },
+    {
+      "tablename": "service_catalog",
+      "indexname": "service_gallery_images",
+      "indexdef": "CREATE INDEX service_gallery_images ON public.service_catalog USING gin (image_ids)"
+    },
+    {
+      "tablename": "service_regions",
+      "indexname": "idx_service_regions_enabled",
+      "indexdef": "CREATE INDEX idx_service_regions_enabled ON public.service_regions USING btree (enabled, name)"
+    },
+    {
+      "tablename": "service_regions",
+      "indexname": "service_regions_name_key",
+      "indexdef": "CREATE UNIQUE INDEX service_regions_name_key ON public.service_regions USING btree (name)"
+    },
+    {
+      "tablename": "service_regions",
+      "indexname": "service_regions_pkey",
+      "indexdef": "CREATE UNIQUE INDEX service_regions_pkey ON public.service_regions USING btree (id)"
+    },
+    {
+      "tablename": "trust_actions",
+      "indexname": "trust_actions_pkey",
+      "indexdef": "CREATE UNIQUE INDEX trust_actions_pkey ON public.trust_actions USING btree (id)"
+    },
+    {
+      "tablename": "trust_appeals",
+      "indexname": "trust_appeals_pkey",
+      "indexdef": "CREATE UNIQUE INDEX trust_appeals_pkey ON public.trust_appeals USING btree (id)"
+    },
+    {
+      "tablename": "trust_appeals",
+      "indexname": "trust_one_open_appeal",
+      "indexdef": "CREATE UNIQUE INDEX trust_one_open_appeal ON public.trust_appeals USING btree (user_id, action_id) WHERE (status = 'pending'::text)"
+    },
+    {
+      "tablename": "user_blocks",
+      "indexname": "user_blocks_pkey",
+      "indexdef": "CREATE UNIQUE INDEX user_blocks_pkey ON public.user_blocks USING btree (user_id, blocked_user_id)"
+    },
+    {
+      "tablename": "user_notifications",
+      "indexname": "notifications_inbox",
+      "indexdef": "CREATE INDEX notifications_inbox ON public.user_notifications USING btree (user_id, created_at DESC, id DESC)"
+    },
+    {
+      "tablename": "user_notifications",
+      "indexname": "user_notifications_pkey",
+      "indexdef": "CREATE UNIQUE INDEX user_notifications_pkey ON public.user_notifications USING btree (id)"
+    },
+    {
+      "tablename": "user_preferences",
+      "indexname": "user_preferences_pkey",
+      "indexdef": "CREATE UNIQUE INDEX user_preferences_pkey ON public.user_preferences USING btree (user_id)"
+    },
+    {
+      "tablename": "verified_merchants",
+      "indexname": "verified_merchants_application_id_key",
+      "indexdef": "CREATE UNIQUE INDEX verified_merchants_application_id_key ON public.verified_merchants USING btree (application_id)"
+    },
+    {
+      "tablename": "verified_merchants",
+      "indexname": "verified_merchants_pkey",
+      "indexdef": "CREATE UNIQUE INDEX verified_merchants_pkey ON public.verified_merchants USING btree (id)"
+    },
+    {
+      "tablename": "verified_phones",
+      "indexname": "verified_phones_pkey",
+      "indexdef": "CREATE UNIQUE INDEX verified_phones_pkey ON public.verified_phones USING btree (user_id)"
+    }
+  ],
+  "aggregateCounts": {
+    "publications": 97,
+    "booking_requests": 13,
+    "verified_merchants": 15,
+    "merchant_applications": 16,
+    "privacy_requests": 6,
+    "industry_entries": 0,
+    "business_cases": 0,
+    "benefit_orders": 0,
+    "admin_audit_events": 173,
+    "content_images": 21
+  }
+}

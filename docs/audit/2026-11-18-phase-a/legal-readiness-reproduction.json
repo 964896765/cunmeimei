@@ -1,0 +1,6 @@
+{
+  "scope": "pure function with fictional example.invalid email, no login or service calls",
+  "configured": true,
+  "addressPlaceholder": true,
+  "phonePlaceholder": true
+}

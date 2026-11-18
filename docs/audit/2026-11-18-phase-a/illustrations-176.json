@@ -1,0 +1,1762 @@
+[
+  {
+    "id": "C05G02S01",
+    "name": "商铺租赁",
+    "industryId": "C05",
+    "industry": "房屋租售",
+    "groupId": "C05G02",
+    "group": "商业地产",
+    "path": "/category-art/assets/categories/C05/C05G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C05G02S04",
+    "name": "车位租售",
+    "industryId": "C05",
+    "industry": "房屋租售",
+    "groupId": "C05G02",
+    "group": "商业地产",
+    "path": "/category-art/assets/categories/C05/C05G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C05G03S02",
+    "name": "房屋托管",
+    "industryId": "C05",
+    "industry": "房屋租售",
+    "groupId": "C05G03",
+    "group": "房产配套",
+    "path": "/category-art/assets/categories/C05/C05G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C05G03S03",
+    "name": "物业管理",
+    "industryId": "C05",
+    "industry": "房屋租售",
+    "groupId": "C05G03",
+    "group": "房产配套",
+    "path": "/category-art/assets/categories/C05/C05G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G01S01",
+    "name": "电影院",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G01",
+    "group": "影音娱乐",
+    "path": "/category-art/assets/categories/C06/C06G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G01S02",
+    "name": "KTV",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G01",
+    "group": "影音娱乐",
+    "path": "/category-art/assets/categories/C06/C06G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G01S03",
+    "name": "清吧酒吧",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G01",
+    "group": "影音娱乐",
+    "path": "/category-art/assets/categories/C06/C06G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G01S04",
+    "name": "演出剧场",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G01",
+    "group": "影音娱乐",
+    "path": "/category-art/assets/categories/C06/C06G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G01S05",
+    "name": "艺术展览",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G01",
+    "group": "影音娱乐",
+    "path": "/category-art/assets/categories/C06/C06G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G02S03",
+    "name": "桌游店",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G02",
+    "group": "社交游戏",
+    "path": "/category-art/assets/categories/C06/C06G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G02S04",
+    "name": "棋牌室",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G02",
+    "group": "社交游戏",
+    "path": "/category-art/assets/categories/C06/C06G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G02S05",
+    "name": "台球厅",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G02",
+    "group": "社交游戏",
+    "path": "/category-art/assets/categories/C06/C06G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G02S06",
+    "name": "电玩中心",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G02",
+    "group": "社交游戏",
+    "path": "/category-art/assets/categories/C06/C06G02S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G02S07",
+    "name": "VR体验馆",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G02",
+    "group": "社交游戏",
+    "path": "/category-art/assets/categories/C06/C06G02S07.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G03S01",
+    "name": "茶馆",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G03",
+    "group": "放松聚会",
+    "path": "/category-art/assets/categories/C06/C06G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G03S02",
+    "name": "足浴按摩",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G03",
+    "group": "放松聚会",
+    "path": "/category-art/assets/categories/C06/C06G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G03S03",
+    "name": "洗浴汗蒸",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G03",
+    "group": "放松聚会",
+    "path": "/category-art/assets/categories/C06/C06G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G03S04",
+    "name": "游乐场",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G03",
+    "group": "放松聚会",
+    "path": "/category-art/assets/categories/C06/C06G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G03S05",
+    "name": "手工DIY",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G03",
+    "group": "放松聚会",
+    "path": "/category-art/assets/categories/C06/C06G03S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C06G03S06",
+    "name": "轰趴馆",
+    "industryId": "C06",
+    "industry": "玩乐休闲",
+    "groupId": "C06G03",
+    "group": "放松聚会",
+    "path": "/category-art/assets/categories/C06/C06G03S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G01S01",
+    "name": "购物中心",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G01",
+    "group": "综合零售",
+    "path": "/category-art/assets/categories/C07/C07G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G01S02",
+    "name": "超市便利店",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G01",
+    "group": "综合零售",
+    "path": "/category-art/assets/categories/C07/C07G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G01S04",
+    "name": "品牌折扣店",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G01",
+    "group": "综合零售",
+    "path": "/category-art/assets/categories/C07/C07G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G02S01",
+    "name": "服饰鞋包",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G02",
+    "group": "服饰个护",
+    "path": "/category-art/assets/categories/C07/C07G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G02S02",
+    "name": "美妆个护",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G02",
+    "group": "服饰个护",
+    "path": "/category-art/assets/categories/C07/C07G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G02S03",
+    "name": "珠宝首饰",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G02",
+    "group": "服饰个护",
+    "path": "/category-art/assets/categories/C07/C07G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G02S04",
+    "name": "钟表眼镜",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G02",
+    "group": "服饰个护",
+    "path": "/category-art/assets/categories/C07/C07G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S01",
+    "name": "手机电脑零售",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S02",
+    "name": "家电零售",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S03",
+    "name": "家居日用品",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S04",
+    "name": "母婴商品零售",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S05",
+    "name": "运动户外用品",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S06",
+    "name": "图书文具",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C07G03S07",
+    "name": "鲜花礼品",
+    "industryId": "C07",
+    "industry": "商场购物",
+    "groupId": "C07G03",
+    "group": "消费商品",
+    "path": "/category-art/assets/categories/C07/C07G03S07.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G01S02",
+    "name": "寻物启事",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G01",
+    "group": "邻里互助",
+    "path": "/category-art/assets/categories/C08/C08G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G01S03",
+    "name": "社区互助",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G01",
+    "group": "邻里互助",
+    "path": "/category-art/assets/categories/C08/C08G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G01S04",
+    "name": "志愿服务",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G01",
+    "group": "邻里互助",
+    "path": "/category-art/assets/categories/C08/C08G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G01S05",
+    "name": "公益求助",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G01",
+    "group": "邻里互助",
+    "path": "/category-art/assets/categories/C08/C08G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G02S01",
+    "name": "社区公告",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G02",
+    "group": "本地动态",
+    "path": "/category-art/assets/categories/C08/C08G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G02S03",
+    "name": "本地资讯",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G02",
+    "group": "本地动态",
+    "path": "/category-art/assets/categories/C08/C08G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G02S05",
+    "name": "邻里社群",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G02",
+    "group": "本地动态",
+    "path": "/category-art/assets/categories/C08/C08G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G03S01",
+    "name": "便民通讯录",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G03",
+    "group": "便民信息",
+    "path": "/category-art/assets/categories/C08/C08G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G03S02",
+    "name": "公共设施指引",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G03",
+    "group": "便民信息",
+    "path": "/category-art/assets/categories/C08/C08G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G03S03",
+    "name": "闲置租借信息",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G03",
+    "group": "便民信息",
+    "path": "/category-art/assets/categories/C08/C08G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C08G03S04",
+    "name": "生活经验分享",
+    "industryId": "C08",
+    "industry": "同城信息",
+    "groupId": "C08G03",
+    "group": "便民信息",
+    "path": "/category-art/assets/categories/C08/C08G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G01S01",
+    "name": "公交地铁",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G01",
+    "group": "市内交通",
+    "path": "/category-art/assets/categories/C09/C09G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G01S02",
+    "name": "出租车",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G01",
+    "group": "市内交通",
+    "path": "/category-art/assets/categories/C09/C09G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G01S03",
+    "name": "网约车",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G01",
+    "group": "市内交通",
+    "path": "/category-art/assets/categories/C09/C09G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G01S04",
+    "name": "共享单车",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G01",
+    "group": "市内交通",
+    "path": "/category-art/assets/categories/C09/C09G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G01S05",
+    "name": "共享电动车",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G01",
+    "group": "市内交通",
+    "path": "/category-art/assets/categories/C09/C09G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G02S02",
+    "name": "火车出行",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G02",
+    "group": "跨城出行",
+    "path": "/category-art/assets/categories/C09/C09G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G02S03",
+    "name": "航空出行",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G02",
+    "group": "跨城出行",
+    "path": "/category-art/assets/categories/C09/C09G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G02S04",
+    "name": "城际包车",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G02",
+    "group": "跨城出行",
+    "path": "/category-art/assets/categories/C09/C09G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G03S02",
+    "name": "代驾服务",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G03",
+    "group": "出行配套",
+    "path": "/category-art/assets/categories/C09/C09G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C09G03S04",
+    "name": "无障碍出行",
+    "industryId": "C09",
+    "industry": "交通出行",
+    "groupId": "C09G03",
+    "group": "出行配套",
+    "path": "/category-art/assets/categories/C09/C09G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S01",
+    "name": "洗车美容",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S02",
+    "name": "车辆保养",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S03",
+    "name": "汽车机修",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S05",
+    "name": "轮胎电瓶",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S06",
+    "name": "汽车贴膜",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S07",
+    "name": "汽车改装",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S07.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G01S08",
+    "name": "新能源汽车维修",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G01",
+    "group": "车辆维护",
+    "path": "/category-art/assets/categories/C10/C10G01S08.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G02S01",
+    "name": "充电桩网点",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G02",
+    "group": "用车配套",
+    "path": "/category-art/assets/categories/C10/C10G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G02S02",
+    "name": "加油加气站",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G02",
+    "group": "用车配套",
+    "path": "/category-art/assets/categories/C10/C10G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G02S03",
+    "name": "道路救援",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G02",
+    "group": "用车配套",
+    "path": "/category-art/assets/categories/C10/C10G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G02S04",
+    "name": "车辆年检代办",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G02",
+    "group": "用车配套",
+    "path": "/category-art/assets/categories/C10/C10G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G02S05",
+    "name": "汽车配件",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G02",
+    "group": "用车配套",
+    "path": "/category-art/assets/categories/C10/C10G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G03S02",
+    "name": "二手车买卖",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G03",
+    "group": "买卖维修",
+    "path": "/category-art/assets/categories/C10/C10G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C10G03S03",
+    "name": "摩托车维修",
+    "industryId": "C10",
+    "industry": "汽车用车",
+    "groupId": "C10G03",
+    "group": "买卖维修",
+    "path": "/category-art/assets/categories/C10/C10G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G01S01",
+    "name": "理发造型",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G01",
+    "group": "美发美容",
+    "path": "/category-art/assets/categories/C11/C11G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G01S03",
+    "name": "皮肤护理",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G01",
+    "group": "美发美容",
+    "path": "/category-art/assets/categories/C11/C11G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G01S05",
+    "name": "男士理容",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G01",
+    "group": "美发美容",
+    "path": "/category-art/assets/categories/C11/C11G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G02S01",
+    "name": "美甲",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G02",
+    "group": "美甲妆造",
+    "path": "/category-art/assets/categories/C11/C11G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G02S02",
+    "name": "美睫",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G02",
+    "group": "美甲妆造",
+    "path": "/category-art/assets/categories/C11/C11G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G02S03",
+    "name": "纹绣服务",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G02",
+    "group": "美甲妆造",
+    "path": "/category-art/assets/categories/C11/C11G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G02S05",
+    "name": "个人形象设计",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G02",
+    "group": "美甲妆造",
+    "path": "/category-art/assets/categories/C11/C11G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G03S01",
+    "name": "非医疗SPA",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G03",
+    "group": "美体护理",
+    "path": "/category-art/assets/categories/C11/C11G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C11G03S03",
+    "name": "美体护理",
+    "industryId": "C11",
+    "industry": "丽人美业",
+    "groupId": "C11G03",
+    "group": "美体护理",
+    "path": "/category-art/assets/categories/C11/C11G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G01S02",
+    "name": "书法培训",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G01",
+    "group": "文化与艺术",
+    "path": "/category-art/assets/categories/C13/C13G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G01S04",
+    "name": "音乐培训",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G01",
+    "group": "文化与艺术",
+    "path": "/category-art/assets/categories/C13/C13G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G01S05",
+    "name": "舞蹈培训",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G01",
+    "group": "文化与艺术",
+    "path": "/category-art/assets/categories/C13/C13G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G02S01",
+    "name": "职业技能培训",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G02",
+    "group": "职业与升学",
+    "path": "/category-art/assets/categories/C13/C13G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G02S02",
+    "name": "学历提升",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G02",
+    "group": "职业与升学",
+    "path": "/category-art/assets/categories/C13/C13G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G02S03",
+    "name": "考试培训",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G02",
+    "group": "职业与升学",
+    "path": "/category-art/assets/categories/C13/C13G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G02S04",
+    "name": "编程培训",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G02",
+    "group": "职业与升学",
+    "path": "/category-art/assets/categories/C13/C13G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C13G03S04",
+    "name": "体育技能教学",
+    "industryId": "C13",
+    "industry": "教育培训",
+    "groupId": "C13G03",
+    "group": "专项学习",
+    "path": "/category-art/assets/categories/C13/C13G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G01S03",
+    "name": "室内设计",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G01",
+    "group": "设计装修",
+    "path": "/category-art/assets/categories/C14/C14G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G01S05",
+    "name": "老房翻新",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G01",
+    "group": "设计装修",
+    "path": "/category-art/assets/categories/C14/C14G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G02S01",
+    "name": "防水补漏",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G02",
+    "group": "安装施工",
+    "path": "/category-art/assets/categories/C14/C14G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G02S03",
+    "name": "门窗安装",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G02",
+    "group": "安装施工",
+    "path": "/category-art/assets/categories/C14/C14G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G02S04",
+    "name": "地板墙面施工",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G02",
+    "group": "安装施工",
+    "path": "/category-art/assets/categories/C14/C14G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G02S05",
+    "name": "厨房卫浴安装",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G02",
+    "group": "安装施工",
+    "path": "/category-art/assets/categories/C14/C14G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G03S01",
+    "name": "全屋定制",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G03",
+    "group": "家装配套",
+    "path": "/category-art/assets/categories/C14/C14G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G03S02",
+    "name": "建材销售",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G03",
+    "group": "家装配套",
+    "path": "/category-art/assets/categories/C14/C14G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C14G03S03",
+    "name": "灯具照明",
+    "industryId": "C14",
+    "industry": "家居家装",
+    "groupId": "C14G03",
+    "group": "家装配套",
+    "path": "/category-art/assets/categories/C14/C14G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C15G01S01",
+    "name": "综合医院",
+    "industryId": "C15",
+    "industry": "健康医疗",
+    "groupId": "C15G01",
+    "group": "医疗机构",
+    "path": "/category-art/assets/categories/C15/C15G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C15G01S02",
+    "name": "社区医疗机构",
+    "industryId": "C15",
+    "industry": "健康医疗",
+    "groupId": "C15G01",
+    "group": "医疗机构",
+    "path": "/category-art/assets/categories/C15/C15G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C15G01S06",
+    "name": "中医诊疗",
+    "industryId": "C15",
+    "industry": "健康医疗",
+    "groupId": "C15G01",
+    "group": "医疗机构",
+    "path": "/category-art/assets/categories/C15/C15G01S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C15G02S03",
+    "name": "疫苗接种",
+    "industryId": "C15",
+    "industry": "健康医疗",
+    "groupId": "C15G02",
+    "group": "检查照护",
+    "path": "/category-art/assets/categories/C15/C15G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C15G02S04",
+    "name": "心理诊疗",
+    "industryId": "C15",
+    "industry": "健康医疗",
+    "groupId": "C15G02",
+    "group": "检查照护",
+    "path": "/category-art/assets/categories/C15/C15G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C15G03S02",
+    "name": "药店药房",
+    "industryId": "C15",
+    "industry": "健康医疗",
+    "groupId": "C15G03",
+    "group": "专业服务",
+    "path": "/category-art/assets/categories/C15/C15G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C16G01S01",
+    "name": "旅游景区",
+    "industryId": "C16",
+    "industry": "旅游度假",
+    "groupId": "C16G01",
+    "group": "景区与体验",
+    "path": "/category-art/assets/categories/C16/C16G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C16G01S02",
+    "name": "周边短途游",
+    "industryId": "C16",
+    "industry": "旅游度假",
+    "groupId": "C16G01",
+    "group": "景区与体验",
+    "path": "/category-art/assets/categories/C16/C16G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C16G01S03",
+    "name": "乡村旅游",
+    "industryId": "C16",
+    "industry": "旅游度假",
+    "groupId": "C16G01",
+    "group": "景区与体验",
+    "path": "/category-art/assets/categories/C16/C16G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C16G01S04",
+    "name": "露营营地",
+    "industryId": "C16",
+    "industry": "旅游度假",
+    "groupId": "C16G01",
+    "group": "景区与体验",
+    "path": "/category-art/assets/categories/C16/C16G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C16G01S05",
+    "name": "户外徒步",
+    "industryId": "C16",
+    "industry": "旅游度假",
+    "groupId": "C16G01",
+    "group": "景区与体验",
+    "path": "/category-art/assets/categories/C16/C16G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C16G02S03",
+    "name": "当地导览",
+    "industryId": "C16",
+    "industry": "旅游度假",
+    "groupId": "C16G02",
+    "group": "旅游机构",
+    "path": "/category-art/assets/categories/C16/C16G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C17G01S01",
+    "name": "连锁酒店",
+    "industryId": "C17",
+    "industry": "酒店住宿",
+    "groupId": "C17G01",
+    "group": "酒店类型",
+    "path": "/category-art/assets/categories/C17/C17G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C17G01S02",
+    "name": "经济酒店",
+    "industryId": "C17",
+    "industry": "酒店住宿",
+    "groupId": "C17G01",
+    "group": "酒店类型",
+    "path": "/category-art/assets/categories/C17/C17G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C17G01S04",
+    "name": "高端酒店",
+    "industryId": "C17",
+    "industry": "酒店住宿",
+    "groupId": "C17G01",
+    "group": "酒店类型",
+    "path": "/category-art/assets/categories/C17/C17G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G01S01",
+    "name": "健身俱乐部",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G01",
+    "group": "运动训练",
+    "path": "/category-art/assets/categories/C18/C18G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G01S04",
+    "name": "普拉提",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G01",
+    "group": "运动训练",
+    "path": "/category-art/assets/categories/C18/C18G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G01S05",
+    "name": "拳击格斗",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G01",
+    "group": "运动训练",
+    "path": "/category-art/assets/categories/C18/C18G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G01S06",
+    "name": "体能训练",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G01",
+    "group": "运动训练",
+    "path": "/category-art/assets/categories/C18/C18G01S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G02S01",
+    "name": "游泳场馆",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G02",
+    "group": "体育场馆",
+    "path": "/category-art/assets/categories/C18/C18G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G02S03",
+    "name": "篮球场馆",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G02",
+    "group": "体育场馆",
+    "path": "/category-art/assets/categories/C18/C18G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G02S04",
+    "name": "足球场馆",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G02",
+    "group": "体育场馆",
+    "path": "/category-art/assets/categories/C18/C18G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G02S05",
+    "name": "网球场馆",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G02",
+    "group": "体育场馆",
+    "path": "/category-art/assets/categories/C18/C18G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G02S06",
+    "name": "乒乓球馆",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G02",
+    "group": "体育场馆",
+    "path": "/category-art/assets/categories/C18/C18G02S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G02S08",
+    "name": "攀岩馆",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G02",
+    "group": "体育场馆",
+    "path": "/category-art/assets/categories/C18/C18G02S08.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G03S01",
+    "name": "骑行俱乐部",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G03",
+    "group": "户外运动",
+    "path": "/category-art/assets/categories/C18/C18G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C18G03S02",
+    "name": "跑步活动",
+    "industryId": "C18",
+    "industry": "运动健身",
+    "groupId": "C18G03",
+    "group": "户外运动",
+    "path": "/category-art/assets/categories/C18/C18G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G01S01",
+    "name": "婚礼策划",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G01",
+    "group": "婚礼筹备",
+    "path": "/category-art/assets/categories/C19/C19G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G01S02",
+    "name": "婚庆主持",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G01",
+    "group": "婚礼筹备",
+    "path": "/category-art/assets/categories/C19/C19G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G01S03",
+    "name": "婚宴酒店",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G01",
+    "group": "婚礼筹备",
+    "path": "/category-art/assets/categories/C19/C19G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G03S01",
+    "name": "婚纱礼服",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G03",
+    "group": "婚礼用品",
+    "path": "/category-art/assets/categories/C19/C19G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G03S03",
+    "name": "喜糖伴手礼",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G03",
+    "group": "婚礼用品",
+    "path": "/category-art/assets/categories/C19/C19G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G04S01",
+    "name": "婚介机构",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G04",
+    "group": "婚恋服务",
+    "path": "/category-art/assets/categories/C19/C19G04S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G04S02",
+    "name": "婚恋咨询",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G04",
+    "group": "婚恋服务",
+    "path": "/category-art/assets/categories/C19/C19G04S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C19G04S03",
+    "name": "相亲活动",
+    "industryId": "C19",
+    "industry": "婚庆婚恋",
+    "groupId": "C19G04",
+    "group": "婚恋服务",
+    "path": "/category-art/assets/categories/C19/C19G04S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G01S02",
+    "name": "代理记账",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G01",
+    "group": "企业登记财税",
+    "path": "/category-art/assets/categories/C20/C20G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G01S04",
+    "name": "法律服务",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G01",
+    "group": "企业登记财税",
+    "path": "/category-art/assets/categories/C20/C20G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G02S02",
+    "name": "品牌营销",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G02",
+    "group": "运营推广",
+    "path": "/category-art/assets/categories/C20/C20G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G02S03",
+    "name": "印刷制作",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G02",
+    "group": "运营推广",
+    "path": "/category-art/assets/categories/C20/C20G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G02S05",
+    "name": "短视频代运营",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G02",
+    "group": "运营推广",
+    "path": "/category-art/assets/categories/C20/C20G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G03S04",
+    "name": "翻译服务",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G03",
+    "group": "企业配套",
+    "path": "/category-art/assets/categories/C20/C20G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C20G03S07",
+    "name": "会展服务",
+    "industryId": "C20",
+    "industry": "企业商务",
+    "groupId": "C20G03",
+    "group": "企业配套",
+    "path": "/category-art/assets/categories/C20/C20G03S07.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G01S01",
+    "name": "养老院",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G01",
+    "group": "养老机构",
+    "path": "/category-art/assets/categories/C22/C22G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G01S04",
+    "name": "长者活动中心",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G01",
+    "group": "养老机构",
+    "path": "/category-art/assets/categories/C22/C22G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G02S01",
+    "name": "上门助浴",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G02",
+    "group": "居家照护",
+    "path": "/category-art/assets/categories/C22/C22G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G02S03",
+    "name": "助餐送餐",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G02",
+    "group": "居家照护",
+    "path": "/category-art/assets/categories/C22/C22G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G02S04",
+    "name": "失能照护",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G02",
+    "group": "居家照护",
+    "path": "/category-art/assets/categories/C22/C22G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G02S05",
+    "name": "护理陪护",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G02",
+    "group": "居家照护",
+    "path": "/category-art/assets/categories/C22/C22G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C22G03S02",
+    "name": "助行辅具租赁",
+    "industryId": "C22",
+    "industry": "养老助残",
+    "groupId": "C22G03",
+    "group": "助残与适老",
+    "path": "/category-art/assets/categories/C22/C22G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G01S01",
+    "name": "殡仪馆查询",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G01",
+    "group": "殡仪基础服务",
+    "path": "/category-art/assets/categories/C23/C23G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G01S02",
+    "name": "遗体接运",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G01",
+    "group": "殡仪基础服务",
+    "path": "/category-art/assets/categories/C23/C23G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G01S03",
+    "name": "遗体存放",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G01",
+    "group": "殡仪基础服务",
+    "path": "/category-art/assets/categories/C23/C23G01S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G01S06",
+    "name": "骨灰寄存",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G01",
+    "group": "殡仪基础服务",
+    "path": "/category-art/assets/categories/C23/C23G01S06.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G02S01",
+    "name": "骨灰格位安葬",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G02",
+    "group": "安葬与祭扫",
+    "path": "/category-art/assets/categories/C23/C23G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G02S02",
+    "name": "公墓安葬",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G02",
+    "group": "安葬与祭扫",
+    "path": "/category-art/assets/categories/C23/C23G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G02S04",
+    "name": "海葬服务",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G02",
+    "group": "安葬与祭扫",
+    "path": "/category-art/assets/categories/C23/C23G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G02S05",
+    "name": "祭扫服务",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G02",
+    "group": "安葬与祭扫",
+    "path": "/category-art/assets/categories/C23/C23G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G03S02",
+    "name": "殡葬用品",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G03",
+    "group": "治丧配套",
+    "path": "/category-art/assets/categories/C23/C23G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G03S03",
+    "name": "丧事鲜花布置",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G03",
+    "group": "治丧配套",
+    "path": "/category-art/assets/categories/C23/C23G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C23G03S04",
+    "name": "治丧便民指南",
+    "industryId": "C23",
+    "industry": "殡葬服务",
+    "groupId": "C23G03",
+    "group": "治丧配套",
+    "path": "/category-art/assets/categories/C23/C23G03S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C24G01S01",
+    "name": "快递寄件",
+    "industryId": "C24",
+    "industry": "快递物流",
+    "groupId": "C24G01",
+    "group": "快递配送",
+    "path": "/category-art/assets/categories/C24/C24G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C24G02S01",
+    "name": "居民搬家",
+    "industryId": "C24",
+    "industry": "快递物流",
+    "groupId": "C24G02",
+    "group": "搬家货运",
+    "path": "/category-art/assets/categories/C24/C24G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C24G02S03",
+    "name": "家具运输",
+    "industryId": "C24",
+    "industry": "快递物流",
+    "groupId": "C24G02",
+    "group": "搬家货运",
+    "path": "/category-art/assets/categories/C24/C24G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C24G03S01",
+    "name": "仓储服务",
+    "industryId": "C24",
+    "industry": "快递物流",
+    "groupId": "C24G03",
+    "group": "仓配服务",
+    "path": "/category-art/assets/categories/C24/C24G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C24G03S02",
+    "name": "冷链物流",
+    "industryId": "C24",
+    "industry": "快递物流",
+    "groupId": "C24G03",
+    "group": "仓配服务",
+    "path": "/category-art/assets/categories/C24/C24G03S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G01S01",
+    "name": "农业种苗",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G01",
+    "group": "农业种植",
+    "path": "/category-art/assets/categories/C25/C25G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G01S02",
+    "name": "农机服务",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G01",
+    "group": "农业种植",
+    "path": "/category-art/assets/categories/C25/C25G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G01S04",
+    "name": "农业灌溉",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G01",
+    "group": "农业种植",
+    "path": "/category-art/assets/categories/C25/C25G01S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G01S05",
+    "name": "病虫害防治服务",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G01",
+    "group": "农业种植",
+    "path": "/category-art/assets/categories/C25/C25G01S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G02S01",
+    "name": "畜牧养殖服务",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G02",
+    "group": "养殖生产",
+    "path": "/category-art/assets/categories/C25/C25G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G02S02",
+    "name": "水产养殖服务",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G02",
+    "group": "养殖生产",
+    "path": "/category-art/assets/categories/C25/C25G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G02S03",
+    "name": "农产品收购",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G02",
+    "group": "养殖生产",
+    "path": "/category-art/assets/categories/C25/C25G02S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C25G02S04",
+    "name": "粮食收购",
+    "industryId": "C25",
+    "industry": "农业农村",
+    "groupId": "C25G02",
+    "group": "养殖生产",
+    "path": "/category-art/assets/categories/C25/C25G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C26G01S02",
+    "name": "户籍居住证指引",
+    "industryId": "C26",
+    "industry": "政务便民",
+    "groupId": "C26G01",
+    "group": "身份民生",
+    "path": "/category-art/assets/categories/C26/C26G01S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C26G02S02",
+    "name": "不动产登记指引",
+    "industryId": "C26",
+    "industry": "政务便民",
+    "groupId": "C26G02",
+    "group": "财税住房",
+    "path": "/category-art/assets/categories/C26/C26G02S02.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C26G02S04",
+    "name": "生活缴费指引",
+    "industryId": "C26",
+    "industry": "政务便民",
+    "groupId": "C26G02",
+    "group": "财税住房",
+    "path": "/category-art/assets/categories/C26/C26G02S04.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C26G03S03",
+    "name": "就业政策指引",
+    "industryId": "C26",
+    "industry": "政务便民",
+    "groupId": "C26G03",
+    "group": "公共服务",
+    "path": "/category-art/assets/categories/C26/C26G03S03.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C27G01S01",
+    "name": "银行营业网点",
+    "industryId": "C27",
+    "industry": "金融保险",
+    "groupId": "C27G01",
+    "group": "银行服务",
+    "path": "/category-art/assets/categories/C27/C27G01S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C27G02S01",
+    "name": "保险机构网点",
+    "industryId": "C27",
+    "industry": "金融保险",
+    "groupId": "C27G02",
+    "group": "保险服务",
+    "path": "/category-art/assets/categories/C27/C27G02S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C27G02S05",
+    "name": "理赔服务网点",
+    "industryId": "C27",
+    "industry": "金融保险",
+    "groupId": "C27G02",
+    "group": "保险服务",
+    "path": "/category-art/assets/categories/C27/C27G02S05.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  },
+  {
+    "id": "C27G03S01",
+    "name": "金融消费者权益指引",
+    "industryId": "C27",
+    "industry": "金融保险",
+    "groupId": "C27G03",
+    "group": "金融便民",
+    "path": "/category-art/assets/categories/C27/C27G03S01.webp",
+    "requirement": "独立业务语义、柔和3D、透明背景、融入既有卡片；替换后校验去重/加载/包体"
+  }
+]
