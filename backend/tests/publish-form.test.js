@@ -32,8 +32,8 @@ function client(){
  page._draftOwner=uid;page._sessionImageIds=new Set();page.setData({...sample(),kind:'used',showForm:true,loading:false,clientKey:'form_client_test_1234',district:'中心街道',districts:['中心街道'],photos:[{id:sample().imageIds[0],path:'local-photo'}]});page.markClean();
  return {page,store,calls,requests,api,app,drafts:localSandbox.module.exports,changeOwner:()=>uid='owner-b',failStorage:()=>fail=true};
 }
-test('edits, hide, unload and preview never create a draft without explicit save',()=>{
- const c=client();c.page.setField({currentTarget:{dataset:{field:'title'}},detail:{value:'本次尚未主动保存'}});c.page.onHide();c.page.previewPost();assert.equal(c.page.data.preview,true);c.page.onUnload();assert.equal(Object.keys(c.store).length,0);assert.equal(c.requests.filter(x=>x.method==='PUT').length,0);
+test('hide and unload preserve local recovery without changing explicit drafts or cloud data',()=>{
+ const c=client();c.page.setField({currentTarget:{dataset:{field:'title'}},detail:{value:'本次尚未主动保存'}});c.page.onHide();c.page.previewPost();assert.equal(c.page.data.preview,true);c.page.onUnload();assert.equal(c.drafts.list('owner-a').length,0);const rows=require('../../miniprogram/utils/form-recovery').list({getStorageSync:key=>c.store[key]},'owner-a');assert.equal(rows.length,1);assert.equal(rows[0].payload.title,'本次尚未主动保存');assert.equal(c.requests.filter(x=>x.method==='PUT').length,0);
 });
 test('back offers save/discard/continue; cancel does not save; editing an original draft never mutates it',async()=>{
  const c=client();assert.equal(await c.page.saveDraft(),true);const original=JSON.stringify(c.drafts.list('owner-a'));

@@ -1,6 +1,6 @@
 <view class="theme-root publish-form {{themeClass}}" style="{{themeStyle}}">
  <page-header id="navigation-header" title="{{preview?'预览信息':'发布'+projectName}}" back="{{true}}" back-label="{{preview?'返回修改':fromDraft?'返回草稿箱':'返回分类选择'}}" large-text="{{displayPreferences.largeText}}" action-text="取消" action-disabled="{{submitting||uploading||saving}}" bind:action="cancelPublish" bind:back="goBack"/>
- <view class="form-content {{preview?'preview-content':''}}">
+ <view class="form-content {{preview?'preview-content':''}}"><view wx:if="{{recoveryNotice}}" class="form-hint" role="status">{{recoveryNotice}}</view><view wx:if="{{recoveryError}}" class="form-error" role="alert">{{recoveryError}}</view>
   <feedback-state wx:if="{{loading}}" kind="loading" description="正在准备表单…" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
   <view wx:if="{{error}}" class="form-error" role="alert">{{error}}</view>
   <button wx:if="{{loadFailed}}" class="secondary" bindtap="initialize">重新加载</button>

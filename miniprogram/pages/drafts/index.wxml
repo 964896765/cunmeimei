@@ -13,6 +13,6 @@
    </view>
    <view class="draft-footer"><text class="draft-hint">点击上方继续编辑</text><button class="draft-delete" data-id="{{item.id}}" bindtap="deleteDraft" disabled="{{deleting}}" aria-label="删除{{item.title}}"><view class="trash-icon" aria-hidden="true"><view></view><view></view></view><text>删除</text></button></view>
   </view>
-  <feedback-state wx:if="{{!requiresLogin&&!loading&&!hasItems&&!error&&!cloudError}}" kind="empty" description="暂无草稿主动保存的内容会显示在这里" compact="{{false}}" large-text="{{displayPreferences.largeText}}" action-text="返回发布页" bind:action="goBack"/>
+  <feedback-state wx:if="{{!requiresLogin&&!loading&&!hasItems&&!error&&!cloudError}}" kind="empty" description="暂无草稿，主动保存或自动恢复的内容会显示在这里" compact="{{false}}" large-text="{{displayPreferences.largeText}}" action-text="返回发布页" bind:action="goBack"/>
  </view>
 </view>

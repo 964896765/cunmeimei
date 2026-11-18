@@ -13,20 +13,24 @@ Page({
  data:{publicationConsent:null,consentRevision:0,contactSettings:{publicPhone:false,allowMessages:true,phoneConsent:false},trust:{},loading:true,loadFailed:false,showForm:false,kind:'used',projectName:'信息',breadcrumb:'',title:'',detail:'',price:'',amount:'',district:'',districts:[],attributes:{},photos:[],photoCount:0,canAddPhoto:true,clientKey:'',agreed:false,preview:false,error:'',submitting:false,uploading:false,saving:false,previewFields:[],previewFieldCount:0,publisherName:'',scopeRequired:false,showExitDialog:false,fromDraft:false,draftError:'',publishCities:geography.cities.map(x=>({code:x.code,name:x.name})),publishCityName:'',administrativeDistricts:[],publishDistrictName:'',focusedField:'',online:api.online()},
  async onLoad(options){this._options=options||{};this._openedFromDraft=['local','account'].includes(this._options.restore);this._sessionImageIds=new Set();await this.initialize();},
  onShow(){require('../../utils/theme').apply(this);if(this._draftOwner)api.request('GET','/api/v1/me/trust',null,true,this._draftOwner).then(trust=>{if(this.active())this.setData({trust});}).catch(()=>{});if(this._draftOwner&&owner()!==this._draftOwner){this._suspended=true;this.setData({error:'账号已切换，请返回后重新打开表单。',showForm:false});}},
- onHide(){},
- onUnload(){this._disposed=true;},
+ onHide(){this._recovery?.flush();},
+ onUnload(){this._recovery?.dispose();this._disposed=true;},
+ recovery(){
+  if(!this._recovery||this._recoveryKey!==this.data.clientKey){this._recovery?.dispose();const uid=this._draftOwner,id=this.data.clientKey;this._recoveryKey=id;this._recovery=require('../../utils/form-recovery').controller(this,{owner:uid,id,revision:this._recoveryRecord?.revision,active:()=>this.active()&&this.data.clientKey===id,dirty:()=>this._dirty&&!this._submitted,snapshot:()=>({id,family:'resident',projectId:this.data.attributes.categoryId,origin:this._origin||null,payload:{kind:this.data.kind,title:this.data.title,detail:this.data.detail,price:this.data.price,amount:this.data.amount,district:this.data.district,attributes:this.data.attributes,photos:this.data.photos,clientKey:id,contactSettings:{allowMessages:this.data.contactSettings.allowMessages}}})},wx);}return this._recovery;
+ },
  active(){return !this._disposed&&!this._suspended&&owner()===this._draftOwner;},
  async initialize(){
   this.setData({loading:true,loadFailed:false,error:''});
   try{
-   if(api.online()&&!api.hasSession()){try{await api.login();}catch(e){if(this._options.restore!=='local'||owner()!=='guest')throw e;}}
+   if(api.online()&&!api.hasSession()){try{await api.login();}catch(e){if(this._options.restore!=='local'&&!this._options.recoveryId||owner()!=='guest')throw e;}}
    this._draftOwner=owner();this._disposed=false;this._suspended=false;this._sessionImageIds=this._sessionImageIds||new Set();
    let config;
    try{config=await api.request('GET','/api/v1/config');try{wx.setStorageSync('city_life_publish_config',config);}catch{}}
-   catch(e){if(this._options.restore!=='local')throw e;config=wx.getStorageSync('city_life_publish_config')||{areas:[]};}
+   catch(e){if(this._options.restore!=='local'&&!this._options.recoveryId)throw e;config=wx.getStorageSync('city_life_publish_config')||{areas:[]};}
    if(!this.active())return;this.setData({districts:config.areas||[]});
    api.request('GET','/api/v1/me/trust',null,true,this._draftOwner).then(trust=>{if(this.active())this.setData({trust});}).catch(()=>{});
-   if(this._options.restore==='local')await this.restoreDraft();
+   if(this._options.recoveryId){const record=require('../../utils/form-recovery').list(wx,this._draftOwner).find(r=>r.id===this._options.recoveryId&&r.family==='resident');if(!record)throw Error('恢复草稿不存在，请返回草稿箱重新读取');this._recoveryRecord=record;await this.applyDraft(record.payload,record.origin);this._dirty=true;this.recovery();}
+   else if(this._options.restore==='local')await this.restoreDraft();
    else if(this._options.restore==='account')await this.restoreAccountDraft();
    else{
     const project=registry.find(this._options.categoryId),kind=registry.kindsFor(project?.id)[0];
@@ -71,7 +75,7 @@ Page({
  },
  markClean(){this._initialSnapshot=fingerprint(this.data);this._dirty=false;wx.disableAlertBeforeUnload?.();},
  publicationConsentChanged(e){require('../../utils/publication-consent').changed(this,e);},
- changed(){require('../../utils/publication-consent').reset(this);this.setData({photoCount:this.data.photos.length,canAddPhoto:this.data.photos.length<6});this._dirty=fingerprint(this.data)!==this._initialSnapshot;this.setData({preview:false,agreed:false,error:'',draftError:''});if(this._dirty)wx.enableAlertBeforeUnload?.({message:'当前修改尚未保存，离开可能丢失填写内容。'});else wx.disableAlertBeforeUnload?.();},
+ changed(){require('../../utils/publication-consent').reset(this);this.setData({photoCount:this.data.photos.length,canAddPhoto:this.data.photos.length<6});this._dirty=fingerprint(this.data)!==this._initialSnapshot;this.setData({preview:false,agreed:false,error:'',draftError:''});if(this._dirty){wx.enableAlertBeforeUnload?.({message:'当前修改仅自动保存在本机，可手动保存草稿后离开。'});this.recovery().schedule();}else{this._recovery?.clear();wx.disableAlertBeforeUnload?.();}},
  editable(){return this.active()&&this.data.showForm&&!this.data.preview&&!this.data.submitting&&!this.data.loading&&!this.data.saving&&!this.data.showExitDialog;},
  setField(e){const key=e.currentTarget.dataset.field;if(!this.editable()||!['title','detail'].includes(key))return;this.setData({[key]:e.detail.value});this.changed();},
  async saveDraft(){
@@ -86,7 +90,7 @@ Page({
     const r=localDrafts.save(this._draftOwner,{...payload,amount:d.amount,photos:d.photos},this._origin?.revision??null,this._origin?.token);
     this._origin={source:'local',clientKey:d.clientKey,revision:r.draftRevision,token:localDrafts.list(this._draftOwner).find(x=>x.clientKey===d.clientKey)?._recordToken};
    }
-   this._sessionImageIds.clear();this.setData({fromDraft:true});this.markClean();
+   this._sessionImageIds.clear();this._recovery?.clear();this.setData({fromDraft:true});this.markClean();
    wx.showToast({title:this._origin.source==='account'?'已保存到账号':'已保存到本机草稿',icon:'success'});return true;
   }catch(e){if(this.active())this.setData({draftError:'保存失败：'+(e.code==='DRAFT_CONFLICT'?'账号草稿已被其他设备更新，原草稿未覆盖；请继续编辑或稍后重新读取。':e.message)});return false;}
   finally{if(this.active())this.setData({saving:false});}
@@ -107,6 +111,7 @@ Page({
  discardAndExit(){if(this.busy())return;this.setData({showExitDialog:false});this.cancelPublish();},
  cancelPublish(){
   if(this.busy())return;
+  this._recovery?.clear();
   for(const id of this._sessionImageIds||[])api.request('DELETE','/api/v1/me/media/'+id,null,true,this._draftOwner).catch(()=>{});
   this._sessionImageIds?.clear();this.setData({showForm:false,title:'',detail:'',price:'',amount:'',attributes:{},photos:[],preview:false});this._dirty=false;wx.disableAlertBeforeUnload?.();this.leave();
  },
@@ -131,7 +136,7 @@ Page({
   this.setData({submitting:true,error:''});const d=clone(this.data);
   try{
    await api.request('POST','/api/v1/publications',{...(this._origin?.source==='account'?{sourceDraftRevision:this._origin.revision}:{}),publicationConsent:d.publicationConsent,clientKey:d.clientKey,type:d.kind,title:d.title.trim(),detail:d.detail.trim(),price:d.price.trim(),district:d.district,attributes:d.attributes,contactSettings:d.contactSettings,imageIds:d.photos.map(x=>x.id)},true,this._draftOwner);
-   if(!this.active())return;this._submitted=true;this._sessionImageIds.clear();wx.disableAlertBeforeUnload?.();
+   if(!this.active())return;this._submitted=true;this._recovery?.clear();this._sessionImageIds.clear();wx.disableAlertBeforeUnload?.();
    // Remove only the explicitly opened local draft, with its concurrency revision.
    try{
     if(this._origin?.source==='local')localDrafts.remove(this._draftOwner,d.clientKey,this._origin.revision,this._origin.token);

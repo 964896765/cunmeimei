@@ -8,3 +8,5 @@
 .business-field { margin-top:32rpx; padding-top:24rpx; border-top:1rpx solid var(--border); }
 .industry-form .field-area { min-height:220rpx; }
 .industry-form>.btn { margin-top:24rpx; }
+
+.industry-preview-image{width:100%;height:360rpx;margin-top:24rpx}.preview-description{white-space:pre-wrap;line-height:1.7;margin-top:24rpx;word-break:break-word}
