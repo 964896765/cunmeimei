@@ -12,6 +12,8 @@ const root = path.resolve(__dirname, "../..");
 const manifest = require("../../docs/design/category-resources-2026-11-15/source-manifest.json");
 const styled = require("../../docs/design/3d-blending-2026-11-15/assets.json");
 const scenes = require("../../docs/design/experience-refinement-2026-11-18/assets.json");
+const completion = require("../../docs/remediation/b123-2026-11-18/assets.json");
+const sceneItems=[...scenes.items,...completion.items];
 
 test("all category images have distinct content and rendered replacements retain transparent edges",async()=>{
  const hashes=new Set();
@@ -33,7 +35,7 @@ test("all category images have distinct content and rendered replacements retain
  assert.equal(scenes.items.filter(item=>item.id.startsWith("C12")||item.id.startsWith("C21")).length,26);
 });
 
-test("supplied map covers exactly 418 existing projects and preserves 76 draft / 342 placeholder stages", async () => {
+test("source map preserves 418 identities and provenance while all authored replacements are applied", async () => {
   assert.deepEqual(manifest.counts, {
     projects: 418,
     draft3d: 76,
@@ -65,7 +67,7 @@ test("supplied map covers exactly 418 existing projects and preserves 76 draft /
     assert.equal(descriptor.path, refined ? refined.path : item.runtime_path);
     const expectedStage =
       item.asset_status === "3D拼版裁切初稿" ? "draft3d" : "placeholder";
-    const scene = scenes.items.find(asset => asset.id === item.category_id);
+    const scene = sceneItems.find(asset => asset.id === item.category_id);
     assert.equal(descriptor.stage, scene ? "rendered3d" : refined ? "styled3d" : expectedStage);
     const originalFrame =
       expectedStage === "draft3d" ? draftFrames[item.industry_id] : "symbol";
@@ -209,6 +211,10 @@ test("cards keep original housing art, respond to category changes and handle mi
   instance.refresh();
   assert.equal(instance.data.frame, "food");
   instance.properties.assetId = "C15G01S01";
+  instance.refresh();
+  assert.equal(instance.data.stage, "rendered3d");
+  assert.equal(instance.data.frame, "transparent");
+  instance.properties.assetId = "C05G01S02";
   instance.refresh();
   assert.equal(instance.data.frame, "symbol");
   instance.properties.assetId = "C05G01S01";

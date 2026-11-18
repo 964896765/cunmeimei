@@ -1,0 +1,4287 @@
+[
+  {
+    "id": "C05G02S01",
+    "name": "商铺租赁",
+    "parts": [
+      {
+        "model": "shop",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "key",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C05G02S04",
+    "name": "车位租售",
+    "parts": [
+      {
+        "model": "parking",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "car",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C05G03S02",
+    "name": "房屋托管",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "key",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "shield",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C05G03S03",
+    "name": "物业管理",
+    "parts": [
+      {
+        "model": "tower",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G01S01",
+    "name": "电影院",
+    "parts": [
+      {
+        "model": "film",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ticket",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G01S02",
+    "name": "KTV",
+    "parts": [
+      {
+        "model": "mic",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "headset",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G01S03",
+    "name": "清吧酒吧",
+    "parts": [
+      {
+        "model": "wine",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "mic",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G01S04",
+    "name": "演出剧场",
+    "parts": [
+      {
+        "model": "curtain",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "mic",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G01S05",
+    "name": "艺术展览",
+    "parts": [
+      {
+        "model": "gallery",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "palette",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G02S03",
+    "name": "桌游店",
+    "parts": [
+      {
+        "model": "game",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G02S04",
+    "name": "棋牌室",
+    "parts": [
+      {
+        "model": "mahjong",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "chair",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G02S05",
+    "name": "台球厅",
+    "parts": [
+      {
+        "model": "billiards",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      }
+    ]
+  },
+  {
+    "id": "C06G02S06",
+    "name": "电玩中心",
+    "parts": [
+      {
+        "model": "arcade",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "game",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G02S07",
+    "name": "VR体验馆",
+    "parts": [
+      {
+        "model": "vr",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "game",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G03S01",
+    "name": "茶馆",
+    "parts": [
+      {
+        "model": "teapot",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bowls",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G03S02",
+    "name": "足浴按摩",
+    "parts": [
+      {
+        "model": "bath",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "stones",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G03S03",
+    "name": "洗浴汗蒸",
+    "parts": [
+      {
+        "model": "stones",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "water",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G03S04",
+    "name": "游乐场",
+    "parts": [
+      {
+        "model": "slide",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "balloon",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G03S05",
+    "name": "手工DIY",
+    "parts": [
+      {
+        "model": "scissors",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C06G03S06",
+    "name": "轰趴馆",
+    "parts": [
+      {
+        "model": "sofa",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "balloon",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "mic",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C07G01S01",
+    "name": "购物中心",
+    "parts": [
+      {
+        "model": "mall",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bag",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G01S02",
+    "name": "超市便利店",
+    "parts": [
+      {
+        "model": "supermarket",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G01S04",
+    "name": "品牌折扣店",
+    "parts": [
+      {
+        "model": "shop",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ticket",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G02S01",
+    "name": "服饰鞋包",
+    "parts": [
+      {
+        "model": "shoe",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bag",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G02S02",
+    "name": "美妆个护",
+    "parts": [
+      {
+        "model": "lipstick",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "cosmetic",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G02S03",
+    "name": "珠宝首饰",
+    "parts": [
+      {
+        "model": "ring",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G02S04",
+    "name": "钟表眼镜",
+    "parts": [
+      {
+        "model": "clock",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lens",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S01",
+    "name": "手机电脑零售",
+    "parts": [
+      {
+        "model": "phone",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "laptop",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S02",
+    "name": "家电零售",
+    "parts": [
+      {
+        "model": "fridge",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "kettle",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S03",
+    "name": "家居日用品",
+    "parts": [
+      {
+        "model": "sofa",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lamp",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S04",
+    "name": "母婴商品零售",
+    "parts": [
+      {
+        "model": "bottle",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bag",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S05",
+    "name": "运动户外用品",
+    "parts": [
+      {
+        "model": "backpack",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "racket",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S06",
+    "name": "图书文具",
+    "parts": [
+      {
+        "model": "open-book",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C07G03S07",
+    "name": "鲜花礼品",
+    "parts": [
+      {
+        "model": "flower",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G01S02",
+    "name": "寻物启事",
+    "parts": [
+      {
+        "model": "magnifier",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "key",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G01S03",
+    "name": "社区互助",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "child",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "heart",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C08G01S04",
+    "name": "志愿服务",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "heart",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "shield",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C08G01S05",
+    "name": "公益求助",
+    "parts": [
+      {
+        "model": "heart",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G02S01",
+    "name": "社区公告",
+    "parts": [
+      {
+        "model": "notice",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "envelope",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G02S03",
+    "name": "本地资讯",
+    "parts": [
+      {
+        "model": "news",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G02S05",
+    "name": "邻里社群",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "envelope",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C08G03S01",
+    "name": "便民通讯录",
+    "parts": [
+      {
+        "model": "addressbook",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "phone",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G03S02",
+    "name": "公共设施指引",
+    "parts": [
+      {
+        "model": "signpost",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tower",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G03S03",
+    "name": "闲置租借信息",
+    "parts": [
+      {
+        "model": "tools",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C08G03S04",
+    "name": "生活经验分享",
+    "parts": [
+      {
+        "model": "open-book",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G01S01",
+    "name": "公交地铁",
+    "parts": [
+      {
+        "model": "subway",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ticket",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G01S02",
+    "name": "出租车",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parking",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G01S03",
+    "name": "网约车",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "phone",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G01S04",
+    "name": "共享单车",
+    "parts": [
+      {
+        "model": "bike",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "phone",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G01S05",
+    "name": "共享电动车",
+    "parts": [
+      {
+        "model": "bike",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "battery",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G02S02",
+    "name": "火车出行",
+    "parts": [
+      {
+        "model": "train",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "case",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G02S03",
+    "name": "航空出行",
+    "parts": [
+      {
+        "model": "plane",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "passport",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G02S04",
+    "name": "城际包车",
+    "parts": [
+      {
+        "model": "bus",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G03S02",
+    "name": "代驾服务",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C09G03S04",
+    "name": "无障碍出行",
+    "parts": [
+      {
+        "model": "bus",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "wheelchair",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S01",
+    "name": "洗车美容",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bath",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S02",
+    "name": "车辆保养",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "cosmetic",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S03",
+    "name": "汽车机修",
+    "parts": [
+      {
+        "model": "engine",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S05",
+    "name": "轮胎电瓶",
+    "parts": [
+      {
+        "model": "tire",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "battery",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S06",
+    "name": "汽车贴膜",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lens",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S07",
+    "name": "汽车改装",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "gear",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G01S08",
+    "name": "新能源汽车维修",
+    "parts": [
+      {
+        "model": "engine",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "battery",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G02S01",
+    "name": "充电桩网点",
+    "parts": [
+      {
+        "model": "charge",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parking",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G02S02",
+    "name": "加油加气站",
+    "parts": [
+      {
+        "model": "fuel",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "car",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G02S03",
+    "name": "道路救援",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G02S04",
+    "name": "车辆年检代办",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G02S05",
+    "name": "汽车配件",
+    "parts": [
+      {
+        "model": "gear",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tire",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G03S02",
+    "name": "二手车买卖",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "key",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C10G03S03",
+    "name": "摩托车维修",
+    "parts": [
+      {
+        "model": "motorcycle",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G01S01",
+    "name": "理发造型",
+    "parts": [
+      {
+        "model": "hairdryer",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "scissors",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G01S03",
+    "name": "皮肤护理",
+    "parts": [
+      {
+        "model": "cosmetic",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G01S05",
+    "name": "男士理容",
+    "parts": [
+      {
+        "model": "razor",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "comb",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G02S01",
+    "name": "美甲",
+    "parts": [
+      {
+        "model": "nail",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G02S02",
+    "name": "美睫",
+    "parts": [
+      {
+        "model": "eyelash",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lens",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G02S03",
+    "name": "纹绣服务",
+    "parts": [
+      {
+        "model": "brow",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G02S05",
+    "name": "个人形象设计",
+    "parts": [
+      {
+        "model": "dress",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lens",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G03S01",
+    "name": "非医疗SPA",
+    "parts": [
+      {
+        "model": "stones",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C11G03S03",
+    "name": "美体护理",
+    "parts": [
+      {
+        "model": "mat",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "cosmetic",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G01S02",
+    "name": "书法培训",
+    "parts": [
+      {
+        "model": "brush",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G01S04",
+    "name": "音乐培训",
+    "parts": [
+      {
+        "model": "piano",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "guitar",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G01S05",
+    "name": "舞蹈培训",
+    "parts": [
+      {
+        "model": "dancer",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "open-book",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G02S01",
+    "name": "职业技能培训",
+    "parts": [
+      {
+        "model": "tools",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G02S02",
+    "name": "学历提升",
+    "parts": [
+      {
+        "model": "book",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G02S03",
+    "name": "考试培训",
+    "parts": [
+      {
+        "model": "open-book",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G02S04",
+    "name": "编程培训",
+    "parts": [
+      {
+        "model": "laptop",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "code",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C13G03S04",
+    "name": "体育技能教学",
+    "parts": [
+      {
+        "model": "racket",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G01S03",
+    "name": "室内设计",
+    "parts": [
+      {
+        "model": "blueprint",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "sofa",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G01S05",
+    "name": "老房翻新",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G02S01",
+    "name": "防水补漏",
+    "parts": [
+      {
+        "model": "faucet",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G02S03",
+    "name": "门窗安装",
+    "parts": [
+      {
+        "model": "window",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G02S04",
+    "name": "地板墙面施工",
+    "parts": [
+      {
+        "model": "tiles",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "brush",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G02S05",
+    "name": "厨房卫浴安装",
+    "parts": [
+      {
+        "model": "faucet",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "locker",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G03S01",
+    "name": "全屋定制",
+    "parts": [
+      {
+        "model": "locker",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "blueprint",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G03S02",
+    "name": "建材销售",
+    "parts": [
+      {
+        "model": "brick",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C14G03S03",
+    "name": "灯具照明",
+    "parts": [
+      {
+        "model": "lamp",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bulb",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C15G01S01",
+    "name": "综合医院",
+    "parts": [
+      {
+        "model": "hospital",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C15G01S02",
+    "name": "社区医疗机构",
+    "parts": [
+      {
+        "model": "clinic",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C15G01S06",
+    "name": "中医诊疗",
+    "parts": [
+      {
+        "model": "plant",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C15G02S03",
+    "name": "疫苗接种",
+    "parts": [
+      {
+        "model": "syringe",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C15G02S04",
+    "name": "心理诊疗",
+    "parts": [
+      {
+        "model": "heart",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C15G03S02",
+    "name": "药店药房",
+    "parts": [
+      {
+        "model": "medical",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C16G01S01",
+    "name": "旅游景区",
+    "parts": [
+      {
+        "model": "mountain",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "camera",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C16G01S02",
+    "name": "周边短途游",
+    "parts": [
+      {
+        "model": "bus",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "backpack",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C16G01S03",
+    "name": "乡村旅游",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "plant",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C16G01S04",
+    "name": "露营营地",
+    "parts": [
+      {
+        "model": "tent",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "torch",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C16G01S05",
+    "name": "户外徒步",
+    "parts": [
+      {
+        "model": "mountain",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shoe",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C16G02S03",
+    "name": "当地导览",
+    "parts": [
+      {
+        "model": "signpost",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "globe",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C17G01S01",
+    "name": "连锁酒店",
+    "parts": [
+      {
+        "model": "hotel-tall",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "key",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C17G01S02",
+    "name": "经济酒店",
+    "parts": [
+      {
+        "model": "hotel-small",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bed",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C17G01S04",
+    "name": "高端酒店",
+    "parts": [
+      {
+        "model": "hotel-luxury",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "case",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G01S01",
+    "name": "健身俱乐部",
+    "parts": [
+      {
+        "model": "dumbbell",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "case",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G01S04",
+    "name": "普拉提",
+    "parts": [
+      {
+        "model": "mat",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "hoop",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G01S05",
+    "name": "拳击格斗",
+    "parts": [
+      {
+        "model": "boxing",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G01S06",
+    "name": "体能训练",
+    "parts": [
+      {
+        "model": "dumbbell",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G02S01",
+    "name": "游泳场馆",
+    "parts": [
+      {
+        "model": "swim-lanes",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "water",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G02S03",
+    "name": "篮球场馆",
+    "parts": [
+      {
+        "model": "basketball-court",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G02S04",
+    "name": "足球场馆",
+    "parts": [
+      {
+        "model": "football-court",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G02S05",
+    "name": "网球场馆",
+    "parts": [
+      {
+        "model": "tennis-court",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "racket",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G02S06",
+    "name": "乒乓球馆",
+    "parts": [
+      {
+        "model": "pingpong",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ball",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G02S08",
+    "name": "攀岩馆",
+    "parts": [
+      {
+        "model": "climbing",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "backpack",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G03S01",
+    "name": "骑行俱乐部",
+    "parts": [
+      {
+        "model": "bike",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "backpack",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C18G03S02",
+    "name": "跑步活动",
+    "parts": [
+      {
+        "model": "shoe",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G01S01",
+    "name": "婚礼策划",
+    "parts": [
+      {
+        "model": "arch",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ring",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G01S02",
+    "name": "婚庆主持",
+    "parts": [
+      {
+        "model": "mic",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "ring",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G01S03",
+    "name": "婚宴酒店",
+    "parts": [
+      {
+        "model": "hotel-luxury",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "cake",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G03S01",
+    "name": "婚纱礼服",
+    "parts": [
+      {
+        "model": "dress",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G03S03",
+    "name": "喜糖伴手礼",
+    "parts": [
+      {
+        "model": "candy",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bag",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G04S01",
+    "name": "婚介机构",
+    "parts": [
+      {
+        "model": "adult",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "ring",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C19G04S02",
+    "name": "婚恋咨询",
+    "parts": [
+      {
+        "model": "heart",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "headset",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C19G04S03",
+    "name": "相亲活动",
+    "parts": [
+      {
+        "model": "arch",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      },
+      {
+        "model": "heart",
+        "position": [
+          -0.7,
+          -0.1,
+          0.02
+        ],
+        "scale": 0.42,
+        "rotation": -0.1
+      }
+    ]
+  },
+  {
+    "id": "C20G01S02",
+    "name": "代理记账",
+    "parts": [
+      {
+        "model": "calculator",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C20G01S04",
+    "name": "法律服务",
+    "parts": [
+      {
+        "model": "scales",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "book",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C20G02S02",
+    "name": "品牌营销",
+    "parts": [
+      {
+        "model": "megaphone",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C20G02S03",
+    "name": "印刷制作",
+    "parts": [
+      {
+        "model": "printer",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "palette",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C20G02S05",
+    "name": "短视频代运营",
+    "parts": [
+      {
+        "model": "video",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "phone",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C20G03S04",
+    "name": "翻译服务",
+    "parts": [
+      {
+        "model": "globe",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "open-book",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C20G03S07",
+    "name": "会展服务",
+    "parts": [
+      {
+        "model": "mall",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "notice",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G01S01",
+    "name": "养老院",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "seated",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G01S04",
+    "name": "长者活动中心",
+    "parts": [
+      {
+        "model": "seated",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "mahjong",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G02S01",
+    "name": "上门助浴",
+    "parts": [
+      {
+        "model": "bath",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "seated",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G02S03",
+    "name": "助餐送餐",
+    "parts": [
+      {
+        "model": "meal",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bag",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G02S04",
+    "name": "失能照护",
+    "parts": [
+      {
+        "model": "bed",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "wheelchair",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G02S05",
+    "name": "护理陪护",
+    "parts": [
+      {
+        "model": "seated",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C22G03S02",
+    "name": "助行辅具租赁",
+    "parts": [
+      {
+        "model": "walker",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "clock",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G01S01",
+    "name": "殡仪馆查询",
+    "parts": [
+      {
+        "model": "memorial-hall",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G01S02",
+    "name": "遗体接运",
+    "parts": [
+      {
+        "model": "car",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G01S03",
+    "name": "遗体存放",
+    "parts": [
+      {
+        "model": "locker",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G01S06",
+    "name": "骨灰寄存",
+    "parts": [
+      {
+        "model": "urn",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "locker",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G02S01",
+    "name": "骨灰格位安葬",
+    "parts": [
+      {
+        "model": "niche",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "urn",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G02S02",
+    "name": "公墓安葬",
+    "parts": [
+      {
+        "model": "memorial-stone",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G02S04",
+    "name": "海葬服务",
+    "parts": [
+      {
+        "model": "boat",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G02S05",
+    "name": "祭扫服务",
+    "parts": [
+      {
+        "model": "candle",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G03S02",
+    "name": "殡葬用品",
+    "parts": [
+      {
+        "model": "urn",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "candle",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G03S03",
+    "name": "丧事鲜花布置",
+    "parts": [
+      {
+        "model": "lily",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "flower",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C23G03S04",
+    "name": "治丧便民指南",
+    "parts": [
+      {
+        "model": "open-book",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C24G01S01",
+    "name": "快递寄件",
+    "parts": [
+      {
+        "model": "parcel",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "envelope",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C24G02S01",
+    "name": "居民搬家",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "house",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C24G02S03",
+    "name": "家具运输",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "sofa",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C24G03S01",
+    "name": "仓储服务",
+    "parts": [
+      {
+        "model": "warehouse",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C24G03S02",
+    "name": "冷链物流",
+    "parts": [
+      {
+        "model": "truck",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "snowflake",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G01S01",
+    "name": "农业种苗",
+    "parts": [
+      {
+        "model": "plant",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "grain",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G01S02",
+    "name": "农机服务",
+    "parts": [
+      {
+        "model": "tractor",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "tools",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G01S04",
+    "name": "农业灌溉",
+    "parts": [
+      {
+        "model": "sprinkler",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "plant",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G01S05",
+    "name": "病虫害防治服务",
+    "parts": [
+      {
+        "model": "plant",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G02S01",
+    "name": "畜牧养殖服务",
+    "parts": [
+      {
+        "model": "cow",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "grain",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G02S02",
+    "name": "水产养殖服务",
+    "parts": [
+      {
+        "model": "fish",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "water",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G02S03",
+    "name": "农产品收购",
+    "parts": [
+      {
+        "model": "grain",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "bag",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C25G02S04",
+    "name": "粮食收购",
+    "parts": [
+      {
+        "model": "grain",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "warehouse",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C26G01S02",
+    "name": "户籍居住证指引",
+    "parts": [
+      {
+        "model": "idcard",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "house",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C26G02S02",
+    "name": "不动产登记指引",
+    "parts": [
+      {
+        "model": "house",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "certificate",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C26G02S04",
+    "name": "生活缴费指引",
+    "parts": [
+      {
+        "model": "calculator",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "faucet",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C26G03S03",
+    "name": "就业政策指引",
+    "parts": [
+      {
+        "model": "case",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "open-book",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C27G01S01",
+    "name": "银行营业网点",
+    "parts": [
+      {
+        "model": "bank",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "parking",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C27G02S01",
+    "name": "保险机构网点",
+    "parts": [
+      {
+        "model": "umbrella",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C27G02S05",
+    "name": "理赔服务网点",
+    "parts": [
+      {
+        "model": "shield",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "paper",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  },
+  {
+    "id": "C27G03S01",
+    "name": "金融消费者权益指引",
+    "parts": [
+      {
+        "model": "scales",
+        "position": [
+          -0.12,
+          0.08,
+          0
+        ],
+        "scale": 0.95
+      },
+      {
+        "model": "shield",
+        "position": [
+          0.65,
+          -0.35,
+          0.02
+        ],
+        "scale": 0.5
+      }
+    ]
+  }
+]
