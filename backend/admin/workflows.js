@@ -11,7 +11,7 @@ function offerEditor(offer){workflowForm(el('benefit-offer-editor'),[{key:'title
 function checks(root,labels){const inputs={};for(const [key,label]of labels){const wrapper=cell('label',label),input=document.createElement('input');input.type='checkbox';wrapper.prepend(input);root.append(wrapper);inputs[key]=input;}return ()=>Object.fromEntries(Object.entries(inputs).map(([k,input])=>[k,input.checked]));}
 function renderWorkflowTask(root,kind,id,d){
  const reason=async()=>await adminPrompt('填写实际核查结果或给申请者的答复（至少8字，不含证件号）');
- const action=(label,url,payload,role='operator')=>{if(adminRole!==role)return;root.append(button(label,async()=>{const response=await reason();if(!response)return;await api(url,'POST',{revision:d.revision,...await payload(),response,reason:response,...(kind==='businesscase'?{body:response}:{})});root.replaceChildren();await reload();}));};
+ const action=(label,url,payload,role='operator')=>{if(!canRole(role))return;root.append(button(label,async()=>{const response=await reason();if(!response)return;await api(url,'POST',{revision:d.revision,...await payload(),response,reason:response,...(kind==='businesscase'?{body:response}:{})});root.replaceChildren();await reload();}));};
  if(kind==='businesscase'){
   if(!canRole('operator')){root.append(cell('p','双方业务争议仅运营处理角色可读取。'));return;}
   root.append(cell('h4',d.snapshot?.title||'双方业务记录'));root.append(cell('p',d.snapshot?.detail||''));root.append(cell('p','原始申请：'+(d.snapshot?.request||'原预约记录')));root.append(cell('p','原答复：'+(d.snapshot?.acceptedResponse||'')));root.append(cell('p','状态：'+d.status+' · 原记录 '+d.source_id));
