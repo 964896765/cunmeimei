@@ -6,19 +6,21 @@ const context=()=>owner()+':'+(wx.getStorageSync('city_life_v2_auth_token')||'')
 const live=(page,uid)=>!page._disposed&&owner()===uid;
 Page({returnToMe(){require('../../utils/navigation').personalCenter();},
  contactSettings(e){const id=e.currentTarget.dataset.id,owner=wx.getStorageSync('city_life_user_id');wx.showActionSheet({itemList:['撤回本条公开电话','切换陌生人联系权限'],success:async r=>{try{const settings=await api.request('GET','/api/v1/me/publications/'+id+'/contact-settings',null,true,owner);const next=r.tapIndex===0?{...settings,publicPhone:false}:{...settings,allowMessages:!settings.allowMessages};if(next.publicPhone){wx.showToast({title:'请先撤回公开电话再修改其他联系设置',icon:'none'});return;}await api.request('PUT','/api/v1/me/publications/'+id+'/contact-settings',next,true,owner);wx.showToast({title:'联系设置已更新'});}catch(e){api.showError(e);}}});},
- data:{items:[],online:api.online(),busy:false,editing:false,editForm:null,editDistricts:[],loading:false,loadError:''},
- onShow(){require('../../utils/theme').apply(this);if(this._ownerUid!==undefined&&this._ownerUid!==owner()){this._editorVersion=(this._editorVersion||0)+1;this.setData({items:[],editing:false,editForm:null,busy:false,loadError:''});}this._ownerUid=owner();this.refresh();},
+ data:{hasMore:false,nextCursor:'',items:[],online:api.online(),busy:false,editing:false,editForm:null,editDistricts:[],loading:false,loadError:''},
+ onShow(){require('../../utils/theme').apply(this);if(this._ownerUid!==undefined&&this._ownerUid!==owner()){this._editorVersion=(this._editorVersion||0)+1;this.setData({hasMore:false,nextCursor:'',items:[],editing:false,editForm:null,busy:false,loadError:''});}this._ownerUid=owner();this.refresh();},
  onUnload(){this._disposed=true;},
- async refresh(){
+ more(){return this.refresh(true);},
+ async refresh(more=false){more=more===true;if(more&&(this.data.loading||!this.data.hasMore))return;
   if(!api.online()){
    this.setData({items:db.getStore().publications.map(x=>({...x,canWithdraw:x.status==='待审核（演示）',canEdit:x.status==='待审核（演示）'}))});return;
   }
   const version=this._listVersion=(this._listVersion||0)+1;let uid=owner();this.setData({loading:true,loadError:''});
   try{
-   if(!api.hasSession())await api.login();if(this._disposed||version!==this._listVersion)return;uid=owner();this._ownerUid=uid;
-   const r=await api.request('GET','/api/v1/me/publications',null,true,uid);
+   if(!api.hasSession())await api.login();if(this._disposed||version!==this._listVersion)return;if(more&&uid!==owner()){this.setData({items:[],hasMore:false,nextCursor:''});more=false;}uid=owner();this._ownerUid=uid;
+   const r=await api.request('GET','/api/v1/me/publications?limit=20'+(more?'&cursor='+encodeURIComponent(this.data.nextCursor):''),null,true,uid);
    if(!live(this,uid)||version!==this._listVersion)return;
-   this.setData({loading:false,items:(r.items||[]).map(x=>({...x,statusLabel:x.status==='published'&&x.expiresAt&&new Date(x.expiresAt)<new Date()?'已过期':labels[x.status]||x.status,expiryText:x.status==='published'&&x.expiresAt?(new Date(x.expiresAt)<=new Date()?'已到期，编辑后可重新提交审核':'展示至 '+new Date(x.expiresAt).toLocaleDateString()):'',dateText:x.createdAt?new Date(x.createdAt).toLocaleDateString():'',detail:x.detail||x.description,canWithdraw:['pending','published'].includes(x.status),canEdit:['pending','published','rejected'].includes(x.status)}))});
+   const unique=new Map((more?this.data.items:[]).map(x=>[x.id,x]));for(const item of r.items||[])unique.set(item.id,item);
+   this.setData({hasMore:!!r.hasMore,nextCursor:r.nextCursor||'',loading:false,items:[...unique.values()].map(x=>({...x,statusLabel:x.status==='published'&&x.expiresAt&&new Date(x.expiresAt)<new Date()?'已过期':labels[x.status]||x.status,expiryText:x.status==='published'&&x.expiresAt?(new Date(x.expiresAt)<=new Date()?'已到期，编辑后可重新提交审核':'展示至 '+new Date(x.expiresAt).toLocaleDateString()):'',dateText:x.createdAt?new Date(x.createdAt).toLocaleDateString():'',detail:x.detail||x.description,canWithdraw:['pending','published'].includes(x.status),canEdit:['pending','published','rejected'].includes(x.status)}))});
   }catch(e){if(live(this,uid)&&version===this._listVersion)this.setData({loadError:e.message||'发布记录暂不可用，请重试'});}
   finally{if(live(this,uid)&&version===this._listVersion&&this.data.loading)this.setData({loading:false});}
  },

@@ -46,7 +46,7 @@ function createMemoryRepository(){
   const s=services.find(x=>x.id===itemId);return visible(s)?clone(toPublicItem({...s,type:'service'},'catalog')):null;
  },
  async createPublication(uid,v){const x={id:id(),userId:uid,...v,detail:v.description,createdAt:when(),updatedAt:when(),revision:1,status:'pending',moderationReason:''};pubs.unshift(x);return clone(x);},
- async myPublications(uid){return clone(pubs.filter(x=>x.userId===uid));},
+ async myPublications(uid,opts){return require('./cursor-page').memory(clone(pubs.filter(x=>x.userId===uid)),opts);},
  async updatePublication(uid,pid,v,expectedRevision){
   const x=pubs.find(x=>x.id===pid&&x.userId===uid&&['pending','published','rejected'].includes(x.status)&&x.type===v.type);
   if(!x)return false;
@@ -69,7 +69,7 @@ function createMemoryRepository(){
  async availableSlots(serviceId,date){const s=services.find(x=>x.id===serviceId&&x.status==='published'&&(!regions.length||regions.some(r=>r.name===x.district&&r.enabled)));if(!s)return null;
   const instant=Date.now();for(const b of bookings){if(b.status==='pending_confirm'&&Date.parse(b.holdExpiresAt||'2099-01-01T00:00:00Z')<=instant)b.status='expired';}
   return Array.from({length:10},(_,i)=>{const time=String(i+9).padStart(2,'0')+':00',when=Date.parse(date+'T'+time+':00+08:00');return {time,available:when>instant+10*60000&&!bookings.some(b=>b.serviceId===serviceId&&Date.parse(b.requestedAt)===when&&['pending_confirm','confirmed'].includes(b.status))};});},
- async myBookings(uid){for(const b of bookings){if(b.status==='pending_confirm'&&b.holdExpiresAt&&Date.parse(b.holdExpiresAt)<=Date.now())b.status='expired';}return clone(bookings.filter(x=>x.userId===uid));},
+ async myBookings(uid,opts){for(const b of bookings){if(b.status==='pending_confirm'&&b.holdExpiresAt&&Date.parse(b.holdExpiresAt)<=Date.now())b.status='expired';}return require('./cursor-page').memory(clone(bookings.filter(x=>x.userId===uid)),opts);},
  async cancelBooking(uid,bookingId){const x=bookings.find(x=>x.id===bookingId&&x.userId===uid&&x.status==='pending_confirm');if(!x)return false;
   if(!x.holdExpiresAt||Date.parse(x.holdExpiresAt)<=Date.now()){x.status='expired';return false;}
   x.status='cancelled';return true;},

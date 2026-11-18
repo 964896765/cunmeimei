@@ -52,7 +52,12 @@ function attachPgBookingSubmissions(repo,pool){
     if(!row)return await reject('SLOT_TAKEN');
     if(row.remark!==v.remark)return await reject('EXISTING_BOOKING_DIFFERENT');replayed=true;
    }
-   if(!row)return await reject('SLOT_EXPIRED');
+   if(!row){
+    // Eligibility can change while the INSERT waits for a qualification lock.
+    // Re-read in a fresh statement before persisting the definitive retry outcome.
+    const available=await c.query("SELECT 1 FROM service_catalog s JOIN service_regions r ON r.name=s.district AND r.enabled LEFT JOIN verified_merchants m ON m.id=s.merchant_id WHERE s.id=$1 AND s.status='published' AND public_service_source_ok(s.id) AND (s.merchant_id IS NULL OR m.status='active')",[v.serviceId]);
+    return await reject(available.rows.length?'SLOT_EXPIRED':'SERVICE_NOT_AVAILABLE');
+   }
    await c.query('INSERT INTO booking_submissions(user_id,client_key,payload_hash,booking_id) VALUES($1,$2,$3,$4)',[uid,v.clientKey,hash,row.id]);
    await c.query('COMMIT');return {...booking(row),clientKey:v.clientKey,replayed};
   }catch(error){await c.query('ROLLBACK');throw error;}finally{c.release();}

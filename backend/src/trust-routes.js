@@ -11,14 +11,14 @@ async function trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerif
  if(/^\/api\/v1\/items\/[0-9a-f-]{36}\/phone$/i.test(p)&&m==='POST'){const uid=await user(req);const phone=await repo.accessPhone(uid,p.split('/')[4]);return json(res,200,{phone}),true;}
  if(/^\/api\/v1\/me\/chats\/[0-9a-f-]{36}(\/messages|\/end|\/block)?$/i.test(p)){
   const uid=await user(req),id=p.split('/')[5],action=p.split('/')[6];if(!uuid(id))fail('INVALID_ID','会话标识无效');
-  if(m==='GET'&&!action){let before=url.searchParams.get('before');if(before&&!Number.isFinite(Date.parse(before)))fail('INVALID_DATE','时间无效');return json(res,200,await repo.chat(uid,id,before)),true;}
+  if(m==='GET'&&!action){let before=url.searchParams.get('before');if(before&&!Number.isFinite(Date.parse(before)))fail('INVALID_DATE','时间无效');return json(res,200,await repo.chat(uid,id,before,require('./cursor-page').decode(url.searchParams.get('cursor')))),true;}
   if(m==='POST'&&action==='messages'){const v=await body(req);if(!/^[A-Za-z0-9_-]{16,64}$/.test(v.clientKey||''))fail('INVALID_REQUEST_KEY','消息标识无效');return json(res,201,{message:await repo.sendChat(uid,id,text(v.body,1000,1),v.clientKey)}),true;}
   if(m==='POST'&&action==='end'){if(!await repo.endChat(uid,id))fail('CHAT_UNAVAILABLE','会话不可用',404);return json(res,200,{ok:true}),true;}
   if(m==='POST'&&action==='block'){if(!await repo.blockContact(uid,id,true))fail('CHAT_UNAVAILABLE','会话不可用',404);return json(res,200,{ok:true}),true;}
  }
  if(p==='/admin/api/trust/classification'&&m==='GET'){admin(req);const catalog=require('../../miniprogram/utils/classification-contract');return json(res,200,{version:catalog.source.version,items:catalog.projects.map(x=>({id:x.id,name:x.name,categoryName:x.categoryName,group:x.group,publication:catalog.publicationFor(x.id),workflow:require('../../miniprogram/utils/industry-workflows').workflow(x.id)}))}),true;}
  if(p==='/admin/api/trust'&&m==='GET'){
-  const s=admin(req),dashboard=await repo.trustDashboard();
+  const s=admin(req),paged=url.searchParams.has('limit')||url.searchParams.has('cursor'),section=url.searchParams.get('section')||'';if(section&&['risks','appeals','audit'].includes(section)&&!s.permissions.includes('operations'))fail('ADMIN_FORBIDDEN','没有读取此管理列表的权限',403);if(paged&&!repo.trustPages)fail('PAGING_UNAVAILABLE','当前存储模式不支持此列表分页',503);const dashboard=paged?await repo.trustPages(require('./cursor-page').options(url),section):await repo.trustDashboard();
   if(!s.permissions.includes('operations')){
    dashboard.users=dashboard.users.map(({riskLevel,riskUntil,restrictPublish,restrictContact,...safe})=>safe);
    dashboard.risks=[];dashboard.appeals=[];dashboard.audit=[];
@@ -26,6 +26,9 @@ async function trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerif
   return json(res,200,{...dashboard,role:s.role,permissions:s.permissions,imageCheck:'manual_review_required',textCheck:'rule_signals_and_manual_review'}),true;
  }
 
+ if(/^\/admin\/api\/trust\/users\/[0-9a-f-]{36}\/qualification$/i.test(p)&&m==='GET'){
+  admin(req,false,'verifier');const scope=text(url.searchParams.get('scope')||'',160);if(!(scope==='housing'||scope.startsWith('publication:')&&uuid(scope.slice(12))||require('../../miniprogram/utils/classification-contract').find(scope)))fail('INVALID_SCOPE','资质范围无效');return json(res,200,{qualification:await repo.qualificationFor(p.split('/')[5],scope)}),true;
+ }
  if(/^\/admin\/api\/trust\/users\/[0-9a-f-]{36}\/(identity|phone|qualification|risk)$/i.test(p)&&m==='POST'){
   const uid=p.split('/')[5],kind=p.split('/')[6],session=admin(req,true,kind==='risk'?'operator':'verifier'),v=await body(req);if(!uuid(uid))fail('INVALID_USER','账号标识无效');
   if(kind==='identity'){if(!['verified','revoked'].includes(v.status)||!Number.isInteger(v.revision)||v.revision<0)fail('INVALID_REVIEW','核验参数无效');await repo.reviewIdentity(uid,v,session.role);}

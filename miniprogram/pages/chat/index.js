@@ -12,7 +12,7 @@ Page({
  historyAtBottom(){this._chatReadingHistory=false;},
  scrollLatest(){this.setData({chatScrollAnchor:''},()=>this.setData({chatScrollAnchor:'chat-history-end'}));},
 
- data:{layoutStyle:'',chatScrollAnchor:'',id:'',chat:null,messages:[],draft:'',loading:false,sending:false,error:'',sendError:'',warning:'',hasSession:false,permissionsReady:false,safetyBusy:false,reportBusy:false,reportDraft:'',reportError:''},
+ data:{historyHasMore:false,historyCursor:'',historyLoading:false,historyError:'',layoutStyle:'',chatScrollAnchor:'',id:'',chat:null,messages:[],draft:'',loading:false,sending:false,error:'',sendError:'',warning:'',hasSession:false,permissionsReady:false,safetyBusy:false,reportBusy:false,reportDraft:'',reportError:''},
  onLoad(q){const id=q.id||'';this.setData({id});if(!/^[0-9a-f-]{36}$/i.test(id))this.setData({error:'会话标识无效，演示记录不会当作真实聊天发送。'});},
  onShow(){pageLayout.show(this,{keyboard:true,tabBar:false});this._visible=true;require('../../utils/theme').apply(this);this.refresh();clearInterval(this._timer);this._timer=setInterval(()=>{if(this._visible&&!this.data.sending)this.refresh(true);},8000);},
  onHide(){pageLayout.hide(this);this._visible=false;clearInterval(this._timer);this._version=(this._version||0)+1;this._readPromise=null;},
@@ -20,26 +20,28 @@ Page({
  valid(owner,id=this.data.id){return !this._disposed&&owner===ownerKey()&&id===this.data.id;},
  syncOwner(){
   const owner=ownerKey();
-  if(this._owner!==undefined&&this._owner!==owner){this._sendAttempt=null;this._sendTask=null;this._safetyTask=null;this._reportTask=null;this._readPromise=null;this.setData({chat:null,messages:[],draft:'',warning:'',sendError:'',sending:false,safetyBusy:false,reportBusy:false,reportDraft:'',reportError:'',permissionsReady:false});}
+  if(this._owner!==undefined&&this._owner!==owner){this._historyLoaded=false;this._historyTask=null;this._sendAttempt=null;this._sendTask=null;this._safetyTask=null;this._reportTask=null;this._readPromise=null;this.setData({historyHasMore:false,historyCursor:'',historyLoading:false,historyError:'',chat:null,messages:[],draft:'',warning:'',sendError:'',sending:false,safetyBusy:false,reportBusy:false,reportDraft:'',reportError:'',permissionsReady:false});}
   this._owner=owner;return owner;
  },
- refresh(quiet=false,force=false){
+ refresh(quiet=false,force=false){quiet=quiet===true;if(!quiet){this._historyLoaded=false;this._chatReadingHistory=false;}
+  if(quiet&&this.data.historyLoading&&!force)return Promise.resolve();
   if(this._disposed||!/^[0-9a-f-]{36}$/i.test(this.data.id))return Promise.resolve();
   const owner=this.syncOwner(),id=this.data.id;
   if(this._readPromise&&this._readOwner===owner&&!force)return this._readPromise;
   const version=this._version=(this._version||0)+1;this._readOwner=owner;
-  if(!api.hasSession()){this.setData({hasSession:false,chat:null,messages:[],permissionsReady:false,error:'请先微信登录后查看自己的会话',loading:false});return Promise.resolve();}
+  if(!api.hasSession()){this.setData({historyHasMore:false,historyCursor:'',hasSession:false,chat:null,messages:[],permissionsReady:false,error:'请先微信登录后查看自己的会话',loading:false});return Promise.resolve();}
   if(!quiet)this.setData({loading:true,error:''});
   let attempt;
   attempt=(async()=>{
    try{
     const chat=await api.request('GET','/api/v1/me/chats/'+id,null,true,uid());
     if(!this.valid(owner,id)||version!==this._version)return;
-    const last=this.data.messages[this.data.messages.length-1]?.id;this.setData({chat,messages:chat.items||[],hasSession:true,permissionsReady:true,error:'',loading:false},()=>{if(!this._chatReadingHistory&&last!==chat.items?.[chat.items.length-1]?.id)this.scrollLatest();});wx.setNavigationBarTitle({title:'站内会话'});
-   }catch(e){if(this.valid(owner,id)&&version===this._version){const denied=['CHAT_UNAVAILABLE','NOT_FOUND','ACCOUNT_CLOSED','ACCOUNT_INACTIVE','SESSION_EXPIRED','LOGIN_REQUIRED'].includes(e.code);this.setData({chat:denied?null:this.data.chat?{...this.data.chat,canSend:false}:null,...(denied?{messages:[]}:{}),permissionsReady:false,error:e.message,loading:false});}}
+    const last=this.data.messages[this.data.messages.length-1]?.id;const merged=new Map((quiet&&this._historyLoaded?this.data.messages:[]).map(m=>[m.id,m]));for(const message of chat.items||[])merged.set(message.id,message);const messages=[...merged.values()].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||''))||a.id.localeCompare(b.id));this.setData({chat,messages,...(!quiet||!this._historyLoaded?{historyHasMore:!!chat.hasMore,historyCursor:chat.nextCursor||''}:{}),hasSession:true,permissionsReady:true,error:'',loading:false},()=>{if(!this._chatReadingHistory&&last!==chat.items?.[chat.items.length-1]?.id)this.scrollLatest();});wx.setNavigationBarTitle({title:'站内会话'});
+   }catch(e){if(this.valid(owner,id)&&version===this._version){const denied=['CHAT_UNAVAILABLE','NOT_FOUND','ACCOUNT_CLOSED','ACCOUNT_INACTIVE','SESSION_EXPIRED','LOGIN_REQUIRED'].includes(e.code);this.setData({chat:denied?null:this.data.chat?{...this.data.chat,canSend:false}:null,...(denied?{messages:[],historyHasMore:false,historyCursor:''}:{}),permissionsReady:false,error:e.message,loading:false});}}
   })().finally(()=>{if(this._readPromise===attempt)this._readPromise=null;});
   this._readPromise=attempt;return attempt;
  },
+ async loadOlder(){if(this.data.historyLoading||this._readPromise||!this.data.historyHasMore||!this.data.historyCursor||!api.hasSession())return;const owner=ownerKey(),id=this.data.id,version=this._version,task={};this._historyTask=task;this.setData({historyLoading:true,historyError:''});try{const chat=await api.request('GET','/api/v1/me/chats/'+id+'?cursor='+encodeURIComponent(this.data.historyCursor),null,true,uid());if(!this.valid(owner,id)||this._historyTask!==task||version!==this._version)return;const first=this.data.messages[0]?.id,merged=new Map();for(const row of [...(chat.items||[]),...this.data.messages])merged.set(row.id,row);this._chatReadingHistory=true;this._historyLoaded=true;this.setData({chat,permissionsReady:true,messages:[...merged.values()].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||''))||a.id.localeCompare(b.id)),historyHasMore:!!chat.hasMore,historyCursor:chat.nextCursor||'',chatScrollAnchor:first?'message-'+first:''});}catch(e){if(this.valid(owner,id)){const denied=['CHAT_UNAVAILABLE','ACCOUNT_INACTIVE','SESSION_EXPIRED','LOGIN_REQUIRED'].includes(e.code);this.setData({historyError:e.message,...(denied?{messages:[],chat:null,permissionsReady:false,historyHasMore:false,historyCursor:''}:{})});}}finally{if(this.valid(owner,id)&&this._historyTask===task)this.setData({historyLoading:false});}},
  input(e){this._draftRevision=(this._draftRevision||0)+1;this.setData({draft:e.detail.value,warning:'',sendError:''});},
  async submit(){
   if(this.data.sending||!api.hasSession()||!this.data.chat?.canSend||!this.data.draft.trim())return;

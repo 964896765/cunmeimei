@@ -29,7 +29,7 @@
   </view>
  </view>
  <feedback-state wx:if="{{!editing&&!items.length&&!loading&&!loadError}}" kind="empty" description="暂时没有发布记录。可前往「发布」创建第一条内容。" compact="{{false}}" large-text="{{displayPreferences.largeText}}"/>
- <view class="notice">{{online?'结束展示后，其他人将无法继续查看或发起新的联系。':'当前是本地演示记录。'}}</view>
+ <button wx:if="{{hasMore&&!editing}}" class="btn light" bindtap="more" disabled="{{loading||busy}}">继续加载</button><view class="notice">{{online?'结束展示后，其他人将无法继续查看或发起新的联系。':'当前是本地演示记录。'}}</view>
 </view>
 
 </view>

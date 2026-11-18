@@ -100,7 +100,7 @@ async function reload(){
  if(typeof loadMemorialConsole==='function')await loadMemorialConsole();
  await loadTasks();
  if(canAdmin('operations'))await loadPointsRules();else el('points-rules').replaceChildren();
- const [stats,queue,config,comments,privacy,trust,projectCatalog]=await Promise.all([api('/admin/api/stats'),api('/admin/api/queue'),api('/admin/api/catalog'),canAdmin('operations')?api('/admin/api/comments'):Promise.resolve({items:[]}),canAdmin('privacy')?api('/admin/api/privacy-requests'):Promise.resolve({items:[]}),api('/admin/api/trust'),api('/admin/api/trust/classification')]);
+ const [stats,queue,config,comments,privacy,trust,projectCatalog]=await Promise.all([api('/admin/api/stats'),api('/admin/api/queue'),api('/admin/api/catalog'),canAdmin('operations')?api('/admin/api/comments'):Promise.resolve({items:[]}),canAdmin('privacy')?api('/admin/api/privacy-requests'):Promise.resolve({items:[]}),api('/admin/api/trust?limit=20'),api('/admin/api/trust/classification')]);
  renderItems('project-catalog',projectCatalog.items||[],(root,x)=>row(root,x.id+' · '+x.name,x.categoryName+' / '+x.group,(x.workflow?'行业业务流程 · '+(x.workflow.credential?'本项目主体/专项核验':'内容及来源审核'):x.publication?.enabled?'居民发布表单':'未开放')+' · '+(x.publication?.businessCodes||[]).join('/')+' · '+x.publication?.reviewPolicy));
  renderTrust(trust);
  renderItems('regions',config.regions||[],(root,x)=>{
@@ -115,7 +115,7 @@ async function reload(){
  el('stats').replaceChildren();for(const [title,num] of [['待审内容',stats.pendingPublications],['已公开内容',stats.published],['商家申请',stats.merchantApplications],['注册用户',stats.users]]){const c=cell('div','','card');c.append(cell('div',title,'muted'));c.append(cell('div',num,'value'));el('stats').append(c);}
  renderItems('publications',queue.publications||[],(root,x)=>{
   const r=row(root,x.title,({used:'二手闲置',housing:'房屋信息',community:'邻里社区',service:'服务需求'}[x.type]||x.type)+' · '+x.district,x.description||x.detail),actions=cell('div','','actions');
-  if(canRole('verifier')&&x.type==='housing')actions.append(button('核验本条房源材料',async()=>{const reference=await adminPrompt('已实际核验的外部材料工单编号'),reason=await adminPrompt('房源产权或授权核验过程'),validUntil=await adminPrompt('材料真实有效期 YYYY-MM-DD');if(!reference||!reason||!validUntil)return;const scope='publication:'+x.id,prior=(trust.qualifications||[]).find(q=>q.userId===x.userId&&q.scope===scope);await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope,reference,reason,validUntil,status:'verified',revision:prior?.revision||0,manuallyVerified:true},'核验此条房源材料');}));
+  if(canRole('verifier')&&x.type==='housing')actions.append(button('核验本条房源材料',async()=>{const reference=await adminPrompt('已实际核验的外部材料工单编号'),reason=await adminPrompt('房源产权或授权核验过程'),validUntil=await adminPrompt('材料真实有效期 YYYY-MM-DD');if(!reference||!reason||!validUntil)return;const scope='publication:'+x.id,prior=(await api('/admin/api/trust/users/'+x.userId+'/qualification?scope='+encodeURIComponent(scope))).qualification;await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope,reference,reason,validUntil,status:'verified',revision:prior?.revision||0,manuallyVerified:true},'核验此条房源材料');}));
   if(x.attributes)r.append(cell('p',Object.values(x.attributes).filter(Boolean).join(' · '),'muted'));
   for(const id of x.imageIds||[]){if(!/^[a-f0-9-]{36}$/i.test(id))continue;const image=document.createElement('img');image.src='/admin/api/media/'+id+'?size=thumb';image.alt='待审核内容图片';image.className='content-preview';r.append(image);}
   if(canAdmin('operations'))actions.append(button('读取并逐项审核',()=>openTask('publication',x.id)));
@@ -171,7 +171,10 @@ el('region-form').addEventListener('submit',async e=>{e.preventDefault();const n
 el('logout').addEventListener('click',async()=>{try{await api('/admin/api/logout','POST',{});csrf='';notify('已退出');await connected();}catch(err){notify(err.message);}});
 
 function until(days){return new Date(Date.now()+days*86400e3).toISOString();}
-function renderTrust(trust){
+let trustView={},trustCursors={},trustGenerations={};
+async function loadTrustPage(section,delta){const state=trustCursors[section]||{index:0,cursors:['']},index=state.index+delta;if(index<0)return;const cursor=delta>0?trustView.pagination?.[section]?.nextCursor:state.cursors[index];if(delta>0&&!cursor)return;const session=csrf,generation=trustGenerations[section]=(trustGenerations[section]||0)+1;try{const result=await api('/admin/api/trust?limit=20&section='+encodeURIComponent(section)+(cursor?'&cursor='+encodeURIComponent(cursor):''));if(session!==csrf||generation!==trustGenerations[section])return;const cursors=state.cursors.slice();cursors[index]=cursor||'';trustCursors[section]={index,cursors};renderTrust({...trustView,[section]:result[section],pagination:{...trustView.pagination,...result.pagination}},true);}catch(e){notify('列表读取失败：'+e.message);}}
+function renderTrust(trust,preserve=false){
+ if(!preserve){trustCursors={};trustGenerations={};}trustView=trust;
  adminRole=trust.role;
  renderItems('trust-users',trust.users||[],(root,x)=>{
   const r=row(root,x.name||'附近的街坊',x.id,`微信：${x.wechatLinked?'已关联':'未关联'}；手机号：${x.phoneVerified?'已验证 '+x.maskedPhone:'未验证'}；身份服务：未开通；内部风险：${x.riskLevel||'normal'}`),actions=cell('div','','actions');
@@ -179,10 +182,10 @@ function renderTrust(trust){
    const scope=await adminPrompt('填写适用范围：housing（分类发布资格）、具体分类 ID，或 publication:信息ID（仅本条材料）');if(!scope)return;
    const reference=await adminPrompt('填写实际已核验的外部材料工单编号（字母开头，不含身份证/手机号）');if(!reference)return;
    const reason=await adminPrompt('记录核验过程、授权范围及依据，不填写证件号码');if(!reason)return;const validUntil=await adminPrompt('材料实际有效期，填写 YYYY-MM-DD，不能晚于材料到期时间');if(!validUntil)return;
-   const old=(trust.qualifications||[]).find(q=>q.userId===x.id&&q.scope===scope);
+   const old=(await api('/admin/api/trust/users/'+x.id+'/qualification?scope='+encodeURIComponent(scope))).qualification;
    await process('/admin/api/trust/users/'+x.id+'/qualification',{scope,reference,reason,status:'verified',validUntil,revision:old?.revision||0,manuallyVerified:true},'确认已完成业务材料核验');
   }));
-  actions.append(button('调整行为限制',async()=>{
+  if(canAdmin('operations'))actions.append(button('调整行为限制',async()=>{
    const level=await adminPrompt('内部等级：normal、suspicious、severe');if(!level)return;
    const reason=await adminPrompt('填写已经核查的事实及处置理由（用户可见、可申诉）');if(!reason)return;
    const confirmed=level==='severe'?await adminConfirm('已人工核实严重违规；限制有效期为7天，并允许申诉。确认？'):false;if(level==='severe'&&!confirmed)return;
@@ -190,9 +193,10 @@ function renderTrust(trust){
   }));r.append(actions);
  });
  renderItems('trust-qualifications',trust.qualifications||[],(root,x)=>{const r=row(root,x.scope,x.userId,`${x.status} · 到期 ${x.validUntil}`);if(canRole('verifier')&&x.status==='verified')r.append(button('撤销此项核验',async()=>{const reference=await adminPrompt('材料处理工单编号'),reason=await adminPrompt('撤销原因');if(reference&&reason)await process('/admin/api/trust/users/'+x.userId+'/qualification',{scope:x.scope,reference,reason,status:'revoked',revision:x.revision,validUntil:until(1),manuallyVerified:true},'撤销业务核验');},true));});
- renderItems('trust-risks',trust.risks||[],(root,x)=>{const r=row(root,x.targetType+' · '+x.targetId,x.userId,(x.signals||[]).join(' · ')),actions=cell('div','','actions');actions.append(button('读取相关材料（记录审计）',async()=>{const evidence=await api('/admin/api/trust/risks/'+x.id+'/evidence');r.append(cell('p',evidence.body||'无可读文字'));for(const id of evidence.imageIds||[]){const img=document.createElement('img');img.src='/admin/api/media/'+id+'?size=thumb';img.className='content-preview';img.alt='需复核的图片';r.append(img);}}));actions.append(button('记录复核结果',async()=>{const reason=await adminPrompt('复核结论：说明实际检查内容和处置');if(!reason)return;await process('/admin/api/trust/risks/'+x.id,{reason},'记录人工复核');}));if(x.targetType==='message')actions.append(button('核实后放行暂缓消息',async()=>{const reason=await adminPrompt('说明实际检查消息内容后的放行依据');if(reason)await process('/admin/api/trust/risks/'+x.id,{reason,releaseMessage:true},'放行消息');}));r.append(actions);});
+ renderItems('trust-risks',trust.risks||[],(root,x)=>{const r=row(root,x.targetType+' · '+x.targetId,x.userId,(x.signals||[]).join(' · ')),actions=cell('div','','actions');if(canAdmin('evidence'))actions.append(button('读取相关材料（记录审计）',async()=>{const evidence=await api('/admin/api/trust/risks/'+x.id+'/evidence');r.append(cell('p',evidence.body||'无可读文字'));for(const id of evidence.imageIds||[]){const img=document.createElement('img');img.src='/admin/api/media/'+id+'?size=thumb';img.className='content-preview';img.alt='需复核的图片';r.append(img);}}));actions.append(button('记录复核结果',async()=>{const reason=await adminPrompt('复核结论：说明实际检查内容和处置');if(!reason)return;await process('/admin/api/trust/risks/'+x.id,{reason},'记录人工复核');}));if(x.targetType==='message')actions.append(button('核实后放行暂缓消息',async()=>{const reason=await adminPrompt('说明实际检查消息内容后的放行依据');if(reason)await process('/admin/api/trust/risks/'+x.id,{reason,releaseMessage:true},'放行消息');}));r.append(actions);});
  renderItems('trust-appeals',trust.appeals||[],(root,x)=>{const r=row(root,x.userId,x.status,x.reason),actions=cell('div','','actions');for(const [status,label]of [['accepted','申诉通过'],['rejected','不予支持']])actions.append(button(label,async()=>{const response=await adminPrompt('实际复核结果及答复');if(response)await process('/admin/api/trust/appeals/'+x.id,{status,response,revision:x.revision},label);}));r.append(actions);});
  renderItems('trust-audit',trust.audit||[],(root,x)=>row(root,x.action,x.userId+' · '+x.actorRole,x.reason));
+ for(const section of ['users','qualifications','risks','appeals','audit']){if(['risks','appeals','audit'].includes(section)&&!canAdmin('operations'))continue;const root=el('trust-'+section),meta=trust.pagination?.[section],state=trustCursors[section];if((state?.index||0)>0)root.append(button('上一页',()=>loadTrustPage(section,-1)));if(meta?.hasMore)root.append(button('下一页',()=>loadTrustPage(section,1)));}
 }
 
 el('task-kind').addEventListener('change',()=>{taskPage=1;el('task-detail').replaceChildren();loadTasks();});

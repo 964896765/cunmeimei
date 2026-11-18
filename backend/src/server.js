@@ -264,7 +264,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   if(m==='GET'&&p==='/api/v1/me'){return json(res,200,{userId:await user(req)});}
   if(m==='POST'&&p==='/api/v1/auth/logout'){await user(req);await repo.revokeSession(sha256(req.headers.authorization.slice(7)));return json(res,200,{ok:true});}
   if(m==='POST'&&p==='/api/v1/publications'){const uid=await user(req);const input=await body(req);const v={...publication(input,await activeAreas()),...require('./product-repository').validatePublicationSubmission(input),publicationConsent:require('./publication-notice').validate(input.publicationConsent),isTest:testData(req)};if(!await canSubmit(v.type))fail(403,'CATEGORY_CLOSED','该分类暂未开放发布');return json(res,201,{publication:await repo.createPublication(uid,v)});}
-  if(m==='GET'&&p==='/api/v1/me/publications'){return json(res,200,{items:await repo.myPublications(await user(req))});}
+  if(m==='GET'&&p==='/api/v1/me/publications'){const uid=await user(req),paged=url.searchParams.has('limit')||url.searchParams.has('cursor'),opts=paged?require('./cursor-page').options(url):null,rows=await repo.myPublications(uid,opts);return json(res,200,paged?require('./cursor-page').pack(rows,opts):{items:rows});}
   if(m==='PUT'&&/^\/api\/v1\/me\/publications\/[0-9a-f-]{36}$/i.test(p)){
    const uid=await user(req),id=p.split('/')[5],input=await body(req);
    if(!uuid(id))fail(400,'INVALID_ID','信息编号无效');
@@ -372,7 +372,7 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
    return json(res,200,{booking:b,replayed:true});
   }
   if(m==='POST'&&p==='/api/v1/bookings'){const uid=await user(req);const v=booking(await body(req));const b=await repo.createBooking(uid,v);if(!b||b.error==='service_unavailable')fail(404,'SERVICE_NOT_AVAILABLE','该服务暂时不可预约');if(b.error==='existing_booking_different')fail(409,'EXISTING_BOOKING_DIFFERENT','该时段已有您的另一份预约，请查看我的预约');if(b.error==='slot_taken')fail(409,'SLOT_TAKEN','此时段已被其他预约占用，请重新选择');if(b.error==='slot_expired')fail(409,'SLOT_EXPIRED','该预约时间已失效，请重新选择时段');return json(res,b.replayed?200:201,{booking:b,replayed:!!b.replayed});}
-  if(m==='GET'&&p==='/api/v1/me/bookings'){return json(res,200,{items:await repo.myBookings(await user(req))});}
+  if(m==='GET'&&p==='/api/v1/me/bookings'){const uid=await user(req),paged=url.searchParams.has('limit')||url.searchParams.has('cursor'),opts=paged?require('./cursor-page').options(url):null,rows=await repo.myBookings(uid,opts);return json(res,200,paged?require('./cursor-page').pack(rows,opts):{items:rows});}
   if(m==='POST'&&/^\/api\/v1\/bookings\/[0-9a-f-]{36}\/cancel$/i.test(p)){const uid=await user(req);const ok=await repo.cancelBooking(uid,p.split('/')[4]);if(!ok)fail(409,'CANNOT_CANCEL','不可取消或记录不存在');return json(res,200,{ok:true});}
   if(m==='POST'&&p==='/admin/api/login'){
    if(!adminPassword&&!verificationAdminPassword&&!superAdminPassword)fail(503,'ADMIN_NOT_CONFIGURED','未配置后台管理员');const key=clientAddress(req);
