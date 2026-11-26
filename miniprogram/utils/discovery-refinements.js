@@ -61,6 +61,7 @@ function field(key, channel = 'all', values = {}) {
   let label = '',
     options = [],
     hint = '';
+  if (key === 'images') return {key,label:'图片条件',hint:'',options:[choice('','不限图片'),choice('with','仅有图片')]};
   if (key === 'employment') {
     label = '用工形式';
     options = workflows.definitions.JOB.fields
@@ -197,6 +198,7 @@ function extras(values = {}, channel = 'all') {
 function panel(channel, values = {}, state = {}) {
   const keys = [...(configurations[channel] || configurations.all).fields];
   if (!keys.includes('days')) keys.push('days');
+  keys.push('images');
   return keys.map((key) => {
     const definition = field(key, channel, values);
     const needsIntent = channel === 'housing' && key === 'price' && !values.intent;
@@ -207,10 +209,24 @@ function panel(channel, values = {}, state = {}) {
       options: definition.options.map((option) => ({
         ...option,
         disabled: needsIntent && !!option.value,
-        selected: option.value === (value === '0' ? '' : value),
+        selected: option.value === (value === '0' || (key === 'images' && value === 'all') ? '' : value),
       })),
     };
   });
+}
+
+function businessPanel(channel, values = {}) {
+  return panel(channel, values).filter((item) => persistentKeys.includes(item.key));
+}
+
+function selectBusiness(channel, values, key, value) {
+  const group = businessPanel(channel, values).find((item) => item.key === key);
+  if (!group?.options.some((item) => item.value === value && !item.disabled)) return null;
+  const next = { ...values };
+  if (value) next[key] = value;
+  else delete next[key];
+  if (key === 'intent' && value !== values.intent) delete next.price;
+  return normalize(next, channel);
 }
 
 function band(key, value) {
@@ -219,4 +235,4 @@ function band(key, value) {
   );
 }
 
-module.exports = { configurations, persistentKeys, field, normalize, chips, extras, panel, band };
+module.exports = { configurations, persistentKeys, field, normalize, chips, extras, panel, businessPanel, selectBusiness, band };

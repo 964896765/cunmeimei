@@ -95,11 +95,17 @@
     "brand-scene": "/components/brand-scene/index",
     "publication-confirmation": "/components/publication-confirmation/index"
   },
+  "preloadRule": {
+    "pages/publish/index": {
+      "network": "all",
+      "packages": ["category-art"]
+    }
+  },
   "subPackages": [
     {
       "root": "category-art",
       "name": "category-art",
-      "pages": []
+      "pages": ["entry/index"]
     }
   ]
 }

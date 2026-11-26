@@ -12,3 +12,6 @@
 
 .underlined .channel-tab.is-selected { background:transparent; color:var(--link); box-shadow:none; }
 .underlined .channel-tab.is-selected::before { bottom:0; height:5rpx; }
+.underlined { background:var(--channel-fill,var(--background)); }
+.underlined .channel-tab.is-selected { color:var(--channel-accent,var(--link)); font-weight:700; }
+.underlined .channel-tab.is-selected::before { background:var(--channel-accent,var(--link)); }

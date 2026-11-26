@@ -1,11 +1,36 @@
 'use strict';
 const api=require('../../utils/api'),tabs=require('../../utils/tab-bar');
 Page({
- data:{loading:true,busy:false,error:'',status:{},projectName:'',hasProject:false,permissionResume:false,purpose:'',actions:[],appeals:[]},
+ data:{loading:true,busy:false,error:'',status:{},projectName:'',hasProject:false,permissionResume:false,purpose:'',smsMode:'',actions:[],appeals:[]},
  onLoad(q){this._permissionResume=q.resume==='permission';this.setData({permissionResume:this._permissionResume,purpose:require('../../utils/auth-intent').phoneReason()});this._categoryId=q.categoryId||'';const project=require('../../utils/classification').find(this._categoryId);if(project)this.setData({projectName:project.name,hasProject:true});},
- onShow(){this._disposed=false;require('../../utils/theme').apply(this);this.refresh();},onUnload(){this._disposed=true;if(this._permissionResume)require('../../utils/auth-intent').cancelPhone();},
+ onShow(){
+  this._disposed=false;
+  if(this._owner&&this._owner!==tabs.context())this.setData({status:{},smsMode:''});
+  require('../../utils/theme').apply(this);this.refresh();
+ },
+ onUnload(){this._disposed=true;if(this._permissionResume)require('../../utils/auth-intent').cancelPhone();},
  async refresh(){const owner=this._owner=tabs.context();this.setData({loading:true,error:''});try{const s=await api.request('GET','/api/v1/me/trust',null,true);if(this._disposed||owner!==tabs.context())return;this.setData({status:s,actions:(s.actions||[]).filter(a=>['risk_severe','risk_suspicious','identity_revoked','qualification_revoked'].includes(a.action)),appeals:s.appeals||[]});}catch(e){if(!this._disposed)this.setData({error:e.message});}finally{if(!this._disposed)this.setData({loading:false});}},
  async authorizePhone(e){if(this.data.busy||!this.data.status.phoneProviderAvailable)return;if(!e.detail.code){this.setData({error:'你未授权手机号，可以取消、稍后重试或继续浏览。不会自动取得号码。'});return;}const owner=tabs.context();this.setData({busy:true,error:''});try{await api.request('POST','/api/v1/me/phone/wechat',{code:e.detail.code},true);if(this._disposed||owner!==tabs.context())return;await this.refresh();if(this.data.status.phoneVerified)this.finish();}catch(e){if(!this._disposed)this.setData({error:e.message});}finally{if(!this._disposed)this.setData({busy:false});}},
+ chooseSms(e){
+  if(this.data.busy||!this.data.status.smsAvailable||!this.data.status.wechatLinked)return;
+  const requested=e.currentTarget.dataset.mode;
+  this.setData({smsMode:this.data.smsMode===requested?'':requested,error:''});
+ },
+ async verifySms(e){
+  if(this.data.busy||!this.data.smsMode)return;
+  const owner=tabs.context(),changing=this.data.smsMode==='change';
+  this.setData({busy:true,error:''});
+  try{
+   await api.verifySmsPhone(e.detail);
+   if(this._disposed||owner!==tabs.context())return;
+   this.setData({smsMode:''});
+   await this.refresh();
+   if(!this.data.status.phoneVerified)return;
+   if(changing&&!this._permissionResume&&!this._categoryId)wx.showToast({title:'手机号已更换'});
+   else this.finish();
+  }catch(e){if(!this._disposed&&owner===tabs.context())this.setData({error:e.message});}
+  finally{if(!this._disposed)this.setData({busy:false});}
+ },
  finish(){if(!this.data.status.phoneVerified)return;if(this._permissionResume){require('../../utils/auth-intent').finishPhone();return;}const project=require('../../utils/classification').find(this._categoryId);if(project)wx.redirectTo({url:'/pages/publish-form/index?categoryId='+encodeURIComponent(project.id)});else wx.navigateBack();},
  goBack(){if(!this.data.busy)wx.navigateBack({delta:1,fail:()=>wx.switchTab({url:'/pages/me/index'})});},
  revoke(){if(this.data.busy)return;const owner=tabs.context();wx.showModal({title:'解除手机号验证？',content:'解除后，已有信息上的公开电话将同步关闭；发布与联系需要重新验证。',success:async r=>{if(!r.confirm||owner!==tabs.context())return;try{await api.request('DELETE','/api/v1/me/phone',null,true);this.refresh();}catch(e){api.showError(e);}}});},

@@ -20,8 +20,20 @@ test('27 industry icons are distinct, complete and use the same line grid in eve
  for(const theme of Object.keys(iconPalettes)){const hashes=items.map(x=>{const file=path.resolve(__dirname,'../../miniprogram/assets/icons/'+x.icon+'-'+theme+'.png');return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');});assert.equal(new Set(hashes).size,27);}
  for(const item of items)assert.match(svg(item.id,'#000000'),/viewBox="0 0 24 24".*stroke-width="1.8"/);
 });
+test('home shortcuts and the directory can show 27 distinct color icons', () => {
+ const categories = registry.categoryItems();
+ const directory = client('categories');
+ directory.page.refresh(shortcuts.defaults);
+ assert.ok(directory.page.data.options.every(item => item.homeIcon));
+ const hashes = categories.map(({id}) => {
+  assert.ok(shortcuts.items([id])[0].homeIcon);
+  const icon = path.resolve(__dirname, '../../miniprogram/assets/home-icons', `${id}.png`);
+  return crypto.createHash('sha256').update(fs.readFileSync(icon)).digest('hex');
+ });
+ assert.equal(new Set(hashes).size, 27);
+});
 test('editor browses 27 choices, caps nine shortcuts and supports explicit replacement without navigating',()=>{
- const c=client('categories');c.page.refresh(shortcuts.defaults);assert.equal(c.page.data.options.length,27);assert.equal(c.page.data.selectedIds.length,9);
+ const c=client('categories');c.page.refresh([...shortcuts.defaults,'C14','C12']);assert.equal(c.page.data.options.length,27);assert.equal(c.page.data.selectedIds.length,9);
  c.page.toggle({currentTarget:{dataset:{id:'C27'}}});assert.equal(c.page.data.selectedIds.length,9);assert.equal(c.notices.length,1);assert.equal(c.routes.length,0);
  c.page.toggle({currentTarget:{dataset:{id:'C02'}}});c.page.toggle({currentTarget:{dataset:{id:'C27'}}});assert.equal(c.page.data.selectedIds.length,9);assert.ok(c.page.data.selectedIds.includes('C27'));
  assert.equal(c.page.data.options.length,27);

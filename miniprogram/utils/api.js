@@ -13,10 +13,31 @@ let signInPromise=null,exchange=null,sessionVersion=0;
 const EXPIRY='city_life_session_expires_at';
 const identity=()=>({owner:wx.getStorageSync('city_life_user_id')||'',token:wx.getStorageSync(KEY)||''});
 function authError(code,message){const error=Error(message);error.code=code;return error;}
+function wechatCode(){return new Promise((resolve,reject)=>wx.login({timeout:10000,success:r=>r.code?resolve(r.code):reject(authError('WECHAT_LOGIN_CANCELLED','未取得微信登录凭证，可重试或继续浏览')),fail:()=>reject(authError('WECHAT_LOGIN_CANCELLED','微信登录未完成，可重试或继续浏览'))}));}
+function smsDeviceId(){
+ const key='city_life_sms_installation',saved=wx.getStorageSync(key);
+ if(typeof saved==='string'&&/^[\w-]{24,96}$/.test(saved))return saved;
+ const id='sms_'+Date.now().toString(36)+'_'+Array.from({length:3},()=>Math.random().toString(36).slice(2).padEnd(10,'0')).join('');
+ wx.setStorageSync(key,id);return id;
+}
+async function smsRequest(action,input){
+ const started=identity(),version=sessionVersion,bound=input.purpose!=='signin';
+ if(bound&&!hasSession())throw authError('SESSION_EXPIRED','登录已过期，请重新登录后重新获取验证码');
+ const payload={...input,deviceId:smsDeviceId()};
+ if(!bound)payload.wechatCode=await wechatCode();
+ const check=()=>{const current=identity();if(version!==sessionVersion||started.owner!==current.owner||started.token!==current.token)throw authError('ACCOUNT_CHANGED','账号状态已变化，请重新获取验证码');};
+ check();
+ const result=await raw('POST','/api/v1/auth/sms/'+action,payload,bound?started.token:'',{timeout:15000});
+ check();
+ return result;
+}
 function login(options={}){if(hasSession()&&!options.force)return Promise.resolve(wx.getStorageSync(KEY));if(signInPromise)return signInPromise;let attempt;attempt=require('./auth-intent').request(options).finally(()=>{if(signInPromise===attempt)signInPromise=null;});signInPromise=attempt;return attempt;}
-function completeLogin(nonce,consent){const broker=require('./auth-intent');if(!broker.isCurrent(nonce))return Promise.reject(authError('AUTH_CANCELLED','原登录操作已取消'));if(exchange?.nonce===nonce)return exchange.promise;
+function completeLogin(nonce,consent,sms){const broker=require('./auth-intent');if(!broker.isCurrent(nonce))return Promise.reject(authError('AUTH_CANCELLED','原登录操作已取消'));if(exchange?.nonce===nonce)return exchange.promise;
  const version=sessionVersion,started=identity(),startedExpiry=wx.getStorageSync(EXPIRY);let attempt;attempt=(async()=>{
-  let r;if(config.devLogin)r=await raw('POST','/api/v1/dev/login',{devUser:config.devUser});else{const code=await new Promise((resolve,reject)=>wx.login({timeout:10000,success:r=>r.code?resolve(r.code):reject(authError('WECHAT_LOGIN_CANCELLED','未取得微信登录凭证，可重试或继续浏览')),fail:()=>reject(authError('WECHAT_LOGIN_CANCELLED','微信登录未完成，可重试或继续浏览'))}));r=await raw('POST','/api/v1/auth/wechat',{code,...consent});}
+  let r;
+  if(sms)r=await smsRequest('verify',{...sms,...consent,purpose:'signin'});
+  else if(config.devLogin)r=await raw('POST','/api/v1/dev/login',{devUser:config.devUser});
+  else r=await raw('POST','/api/v1/auth/wechat',{code:await wechatCode(),...consent});
   const current=identity();if(version!==sessionVersion||current.owner!==started.owner||current.token!==started.token||!broker.isCurrent(nonce))throw authError('AUTH_CANCELLED','原登录操作已取消');
   if(typeof r.token!=='string'||r.token.length<16||typeof r.userId!=='string'||!r.userId)throw Error('登录响应无效，请重试');
   try{wx.setStorageSync('city_life_user_id',r.userId);wx.setStorageSync(KEY,r.token);wx.setStorageSync(EXPIRY,Date.now()+Math.min(604800,Number(r.expiresIn)||604800)*1000);}catch{try{if(wx.getStorageSync('city_life_user_id')===r.userId){for(const [key,value]of [['city_life_user_id',started.owner],[KEY,started.token],[EXPIRY,startedExpiry]]){if(value)wx.setStorageSync(key,value);else wx.removeStorageSync(key);}}}catch{try{wx.removeStorageSync(KEY);wx.removeStorageSync('city_life_user_id');wx.removeStorageSync(EXPIRY);}catch{}}throw authError('SESSION_STORAGE_FAILED','无法保存登录状态，请清理空间后重试');}return r;
@@ -72,6 +93,8 @@ function hasSession(){const expiry=Number(wx.getStorageSync(EXPIRY)||0);return !
 async function logout(){const started=identity();sessionVersion++;signInPromise=null;require('./auth-intent').cancel();require('./auth-intent').cancelPhone();let serverRevoked=!started.token;try{if(started.token)await raw('POST','/api/v1/auth/logout',{},started.token);serverRevoked=true;}catch(e){if(['SESSION_EXPIRED','LOGIN_REQUIRED'].includes(e.code))serverRevoked=true;}finally{const current=identity();if(current.owner===started.owner&&current.token===started.token&&!signInPromise){wx.removeStorageSync(KEY);wx.removeStorageSync('city_life_user_id');wx.removeStorageSync(EXPIRY);}}return {serverRevoked};}
 function showError(e){wx.showToast({title:e.message||'请求失败',icon:'none',duration:2500});}
 module.exports={online,request,login,completeLogin,logout,hasSession,uploadLicense,uploadMemorialProof,showError};
+module.exports.sendSmsCode=input=>smsRequest('send',input);
+module.exports.verifySmsPhone=input=>smsRequest('verify',{...input,purpose:'bind',phoneConsent:true});
 
 async function uploadImage(filePath,expectedOwner){
  if(!online())throw Error('仅服务端模式允许上传');

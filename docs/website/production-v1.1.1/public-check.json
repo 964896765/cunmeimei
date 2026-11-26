@@ -1,0 +1,278 @@
+{
+  "checkedAt": "2026-11-18T17:30:06.044Z",
+  "expectedEcsAddress": "8.156.72.144",
+  "nameservers": {
+    "type": "NS",
+    "values": [
+      "stephanie.dnspod.net",
+      "bonus.dnspod.net"
+    ]
+  },
+  "checks": {
+    "resolverRecords": [
+      {
+        "host": "dgqfl.xyz",
+        "records": [
+          {
+            "type": "A",
+            "error": "ENODATA"
+          },
+          {
+            "type": "AAAA",
+            "error": "ENODATA"
+          },
+          {
+            "type": "CNAME",
+            "error": "ENODATA"
+          }
+        ]
+      },
+      {
+        "host": "www.dgqfl.xyz",
+        "records": [
+          {
+            "type": "A",
+            "error": "ENOTFOUND"
+          },
+          {
+            "type": "AAAA",
+            "error": "ENOTFOUND"
+          },
+          {
+            "type": "CNAME",
+            "error": "ENOTFOUND"
+          }
+        ]
+      },
+      {
+        "host": "api.dgqfl.xyz",
+        "records": [
+          {
+            "type": "A",
+            "error": "ENODATA"
+          },
+          {
+            "type": "AAAA",
+            "error": "ENODATA"
+          },
+          {
+            "type": "CNAME",
+            "error": "ENODATA"
+          }
+        ]
+      }
+    ],
+    "authorityRecords": [
+      {
+        "name": "stephanie.dnspod.net",
+        "server": "111.206.98.235",
+        "records": [
+          {
+            "host": "dgqfl.xyz",
+            "records": [
+              {
+                "type": "A",
+                "error": "ENODATA"
+              },
+              {
+                "type": "AAAA",
+                "error": "ENODATA"
+              },
+              {
+                "type": "CNAME",
+                "error": "ENODATA"
+              }
+            ]
+          },
+          {
+            "host": "www.dgqfl.xyz",
+            "records": [
+              {
+                "type": "A",
+                "error": "ENOTFOUND"
+              },
+              {
+                "type": "AAAA",
+                "error": "ENOTFOUND"
+              },
+              {
+                "type": "CNAME",
+                "error": "ENOTFOUND"
+              }
+            ]
+          },
+          {
+            "host": "api.dgqfl.xyz",
+            "records": [
+              {
+                "type": "A",
+                "error": "ENODATA"
+              },
+              {
+                "type": "AAAA",
+                "error": "ENODATA"
+              },
+              {
+                "type": "CNAME",
+                "error": "ENODATA"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "bonus.dnspod.net",
+        "server": "117.89.178.35",
+        "records": [
+          {
+            "host": "dgqfl.xyz",
+            "records": [
+              {
+                "type": "A",
+                "error": "ENODATA"
+              },
+              {
+                "type": "AAAA",
+                "error": "ENODATA"
+              },
+              {
+                "type": "CNAME",
+                "error": "ENODATA"
+              }
+            ]
+          },
+          {
+            "host": "www.dgqfl.xyz",
+            "records": [
+              {
+                "type": "A",
+                "error": "ENOTFOUND"
+              },
+              {
+                "type": "AAAA",
+                "error": "ENOTFOUND"
+              },
+              {
+                "type": "CNAME",
+                "error": "ENOTFOUND"
+              }
+            ]
+          },
+          {
+            "host": "api.dgqfl.xyz",
+            "records": [
+              {
+                "type": "A",
+                "error": "ENODATA"
+              },
+              {
+                "type": "AAAA",
+                "error": "ENODATA"
+              },
+              {
+                "type": "CNAME",
+                "error": "ENODATA"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "ecsPorts": [
+      {
+        "port": 80,
+        "connected": true
+      },
+      {
+        "port": 443,
+        "connected": true
+      }
+    ],
+    "ecsTls": [
+      {
+        "host": "dgqfl.xyz",
+        "error": "ECONNRESET"
+      },
+      {
+        "host": "www.dgqfl.xyz",
+        "error": "ECONNRESET"
+      },
+      {
+        "host": "api.dgqfl.xyz",
+        "error": "ECONNRESET"
+      }
+    ],
+    "publicHttp": [
+      {
+        "url": "http://dgqfl.xyz/",
+        "error": "ENOTFOUND"
+      },
+      {
+        "url": "https://dgqfl.xyz/",
+        "error": "ENOTFOUND"
+      },
+      {
+        "url": "http://www.dgqfl.xyz/",
+        "error": "ENOTFOUND"
+      },
+      {
+        "url": "https://www.dgqfl.xyz/",
+        "error": "ENOTFOUND"
+      },
+      {
+        "url": "http://api.dgqfl.xyz/api/v1/health",
+        "error": "ENOTFOUND"
+      },
+      {
+        "url": "https://api.dgqfl.xyz/api/v1/health",
+        "error": "ENOTFOUND"
+      }
+    ],
+    "ecsHttp": [
+      {
+        "url": "http://dgqfl.xyz/",
+        "address": "8.156.72.144",
+        "error": "ECONNRESET"
+      },
+      {
+        "url": "https://dgqfl.xyz/",
+        "address": "8.156.72.144",
+        "error": "ECONNRESET"
+      },
+      {
+        "url": "http://www.dgqfl.xyz/",
+        "address": "8.156.72.144",
+        "error": "ECONNRESET"
+      },
+      {
+        "url": "https://www.dgqfl.xyz/",
+        "address": "8.156.72.144",
+        "error": "ECONNRESET"
+      },
+      {
+        "url": "http://api.dgqfl.xyz/api/v1/health",
+        "address": "8.156.72.144",
+        "error": "ECONNRESET"
+      },
+      {
+        "url": "https://api.dgqfl.xyz/api/v1/health",
+        "address": "8.156.72.144",
+        "error": "ECONNRESET"
+      }
+    ],
+    "localApi": [
+      {
+        "url": "http://127.0.0.1:3101/api/v1/health",
+        "status": 200,
+        "location": null,
+        "server": null
+      },
+      {
+        "url": "http://127.0.0.1:3101/api/v1/ready",
+        "status": 200,
+        "location": null,
+        "server": null
+      }
+    ]
+  }
+}

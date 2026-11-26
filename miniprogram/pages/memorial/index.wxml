@@ -1,17 +1,35 @@
 <view class="theme-root memorial-page {{themeClass}}" style="{{themeStyle}}">
  <page-header id="navigation-header" title="{{pageTitle}}" back="{{true}}" bind:back="back" large-text="{{displayPreferences.largeText}}"/>
- <view class="memorial-content">
+ <view class="memorial-content {{mode==='portal'?'memorial-portal':''}}">
   <feedback-state wx:if="{{loading}}" kind="loading" description="正在读取纪念资料…" compact="{{true}}"/>
   <feedback-state wx:if="{{error}}" kind="error" title="请核对后继续" description="{{error}}" compact="{{true}}" action-text="重新读取" bind:action="load" action-disabled="{{busy}}"/>
   <view wx:if="{{pending}}" class="memorial-card"><text>有一项提交结果待核对。</text><button class="memorial-button" bindtap="resume" disabled="{{busy}}">核对上次提交</button><button class="memorial-link" bindtap="clearPending" disabled="{{busy}}">已核对，清除本机请求</button></view>
   <view wx:if="{{privateLocked}}" class="memorial-card"><view class="memorial-title">登录后管理纪念馆</view><text class="memorial-muted">创建资料、授权材料及本人核查请求通过账号权限保护。</text><button class="memorial-button" bindtap="signin">微信登录并继续</button></view>
   <block wx:elif="{{mode==='portal'}}">
-   <view class="memorial-intro"><view class="memorial-flower" aria-hidden="true">✾</view><view class="memorial-heading">悼念专区</view><view class="memorial-subtitle">缅怀逝者 · 留存思念</view><view class="memorial-rule"></view><text>让那些珍贵的回忆，安静地留在这里。</text></view>
-   <view wx:if="{{!publicEnabled}}" class="memorial-status" role="status">专区正在内部验收，公开浏览尚未开放。</view>
-   <button class="memorial-entry" bindtap="openCreate"><catalog-image class="memorial-entry-icon" asset-id="memorial-create" fallback-src="/assets/icons/publish-guide-{{iconPalette}}.png" muted="{{true}}" blend-matte="{{true}}" dark="{{displayPreferences.theme==='dark'}}"/><view><text class="memorial-title">创建纪念馆</text><text class="memorial-muted">为亲友留存珍贵回忆</text></view><text class="memorial-arrow">›</text></button>
-   <button class="memorial-entry" disabled="{{!publicEnabled}}" bindtap="openBrowse"><catalog-image class="memorial-entry-icon" asset-id="memorial-remembrance" fallback-src="/assets/icons/home-{{iconPalette}}.png" muted="{{true}}" blend-matte="{{true}}" dark="{{displayPreferences.theme==='dark'}}"/><view><text class="memorial-title">追思纪念</text><text class="memorial-muted">留下思念与祝福</text></view><text class="memorial-arrow">›</text></button>
-   <button class="memorial-entry" bindtap="openManage"><catalog-image class="memorial-entry-icon" asset-id="memorial-manage" fallback-src="/assets/icons/publish-drafts-{{iconPalette}}.png" muted="{{true}}" blend-matte="{{true}}" dark="{{displayPreferences.theme==='dark'}}"/><view><text class="memorial-title">纪念馆管理</text><text class="memorial-muted">管理已创建的纪念页面</text></view><text class="memorial-arrow">›</text></button>
-   <view class="memorial-footer">静静怀念 · 珍藏回忆</view>
+   <view class="memorial-intro">
+    <image class="memorial-intro-art" src="/assets/memorial-landscape.jpg" mode="aspectFill" aria-hidden="true"/>
+    <view class="memorial-intro-copy"><view class="memorial-heading">时光会走<text>思念长存</text></view><view class="memorial-rule"></view><text class="memorial-intro-description">将珍贵的回忆，留在温柔的时光里</text></view>
+   </view>
+   <view class="memorial-portal-actions">
+    <button class="memorial-entry memorial-manage-entry" bindtap="openManage">
+     <view class="memorial-icon-frame" aria-hidden="true"><view class="memorial-book"></view></view>
+     <view class="memorial-entry-copy"><text class="memorial-title">我的纪念馆</text><text class="memorial-muted">查看和管理您创建的纪念馆</text></view>
+     <text class="memorial-arrow" aria-hidden="true">›</text>
+    </button>
+    <view class="memorial-portal-grid">
+     <button class="memorial-entry memorial-tile" disabled="{{!publicEnabled}}" bindtap="openBrowse">
+      <view class="memorial-search-icon" aria-hidden="true"></view><text class="memorial-title">寻找纪念馆</text><text class="memorial-muted">搜索公开纪念馆</text>
+     </button>
+     <button class="memorial-entry memorial-tile memorial-memories-entry" bindtap="openMemories">
+      <view class="memorial-picture-icon" aria-hidden="true"></view><text class="memorial-title">时光回忆</text><text class="memorial-muted">珍藏亲友的故事</text>
+     </button>
+    </view>
+    <view wx:if="{{!loading&&!error&&!publicEnabled}}" class="memorial-status" role="status">公开查找尚未开放，您仍可创建和管理自己的纪念馆。</view>
+    <button class="memorial-entry memorial-create-entry" bindtap="openCreate">
+     <view class="memorial-create-title"><view class="memorial-plus" aria-hidden="true">+</view><text>创建纪念馆</text></view>
+     <text class="memorial-create-subtitle">为亲人建立一处专属纪念空间</text>
+    </button>
+   </view>
   </block>
   <block wx:elif="{{mode==='form'&&!privateLocked}}">
    <view class="memorial-status">{{statusText}}<text wx:if="{{hall.response}}"> · {{hall.response}}</text></view>
@@ -59,6 +77,17 @@
    <feedback-state wx:if="{{!loading&&!items.length&&!error}}" kind="empty" title="{{mode==='manage'?'还没有创建纪念馆':'暂时没有匹配的公开纪念馆'}}" description="{{mode==='manage'?'为亲友留存珍贵回忆。':'可以更换姓名关键词查找。'}}"/>
    <button wx:if="{{hasMore}}" class="memorial-button secondary" bindtap="more" disabled="{{loading}}">继续查看</button>
    <view wx:if="{{mode==='manage'&&reports.length}}" class="memorial-card"><view class="memorial-title">本人核查请求</view><view wx:for="{{reports}}" wx:key="id" class="memorial-request"><text>{{item.status==='pending'?'待核查':item.status==='resolved'?'已有处理答复':'已有核查说明'}}</text><text class="memorial-muted">{{item.response||'平台将核对后在此答复。'}}</text></view></view>
+  </block>
+  <block wx:elif="{{mode==='memories'}}">
+   <view wx:for="{{items}}" wx:key="id" class="memorial-card">
+    <view class="memorial-title">{{item.name}}</view>
+    <text wx:if="{{item.payload.birthDate||item.payload.deathDate}}" class="memorial-muted">{{item.payload.birthDate}}{{item.payload.birthDate&&item.payload.deathDate?' — ':''}}{{item.payload.deathDate}}</text>
+    <text wx:if="{{item.payload.biography}}" class="memorial-biography memorial-story" selectable="true">{{item.payload.biography}}</text>
+    <text wx:if="{{item.payload.memories}}" class="memorial-biography memorial-story" selectable="true">{{item.payload.memories}}</text>
+    <text wx:if="{{!item.payload.biography&&!item.payload.memories}}" class="memorial-muted">这座纪念馆还没有记录回忆。</text>
+   </view>
+   <feedback-state wx:if="{{!loading&&!items.length&&!error}}" kind="empty" title="还没有时光回忆" description="创建纪念馆并记录亲友的故事后，可以在这里回看。"/>
+   <button wx:if="{{hasMore}}" class="memorial-button secondary" bindtap="more" disabled="{{loading}}">继续查看</button>
   </block>
  </view>
 </view>

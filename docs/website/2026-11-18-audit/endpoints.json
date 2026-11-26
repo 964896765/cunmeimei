@@ -1,0 +1,144 @@
+{
+  "checkedAt": "2026-11-18T03:47:22.809Z",
+  "scope": "Current workstation resolver and direct Node HTTP clients; no proxy, DNS changes or production login. DNS errors are observations from this environment, not a global availability verdict.",
+  "records": [
+    {
+      "host": "dgqfl.xyz",
+      "records": [
+        {
+          "type": "A",
+          "error": "ENODATA"
+        },
+        {
+          "type": "AAAA",
+          "error": "ENODATA"
+        },
+        {
+          "type": "CNAME",
+          "error": "ENODATA"
+        }
+      ]
+    },
+    {
+      "host": "www.dgqfl.xyz",
+      "records": [
+        {
+          "type": "A",
+          "error": "ENOTFOUND"
+        },
+        {
+          "type": "AAAA",
+          "error": "ENOTFOUND"
+        },
+        {
+          "type": "CNAME",
+          "error": "ENOTFOUND"
+        }
+      ]
+    },
+    {
+      "host": "api.dgqfl.xyz",
+      "records": [
+        {
+          "type": "A",
+          "error": "ENODATA"
+        },
+        {
+          "type": "AAAA",
+          "error": "ENODATA"
+        },
+        {
+          "type": "CNAME",
+          "error": "ENODATA"
+        }
+      ]
+    },
+    {
+      "host": "admin.dgqfl.xyz",
+      "records": [
+        {
+          "type": "A",
+          "error": "ENOTFOUND"
+        },
+        {
+          "type": "AAAA",
+          "error": "ENOTFOUND"
+        },
+        {
+          "type": "CNAME",
+          "error": "ENOTFOUND"
+        }
+      ]
+    }
+  ],
+  "publicRequests": [
+    {
+      "url": "http://dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 40
+    },
+    {
+      "url": "https://dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 32
+    },
+    {
+      "url": "http://www.dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 16
+    },
+    {
+      "url": "https://www.dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 16
+    },
+    {
+      "url": "http://api.dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 16
+    },
+    {
+      "url": "https://api.dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 16
+    },
+    {
+      "url": "http://admin.dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 31
+    },
+    {
+      "url": "https://admin.dgqfl.xyz/",
+      "method": "HEAD",
+      "error": "ENOTFOUND",
+      "elapsedMs": 31
+    }
+  ],
+  "localBaseline": [
+    {
+      "url": "http://127.0.0.1:3101/api/v1/health",
+      "method": "GET",
+      "status": 200,
+      "location": null,
+      "tls": null,
+      "elapsedMs": 4,
+      "body": "{\"ok\":true,\"version\":\"0.25.0\"}"
+    },
+    {
+      "url": "http://127.0.0.1:3101/api/v1/ready",
+      "method": "GET",
+      "status": 200,
+      "location": null,
+      "tls": null,
+      "elapsedMs": 31,
+      "body": "{\"ready\":true}"
+    }
+  ]
+}

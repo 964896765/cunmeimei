@@ -1,1 +1,6 @@
 :host{display:block}.conditions{display:flex;align-items:center;flex-wrap:wrap;gap:8rpx;padding:0 0 12rpx}.conditions button{display:flex;align-items:center;gap:12rpx;min-height:72rpx;max-width:100%;padding:8rpx 14rpx;margin:0;border:0;border-radius:10rpx;background:var(--soft);color:var(--link);font-size:24rpx;line-height:1.5;text-align:left}.conditions button::after{border:0}.condition text:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.condition text:last-child{flex-shrink:0}.conditions .reset{background:transparent;border-color:transparent;margin-left:auto}.large button{font-size:29rpx;min-height:88rpx}
+.condition-scroll-x { width:100%; white-space:nowrap; }
+.conditions.horizontal { display:inline-flex; flex-wrap:nowrap; padding:6rpx 0 12rpx; }
+.horizontal button { flex-shrink:0; max-width:430rpx; min-height:58rpx; border-radius:30rpx; white-space:nowrap; background:var(--glass-tile); }
+.horizontal .reset { margin:0; }
+.large.horizontal button { min-height:74rpx; }

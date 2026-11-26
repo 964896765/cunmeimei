@@ -25,3 +25,8 @@
 .header-large-text .brand-subtitle { display:none; }
 
 .header-collapsed .nav-title { visibility:hidden; }
+.brand-name { font-size:var(--header-brand-size,28rpx); }
+.brand-subtitle { font-size:var(--header-subtitle-size,19rpx); }
+@media (min-width:390px) { .brand-name { font-size:var(--header-brand-size,30rpx); } .brand-subtitle { font-size:var(--header-subtitle-size,20rpx); } }
+.header-large-text .brand-name { font-size:32rpx; }
+.nav-leading { position:absolute; left:16rpx; display:flex; align-items:center; }

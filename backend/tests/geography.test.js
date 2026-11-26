@@ -23,10 +23,16 @@ test('manual browsing city survives GPS and validates town ancestry; history is 
  assert.equal(c.current().label,'东莞市 · 南城街道');assert.throws(()=>c.select('440100','441900004'));
  for(const city of geo.cities.slice(0,9))c.select(city.code);assert.equal(c.history().length,6);
 });
-test('home shortcut grid exposes nine saved industries and keeps More in the fixed corner',()=>{
+test('home shortcut grid preserves nine saved industries across four-column pages',()=>{
  const shortcuts=require('../../miniprogram/utils/shortcuts'),ids=require('../../miniprogram/utils/classification').categories.map(x=>x.id);
  assert.equal(shortcuts.normalize([...ids,...ids,'more','unknown']).length,9);
- for(const count of [0,1,7,8,9,15,16,23,24,27]){const visible=Math.min(count,9),slots=shortcuts.items(ids.slice(0,count)),pages=shortcuts.pages(slots);assert.equal(slots.length,10);assert.equal(slots.at(-1).id,'more');assert.equal(slots.filter(x=>x.id==='more').length,1);assert.equal(slots.filter(x=>!x.empty&&x.id!=='more').length,visible);assert.equal(pages.length,1);assert.deepEqual(slots.filter(x=>!x.empty&&x.id!=='more').map(x=>x.id),ids.slice(0,visible));}
+ assert.equal(shortcuts.defaults.length,7);
+ for(const count of [0,1,7,8,9,15,16,23,24,27]){
+  const visible=Math.min(count,9),slots=shortcuts.items(ids.slice(0,count)),pages=shortcuts.pages(slots);
+  assert.equal(pages.length,visible>7?2:1);
+  assert.ok(pages.every(page=>page.items.length===8&&page.items.at(-1).id==='more'));
+  assert.deepEqual(slots.filter(x=>!x.empty&&x.id!=='more').map(x=>x.id),ids.slice(0,visible));
+ }
 });
 test('geo query rejects malformed bounds/city ancestry and rounds approximate points before storage',()=>{
  for(const v of ['',null,true,'NaN','Infinity'])assert.throws(()=>geo.number(v,-90,90));

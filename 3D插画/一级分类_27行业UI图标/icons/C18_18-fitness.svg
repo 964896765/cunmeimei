@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="运动健身">
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D95B9B"/>
+      <stop offset="1" stop-color="#A94E83"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#brand)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 13h8v13h-8zM36 38h8v13h-8z"/><path d="M8 29h12M28 29h8M44 29h12M8 35h12M28 35h8M44 35h12"/>
+  </g>
+</svg>

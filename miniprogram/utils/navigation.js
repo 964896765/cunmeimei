@@ -6,5 +6,5 @@ function search(type='all',q='',categoryId='',options={}){const browse=require('
 function publish(projectId=''){const node=require('./classification').find(projectId);getApp().globalData.publishTarget=node?{id:node.id}:null;wx.switchTab({url:'/pages/publish/index'});}
 
 function categories(edit=false){wx.navigateTo({url:'/pages/categories/index'+(edit?'?mode=edit':'')});}
-function personalCenter(section='main'){getApp().globalData.personalCenterSection=['service','points'].includes(section)?section:'main';getApp().globalData.openPersonalCenter=true;wx.switchTab({url:'/pages/me/index'});}
+function personalCenter(section='main'){getApp().globalData.personalCenterSection=['service','points','saved'].includes(section)?section:'main';getApp().globalData.openPersonalCenter=true;wx.switchTab({url:'/pages/me/index'});}
 module.exports={publish,discover,discoverIndustry,detail,chat,search,categories,personalCenter};

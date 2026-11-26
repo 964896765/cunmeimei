@@ -3,135 +3,172 @@
   "packOptions": {
     "ignore": [
       {
-        "type": "file",
-        "value": "data/city-catalog.json"
+        "value": ".svg",
+        "type": "suffix"
       },
       {
-        "type": "file",
-        "value": "data/city-centers.json"
+        "value": "assets/icons/nav-curve-",
+        "type": "prefix"
       },
       {
-        "type": "file",
-        "value": "data/industry-catalog.json"
+        "value": "assets/discover-city.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/brand-butterfly.jpg"
+        "value": "assets/profile-storefront.webp",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C01-pearl.png"
+        "value": "assets/publish-checklist.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C02-pearl.png"
+        "value": "data/city-catalog.json",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C04-pearl.png"
+        "value": "data/city-centers.json",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C05-pearl.png"
+        "value": "data/industry-catalog.json",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C06-pearl.png"
+        "value": "assets/brand-butterfly.jpg",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C07-pearl.png"
+        "value": "assets/icons/industry-C01-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C08-pearl.png"
+        "value": "assets/icons/industry-C02-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C09-pearl.png"
+        "value": "assets/icons/industry-C04-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C10-pearl.png"
+        "value": "assets/icons/industry-C05-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C11-pearl.png"
+        "value": "assets/icons/industry-C06-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C12-pearl.png"
+        "value": "assets/icons/industry-C07-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C13-pearl.png"
+        "value": "assets/icons/industry-C08-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C14-pearl.png"
+        "value": "assets/icons/industry-C09-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C15-pearl.png"
+        "value": "assets/icons/industry-C10-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C16-pearl.png"
+        "value": "assets/icons/industry-C11-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C17-pearl.png"
+        "value": "assets/icons/industry-C12-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C18-pearl.png"
+        "value": "assets/icons/industry-C13-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C19-pearl.png"
+        "value": "assets/icons/industry-C14-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C20-pearl.png"
+        "value": "assets/icons/industry-C15-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C21-pearl.png"
+        "value": "assets/icons/industry-C16-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C22-pearl.png"
+        "value": "assets/icons/industry-C17-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C23-pearl.png"
+        "value": "assets/icons/industry-C18-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C24-pearl.png"
+        "value": "assets/icons/industry-C19-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C25-pearl.png"
+        "value": "assets/icons/industry-C20-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C26-pearl.png"
+        "value": "assets/icons/industry-C21-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/industry-C27-pearl.png"
+        "value": "assets/icons/industry-C22-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/icons/shortcut-more-pearl.png"
+        "value": "assets/icons/industry-C23-pearl.png",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "assets/merchant-storefront.png"
+        "value": "assets/icons/industry-C24-pearl.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/icons/industry-C25-pearl.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/icons/industry-C26-pearl.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/icons/industry-C27-pearl.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/icons/shortcut-more-pearl.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/merchant-storefront.png",
+        "type": "file"
+      },
+      {
+        "value": "assets/publish",
+        "type": "folder"
+      },
+      {
+        "value": "category-art/assets",
+        "type": "folder"
       }
     ],
-    "include": []
+    "include": [
+      {
+        "value": "category-art/images",
+        "type": "folder"
+      },
+      {
+        "value": "assets/publish-industry",
+        "type": "folder"
+      }
+    ]
   },
   "setting": {
     "urlCheck": false,
@@ -159,7 +196,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "3.5.0",
-  "appid": "wxc712b3b1674c8d88",
+  "appid": "wxa93b135e2b08658b",
   "projectname": "city-life-miniapp",
   "miniprogramRoot": "miniprogram/",
   "condition": {},

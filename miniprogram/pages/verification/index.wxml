@@ -3,11 +3,20 @@
  <view class="container verification-page">
   <view class="verify-title">{{status.phoneVerified?'手机号已验证':'验证手机号后继续'}}</view><view class="notice">{{hasProject?'当前发布项目：'+projectName:'身份与联系方式分别记录，不自动继承认证。'}}</view>
   <feedback-state wx:if="{{error}}" kind="error" description="{{error}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/><feedback-state wx:if="{{loading}}" kind="loading" description="正在读取认证状态…" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
-  <view wx:else class="section-card"><view class="verify-copy">{{purpose||'用于发布和联系等需要验证的业务，不会自动公开号码。'}}</view><view wx:if="{{status.phoneVerified}}" class="verify-number">{{status.maskedPhone}}</view>
-   <button wx:if="{{!status.phoneVerified}}" class="btn" open-type="getPhoneNumber" bindgetphonenumber="authorizePhone" loading="{{busy}}" disabled="{{busy||!status.phoneProviderAvailable}}">{{status.phoneProviderAvailable?'微信授权手机号':'微信授权手机号（未开通）'}}</button>
+  <view wx:if="{{!loading||status.phoneProviderAvailable||status.smsAvailable||status.phoneVerified}}" class="section-card"><view class="verify-copy">{{purpose||'用于发布和联系等需要验证的业务，不会自动公开号码。'}}</view><view wx:if="{{status.phoneVerified}}" class="verify-number">{{status.maskedPhone}}</view>
+   <button wx:if="{{!status.phoneVerified&&status.phoneProviderAvailable}}" class="btn" open-type="getPhoneNumber" bindgetphonenumber="authorizePhone" loading="{{busy&&!smsMode}}" disabled="{{busy}}">微信授权手机号</button>
    <button wx:elif="{{status.phoneVerified&&(hasProject||permissionResume)}}" class="btn" bindtap="finish">{{hasProject?'继续发布'+projectName:'返回并继续'}}</button>
-   <view wx:if="{{!status.phoneProviderAvailable&&!status.phoneVerified}}" class="notice">手机号验证服务未开通，暂不能授权。仍可浏览和搜索公开信息。</view>
+   <view wx:if="{{!status.phoneProviderAvailable&&!status.smsAvailable&&!status.phoneVerified}}" class="notice">手机号验证暂不可用。仍可浏览和搜索公开信息。</view>
    <view class="notice">号码默认不向其他用户公开。每条信息需单独确认才能公开电话，且可随时撤回。</view>
+   <block wx:if="{{status.smsAvailable&&status.wechatLinked}}">
+    <button wx:if="{{!status.phoneVerified}}" class="btn light verify-sms-option" data-mode="bind" bindtap="chooseSms" disabled="{{busy}}" aria-expanded="{{smsMode==='bind'}}">短信验证码验证</button>
+    <button wx:if="{{status.maskedPhone}}" class="btn light verify-sms-option" data-mode="change" bindtap="chooseSms" disabled="{{busy}}" aria-expanded="{{smsMode==='change'}}">短信更换手机号</button>
+    <view wx:if="{{smsMode}}" class="verify-sms">
+     <view class="notice">{{smsMode==='change'?'请分别验证原号码和新号码。更换后，原先公开的联系电话会关闭。':'短信由阿里云投递。获取验证码即表示同意为本次绑定处理手机号。'}}</view>
+     <block wx:if="{{smsMode==='change'}}"><sms-code-form id="sms-phone-change" change="{{true}}" enabled="{{true}}" busy="{{busy}}" large-text="{{displayPreferences.largeText}}" bind:confirm="verifySms"/></block>
+     <block wx:else><sms-code-form id="sms-phone-bind" enabled="{{true}}" busy="{{busy}}" large-text="{{displayPreferences.largeText}}" bind:confirm="verifySms"/></block>
+    </view>
+   </block>
   </view>
   <view class="section-card"><view class="verify-state"><text>微信关联账号</text><text>{{status.wechatLinked?'微信已登录':'未关联微信'}}</text></view><view class="verify-state"><text>手机号</text><text>{{status.phoneVerified?'已验证':'未验证'}}</text></view><view class="verify-state"><text>身份核验</text><text>未开通</text></view><view class="verify-state"><text>业务资质</text><text>{{status.validQualificationCount>0?status.validQualificationCount+'项有效核验':'未核验'}}</text></view><view class="notice">微信登录和手机号验证不等于身份证实名核验；业务资质按具体分类另行审核。</view></view>
   <button wx:if="{{permissionResume}}" class="btn light" bindtap="goBack">取消验证，返回浏览</button>

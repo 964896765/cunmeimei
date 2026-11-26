@@ -7,6 +7,8 @@ Component({
     assetId: { type: String, value: "" },
     fallbackSrc: { type: String, value: "" },
     preferFallback: { type: Boolean, value: false },
+    lazyLoad: { type: Boolean, value: true },
+    neon: { type: Boolean, value: false },
     muted: { type: Boolean, value: false },
     blendMatte: { type: Boolean, value: false },
     dark: { type: Boolean, value: false },
@@ -36,15 +38,15 @@ Component({
     refresh() {
       const descriptor = assets.describe(this.properties.assetId);
       const usingFallback = this.properties.preferFallback || !descriptor;
-      const src = usingFallback ? this.properties.fallbackSrc : descriptor.path;
+      const src = usingFallback ? this.properties.fallbackSrc : descriptor.displayPath;
       this.setData({
         src,
         usingFallback,
-        frame: usingFallback ? "plain" : descriptor.frame,
+        frame: usingFallback ? "plain" : (descriptor.displayFrame || descriptor.frame),
         imageReady: src === this.data.src && this.data.imageReady,
         stage: this.properties.preferFallback
           ? "existing"
-          : descriptor?.stage || "",
+          : descriptor?.displayFrame ? "supplied3d" : descriptor?.stage || "",
       });
     },
     imageLoaded() {

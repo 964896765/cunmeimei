@@ -7,7 +7,6 @@ const sharp = require("../backend/node_modules/sharp");
 const catalog = require("../miniprogram/utils/classification-contract");
 const completion=process.argv.includes('--completion');
 const specs = require(completion?"./category-completion-specs.json":"./category-scene-specs.json");
-const original = require("../docs/design/category-resources-2026-11-15/source-manifest.json");
 
 async function contactSheet(items, output) {
   const columns=6,cellWidth=180,cellHeight=200;
@@ -28,10 +27,16 @@ async function main() {
   if (!source) throw Error("Provide the Blender PNG output directory");
   const root = path.resolve(__dirname, "..");
   const output = path.join(root, completion?"docs/remediation/b123-2026-11-18":"docs/design/experience-refinement-2026-11-18");
+  const manifestPath = path.join(output,"assets.json");
+  const idFlag = process.argv.indexOf("--ids");
+  const selected = idFlag < 0 ? specs : process.argv.slice(idFlag+1).map(id => specs.find(spec => spec.id===id));
+  if(!selected.length||selected.some(spec=>!spec))throw Error("Select existing category scene IDs");
   await fs.mkdir(output,{recursive:true});
+  const previousManifest = idFlag < 0 ? null : JSON.parse(await fs.readFile(manifestPath,"utf8"));
+  const originalItems = new Map(previousManifest?.items.map(item => [item.id, item]));
   const items = [];
-  const groups = completion?JSON.parse(JSON.stringify(require('../miniprogram/data/category-art-scenes'))):{};
-  for (const spec of specs) {
+  const groups = completion||previousManifest?JSON.parse(JSON.stringify(require('../miniprogram/data/category-art-scenes'))):{};
+  for (const spec of selected) {
     const project = catalog.find(spec.id);
     if (!project?.groupId) throw Error("Unknown category " + spec.id);
     const image = await sharp(path.join(source, spec.id + ".png"))
@@ -53,21 +58,25 @@ async function main() {
       height: 160,
       bytes: image.length,
       sha256: crypto.createHash("sha256").update(image).digest("hex"),
-      previousSha256: crypto.createHash('sha256').update(previous).digest('hex'),
+      previousSha256: originalItems.get(spec.id)?.previousSha256 || crypto.createHash('sha256').update(previous).digest('hex'),
       models: spec.parts.map(part => part.model),
     });
   }
   await fs.writeFile(path.join(root, "miniprogram/data/category-art-scenes.js"), "module.exports=" + JSON.stringify(groups) + ";\n");
   await fs.mkdir(output, { recursive: true });
-  await fs.writeFile(path.join(output, "assets.json"), JSON.stringify({
+  for (const item of items) originalItems.set(item.id, item);
+  const manifestItems = Array.from(originalItems.values());
+  await fs.writeFile(manifestPath, JSON.stringify({
     tool: "Blender 5.1 Cycles",
     generator: completion?"scripts/render_category_completion.py":"scripts/render_category_scenes.py",
     specifications: completion?"scripts/category-completion-specs.json":"scripts/category-scene-specs.json",
     provenance: "Project-authored geometry and materials",
-    items,
+    items:manifestItems,
   }, null, 2) + "\n");
-  const parentPet=items.filter(item=>item.id.startsWith('C12')||item.id.startsWith('C21'));if(parentPet.length)await contactSheet(parentPet,path.join(output,'parent-pet-scenes.png'));
-  for(let start=0;start<items.length;start+=42)await contactSheet(items.slice(start,start+42),path.join(output,'scenes-'+(Math.floor(start/42)+1)+'.png'));
+  if(!previousManifest){
+    const parentPet=items.filter(item=>item.id.startsWith('C12')||item.id.startsWith('C21'));if(parentPet.length)await contactSheet(parentPet,path.join(output,'parent-pet-scenes.png'));
+    for(let start=0;start<items.length;start+=42)await contactSheet(items.slice(start,start+42),path.join(output,'scenes-'+(Math.floor(start/42)+1)+'.png'));
+  }
   console.log("Exported " + items.length + " transparent 3D scenes");
 }
 

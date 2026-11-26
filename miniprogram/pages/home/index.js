@@ -5,6 +5,7 @@ const shortcuts = require('../../utils/shortcuts');
 const cache = require('../../utils/public-cache');
 const present = require('../../utils/presentation');
 const {feedUrl} = require('../../utils/feed-query');
+const geo = require('../../utils/geo-context');
 
 Page({
  onReady(){pageLayout.measure(this);},
@@ -15,10 +16,11 @@ Page({
   data: {
     layoutStyle:'',pageCompact:false,region:'选择城市', areas:[], quickItems:[], quickPages:[], quickPage:0,
     loading:true, error:'', news:[], banners:[], bannerIndex:0, feed:[], featured:[],
-    feedTab:'recommended', guidePhotoFailed:false,
-    feedTabs:[{id:'recommended',label:'精选推荐'},{id:'latest',label:'最新发布'},{id:'popular',label:'热门信息'},{id:'merchant',label:'本地商家'}],
+    dockPanel:'', recentMerchants:[], merchantLoading:false, merchantStatus:'',
+    feedTab:'recommended', guidePhotoFailed:false, cityName:'身边', showCityScene:true,
+    feedTabs:[{id:'recommended',label:'精选推荐'},{id:'latest',label:'最新发布'},{id:'nearby',label:'附近信息'},{id:'merchant',label:'本地商家'}],
     guides:[
-      {id:'nearby', title:'发现身边 · 本地生活', summary:'招聘求职 · 房屋租售 · 二手闲置 · 生活服务', action:'去发现', icon:'type-community'},
+      {id:'nearby', action:'去发现'},
       {id:'service', title:'先了解服务，再选择时间', summary:'查看服务说明，提交预约申请', action:'了解服务', icon:'type-service'},
       {id:'share', title:'让有用的信息被看见', summary:'免费发布，审核通过后公开展示', action:'去发布', icon:'type-used'}
     ]
@@ -27,7 +29,12 @@ Page({
     this.visible = true;pageLayout.show(this,{tabBar:true,threshold:8,dock:'.feed-tabs'});
     require('../../utils/theme').apply(this);
     const list = shortcuts.items(shortcuts.load().slice(0,shortcuts.max));
-    this.setData({quickItems:list, quickPages:shortcuts.pages(list), quickPage:0, region:require('../../utils/geo-context').current().label});
+    const city = geo.current();
+    this.setData({
+      quickItems:list, quickPages:shortcuts.pages(list), quickPage:0, region:city.label,dockPanel:'',
+      cityName:city.cityCode ? city.label.split(' · ')[0].replace(/市$/, '') : '身边',
+      showCityScene:!city.cityCode || city.cityCode==='420600'
+    });
     return this.load();
   },
   changeQuickPage(event) {
@@ -42,12 +49,17 @@ Page({
   },
   onUnload() { this.onHide(); },
   context() {
-    return JSON.stringify([require('../../utils/geo-context').current().cityCode, wx.getStorageSync('city_life_user_id'), api.hasSession(), !!wx.getStorageSync('city_life_acceptance_mode'), this.data.feedTab]);
+    const city = geo.current();
+    const context = [city.cityCode, wx.getStorageSync('city_life_user_id'), api.hasSession(), !!wx.getStorageSync('city_life_acceptance_mode'), this.data.feedTab];
+    if (this.data.feedTab==='nearby') context.push(city.districtCode);
+    return JSON.stringify(context);
   },
   async load() {
     const version = this.version = (this.version || 0) + 1;
     const context = this.context();
-    const city = require('../../utils/geo-context').current();
+    const city = geo.current();
+    const tab = this.data.feedTab;
+    const needsCity = tab==='nearby' && !city.cityCode;
     clearTimeout(this.refreshTimer);
     const stored = cache.read('home:' + context, wx) || {};
     const savedFeed = cache.read('home-feed:' + context, wx);
@@ -60,12 +72,17 @@ Page({
     this.setData({
       loading:true, error:'', cached:false, bannerIndex:0,
       banners:bannersFrom(cachedHome.banners), news:newsFrom(cachedHome.news),
-      ...(!sameContext ? {feed:(Array.isArray(savedFeed?.items) ? savedFeed.items : []).map(item => ({...present.item(item),isSaved:false,favoriteKnown:!api.hasSession()})), featured:[]} : {})
+      ...(!sameContext ? {feed:(Array.isArray(savedFeed?.items) ? savedFeed.items : []).map(item => ({...present.item(item),isSaved:false,favoriteKnown:!api.hasSession()})), featured:[]} : {}),
+      nearbyNeedsCity:needsCity
     });
     const results = await Promise.allSettled([
       api.request('GET','/api/v1/config'),
       api.request('GET','/api/v1/home?cityCode=' + encodeURIComponent(city.cityCode || '')),
-      api.request('GET',feedUrl({cityCode:city.cityCode || '', sort:this.data.feedTab==='merchant'?'recommended':this.data.feedTab, channel:this.data.feedTab==='merchant'?'merchant':'', pageSize:6}))
+      needsCity ? Promise.resolve({items:[]}) : api.request('GET',feedUrl({
+        cityCode:city.cityCode || '', districtCode:tab==='nearby' ? city.districtCode : '',
+        sort:tab==='merchant' || tab==='nearby' ? 'recommended' : tab,
+        channel:tab==='merchant' ? 'merchant' : '', pageSize:6
+      }))
     ]);
     if (version !== this.version || context !== this.context()) return;
     const home = results[1].status === 'fulfilled' ? results[1].value : {banners:this.data.banners, news:this.data.news};
@@ -99,8 +116,33 @@ Page({
     return this.load();
   },
   openMerchant() { wx.navigateTo({url:'/pages/merchant/index'}); },
-  showPhotoCredit() {
-    wx.showModal({title:'城市摄影来源',content:'《Xiangyang skyline 02》\n作者 Fxqf，2021年5月5日\n授权 CC BY-SA 4.0\nhttps://commons.wikimedia.org/wiki/File:Xiangyang_skyline_02.jpg\nhttps://creativecommons.org/licenses/by-sa/4.0/\n图片以 aspectFill 方式显示。',showCancel:false,confirmText:'知道了'});
+  toggleDock(e) {
+    const panel=e.currentTarget.dataset.panel;
+    if(!['news','merchant'].includes(panel))return;
+    const dockPanel=panel===this.data.dockPanel?'':panel;
+    this.setData({dockPanel});
+    if(dockPanel==='merchant')return this.loadRecentMerchants();
+  },
+  async loadRecentMerchants() {
+    const cityCode=geo.current().cityCode;
+    if(!cityCode){this.setData({recentMerchants:[],merchantLoading:false,merchantStatus:'选择城市后可查看近期入驻商家'});return;}
+    const saved=this.recentMerchantCache;
+    if(saved?.cityCode===cityCode&&saved.until>Date.now()){
+      this.setData({recentMerchants:saved.items,merchantLoading:false,merchantStatus:''});
+      return;
+    }
+    const attempt=this.merchantRequest=(this.merchantRequest||0)+1;
+    const current=()=>this.visible&&attempt===this.merchantRequest&&cityCode===geo.current().cityCode;
+    this.setData({recentMerchants:[],merchantLoading:true,merchantStatus:''});
+    try{
+      const response=await api.request('GET',feedUrl({type:'merchant',cityCode,sort:'latest',days:30,pageSize:6}));
+      if(!current())return;
+      const items=(response.items||[]).filter(item=>item.kind==='merchant').map(({id,title})=>({id,title}));
+      this.recentMerchantCache={cityCode,items,until:Date.now()+60000};
+      this.setData({recentMerchants:items,merchantLoading:false});
+    }catch{
+      if(current())this.setData({merchantLoading:false,merchantStatus:'暂时无法读取入驻消息，收起后可重试'});
+    }
   },
   bannerImageError(event) {
     const id = event.currentTarget.dataset.id;
@@ -182,7 +224,7 @@ Page({
     }
   },
   openNews(event) { wx.navigateTo({url:'/pages/information/index?id=' + encodeURIComponent(event.currentTarget.dataset.id)}); },
-  moreNews() { wx.navigateTo({url:'/pages/information/index?cityCode=' + encodeURIComponent(require('../../utils/geo-context').current().cityCode || '')}); },
+  moreNews() { wx.navigateTo({url:'/pages/information/index?cityCode=' + encodeURIComponent(geo.current().cityCode || '')}); },
   showArea() { wx.navigateTo({url:'/pages/regions/index'}); },
   goSearch() { nav.search(); },
   goDiscover() { nav.discover('all'); },

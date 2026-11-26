@@ -1,4 +1,4 @@
-<view class="feedback {{kind}} {{compact?'compact':''}} {{largeText?'large':''}}" role="{{kind==='error'?'alert':'status'}}" aria-live="polite"><brand-scene wx:if="{{kind==='empty'}}" class="empty-scene"/>
+<view class="feedback {{kind}} {{compact?'compact':''}} {{embedded?'embedded':''}} {{largeText?'large':''}}" role="{{kind==='error'?'alert':'status'}}" aria-live="polite"><brand-scene wx:if="{{kind==='empty'&&!embedded}}" class="empty-scene"/>
  <view wx:if="{{kind==='loading'&&!compact}}" class="skeleton-list" aria-hidden="true"><view class="skeleton-row"></view><view class="skeleton-row short"></view><view class="skeleton-row"></view></view>
  <view wx:elif="{{!compact}}" class="state-symbol" aria-hidden="true"><view class="state-mark"></view></view>
  <view class="state-copy"><view wx:if="{{!compact||title}}" class="state-heading">{{heading}}</view><text wx:if="{{description}}" class="state-description">{{description}}</text><text wx:elif="{{compact}}" class="state-description">{{heading}}</text></view>

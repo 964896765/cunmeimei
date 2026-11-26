@@ -1,19 +1,89 @@
 <view class="theme-root home-page {{pageCompact?'home-compact':''}} {{themeClass}}" style="{{themeStyle}};{{layoutStyle}}">
- <page-header id="navigation-header" title="青方睐村美美" collapsed="{{pageCompact}}" bind:measure="headerMeasured" logo-src="/assets/brand-butterfly-transparent.png" subtitle="本地生活信息展示与查询" align="start" large-text="{{displayPreferences.largeText}}"/>
+ <page-header id="navigation-header" title="青方睐村美美" collapsed="{{pageCompact}}" bind:measure="headerMeasured" logo-src="/assets/brand-butterfly-transparent.png" subtitle="同城生活 · 便民服务 · 信息发布" align="start" brand-height="{{48}}" large-text="{{displayPreferences.largeText}}"/>
  <view class="container portal-page">
-  <view class="home-search-slot {{pageCompact?'is-compact pinned-surface':''}}"><view class="home-search-row"><button class="home-city" bindtap="showArea" aria-label="当前浏览区域 {{region}}，选择城市"><image class="city-location" src="/assets/icons/location-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><text>{{region}}</text></button><search-bar id="home-search" readonly="{{true}}" placeholder="搜索本地信息、服务或商家" bind:search="goSearch"/></view></view>
-  <feedback-state wx:if="{{error}}" kind="error" title="{{cached?'显示已加载内容':'首页暂未更新'}}" description="{{error}}" compact="{{true}}" action-text="重试" bind:action="load"/>
+  <view class="home-search-slot {{pageCompact?'is-compact pinned-surface':''}}">
+   <view class="home-search-row">
+    <button class="home-city" bindtap="showArea" aria-label="当前浏览区域 {{region}}，选择城市">
+     <image class="city-location" src="/assets/icons/location-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><text>{{region}}</text><view class="city-chevron" aria-hidden="true"/>
+    </button>
+    <search-bar id="home-search" readonly="{{true}}" framed="{{!pageCompact}}" placeholder="搜索本地信息、服务、商家" bind:search="goSearch"/>
+   </view>
+  </view>
   <swiper wx:if="{{banners.length}}" class="home-banners" current="{{bannerIndex}}" bindchange="changeBanner" indicator-dots="{{banners.length>1}}" indicator-active-color="#FFFFFF" autoplay="{{banners.length>1&&!displayPreferences.reduceMotion}}" interval="6000" circular="{{banners.length>1}}" duration="{{displayPreferences.reduceMotion?0:250}}">
    <swiper-item wx:for="{{banners}}" wx:key="id"><view class="home-banner {{item.cover?'with-photo':''}}" data-id="{{item.id}}" bindtap="openBanner" role="button" aria-label="{{item.label}} {{item.title}}"><image wx:if="{{item.cover}}" class="banner-cover" src="{{item.cover}}" mode="aspectFill" data-id="{{item.id}}" binderror="bannerImageError"/><view class="banner-caption"><text class="banner-label">{{item.label}}</text><view class="banner-title">{{item.title}}</view><text class="banner-summary">{{item.summary}}</text></view></view></swiper-item>
   </swiper>
-  <swiper wx:else class="home-guides" current="{{bannerIndex}}" bindchange="changeBanner" indicator-dots="{{true}}" indicator-active-color="{{themeColor}}" autoplay="{{!displayPreferences.reduceMotion}}" interval="6000" circular="{{true}}" duration="{{displayPreferences.reduceMotion?0:250}}">
-   <swiper-item wx:for="{{guides}}" wx:key="id"><view class="guide-card guide-{{item.id}} {{item.id==='nearby'&&!guidePhotoFailed?'guide-photo':''}}" data-id="{{item.id}}" bindtap="openGuide" role="button" aria-label="平台介绍，{{item.title}}，{{item.action}}"><image wx:if="{{item.id==='nearby'&&!guidePhotoFailed}}" class="guide-scene" src="/assets/xiangyang-river.jpg" mode="aspectFill" binderror="guideImageError" aria-hidden="true"/><view class="guide-copy"><text class="guide-label">{{item.id==='nearby'?'平台介绍 · 城市风景（襄阳）':'平台介绍'}}</text><view class="guide-title">{{item.title}}</view><text class="guide-summary">{{item.summary}}</text><text class="guide-action">{{item.action}} ›</text></view><image wx:if="{{item.id!=='nearby'}}" class="guide-art" src="{{item.id==='share'?'/assets/publish-checklist.png':'/assets/icons/industry-C03-pearl.png'}}" mode="aspectFit" aria-hidden="true"/></view></swiper-item>
+  <swiper wx:else class="home-guides" current="{{bannerIndex}}" bindchange="changeBanner" indicator-dots="{{false}}" autoplay="{{!displayPreferences.reduceMotion}}" interval="6000" circular="{{true}}" duration="{{displayPreferences.reduceMotion?0:250}}">
+   <swiper-item wx:for="{{guides}}" wx:key="id">
+    <view class="guide-card guide-{{item.id}} {{item.id==='nearby'&&showCityScene&&!guidePhotoFailed?'guide-photo':''}}" data-id="{{item.id}}" bindtap="openGuide" role="button" aria-label="{{item.id==='nearby'?'发现'+cityName:item.title}}，{{item.action}}">
+     <image wx:if="{{item.id==='nearby'&&showCityScene&&!guidePhotoFailed}}" class="guide-scene" src="/assets/home-xiangyang.webp" mode="aspectFill" binderror="guideImageError" aria-hidden="true"/>
+     <view class="guide-copy">
+      <text wx:if="{{item.id!=='nearby'}}" class="guide-label">平台介绍</text>
+      <view class="guide-title">{{item.id==='nearby'?'发现'+cityName:item.title}}</view>
+      <text class="guide-summary">{{item.id==='nearby'?'本地生活 · 一站式信息平台':item.summary}}</text>
+      <text wx:if="{{item.id!=='nearby'}}" class="guide-action">{{item.action}} ›</text>
+     </view>
+     <image wx:if="{{item.id!=='nearby'}}" class="guide-art" src="{{item.id==='share'?'/assets/publish-checklist.webp':'/assets/icons/industry-C03-pearl.png'}}" mode="aspectFit" aria-hidden="true"/>
+    </view>
+   </swiper-item>
   </swiper>
-  <view class="quick-section"><view class="quick-heading"><text>常用分类</text><button class="text-action" bindtap="editShortcuts" aria-label="编辑常用分类">编辑</button></view><swiper class="quick-pages" current="{{quickPage}}" indicator-dots="{{false}}" autoplay="{{false}}" circular="{{false}}" duration="{{displayPreferences.reduceMotion?0:250}}" bindchange="changeQuickPage"><swiper-item wx:for="{{quickPages}}" wx:key="id" wx:for-item="group"><view class="quick-grid"><view class="quick-slot" wx:for="{{group.items}}" wx:key="id"><view wx:if="{{!item.empty}}" class="quick-item" data-id="{{item.id}}" bindtap="openQuick" role="button" aria-label="{{item.id==='more'?'全部分类':'浏览'+item.name}}"><view class="quick-icon"><image src="/assets/icons/{{item.icon}}-{{iconPalette}}.png" mode="aspectFit"/></view><text>{{item.name}}</text></view></view></view></swiper-item></swiper></view>
-  <button class="merchant-invitation" bindtap="openMerchant"><image src="/assets/icons/message-store-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><text class="invitation-copy">本地商家入驻 · 展示服务与经营信息</text><text class="invitation-action">去了解 ›</text></button>
-  <view class="feed-tabs" role="tablist"><button wx:for="{{feedTabs}}" wx:key="id" class="feed-tab {{feedTab===item.id?'selected':''}}" data-id="{{item.id}}" bindtap="changeFeed" role="tab" aria-selected="{{feedTab===item.id}}">{{item.label}}</button></view>
-  <view class="featured-section"><content-card wx:for="{{featured}}" wx:key="id" item="{{item}}" layout="stream" icon-palette="{{iconPalette}}" theme="{{displayPreferences.theme}}" bind:open="openFeatured" bind:favorite="toggleSaved"/><feedback-state wx:if="{{loading}}" kind="loading" description="正在读取同城信息…"/><feedback-state wx:elif="{{!feed.length&&!error}}" kind="empty" title="当前地区暂无公开信息" description="可切换地区浏览，或提交实用信息等待审核。" compact="{{true}}" action-text="去发现" bind:action="goDiscover"/><button wx:if="{{feed.length}}" class="feed-more" bindtap="goDiscover">浏览更多本地信息 ›</button></view>
-  <view class="news-strip"><image class="news-speaker" src="/assets/icons/home-news-{{iconPalette}}.png" mode="aspectFit" aria-hidden="true"/><text class="news-strip-label">同城资讯</text><view class="news-strip-content"><view wx:if="{{news.length}}" class="news-headline" data-id="{{news[0].id}}" bindtap="openNews" role="button" aria-label="{{news[0].title}}，来源 {{news[0].sourceName}}">{{news[0].title}}</view><text wx:else class="news-empty">{{loading?'正在读取资讯…':'当前地区暂无最新资讯'}}</text></view><button wx:if="{{news.length}}" class="news-strip-more" bindtap="moreNews" aria-label="查看全部同城资讯">›</button></view>
-  <button wx:if="{{!banners.length}}" class="photo-credit" bindtap="showPhotoCredit">城市摄影 · 襄阳汉江 · Fxqf / CC BY-SA 4.0</button>
+  <view wx:if="{{!banners.length}}" class="guide-dots" aria-hidden="true">
+   <view wx:for="{{guides}}" wx:key="id" class="guide-dot {{bannerIndex===index?'active':''}}"/>
+  </view>
+  <view class="quick-section">
+   <view class="quick-heading"><view class="quick-title"><image src="{{iconPalette==='prism'?'/assets/home-icons/more.png':'/assets/icons/shortcut-more-'+(iconPalette||'prism')+'.png'}}" mode="aspectFit" aria-hidden="true"/><text>常用分类</text></view><button class="text-action" bindtap="editShortcuts" aria-label="编辑常用分类">编辑 <text aria-hidden="true">›</text></button></view>
+   <swiper class="quick-pages" current="{{quickPage}}" indicator-dots="{{false}}" autoplay="{{false}}" circular="{{false}}" duration="{{displayPreferences.reduceMotion?0:250}}" bindchange="changeQuickPage">
+    <swiper-item wx:for="{{quickPages}}" wx:key="id" wx:for-item="group">
+     <view class="quick-grid">
+      <view wx:for="{{group.items}}" wx:key="id" class="quick-slot">
+       <view wx:if="{{!item.empty}}" class="quick-item" data-id="{{item.id}}" bindtap="openQuick" role="button" aria-label="{{item.id==='more'?'全部分类':'浏览'+item.name}}">
+        <view class="quick-icon quick-{{item.id}} {{iconPalette==='prism'&&item.homeIcon?'illustrated':''}}">
+         <image wx:if="{{iconPalette==='prism'&&item.homeIcon}}" src="/assets/home-icons/{{item.id}}.png" mode="aspectFit"/>
+         <image wx:else src="/assets/icons/{{item.icon}}-{{iconPalette}}.png" mode="aspectFit"/>
+        </view><text>{{item.name}}</text>
+       </view>
+      </view>
+     </view>
+    </swiper-item>
+   </swiper>
+   <view wx:if="{{quickPages.length>1}}" class="quick-dots" role="status" aria-label="常用分类第{{quickPage+1}}页，共{{quickPages.length}}页">
+    <view wx:for="{{quickPages}}" wx:key="id" class="quick-dot {{quickPage===index?'active':''}}"/>
+   </view>
+  </view>
+  <view class="feed-board"><view class="feed-tabs" role="tablist"><button wx:for="{{feedTabs}}" wx:key="id" class="feed-tab {{feedTab===item.id?'selected':''}}" data-id="{{item.id}}" bindtap="changeFeed" role="tab" aria-selected="{{feedTab===item.id}}">{{item.label}}</button></view>
+  <view class="featured-section {{feed.length?'':'empty-feed'}}">
+   <content-card wx:for="{{featured}}" wx:key="id" class="home-listing" item="{{item}}" layout="home-list" icon-palette="{{iconPalette}}" theme="{{displayPreferences.theme}}" bind:open="openFeatured" bind:favorite="toggleSaved"/>
+   <feedback-state wx:if="{{error}}" kind="error" title="{{cached?'显示已加载内容':'首页暂未更新'}}" description="{{error}}" compact="{{true}}" embedded="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="load"/>
+   <feedback-state wx:elif="{{loading}}" kind="loading" description="正在读取同城信息…" embedded="{{true}}" large-text="{{displayPreferences.largeText}}"/>
+   <feedback-state wx:elif="{{nearbyNeedsCity}}" kind="empty" title="选择城市后查看附近信息" compact="{{true}}" embedded="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="选择城市" bind:action="showArea"/>
+   <feedback-state wx:elif="{{!feed.length}}" kind="empty" title="当前地区暂无公开信息" description="可切换地区浏览，或提交实用信息等待审核。" compact="{{true}}" embedded="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="去发现" bind:action="goDiscover"/>
+   <button wx:if="{{feed.length}}" class="feed-more" bindtap="goDiscover">浏览更多本地信息 ›</button>
+  </view>
+  </view>
+ </view>
+ <view class="home-dock">
+  <view class="home-dock-row">
+   <button class="dock-icon" data-panel="news" bindtap="toggleDock" aria-label="同城资讯" aria-expanded="{{dockPanel==='news'}}"><image src="/assets/home-icons/news-entry.png" mode="aspectFit" aria-hidden="true"/></button>
+   <view class="dock-panel {{dockPanel==='news'?'is-open':''}}">
+    <block wx:if="{{dockPanel==='news'}}">
+     <swiper wx:if="{{news.length}}" class="dock-stream" autoplay="{{news.length>1&&!displayPreferences.reduceMotion}}" circular="{{news.length>1}}" interval="4500" duration="{{displayPreferences.reduceMotion?0:380}}">
+      <swiper-item wx:for="{{news}}" wx:key="id"><button class="dock-story" data-id="{{item.id}}" bindtap="openNews">{{item.title}}</button></swiper-item>
+     </swiper>
+     <text wx:else class="dock-empty">{{loading?'正在读取同城资讯…':'暂无同城资讯'}}</text>
+     <button class="dock-action" bindtap="moreNews" aria-label="查看全部同城资讯">更多 ›</button>
+    </block>
+   </view>
+  </view>
+  <view class="home-dock-row">
+   <button class="dock-icon merchant-dock-icon" data-panel="merchant" bindtap="toggleDock" aria-label="商家入驻" aria-expanded="{{dockPanel==='merchant'}}"><image src="/assets/home-icons/merchant-entry.png" mode="aspectFit" aria-hidden="true"/></button>
+   <view class="dock-panel {{dockPanel==='merchant'?'is-open':''}}">
+    <block wx:if="{{dockPanel==='merchant'}}">
+     <swiper wx:if="{{recentMerchants.length}}" class="dock-stream" autoplay="{{recentMerchants.length>1&&!displayPreferences.reduceMotion}}" circular="{{recentMerchants.length>1}}" interval="4500" duration="{{displayPreferences.reduceMotion?0:380}}">
+      <swiper-item wx:for="{{recentMerchants}}" wx:key="id"><button class="dock-story" data-id="{{item.id}}" bindtap="openFeatured">{{item.title}} · 新入驻</button></swiper-item>
+     </swiper>
+     <text wx:else class="dock-empty">{{merchantLoading?'正在读取入驻消息…':merchantStatus||'近 30 天暂无新入驻商家'}}</text>
+     <button class="dock-action" bindtap="openMerchant">去入驻 ›</button>
+    </block>
+   </view>
+  </view>
  </view>
 </view>

@@ -4,8 +4,8 @@ Component({
  data:{route:'pages/home/index',theme:'prism',surface:'#FFFFFF',border:resolvePalette().border,muted:resolvePalette().muted,selectedColor:resolvePalette().link,unread:0,hidden:false,items:names.map((name,index)=>({name,label:labels[index],route:tabs.routes[index]}))},
  lifetimes:{attached(){this.refresh();},ready(){this.refresh();}},pageLifetimes:{show(){this.refresh();}},
  methods:{
-  refresh(){const page=getCurrentPages().slice(-1)[0];if(!page||!tabs.isTab(page.route))return;const prefs=theme.current();this.syncRoute(page.route,prefs,resolvePalette(prefs.theme,page.route),tabs.currentUnread(),!!page.data?.immersed);},
-  syncRoute(route,prefs,colors,unread,hidden){this.setData({route,theme:prefs.theme,surface:colors.surface,border:colors.border,muted:colors.muted,selectedColor:colors.link,unread,hidden,largeText:!!prefs.largeText,reduceMotion:!!prefs.reduceMotion});},
+  refresh(){const page=getCurrentPages().slice(-1)[0];if(!page||!tabs.isTab(page.route))return;const prefs=theme.current();tabs.sync(page,prefs,resolvePalette(prefs.theme,page.route));},
+  syncRoute(route,prefs,colors,unread,hidden,neutral=false){this.setData({route,theme:prefs.theme,surface:colors.surface,border:colors.border,muted:colors.muted,selectedColor:colors.link,unread,hidden,neutral,largeText:!!prefs.largeText,reduceMotion:!!prefs.reduceMotion});},
   select(e){const route=e.currentTarget.dataset.route;if(!tabs.isTab(route)||route===this.data.route||this.switching)return;this.switching=true;wx.switchTab({url:'/'+route,fail:()=>wx.showToast({title:'页面暂未打开，请重试',icon:'none'}),complete:()=>{this.switching=false;}});}
  }
 });

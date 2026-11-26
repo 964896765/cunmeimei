@@ -1,5 +1,5 @@
 <view class="theme-root me-root continuous-page {{pageCompact?'profile-compact':''}} {{themeClass}}" style="{{themeStyle}};{{layoutStyle}}">
-<page-header id="navigation-header" bind:measure="headerMeasured" continuous="{{true}}" title="{{mode==='main'?'个人中心':mode==='profile'?'个人资料':mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='saved'?'我的收藏':mode==='history'?'浏览记录':mode==='account'?'账号与安全':mode==='help'?'帮助与反馈':settingsTitle}}" back="{{mode!=='main'}}" large-text="{{displayPreferences.largeText}}" bind:back="back"/>
+<page-header id="navigation-header" bind:measure="headerMeasured" continuous="{{true}}" title="{{mode==='main'?'我的':mode==='profile'?'个人资料':mode==='points'?'积分中心':mode==='service'?'服务中心':mode==='saved'?'我的收藏':mode==='history'?'浏览记录':mode==='account'?'账号与安全':mode==='help'?'帮助与反馈':mode==='about'?'关于小程序':settingsTitle}}" back="{{mode!=='main'}}" large-text="{{displayPreferences.largeText}}" bind:back="back"/>
 <view class="container me-page">
  <block wx:if="{{mode==='privacy'}}">
  <view wx:if="{{settingsError}}" class="settings-error" role="alert">{{settingsError}}<button class="center-link" bindtap="reloadSettings">重新读取</button></view>
@@ -39,16 +39,26 @@
  <view class="profile-footnote">个人资料不会自动公开；所在城市不影响浏览城市与发布地址。</view>
  </block>
  <block wx:elif="{{mode==='service'}}">
-  <view class="hub-intro"><view class="body-copy">商家经营与业务申请</view><view class="center-subtitle">查看资质、审核进度与处理结果</view></view>
-  <view class="hub-section"><view class="section-title">经营与认证</view><view class="notice">{{hasSession?merchantLabel:'登录后查看本人入驻和业务状态'}}</view>
-   <button id="service-merchant" class="hub-row" data-section="merchant" bindtap="openServiceSection"><view><view class="hub-row-title">商家入驻与管理</view><view class="center-subtitle">主体材料、服务管理、预约处理与团队权限</view></view><text class="center-chevron">›</text></button>
-   <button id="service-credentials" class="hub-row" data-section="credentials" bindtap="openServiceSection"><view><view class="hub-row-title">行业核验</view><view class="center-subtitle">逐项目资质、核验进度与补充材料</view></view><text class="center-chevron">›</text></button>
-   <button class="hub-row" data-section="verification" bindtap="openServiceSection"><view><view class="hub-row-title">登录与手机号状态</view><view class="center-subtitle">独立授权、撤回验证与处置申诉</view></view><text class="center-chevron">›</text></button>
+  <view class="support-hero">
+   <brand-scene class="support-hero-scene"/>
+   <view class="support-hero-copy"><view class="support-title">经营与业务办理</view><text class="center-subtitle">管理入驻、资质与业务申请</text></view>
   </view>
-  <view class="hub-section"><view class="section-title">业务与申请</view><view class="hub-actions service-hub-actions">
-   <button id="service-cases" data-section="cases" bindtap="openServiceSection">业务进度<text>约定 · 完成 · 争议</text></button><button id="service-business" data-section="mine" bindtap="openServiceSection">我的业务<text>草稿 · 审核 · 展示</text></button><button data-section="sent" bindtap="openServiceSection">我的申请<text>咨询 · 报名 · 岗位</text></button><button data-section="received" bindtap="openServiceSection">收到的申请<text>处理 · 答复 · 会话</text></button><button data-section="reports" bindtap="openServiceSection">举报与答复<text>问题核查 · 处理结果</text></button>
+  <view class="support-section">
+   <view class="support-section-title">经营与认证</view>
+   <view class="support-list">
+    <button id="service-merchant" class="support-row" data-section="merchant" bindtap="openServiceSection"><image src="/assets/icons/center-merchant-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><view class="support-row-copy"><text>商家入驻与管理</text><text>{{hasSession?merchantLabel:'提交主体资料，管理已入驻商家'}}</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+    <button id="service-credentials" class="support-row" data-section="credentials" bindtap="openServiceSection"><image src="/assets/icons/center-data-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><view class="support-row-copy"><text>行业核验</text><text>查看项目资质要求与核验进度</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+    <button class="support-row" data-section="verification" bindtap="openServiceSection"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><view class="support-row-copy"><text>账号验证</text><text>查看手机号验证、撤回及处置申诉</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   </view>
+  </view>
+  <view class="support-section"><view class="support-section-title">业务与申请</view><view class="hub-actions service-hub-actions">
+   <button id="service-cases" data-section="cases" bindtap="openServiceSection">业务进度<text>约定、完成与争议</text></button>
+   <button id="service-business" data-section="mine" bindtap="openServiceSection">我的业务<text>草稿、审核与展示</text></button>
+   <button data-section="sent" bindtap="openServiceSection">我的申请<text>咨询、报名与岗位</text></button>
+   <button data-section="received" bindtap="openServiceSection">收到的申请<text>处理、答复与会话</text></button>
+   <button data-section="reports" bindtap="openServiceSection">举报与答复<text>查看核查与处理结果</text></button>
   </view></view>
-  <button class="btn" bindtap="goPublish">发布新内容</button><view class="notice">主体与行业资质按具体项目核验；发布、修改及推广继续接受内容审核。</view>
+  <button class="btn support-primary" bindtap="goPublish">发布新内容</button>
  </block>
  <block wx:elif="{{mode==='account'}}">
  <view class="section-card account-panel">
@@ -57,41 +67,79 @@
  <button class="center-menu-row" bindtap="openVerification"><view class="center-menu-copy"><text class="settings-label">手机号验证与撤回</text><text class="center-subtitle">单独授权，默认不公开；可查看状态或解除验证</text></view><text class="center-chevron">›</text></button>
  <button id="account-closure" class="center-menu-row" bindtap="openClosure"><view class="center-menu-copy"><text class="settings-label">申请注销账号</text><text class="center-subtitle">在个人数据中提交，先处理未完成业务；退出登录不会注销</text></view><text class="center-chevron">›</text></button>
  </view>
- <button wx:if="{{!hasSession}}" class="btn" bindtap="signin">登录并开始使用</button>
+ <button wx:if="{{hasSession}}" id="account-signout" class="signout-action" bindtap="signout" loading="{{signingOut}}" disabled="{{signingOut}}">退出登录</button>
+ <button wx:else class="btn" bindtap="signin">登录并开始使用</button>
  </block>
  <block wx:elif="{{mode==='help'}}">
-  <view class="section-card"><view class="section-title">信息与联系安全</view><view class="body-copy">内容审核不代表质量保证。请核实信息、商品、房源和服务，不向陌生人提前付款。</view><view class="notice">发现失实或违规信息，请从对应信息详情提交举报；联系申请可在消息页屏蔽。处置申诉可从账号与安全的认证状态中提交，积分问题可从积分明细中申诉。</view><button class="btn light" bindtap="goMessages">查看通知与联系处理结果</button></view>
-  <view class="section-card"><view class="section-title">个人数据问题</view><view class="notice">数据访问、更正和删除请求可通过“个人数据”提交，处理进度与答复保存在账号中。</view><button class="btn light" bindtap="openPersonalData">管理个人数据</button></view>
-  <button class="center-menu-row about-action" bindtap="showAbout"><text>关于与使用提示</text><text class="center-chevron">›</text></button>
-  <button class="center-menu-row" data-kind="terms" bindtap="openLegal"><text>用户协议</text><text class="center-chevron">›</text></button>
-  <button class="center-menu-row" data-kind="privacy" bindtap="openLegal"><text>隐私政策与微信隐私保护指引</text><text class="center-chevron">›</text></button>
+  <view class="support-hero">
+   <view class="support-hero-copy"><view class="support-title">问题怎么处理？</view><text class="center-subtitle">查看处理进度、提交个人数据请求或联系运营方</text></view>
+   <image class="support-hero-icon" src="/assets/icons/center-help-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/>
+  </view>
+  <view class="support-section"><view class="support-section-title">办理入口</view><view class="support-list">
+   <button class="support-row" bindtap="goMessages"><view class="support-row-copy"><text>通知与处理结果</text><text>查看审核结果、系统通知与会话</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" data-section="reports" bindtap="openServiceSection"><view class="support-row-copy"><text>举报与答复</text><text>查看已提交举报的处理结果</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" bindtap="openPersonalData"><view class="support-row-copy"><text>个人数据申请</text><text>提交查询、更正、删除或注销申请</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" open-type="feedback"><view class="support-row-copy"><text>投诉与建议</text><text>提交使用问题或改进建议</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" bindtap="copySupportContact" data-kind="email"><view class="support-row-copy"><text>联系官方邮箱</text><text>{{officialEmail}}</text></view><text class="support-row-action">复制</text></button>
+  </view></view>
+  <view class="support-section"><view class="support-section-title">常见问题</view><view class="support-list support-guidance">
+   <view><text>如何举报违规信息？</text><text>在对应信息的详情页发起举报。提交后可在「举报与答复」查看处理结果。</text></view>
+   <view><text>如何安全联系与交易？</text><text>联系前请核实对方身份与信息，谨慎对待预付要求。如遇骚扰，可在消息中屏蔽。</text></view>
+   <view><text>如何申诉？</text><text>账号处置申诉可在「账号与安全」的验证页面提交。积分异议可在积分中心查看明细后申诉。</text></view>
+  </view></view>
+  <view class="support-section"><view class="support-section-title">平台与规则</view><view class="support-list">
+   <button class="support-row" bindtap="showAbout"><view class="support-row-copy"><text>关于小程序</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" data-kind="terms" bindtap="openLegal"><view class="support-row-copy"><text>用户协议</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" data-kind="privacy" bindtap="openLegal"><view class="support-row-copy"><text>隐私政策与微信隐私保护指引</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+  </view></view>
+ </block>
+ <block wx:elif="{{mode==='about'}}">
+  <view class="support-hero about-hero">
+   <image class="about-logo" src="/assets/brand-butterfly-transparent.png" mode="aspectFit" aria-hidden="true"/>
+   <view class="support-hero-copy"><view class="support-title">青方睐村美美</view><text class="center-subtitle">本地生活信息展示与查询</text></view>
+  </view>
+  <view class="support-section"><view class="support-section-title">平台与运营</view><view class="support-list support-guidance">
+   <view><text>服务范围</text><text>提供招聘求职、房屋租售、二手闲置、本地商家、便民服务等信息的分类浏览、搜索、发布与联系。平台目前不提供在线支付或交易担保。</text></view>
+   <view><text>运营主体</text><text>东莞市石排青方睐软件中心（个体工商户）</text></view>
+  </view></view>
+  <view class="support-section"><view class="support-section-title">官方渠道</view><view class="support-list">
+   <button id="official-website" class="support-row" data-kind="website" bindtap="copySupportContact"><view class="support-row-copy"><text>官方网站</text><text>{{officialWebsite}}</text></view><text class="support-row-action">复制网址</text></button>
+   <button id="official-email" class="support-row" data-kind="email" bindtap="copySupportContact"><view class="support-row-copy"><text>官方邮箱</text><text>{{officialEmail}}</text></view><text class="support-row-action">复制邮箱</text></button>
+   <button class="support-row" bindtap="openPersonalData"><view class="support-row-copy"><text>个人信息请求</text><text>查询、更正、删除与账号注销</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+  </view></view>
+  <view class="support-section"><view class="support-section-title">平台规则</view><view class="support-list">
+   <button class="support-row" data-kind="terms" bindtap="openLegal"><view class="support-row-copy"><text>用户协议</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+   <button class="support-row" data-kind="privacy" bindtap="openLegal"><view class="support-row-copy"><text>隐私政策与微信隐私保护指引</text></view><text class="center-chevron" aria-hidden="true">›</text></button>
+  </view></view>
  </block>
  <block wx:else><view class="main-center">
-  <button class="profile-entry" bindtap="openProfile" aria-label="查看和编辑个人资料">
+  <view class="profile-entry" bindtap="{{hasSession?'openProfile':''}}" role="{{hasSession?'button':'group'}}" aria-label="{{hasSession?'查看和编辑个人资料':'欢迎来到村美美'}}">
+   <image wx:if="{{iconPalette==='prism'&&!displayPreferences.largeText}}" class="profile-floral" src="/assets/profile-floral.webp" mode="aspectFill" aria-hidden="true"/>
    <view class="profile-avatar"><image wx:if="{{avatarSrc}}" src="{{avatarSrc}}" mode="aspectFill"/><image wx:else class="avatar-placeholder" src="/assets/icons/center-profile-{{iconPalette||'prism'}}.png"/></view>
-   <view class="profile-copy"><view class="profile-name">{{hasSession?displayName:'欢迎来到青方睐村美美'}}</view><view class="profile-subtitle">{{hasSession?(profileCityName||'个人信息'):'登录后查看和编辑个人资料'}}</view></view><text class="center-chevron">›</text>
-  </button>
-  <button wx:if="{{!hasSession}}" class="btn guest-signin" bindtap="signin">登录并开始使用</button>
+   <view class="profile-copy"><view class="profile-name">{{hasSession?displayName:'欢迎来到村美美'}}</view><view class="profile-subtitle">{{hasSession?(profileCityName||'查看和编辑个人资料'):'登录后管理您的同城生活'}}</view><button wx:if="{{!hasSession}}" class="btn guest-signin" catchtap="signin">立即登录 <text aria-hidden="true">›</text></button></view><text wx:if="{{hasSession}}" class="center-chevron" aria-hidden="true">›</text>
+  </view>
   <feedback-state wx:if="{{summaryError}}" kind="error" description="{{summaryError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="refresh"/>
   <view class="workspace-grid">
-   <button class="workspace-item posts-entry" role="button" bindtap="goPosts" aria-label="我的发布"><text class="workspace-count">{{postCount===null?'—':postCount}}</text><text class="workspace-label">我的发布</text></button>
-   <button class="workspace-item saved-entry" role="button" bindtap="showFavorites" aria-label="我的收藏"><text class="workspace-count">{{favCount===null?'—':favCount}}</text><text class="workspace-label">我的收藏</text></button>
-   <button class="workspace-item draft-entry" role="button" bindtap="openDrafts" aria-label="草稿箱"><text class="workspace-count">{{draftCount===null?'—':draftCount}}</text><text class="workspace-label">草稿箱</text></button>
-   <button class="workspace-item bookings-entry" role="button" bindtap="goBookings" aria-label="我的预约"><text class="workspace-count">{{bookingCount===null?'—':bookingCount}}</text><text class="workspace-label">我的预约</text></button>
+   <button class="workspace-item posts-entry" bindtap="goPosts" aria-label="我的发布"><image src="/assets/icons/center-posts-{{iconPalette||'prism'}}.png" mode="aspectFit"/><text class="workspace-count">{{postCount===null?'—':postCount}}</text><text class="workspace-label">我的发布</text></button>
+   <button class="workspace-item saved-entry" bindtap="showFavorites" aria-label="我的收藏"><image src="/assets/icons/center-saved-{{iconPalette||'prism'}}.png" mode="aspectFit"/><text class="workspace-count">{{favCount===null?'—':favCount}}</text><text class="workspace-label">我的收藏</text></button>
+   <button class="workspace-item draft-entry" bindtap="openDrafts" aria-label="草稿箱"><image src="/assets/icons/center-draft-{{iconPalette||'prism'}}.png" mode="aspectFit"/><text class="workspace-count">{{draftCount===null?'—':draftCount}}</text><text class="workspace-label">草稿箱</text></button>
+   <button class="workspace-item bookings-entry" bindtap="goBookings" aria-label="我的预约"><image src="/assets/icons/center-booking-{{iconPalette||'prism'}}.png" mode="aspectFit"/><text class="workspace-count">{{bookingCount===null?'—':bookingCount}}</text><text class="workspace-label">我的预约</text></button>
   </view>
-  <button id="points-center-entry" class="points-entry" bindtap="showPoints" aria-label="进入积分中心"><view class="points-icon"><image src="/assets/icons/center-points-{{iconPalette||'prism'}}.png"/></view><text class="points-title">我的积分</text><text class="points-action">积分中心 ›</text></button>
-  <button id="service-center-entry" class="service-center-card" hover-class="service-card-pressed" bindtap="openServiceCenter" aria-label="进入服务中心"><brand-scene class="service-card-scene"/><view class="service-icon-frame"><image class="service-center-icon" src="/assets/icons/center-merchant-{{iconPalette||'prism'}}.png"/></view><view class="center-entry-copy"><text class="service-card-title">服务中心</text><text class="center-subtitle">商家入驻 · 行业核验 · 管理信息</text></view><text class="center-chevron">›</text></button>
-  <view class="personal-functions"><view class="section-title">我的功能</view><view class="personal-function-grid">
-   <button class="personal-message-entry" bindtap="goMessages"><view wx:if="{{unread}}" class="personal-unread">{{unread>99?'99+':unread}}</view><image src="/assets/icons/center-notifications-{{iconPalette||'prism'}}.png"/><text>消息通知</text></button><button class="notification-settings-entry" bindtap="openNotifications"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png"/><text>通知设置</text></button><button class="cache-entry" bindtap="inspectCache"><image src="/assets/icons/center-trash-{{iconPalette||'prism'}}.png"/><text>清理缓存</text></button><button class="history-entry" bindtap="showHistory"><image src="/assets/icons/center-history-{{iconPalette||'prism'}}.png"/><text>浏览记录</text></button>
-  </view></view>
+  <view class="profile-feature-grid">
+   <button id="points-center-entry" class="points-entry" bindtap="showPoints" aria-label="进入积分中心"><view wx:if="{{iconPalette==='prism'}}" class="points-coins" aria-hidden="true"><text>✦</text></view><view wx:else class="points-icon"><image src="/assets/icons/center-points-{{iconPalette||'prism'}}.png" mode="aspectFit"/></view><view class="center-entry-copy"><text class="service-card-title">我的积分 <text aria-hidden="true">›</text></text><text class="center-subtitle">积分记录与兑换</text></view></button>
+   <button id="service-center-entry" class="service-center-card" hover-class="service-card-pressed" bindtap="openServiceCenter" aria-label="进入商家服务中心"><view class="service-crown" aria-hidden="true"><view/></view><view class="center-entry-copy"><text class="service-card-title">商家服务 <text aria-hidden="true">›</text></text><text class="center-subtitle">入驻 · 认证 · 管理</text></view></button>
+  </view>
   <view class="center-menu personal-services">
-   <button class="center-menu-row help-entry" bindtap="openHelp"><image src="/assets/icons/center-help-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">帮助与反馈</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row privacy-entry" bindtap="openPrivacy"><image src="/assets/icons/center-settings-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">隐私与显示</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row notification-settings-entry" bindtap="openNotifications"><image src="/assets/icons/center-notifications-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">消息通知设置</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row account-entry" bindtap="openAccount"><image src="/assets/icons/center-privacy-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">账号与安全</text><text class="center-chevron">›</text></button>
-   <button class="center-menu-row privacy-entry" bindtap="openPrivacy"><image src="/assets/icons/center-settings-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">隐私与设置</text><text class="center-chevron">›</text></button>
    <button class="center-menu-row data-entry" bindtap="openPersonalData"><image src="/assets/icons/center-data-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">个人数据</text><text class="center-chevron">›</text></button>
-   <button class="center-menu-row about-entry" bindtap="showAbout"><image src="/assets/icons/center-about-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">关于小程序</text><text class="center-chevron">›</text></button>
+   <button class="center-menu-row help-entry" bindtap="openHelp"><image src="/assets/icons/center-help-{{iconPalette||'prism'}}.png"/><text class="center-menu-label">帮助与反馈</text><text class="center-chevron">›</text></button>
   </view>
-  <button wx:if="{{hasSession}}" class="signout-action" bindtap="signout">退出登录</button>
+  <view class="personal-functions"><view class="personal-function-grid">
+   <button class="history-entry" bindtap="showHistory"><image src="/assets/icons/center-history-{{iconPalette||'prism'}}.png"/><text>浏览记录</text></button><button class="cache-entry" bindtap="inspectCache"><image src="/assets/icons/center-trash-{{iconPalette||'prism'}}.png"/><text>清理缓存</text></button><button class="about-entry" bindtap="showAbout"><image src="/assets/icons/center-about-{{iconPalette||'prism'}}.png"/><text>关于小程序</text></button>
+  </view></view>
+  <button wx:if="{{hasSession}}" class="signout-action" bindtap="signout" loading="{{signingOut}}" disabled="{{signingOut}}">退出登录</button>
  </view></block>
 </view>
 </view>

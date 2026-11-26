@@ -27,6 +27,21 @@ test('conversation and notification offsets restore independently during rapid s
  callbacks[1]();
  assert.equal(page.data.listScrollTop,500);
 });
+test('message shortcuts open booking notifications and only display real unread contact notices',async()=>{
+ const pending={...notice,id:'contact-new',targetKind:'contact',targetId:contact.id};
+ const read={...pending,id:'contact-read',readAt:'2026-11-20T08:31:00Z'};
+ const {page}=client(async(method,url)=>url.includes('notifications')
+  ? {items:[notice,pending,read],unread:2}
+  : {items:[{...contact,type:'housing'}]});
+ await page.refresh();
+ assert.equal(page.data.visibleContacts[0].unreadCount,1);
+ assert.equal(page.data.visibleContacts[0].topic,'房屋租售');
+ page.openNoticeShortcut(event({category:'booking'}));
+ assert.equal(page.data.tab,'notices');
+ assert.equal(page.data.listScrollTop,0);
+ assert.equal(page.data.visibleNotices.length,1);
+ assert.equal(page.data.visibleNotices[0].id,notice.id);
+});
 test('points notices filter actual ledger changes and navigate to their own record view',async()=>{
  const entry={...notice,targetKind:'points-ledger',targetId:'ledger-1'};
  const c=client(async(method,url)=>method==='POST'?{ok:true}:url.includes('notifications')?{items:[entry],unread:1,hasMore:false}:{items:[]});await c.page.refresh();c.page.filterNotices(event({category:'points'}));assert.equal(c.page.data.visibleNotices.length,1);

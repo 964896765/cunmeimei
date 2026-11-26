@@ -1,1 +1,14 @@
 :host{display:block}.search-bar{display:flex;align-items:center;gap:20rpx;min-height:var(--search-height,44px);padding:0 24rpx;border:1rpx solid var(--border);border-radius:60rpx;background:var(--surface);color:var(--ink);box-sizing:border-box}.search-symbol{width:25rpx;height:25rpx;flex-shrink:0;border:2.5rpx solid var(--link);border-radius:50%;position:relative;margin-right:6rpx}.search-symbol::after{content:'';position:absolute;width:12rpx;height:2.5rpx;right:-9rpx;bottom:-5rpx;transform:rotate(45deg);background:var(--link)}.placeholder,input{flex:1;min-width:0;font-size:var(--search-font,28rpx);color:var(--muted)}input{color:var(--ink);min-height:var(--search-height,44px)}.clear,.submit{display:flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;background:transparent;border:0;padding:8rpx 0;margin:0;color:var(--link);font-size:var(--card-meta,25rpx)}.clear{color:var(--muted);font-size:34rpx}.clear::after,.submit::after{border:0}
+.readonly .placeholder { display:block; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.search-bar {
+ border-color:var(--search-border,var(--border)); border-radius:var(--search-radius,60rpx);
+ background:var(--search-fill,var(--surface)); box-shadow:var(--search-shadow,none);
+ gap:var(--search-gap,20rpx); padding:0 var(--search-padding,24rpx);
+}
+.submit { min-height:var(--search-submit-height,44px); padding:var(--search-submit-padding,8rpx 0); border-radius:var(--search-submit-radius,0); background:var(--search-submit-fill,transparent); }
+.search-frame { display:grid; grid-template-columns:repeat(2,10rpx); gap:5rpx; flex-shrink:0; }
+.frame-corner { width:10rpx; height:10rpx; border:0 solid var(--link); }
+.frame-corner:nth-child(1) { border-width:2.5rpx 0 0 2.5rpx; border-top-left-radius:5rpx; }
+.frame-corner:nth-child(2) { border-width:2.5rpx 2.5rpx 0 0; border-top-right-radius:5rpx; }
+.frame-corner:nth-child(3) { border-width:0 0 2.5rpx 2.5rpx; border-bottom-left-radius:5rpx; }
+.frame-corner:nth-child(4) { border-width:0 2.5rpx 2.5rpx 0; border-bottom-right-radius:5rpx; }

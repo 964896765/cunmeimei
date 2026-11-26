@@ -14,7 +14,8 @@ test('supplied agreements expose every chapter with the current version and requ
  assert.ok(docs.privacy.includes('【填写平台客服电话】'));
  assert.ok(!docs.terms.includes('{{'));
  assert.equal(docs.termsVersion,'terms-1.0-20261113');
- assert.equal(docs.privacyVersion,'privacy-1.0-20261113');
+ assert.equal(docs.privacyVersion,'privacy-1.1-20261124');
+ assert.match(docs.privacy,/阿里云国内短信服务处理该次短信的接收号码和验证码/);
 });
 
 test('contact and agreement changes are included in the login consent hash',()=>{

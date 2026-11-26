@@ -55,17 +55,21 @@ test('personal workspace exposes four real counts and keeps draft loading indepe
 test('personal workspace keeps the original groups with unique actions and one avatar and verification editor',()=>{
  const markup=fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/me/index.wxml'),'utf8');
  const main=markup.slice(markup.indexOf('<block wx:else><view class="main-center">'));
- const actions=[...main.matchAll(/bindtap="([^"]+)"/g)].map(match=>match[1]);
+ const actions=[...main.matchAll(/(?:bindtap|catchtap)="([^"]+)"/g)].map(match=>match[1]);
  assert.equal(actions.length,new Set(actions).size,'main workspace actions have a single visible entry');
- for(const action of ['goPosts','showFavorites','openDrafts','goBookings','showHistory','openNotifications','openPrivacy','openPersonalData','openHelp','openAccount','openServiceCenter'])assert.ok(actions.includes(action),action+' remains addressable');
+ for(const action of ['goPosts','showFavorites','openDrafts','goBookings','showHistory','openNotifications','openPersonalData','openHelp','openAccount','openServiceCenter'])assert.ok(actions.includes(action),action+' remains addressable');
+ assert.match(markup,/class="center-menu-row privacy-entry" bindtap="openPrivacy"/);
  assert.match(main,/personal-function-grid/);
  assert.equal((main.match(/bindtap="showAbout"/g)||[]).length,1);
+ assert.ok(main.includes("{{hasSession?displayName:'欢迎来到村美美'}}"));
  assert.equal((main.match(/bindtap="inspectCache"/g)||[]).length,1);
  const profile=markup.slice(markup.indexOf("mode==='profile'"),markup.indexOf("<block wx:elif=\"{{mode==='service'}}\""));
  assert.equal((profile.match(/open-type="chooseAvatar"/g)||[]).length,1);
  const account=markup.slice(markup.indexOf("<block wx:elif=\"{{mode==='account'}}\""),markup.indexOf("<block wx:elif=\"{{mode==='help'}}\""));
  assert.equal((account.match(/bindtap="openVerification"/g)||[]).length,1);
- assert.ok(markup.includes('class="center-menu-row about-action" bindtap="showAbout"'));
+ const help=markup.slice(markup.lastIndexOf("mode==='help'"),markup.lastIndexOf("mode==='about'"));
+ assert.match(help,/bindtap="showAbout"/);
+ assert.match(account,/wx:if="{{hasSession}}" id="account-signout"[^>]*bindtap="signout"/);
 });
 
 

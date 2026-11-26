@@ -7,6 +7,7 @@ Component({
     maxLength: { type: Number, value: 80 },
     showSubmit: { type: Boolean, value: true },
     readonly: Boolean,
+    framed: Boolean,
     disabled: Boolean
   },
   methods: {

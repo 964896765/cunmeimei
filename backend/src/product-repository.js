@@ -188,7 +188,13 @@ function attachProductRepository(repo,pool){
   (SELECT count(*)::int FROM user_notifications WHERE user_id=$1 AND read_at IS NULL) AS unread`,[uid]);
  repo.notifications=async(uid,offset)=>{const rows=(await query('SELECT id,title,body,target_kind AS "targetKind",target_id AS "targetId",read_at AS "readAt",created_at AS "createdAt" FROM user_notifications WHERE user_id=$1 ORDER BY created_at DESC,id DESC LIMIT 21 OFFSET $2',[uid,offset])).rows;return {items:rows.slice(0,20),hasMore:rows.length>20,unread:(await one('SELECT count(*)::int AS n FROM user_notifications WHERE user_id=$1 AND read_at IS NULL',[uid])).n};};
  repo.readNotification=async(uid,id)=>!!(await query('UPDATE user_notifications SET read_at=coalesce(read_at,now()) WHERE user_id=$1 AND ($2::uuid IS NULL OR id=$2) RETURNING id',[uid,id])).rowCount;
- repo.contactRequests=async(uid,{offset=0,limit=100}={})=>(await query(`SELECT c.id,c.publication_id AS "publicationId",p.title,c.message,c.response,c.status,c.ended_at AS "endedAt",EXISTS(SELECT 1 FROM user_blocks b WHERE b.user_id=c.owner_id AND b.blocked_user_id=c.requester_id) AS blocked,c.requester_id=$1 AS outgoing,c.created_at AS "createdAt" FROM contact_requests c JOIN publications p ON p.id=c.publication_id WHERE c.requester_id=$1 OR c.owner_id=$1 ORDER BY c.created_at DESC,c.id DESC LIMIT $2 OFFSET $3`,[uid,limit,offset])).rows;
+ repo.contactRequests=async(uid,{offset=0,limit=100}={})=>(await query(`
+  SELECT c.id,c.publication_id AS "publicationId",p.title,p.type,c.message,c.response,c.status,c.ended_at AS "endedAt",
+   CASE WHEN NOT p.is_test AND ${visible} THEN '/api/v1/media/' || p.image_ids[1]::text END AS "coverPath",
+   EXISTS(SELECT 1 FROM user_blocks b WHERE b.user_id=c.owner_id AND b.blocked_user_id=c.requester_id) AS blocked,
+   c.requester_id=$1 AS outgoing,c.created_at AS "createdAt"
+  FROM contact_requests c JOIN publications p ON p.id=c.publication_id
+  WHERE c.requester_id=$1 OR c.owner_id=$1 ORDER BY c.created_at DESC,c.id DESC LIMIT $2 OFFSET $3`,[uid,limit,offset])).rows;
  repo.pendingContactCount=async uid=>(await one("SELECT count(*)::int n FROM contact_requests c WHERE c.owner_id=$1 AND c.status='pending' AND c.ended_at IS NULL AND NOT EXISTS(SELECT 1 FROM user_blocks b WHERE b.user_id=c.owner_id AND b.blocked_user_id=c.requester_id)",[uid])).n;
  repo.requestContact=async(uid,id,message)=>tx(async c=>{
   const trust=await require('./trust-repository').guard(c,uid,'contact',{},repo.trustOptions||{});

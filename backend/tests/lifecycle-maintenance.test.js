@@ -34,7 +34,7 @@ test('real PostgreSQL lifecycle and maintenance',{skip:!process.env.PG_TEST_DATA
   });
   await t.test('maintenance failures enter the unified queue and recover without altering the ledger',async()=>{
    await pool.query('UPDATE points_accounts SET available=available+1 WHERE user_id=$1',[owner]);const failed=await repo.runMaintenance();assert.equal(failed.points_reconciliation.ok,false);const q=await repo.reviewWorkbench({kind:'operations'});assert.equal(q.total,1);assert.equal(q.items[0].metadata.code,'POINTS_RECONCILIATION_FAILED');assert.ok(!(JSON.stringify(q).includes(owner)));
-   await pool.query('UPDATE points_accounts SET available=available-1 WHERE user_id=$1',[owner]);assert.equal((await repo.runMaintenance()).points_reconciliation.ok,true);assert.equal((await repo.reviewWorkbench({kind:'operations'})).total,0);assert.equal((await repo.operationsHealth()).jobs.length,7);
+   await pool.query('UPDATE points_accounts SET available=available-1 WHERE user_id=$1',[owner]);const recovered=await repo.runMaintenance();assert.equal(recovered.points_reconciliation.ok,true);assert.equal(recovered.expired_sms.ok,true);assert.equal((await repo.reviewWorkbench({kind:'operations'})).total,0);assert.equal((await repo.operationsHealth()).jobs.length,8);
   });
   await t.test('ad retries never expose another owner reservation; cancellation refunds once and frees stock',async()=>{
    const image=(await pool.query("INSERT INTO content_images(user_id,data,thumbnail,width,height) VALUES($1,'x','x',1,1) RETURNING id",[owner])).rows[0].id;

@@ -11,12 +11,13 @@ const adminPolicy=require('./admin-permissions');
 const {hasRole}=adminPolicy;
 const sha256=s=>crypto.createHash('sha256').update(s).digest('hex');
 const enc=body=>JSON.stringify(body);
-function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPassword='',operatorPermissions=[],verifierPermissions=[],wechatAppId='',wechatSecret='',production=false,fetchWechat=global.fetch,privateUploadDir=path.join(__dirname,'../../private-data'),trustedProxyIps=[],tencentMapKey='',fetchGeography=global.fetch,verificationAdminPassword='',phoneEncryptionKey='',platformPublishApproved=false,platformContactApproved=false,legalConfig={},memorialPublicEnabled=false}){
+function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPassword='',operatorPermissions=[],verifierPermissions=[],wechatAppId='',wechatSecret='',production=false,fetchWechat=global.fetch,privateUploadDir=path.join(__dirname,'../../private-data'),trustedProxyIps=[],tencentMapKey='',fetchGeography=global.fetch,verificationAdminPassword='',phoneEncryptionKey='',platformPublishApproved=false,platformContactApproved=false,legalConfig={},memorialPublicEnabled=false,smsOptions={}}){
  if(!repo)throw Error('repository required');if(!Array.isArray(areas)||!areas.length||!areas.every(validRegionName))throw Error('SERVICE_AREAS must contain valid 2–40 character region names');
- repo.configureTrust?.({enabled:true,allowLocalTest:!production&&allowDevLogin,production,publishApproved:platformPublishApproved,contactApproved:platformContactApproved,phoneKey:phoneEncryptionKey});
  const legalDocs=require('./legal-documents').documents(legalConfig),wechatAuthenticate=require('./wechat-login').provider(wechatAppId,wechatSecret,fetchWechat);
  const phoneVerifier=require('./wechat-phone').createPhoneVerifier(wechatAppId,wechatSecret,fetchWechat);
  const phoneConfigured=!!wechatAppId&&!!wechatSecret&&Buffer.from(phoneEncryptionKey,'base64').length===32;
+ const smsAuth=require('./sms-auth').createSmsAuth({repo,enabled:phoneConfigured,phoneKey:phoneEncryptionKey,legalDocs,wechatAuthenticate,...smsOptions});
+ repo.configureTrust?.({enabled:true,allowLocalTest:!production&&allowDevLogin,production,publishApproved:platformPublishApproved,contactApproved:platformContactApproved,phoneKey:phoneEncryptionKey,uniquePhones:!!smsAuth});
  const roleGrants={operator:operatorPermissions,verifier:verifierPermissions,superadmin:[]};
  for(const role of Object.keys(roleGrants))adminPolicy.permissionsFor(role,roleGrants[role]);
  const adminSessions=new Map();const adminLoginLimiter=createAdminLoginLimiter();const uploadLimits=new Map();
@@ -79,7 +80,18 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   if(m==='GET'&&p==='/admin/home-content.js'){res.writeHead(200,{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/home-content.js')));}
   if(m==='GET'&&p==='/admin/app.css'){res.writeHead(200,{'Content-Type':'text/css; charset=utf-8','Cache-Control':'no-store'});return res.end(fs.readFileSync(path.join(__dirname,'../admin/app.css')));}
   if(m==='POST'&&p==='/api/v1/me/phone/wechat')limitLogin(req,'phone');
-  if(repo.trustStatus&&await require('./trust-routes').trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerifier,phoneConfigured}))return;
+  if(m==='POST'&&/^\/api\/(?:v1\/)?auth\/sms\/(send|verify)$/.test(p)){
+   if(!smsAuth)fail(503,'SMS_NOT_CONFIGURED','短信验证暂不可用，可使用微信登录或继续浏览');
+   const verify=p.endsWith('/verify');
+   if(verify)limitLogin(req,'sms-verify');
+   const input=await body(req);
+   if(input.purpose==='signin')limitLogin(req,'sms-wechat');
+   const session=['bind','change_old'].includes(input.purpose)
+    ?{uid:await user(req),hash:sha256(req.headers.authorization.slice(7))}:null;
+   if(session&&!await repo.hasWechatIdentity(session.uid))fail(403,'WECHAT_IDENTITY_REQUIRED','请使用微信账号登录后再绑定手机号');
+   return json(res,200,await (verify?smsAuth.verify:smsAuth.sendCode)(input,session,clientAddress(req)));
+  }
+  if(repo.trustStatus&&await require('./trust-routes').trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerifier,phoneConfigured,smsConfigured:!!smsAuth}))return;
   if(await require('./points-routes').pointsRoutes({req,res,p,m,url,repo,user,admin,body,json}))return;
   if(await require('./home-content-routes').homeContentRoutes({req,res,p,m,url,repo,user,admin,body,json}))return;
   if(await require('./industry-services').industryServiceRoutes({req,res,p,m,url,repo,user,admin,body,json}))return;
@@ -88,10 +100,10 @@ function createApp({repo,areas,allowDevLogin=false,adminPassword='',superAdminPa
   if(await require('./business-case-routes').businessCaseRoutes({req,res,p,m,url,repo,user,admin,body,json}))return;
   if(m==='GET'&&p==='/api/v1/health'){return json(res,200,{ok:true,version:require('../package.json').version});}
   if(m==='GET'&&p==='/api/v1/ready'){try{await repo.ping();if(typeof repo.verifySchema==='function')await repo.verifySchema();return json(res,200,{ready:true});}catch{return json(res,503,{ready:false,error:'DEPENDENCY_UNAVAILABLE'});}}
-  if(m==='GET'&&p==='/api/v1/config'){const regions=await allRegions();const categories=await repo.listCategories();return json(res,200,{areas:regions.filter(r=>r.enabled).map(r=>r.name),categories,features:{memorialPublic:memorialPublicEnabled&&!!repo.memorialSave,forumPublishing:false,publicInteractions:false,practicalInformation:true,benefitMode:'points_only',bookingPurpose:'service_request',businessProgressPurpose:'mutual_progress_record',publishingApproved:!production||platformPublishApproved,industryWorkflows:!!repo.saveIndustryEntry,businessProgress:!!repo.createBusinessCase,industryServiceBooking:!!repo.connectIndustryService,benefitRedemption:!!repo.redeemBenefit,selfPromotion:!!repo.applyPromotion,jobs:!!repo.saveIndustryEntry,payments:false,realtimeChat:false,textContactChat:!!repo.sendChat,phoneVerification:phoneConfigured,identityVerification:'manual_external_evidence',machineImageReview:'not_configured_manual_required',merchantCertification:'manual_review',merchantOperations:true,reports:true,licenseUpload:production?'disabled_pending_security_review':'private_development',bookingSlots:'single_capacity_30min_hold'}});}
+  if(m==='GET'&&p==='/api/v1/config'){const regions=await allRegions();const categories=await repo.listCategories();return json(res,200,{areas:regions.filter(r=>r.enabled).map(r=>r.name),categories,features:{memorialPublic:memorialPublicEnabled&&!!repo.memorialSave,forumPublishing:false,publicInteractions:false,practicalInformation:true,benefitMode:'points_only',bookingPurpose:'service_request',businessProgressPurpose:'mutual_progress_record',publishingApproved:!production||platformPublishApproved,industryWorkflows:!!repo.saveIndustryEntry,businessProgress:!!repo.createBusinessCase,industryServiceBooking:!!repo.connectIndustryService,benefitRedemption:!!repo.redeemBenefit,selfPromotion:!!repo.applyPromotion,jobs:!!repo.saveIndustryEntry,payments:false,realtimeChat:false,textContactChat:!!repo.sendChat,phoneVerification:phoneConfigured,smsVerification:!!smsAuth,identityVerification:'manual_external_evidence',machineImageReview:'not_configured_manual_required',merchantCertification:'manual_review',merchantOperations:true,reports:true,licenseUpload:production?'disabled_pending_security_review':'private_development',bookingSlots:'single_capacity_30min_hold'}});}
   if(m==='GET'&&p==='/api/v1/publication-notice')return json(res,200,require('./publication-notice').document());
   if(m==='GET'&&/^\/admin\/api\/publication-records\/[0-9a-f-]{36}$/i.test(p)){admin(req);const records=await repo.publicationRecords(p.split('/').at(-1));if(!records)fail(404,'NOT_FOUND','发布信息不存在');return json(res,200,records);}
-  if(m==='GET'&&p==='/api/v1/legal')return json(res,200,{...legalDocs,wechatAvailable:!!wechatAppId&&!!wechatSecret});
+  if(m==='GET'&&p==='/api/v1/legal')return json(res,200,{...legalDocs,wechatAvailable:!!wechatAppId&&!!wechatSecret,smsAvailable:!!smsAuth});
   if(m==='POST'&&p==='/api/v1/auth/wechat'){limitLogin(req);const v=await body(req),consent=require('./legal-documents').consent(v,legalDocs),code=text(v.code,512,4);return json(res,200,await issueSession('wechat_miniapp',await wechatAuthenticate(code),consent));}
   if(m==='POST'&&p==='/api/v1/dev/login'){
     const remote=(req.socket.remoteAddress||'').replace('::ffff:','');if(production||!allowDevLogin||!['127.0.0.1','::1'].includes(remote)||
@@ -455,10 +467,11 @@ if(require.main===module){
  const {validateDeployment}=require('./deployment-check');
  const deployment=validateDeployment(process.env,undefined,{requireProduction:process.argv.includes('--production')});
  if(!deployment.ok){console.error('Deployment configuration blocked:',deployment.errors.join(','));process.exit(1);}
+ const smsOptions=require('./aliyun-sms').fromEnvironment();
  const repo=driver==='memory'?createMemoryRepository():require('./pg-repository').createPgRepository(process.env.DATABASE_URL);
  const areas=(process.env.SERVICE_AREAS||'').split(',').map(x=>x.trim()).filter(Boolean);
  const host=process.env.HOST||'127.0.0.1',port=Number(process.env.PORT||3101);
- const app=createApp({repo,areas,memorialPublicEnabled:process.env.MEMORIAL_PUBLIC_ENABLED==='true',allowDevLogin:process.env.ALLOW_DEV_LOGIN==='true',adminPassword:process.env.ADMIN_PASSWORD||'',wechatAppId:process.env.WECHAT_APPID||'',wechatSecret:process.env.WECHAT_SECRET||'',privateUploadDir:process.env.PRIVATE_UPLOAD_DIR||path.resolve(__dirname,'../../private-data'),verificationAdminPassword:process.env.VERIFICATION_ADMIN_PASSWORD||'',superAdminPassword:process.env.SUPER_ADMIN_PASSWORD||'',operatorPermissions:(process.env.OPERATOR_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),verifierPermissions:(process.env.VERIFIER_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),phoneEncryptionKey:process.env.PHONE_ENCRYPTION_KEY||'',platformPublishApproved:process.env.PLATFORM_PUBLISH_APPROVED==='true',platformContactApproved:process.env.PLATFORM_CONTACT_APPROVED==='true',trustedProxyIps:process.env.TRUSTED_PROXY_IPS||'',tencentMapKey:process.env.TENCENT_MAP_KEY||'',legalConfig:{operatorName:process.env.PLATFORM_OPERATOR_NAME,contactEmail:process.env.PRIVACY_CONTACT_EMAIL},production});
+ const app=createApp({repo,areas,memorialPublicEnabled:process.env.MEMORIAL_PUBLIC_ENABLED==='true',allowDevLogin:process.env.ALLOW_DEV_LOGIN==='true',adminPassword:process.env.ADMIN_PASSWORD||'',wechatAppId:process.env.WECHAT_APPID||'',wechatSecret:process.env.WECHAT_SECRET||'',privateUploadDir:process.env.PRIVATE_UPLOAD_DIR||path.resolve(__dirname,'../../private-data'),verificationAdminPassword:process.env.VERIFICATION_ADMIN_PASSWORD||'',superAdminPassword:process.env.SUPER_ADMIN_PASSWORD||'',operatorPermissions:(process.env.OPERATOR_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),verifierPermissions:(process.env.VERIFIER_ADMIN_PERMISSIONS||'').split(',').filter(Boolean),phoneEncryptionKey:process.env.PHONE_ENCRYPTION_KEY||'',platformPublishApproved:process.env.PLATFORM_PUBLISH_APPROVED==='true',platformContactApproved:process.env.PLATFORM_CONTACT_APPROVED==='true',trustedProxyIps:process.env.TRUSTED_PROXY_IPS||'',tencentMapKey:process.env.TENCENT_MAP_KEY||'',legalConfig:{operatorName:process.env.PLATFORM_OPERATOR_NAME,contactEmail:process.env.PRIVACY_CONTACT_EMAIL},smsOptions,production});
  let stopReminders=async()=>{},stopMaintenance=async()=>{};
  (async()=>{if(driver==='postgres')await repo.verifySchema();await repo.seedRegions(areas);
   app.listen(port,host,()=>{

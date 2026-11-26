@@ -12,18 +12,22 @@ const memorialIds = new Set([
 ]);
 
 function describe(id) {
+  const displayPath = "/category-art/images/" + id + ".png";
   if (memorialIds.has(id)) {
     return {
       path: "/category-art/assets/memorial/" + id + ".webp",
+      displayPath,
       stage: "placeholder",
       frame: "symbol",
     };
   }
   const project = registry.find(id);
   if (!project?.groupId) return null;
+  const display = { displayPath, displayFrame: "transparent" };
   if (styledIds.has(id)) {
     return {
       path: "/category-art/assets/3d-v1/" + id + ".webp",
+      ...display,
       stage: "styled3d",
       transparent: true,
       frame: "transparent",
@@ -37,6 +41,7 @@ function describe(id) {
       "/" +
       id +
       ".webp",
+    ...display,
     stage: rendered ? "rendered3d" : draftIds.has(id) ? "draft3d" : "placeholder",
     transparent: !!rendered,
     frame: rendered ? "transparent" : draftIds.has(id) ? draftFrames[project.categoryId] || "goods" : "symbol",

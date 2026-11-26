@@ -39,16 +39,33 @@ function attachTrustRepository(repo,pool){require('./trust-pagination').attachTr
  // never creates an identity attestation, even for the verification administrator.
  repo.requestIdentity=async()=>fail(503,'IDENTITY_PROVIDER_NOT_CONFIGURED','合规身份核验服务尚未开通，请勿提交姓名或身份证号');
  repo.reviewIdentity=async()=>fail(503,'IDENTITY_PROVIDER_NOT_CONFIGURED','人工业务材料审核不能签发实名身份认证');
- repo.verifyPhone=(uid,number,method,reference)=>tx(async c=>{
-  await c.query('SELECT id FROM app_users WHERE id=$1 FOR UPDATE',[uid]);const previous=(await c.query('SELECT number_hmac,revision FROM verified_phones WHERE user_id=$1',[uid])).rows[0];const sealed=policy.sealPhone(number,repo.trustOptions.phoneKey);
+ repo.verifyPhoneInTransaction=async(c,uid,number,method,reference,options={})=>{
+  const account=(await c.query('SELECT status FROM app_users WHERE id=$1 FOR UPDATE',[uid])).rows[0];
+  if(account?.status!=='active')fail(403,'ACCOUNT_INACTIVE','账号已关闭或受限');
+  const previous=(await c.query('SELECT number_hmac,revision,verified_until>now() AS active FROM verified_phones WHERE user_id=$1',[uid])).rows[0];
+  const sealed=policy.sealPhone(number,repo.trustOptions.phoneKey);
+  if(method==='sms_otp'){
+   const previousHmac=options.previousPhone&&policy.sealPhone(options.previousPhone,repo.trustOptions.phoneKey).hmac;
+   if((previousHmac&&previous?.number_hmac!==previousHmac)||(previous&&previous.number_hmac!==sealed.hmac&&!previousHmac)){
+    fail(409,'SMS_CHANGE_REQUIRED','请在已登录的手机号验证中心核对原号码并更换');
+   }
+  }
+  // All phone writers share this lock. Legacy duplicate records stay untouched and cannot claim new SMS access.
+  await c.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',['verified-phone:'+sealed.hmac]);
   const blocked=await c.query("SELECT 1 FROM phone_binding_history h JOIN account_trust t ON t.user_id=h.user_id WHERE h.number_hmac=$1 AND h.user_id<>$2 AND t.risk_level='severe' AND t.risk_until>now() AND (t.restrict_publish OR t.restrict_contact) LIMIT 1",[sealed.hmac,uid]);if(blocked.rows.length)fail(403,'PHONE_REVIEW_REQUIRED','此号码存在待处理的限制记录，请联系人工复核');
+  const enforceUnique=repo.trustOptions.uniquePhones===true||method==='sms_otp';
+  if((await c.query("SELECT 1 FROM verified_phones WHERE number_hmac=$1 AND user_id<>$2 AND ($3 OR method='sms_otp') LIMIT 1",[sealed.hmac,uid,enforceUnique])).rowCount){
+   fail(409,'PHONE_ALREADY_LINKED','该手机号无法与当前微信账号关联，请使用原微信账号或联系人工核对');
+  }
+  if(options.keepVerified&&previous?.active&&previous.number_hmac===sealed.hmac)return;
   await c.query("DELETE FROM phone_binding_history WHERE bound_at<now()-interval '180 days'");
   await c.query('INSERT INTO phone_binding_history(user_id,number_hmac) VALUES($1,$2) ON CONFLICT(user_id,number_hmac) DO UPDATE SET bound_at=now()',[uid,sealed.hmac]);
   await c.query("INSERT INTO verified_phones(user_id,encrypted_number,number_hmac,masked_number,method,evidence_reference,verified_until) VALUES($1,$2,$3,$4,$5,$6,now()+interval '180 days') ON CONFLICT(user_id) DO UPDATE SET encrypted_number=$2,number_hmac=$3,masked_number=$4,method=$5,evidence_reference=$6,verified_until=now()+interval '180 days',revision=verified_phones.revision+1,updated_at=now()",[uid,sealed.encrypted,sealed.hmac,sealed.masked,method,reference]);
   await c.query('UPDATE publication_contact_settings SET public_phone=false,phone_revision=NULL,consent_at=NULL,updated_at=now() WHERE publication_id IN (SELECT id FROM publications WHERE user_id=$1)',[uid]);
   const revision=(await c.query('SELECT revision FROM verified_phones WHERE user_id=$1',[uid])).rows[0].revision;await c.query('INSERT INTO phone_authorization_events(user_id,action,phone_revision,privacy_version) VALUES($1,$2,$3,$4)',[uid,previous&&previous.number_hmac!==sealed.hmac?'rebound':'authorized',revision,require('./legal-documents').documents().privacyVersion]);
-  await audit(c,uid,'phone_usage_verified','手机号使用权已核验，身份状态未自动变更',method==='wechat_phone'?'wechat_provider':'verifier');
- });
+  await audit(c,uid,'phone_usage_verified','手机号使用权已核验，身份状态未自动变更',method==='wechat_phone'?'wechat_provider':method==='sms_otp'?'sms_provider':'verifier');
+ };
+ repo.verifyPhone=(uid,number,method,reference)=>tx(c=>repo.verifyPhoneInTransaction(c,uid,number,method,reference));
  repo.revokePhone=uid=>tx(async c=>{await c.query('SELECT id FROM app_users WHERE id=$1 FOR UPDATE',[uid]);const previous=(await c.query('DELETE FROM verified_phones WHERE user_id=$1 RETURNING revision',[uid])).rows[0];if(previous){await c.query("INSERT INTO phone_authorization_events(user_id,action,phone_revision,privacy_version) VALUES($1,'withdrawn',$2,$3)",[uid,previous.revision,require('./legal-documents').documents().privacyVersion]);await audit(c,uid,'phone_withdrawn','本人撤回手机号验证并关闭原公开电话','owner');}await c.query('UPDATE publication_contact_settings SET public_phone=false,phone_revision=NULL,consent_at=NULL WHERE publication_id IN (SELECT id FROM publications WHERE user_id=$1)',[uid]);});
  repo.qualify=(uid,v,role)=>tx(async c=>{if(!hasRole(role,'verifier'))fail(403,'VERIFIER_REQUIRED','需要资质核验权限');await c.query('SELECT id FROM app_users WHERE id=$1 FOR UPDATE',[uid]);if(v.manuallyVerified!==true)fail(400,'VERIFICATION_CONFIRMATION_REQUIRED','必须完成材料核查');let publicationRevision=null;if(v.scope.startsWith('publication:')){const p=(await c.query('SELECT revision FROM publications WHERE id=$1 AND user_id=$2 FOR SHARE',[v.scope.slice(12),uid])).rows[0];if(!p)fail(400,'QUALIFICATION_SCOPE_MISMATCH','材料核验必须绑定该账号的对应信息');publicationRevision=p.revision;}const old=(await c.query('SELECT revision FROM qualification_checks WHERE user_id=$1 AND scope=$2',[uid,v.scope])).rows[0];if((old?.revision||0)!==v.revision)fail(409,'QUALIFICATION_CHANGED','材料核验状态已变化');await c.query("INSERT INTO qualification_checks(user_id,scope,reference,status,valid_until,publication_revision) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(user_id,scope) DO UPDATE SET reference=$3,status=$4,valid_until=$5,publication_revision=$6,revision=qualification_checks.revision+1",[uid,v.scope,policy.reference(v.reference),v.status,policy.future(v.validUntil),publicationRevision]);await audit(c,uid,'qualification_'+v.status,policy.note(v.reason),role);});
  repo.changeRisk=(uid,v,role)=>tx(async c=>{await c.query('SELECT id FROM app_users WHERE id=$1 FOR UPDATE',[uid]);const old=(await c.query('SELECT revision FROM account_trust WHERE user_id=$1',[uid])).rows[0];if((old?.revision||0)!==v.revision)fail(409,'TRUST_CHANGED','状态已更新');const until=v.level==='normal'?null:policy.future(v.until,90);if(v.level==='severe'&&v.confirmed!==true)fail(400,'HUMAN_REVIEW_REQUIRED','严重处置须人工核实');await c.query('INSERT INTO account_trust(user_id,risk_level,risk_until,restrict_publish,restrict_contact) VALUES($1,$2,$3,$4,$5) ON CONFLICT(user_id) DO UPDATE SET risk_level=$2,risk_until=$3,restrict_publish=$4,restrict_contact=$5,revision=account_trust.revision+1,updated_at=now()',[uid,v.level,until,v.level==='severe'&&v.restrictPublish===true,v.level==='severe'&&v.restrictContact===true]);const id=await audit(c,uid,'risk_'+v.level,policy.note(v.reason),role);await c.query('UPDATE account_trust SET last_risk_action=$2 WHERE user_id=$1',[uid,id]);if(v.level==='severe'&&v.removePublished===true)await c.query("UPDATE publications SET status='closed' WHERE user_id=$1 AND status='published'",[uid]);return {id};});

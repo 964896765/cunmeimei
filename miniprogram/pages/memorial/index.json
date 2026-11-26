@@ -1,12 +1,8 @@
 {
   "navigationStyle": "custom",
+  "navigationBarTitleText": "时光纪念馆",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "page-header": "/components/page-header/index",
-    "catalog-image": "/category-art/components/catalog-image/index",
-    "catalog-image-fallback": "/components/catalog-image/index"
-  },
-  "componentPlaceholder": {
-    "catalog-image": "catalog-image-fallback"
+    "page-header": "/components/page-header/index"
   }
 }

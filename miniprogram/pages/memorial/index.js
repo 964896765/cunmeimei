@@ -13,7 +13,7 @@ Page({
   workflowNamespace: "memorial",
   data: {
     mode: "loading",
-    pageTitle: "悼念专区",
+    pageTitle: "时光纪念馆",
     loading: true,
     busy: false,
     error: "",
@@ -49,6 +49,9 @@ Page({
   },
   onLoad(options) {
     this.options = options || {};
+    if (!this.options.mode && !this.options.id && !this.options.own) {
+      this.setData({ mode: "portal" });
+    }
   },
   onShow() {
     this.disposed = false;
@@ -118,7 +121,7 @@ Page({
       }
       if (
         this.options.own ||
-        ["create", "manage"].includes(this.options.mode)
+        ["create", "manage", "memories"].includes(this.options.mode)
       ) {
         if (!api.hasSession()) {
           this.setData({ privateLocked: true });
@@ -179,6 +182,7 @@ Page({
             this.clean = JSON.stringify(this.data.form);
           }
         } else {
+          const memories = this.options.mode === "memories";
           const [list, reports] = await Promise.all([
             api.request(
               "GET",
@@ -187,7 +191,7 @@ Page({
               true,
               this.owner,
             ),
-            api.request(
+            memories ? { items: [] } : api.request(
               "GET",
               "/api/v1/memorial/me/reports",
               null,
@@ -197,9 +201,9 @@ Page({
           ]);
           if (flow.alive(this, this.owner, version))
             this.setData({
-              mode: "manage",
-              pageTitle: "纪念馆管理",
-              items: list.items.map((item) => ({
+              mode: memories ? "memories" : "manage",
+              pageTitle: memories ? "时光回忆" : "我的纪念馆",
+              items: list.items.filter((item) => !memories || item.status !== "deleted").map((item) => ({
                 ...item,
                 name: item.payload?.name || "未命名纪念馆",
                 statusText: policy.statusNames[item.status],
@@ -219,14 +223,14 @@ Page({
         if (!this.disposed && version === this.version)
           this.setData({
             mode: "browse",
-            pageTitle: "追思纪念",
+            pageTitle: "寻找纪念馆",
             items: result.items,
             hasMore: result.hasMore,
             page: 1,
           });
         return;
       }
-      this.setData({ mode: "portal", pageTitle: "悼念专区" });
+      this.setData({ mode: "portal", pageTitle: "时光纪念馆" });
     } catch (error) {
       if (!this.disposed && version === this.version)
         this.setData({ error: error.message });
@@ -239,7 +243,7 @@ Page({
     if (
       this.data.loading ||
       !this.data.hasMore ||
-      !["browse", "manage"].includes(this.data.mode)
+      !["browse", "manage", "memories"].includes(this.data.mode)
     )
       return;
     const version = this.version,
@@ -256,14 +260,14 @@ Page({
               page
           : "/api/v1/memorial/me/halls?page=" + page,
         null,
-        this.data.mode === "manage",
+        this.data.mode !== "browse",
         uid || undefined,
       );
       if (!this.disposed && version === this.version && uid === flow.owner())
         this.setData({
           items: [
             ...this.data.items,
-            ...result.items.map((item) => ({
+            ...result.items.filter((item) => this.data.mode !== "memories" || item.status !== "deleted").map((item) => ({
               ...item,
               name: item.name || item.payload?.name || "未命名纪念馆",
               statusText: policy.statusNames[item.status],
@@ -295,6 +299,9 @@ Page({
   },
   openBrowse() {
     wx.navigateTo({ url: "/pages/memorial/index?mode=browse" });
+  },
+  openMemories() {
+    wx.navigateTo({ url: "/pages/memorial/index?mode=memories" });
   },
   openOwn(event) {
     wx.navigateTo({

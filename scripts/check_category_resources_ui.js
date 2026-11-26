@@ -7,10 +7,10 @@ const crypto = require("node:crypto");
 const sharp = require("../backend/node_modules/sharp");
 const catalog = require("../miniprogram/utils/classification-contract");
 const assets = require("../miniprogram/utils/category-art");
-const output = path.resolve(
-  __dirname,
-  "../docs/design/category-fusion-2026-11-15",
-);
+const output = process.argv[2]
+  ? path.resolve(process.argv[2])
+  : path.resolve(__dirname, "../docs/design/category-fusion-2026-11-15");
+const assetsOnly = process.argv.includes("--assets-only");
 const pause = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
 
@@ -72,7 +72,10 @@ async function main() {
       bindRuntimeOrigin: true,
     });
     const go = async (route) => {
-      await mini.reLaunch(route);
+      await mini.evaluate((url) => {
+        setTimeout(() => wx.reLaunch({ url }), 100);
+        return true;
+      }, route);
       const page = await poll(
         () => mini.currentPage(),
         (page) => page?.path === route.split("?")[0].slice(1),
@@ -152,15 +155,24 @@ async function main() {
       const definition = catalog.categories.find(
         (item) => item.id === category.id,
       );
+      const funeral = category.id === "C23";
+      if (funeral) check((await page.$$(".project-group.is-expanded")).length === 3, "three funeral groups open on entry");
+      const toggle = async (id) => (await page.$('.project-group[data-id="' + id + '"]')).trigger("tap");
       for (const [index, group] of definition.groups.entries()) {
-        if ((await page.data()).expandedGroupId !== group.id) {
-          await (
-            await page.$('.project-group[data-id="' + group.id + '"]')
-          ).trigger("tap");
+        if (funeral) {
+          const collapsed = (await page.data()).collapsedFuneralGroups;
+          for (const { id } of definition.groups) {
+            if (!!collapsed[id] === (id === group.id)) {
+              await toggle(id);
+              await poll(() => page.data(), (data) => !!data.collapsedFuneralGroups[id] === (id !== group.id), "toggle " + id);
+            }
+          }
+        } else if ((await page.data()).expandedGroupId !== group.id) {
+          await toggle(group.id);
         }
         await poll(
           () => page.data(),
-          (data) => data.expandedGroupId === group.id,
+          (data) => funeral ? !data.collapsedFuneralGroups[group.id] : data.expandedGroupId === group.id,
           "group " + group.id,
         );
         const images = await poll(
@@ -196,12 +208,12 @@ async function main() {
             item.src,
             item.preferFallback
               ? item.fallbackSrc
-              : assets.describe(item.assetId).path,
+              : assets.describe(item.assetId).displayPath,
           );
           assert.equal(item.usingFallback, item.preferFallback);
           assert.equal(
             item.frame,
-            item.preferFallback ? "plain" : assets.describe(item.assetId).frame,
+            item.preferFallback ? "plain" : (assets.describe(item.assetId).displayFrame || assets.describe(item.assetId).frame),
           );
           assert.equal(item.blendMatte, true);
           rendered.set(item.assetId, {
@@ -212,8 +224,8 @@ async function main() {
             nativeImageLoaded: item.imageReady,
           });
         }
-        await captureGroup(page, group);
-        if (index === 0) {
+        if (!assetsOnly) await captureGroup(page, group);
+        if (!assetsOnly && index === 0) {
           await scroller.scrollTo(0, 0);
           await screenshot("publish-" + category.id + ".png");
         }
@@ -254,10 +266,9 @@ async function main() {
         .jpeg({ quality: 88 })
         .toFile(path.join(output, "review-" + industry + ".jpg"));
     }
-    check(
-      reviewPanels.size === 27,
-      "captured complete group review sheets for all 27 industries",
-    );
+    if (!assetsOnly) {
+      check(reviewPanels.size === 27, "captured complete group review sheets for all 27 industries");
+    }
     check(
       rendered.size === 418,
       "all 418 projects have actual native image-load callbacks",
@@ -267,12 +278,14 @@ async function main() {
       return counts;
     }, {});
     check(
-      stages.styled3d === 4 &&
-        stages.draft3d === 72 &&
-        stages.placeholder === 337 &&
-        stages.existing === 5,
-      "display uses 4 transparent 3D illustrations, 72 source drafts, 337 placeholders and 5 existing housing illustrations",
+      stages.supplied3d === 239 && stages.rendered3d === 179,
+      "display uses all 239 supplied illustrations and 179 existing rendered scenes",
     );
+    if (assetsOnly) {
+      check(exceptions.length === 0, "no captured mini-program runtime exceptions");
+      complete = true;
+      return;
+    }
 
     await (await page.$(".publish-search-entry")).trigger("tap");
     const typeQuery = async (query) => {
@@ -289,11 +302,8 @@ async function main() {
       );
       await pause(180);
     };
-    for (const [query, frame] of [
-      ["川湘菜", "food"],
-      ["日常保洁", "service"],
-      ["医院", "symbol"],
-    ]) {
+    for (const query of ["川湘菜", "日常保洁", "医院"]) {
+      const frame = "transparent";
       await typeQuery(query);
       const image = await poll(
         () => page.$(".project-result-art"),
@@ -306,7 +316,7 @@ async function main() {
         "search frame " + query,
       );
       await mini.callWxMethod("hideKeyboard");
-      await screenshot("search-" + frame + ".png");
+      await screenshot("search-" + query + ".png");
       check(
         (await image.data()).frame === frame,
         "search uses the matching " + frame + " framing",
@@ -389,7 +399,7 @@ async function main() {
       );
       await poll(
         () => image.data(),
-        (data) => data.imageReady && data.stage === "styled3d",
+        (data) => data.imageReady && data.stage === "supplied3d",
         "themed image load",
       );
       check(
@@ -408,6 +418,10 @@ async function main() {
           (data) => data.selectedCategory === category,
           "themed category " + category,
         );
+        if (category === "C23") {
+          await (await page.$(".funeral-banner")).trigger("tap");
+          await (await page.$('.project-group[data-id="C23G01"]')).trigger("tap");
+        }
         await pause(180);
         const images = await poll(
           () => page.$$(".project-asset"),
@@ -447,22 +461,14 @@ async function main() {
       uid,
     );
     page = await go("/pages/memorial/index");
-    const memorialImages = await poll(
-      () => page.$$(".memorial-entry-icon"),
-      (images) => images.length === 3,
-      "memorial images",
-    );
     await poll(
-      () => Promise.all(memorialImages.map((image) => image.data())),
-      (data) =>
-        data.every(
-          (item) => item.imageReady && item.muted && !item.usingFallback,
-        ),
-      "gray memorial resources",
+      () => page.$(".memorial-intro-art"),
+      Boolean,
+      "gray memorial banner",
     );
     check(
       (await page.data()).themeStyle.includes("#F5F5F3"),
-      "three memorial placeholders render within the scoped gray theme",
+      "memorial banner renders within the scoped gray theme",
     );
     await screenshot("memorial-placeholders.png");
     check(
@@ -474,7 +480,10 @@ async function main() {
     let restoreError;
     try {
       if (session) cleanup = await session.restore();
-      if (mini) await mini.reLaunch("/pages/publish/index");
+      if (mini) await mini.evaluate(() => {
+        setTimeout(() => wx.switchTab({ url: "/pages/publish/index" }), 100);
+        return true;
+      });
     } catch (error) {
       restoreError = error.message;
     }

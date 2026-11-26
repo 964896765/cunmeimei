@@ -30,7 +30,7 @@ async function build() {
   }
   const source = process.argv[2];
   if (source) {
-    await sharp(await fs.readFile(source)).resize(320, 320, {fit:'inside'}).png({palette:true,quality:90}).toFile(path.resolve(destination, '../publish-checklist.png'));
+    await sharp(await fs.readFile(source)).resize(256, 256, {fit:'inside'}).webp({quality:84,alphaQuality:95}).toFile(path.resolve(destination, '../publish-checklist.webp'));
   }
   console.log('Built 27 illustrated category icons and fixed More icons.');
 }

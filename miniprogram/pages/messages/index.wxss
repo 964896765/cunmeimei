@@ -58,7 +58,7 @@ page { height:100%; overflow:hidden; }
 .contact-entry:first-of-type { border-radius:26rpx 26rpx 0 0; }
 .contact-entry .message-row { min-height:144rpx; }
 .contact-avatar { width:94rpx; height:94rpx; border:4rpx solid var(--surface); background:var(--soft); color:var(--link); }
-.contact-avatar text { display:block; width:34rpx; height:48rpx; overflow:hidden; font-size:34rpx; font-weight:600; line-height:48rpx; white-space:nowrap; }
+.contact-avatar .avatar-initial { display:block; max-width:90%; overflow:hidden; font-size:34rpx; font-weight:600; line-height:1.2; white-space:nowrap; }
 .system-preview { margin-top:16rpx; padding:16rpx 22rpx; border-radius:26rpx; background:var(--surface); }
 .system-preview .notice-section-heading { margin:0 0 8rpx; }
 .system-preview .message-row:last-child { border-bottom:0; }
@@ -78,3 +78,36 @@ page { height:100%; overflow:hidden; }
 .messages-root .messages-page { padding:16rpx 32rpx 0; }
 .message-toolbar,.contact-search { flex-shrink:0; }
 .message-scroll-content { padding-bottom:24rpx; }
+.messages-root .messages-page { padding:10rpx 18rpx 0; }
+.message-toolbar { margin:0 7rpx 23rpx; gap:16rpx; }
+.message-tabs,.search-action,.message-hub,.contact-panel,.system-preview,.message-login {
+ border:1rpx solid var(--glass-line); background:var(--glass-surface); box-shadow:var(--glass-shadow);
+}
+.message-tabs { padding:0; }
+.message-tab { min-height:70rpx; padding:10rpx; font-size:28rpx; }
+.message-tab.active { background-color:var(--action); background-image:var(--button-fill); box-shadow:inset 0 2rpx 0 #fff5; }
+.search-action { box-sizing:border-box; width:72rpx; min-height:72rpx; }
+.contact-search { margin:0 8rpx 18rpx; }
+.message-hub { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding:18rpx 8rpx 14rpx; margin:0 0 18rpx; border-radius:32rpx; }
+.message-hub-item { display:flex; flex-direction:column; align-items:center; gap:6rpx; width:100%; min-width:0; margin:0; padding:4rpx 0; border:0; background:transparent; color:var(--ink); font-size:23rpx; line-height:1.55; }
+.message-hub-icon { position:relative; display:grid; place-items:center; width:77rpx; height:72rpx; border-radius:23rpx; background:var(--glass-tile); }
+.message-hub-icon image { width:42rpx; height:42rpx; }
+.hub-unread,.contact-unread { position:absolute; top:0; right:0; border:2rpx solid var(--surface); border-radius:50rpx; background:#c6204c; color:#fff; }
+.hub-unread { width:16rpx; height:16rpx; }
+.contact-panel { padding:0 21rpx; border-radius:32rpx; }
+.contact-panel .contact-entry { padding:0; background:transparent; }
+.contact-panel .contact-entry:last-child .contact-row { border-bottom:0; }
+.contact-panel .contact-row { min-height:124rpx; padding:14rpx 0; gap:16rpx; }
+.contact-panel .contact-avatar { position:relative; width:84rpx; height:84rpx; border:0; background:var(--glass-tile); }
+.contact-avatar image { width:57rpx; height:57rpx; }
+.contact-unread { top:-5rpx; right:-6rpx; min-width:31rpx; padding:0 3rpx; text-align:center; font-size:19rpx; line-height:28rpx; }
+.contact-panel .message-name { font-size:29rpx; font-weight:700; }
+.contact-panel .message-preview { margin-top:7rpx; font-size:23rpx; }
+.contact-panel .message-time,.contact-panel .message-status { font-size:21rpx; }
+.contact-panel .message-status { padding:3rpx 10rpx; border-radius:26rpx; background:var(--glass-tile); color:var(--link); }
+.contact-filter { min-height:56rpx; padding:0 8rpx; font-size:23rpx; }
+.contact-filter .filter-link { min-height:56rpx; padding:5rpx; font-size:23rpx; }
+.large-text .message-hub-item { font-size:27rpx; }
+.large-text .contact-panel .message-name { font-size:35rpx; }
+.large-text .contact-panel .message-preview,.large-text .contact-panel .message-time,.large-text .contact-panel .message-status { font-size:26rpx; }
+.contact-avatar .contact-photo { width:100%; height:100%; border-radius:50%; }

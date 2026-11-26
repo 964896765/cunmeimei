@@ -2,17 +2,17 @@
  <page-header id="navigation-header" title="搜索" transparent="{{true}}" back="{{true}}" back-label="返回上一页" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
  <view class="search-fixed-header">
   <search-bar value="{{q}}" placeholder="搜索房源、招聘、商家、服务" bind:input="input" bind:clear="clearQuery" bind:search="search"/>
-  <view class="query-filters">
-   <button class="city-filter" bindtap="chooseCity" aria-label="切换浏览城市"><text>{{cityCode?cityLabel:'选择城市'}}</text><view class="filter-chevron"></view></button>
-   <picker range="{{types}}" range-key="name" value="{{typeIndex}}" bindchange="changeType"><view class="filter"><text>{{type==='all'?'全部频道':type==='community'?'历史社区':types[typeIndex].name}}</text><view class="filter-chevron"></view></view></picker>
-   <picker range="{{sortNames}}" value="{{sortIndex}}" bindchange="chooseSort"><view class="filter"><text>{{sortNames[sortIndex]}}</text><view class="filter-chevron"></view></view></picker>
-   <button class="advanced-button {{days||radiusKm||images!=='all'||publisher==='verified'?'filtered':''}}" bindtap="toggleAdvanced" aria-label="高级筛选" aria-expanded="{{advancedOpen}}"><view class="sliders" aria-hidden="true"><view></view><view></view><view></view></view></button>
+  <view class="query-filters" role="group" aria-label="搜索条件">
+   <button class="query-chip city-filter {{cityCode?'is-selected':''}}" bindtap="chooseCity" hover-class="query-chip-pressed" aria-label="浏览城市，{{cityCode?cityLabel:'选择城市'}}"><image class="query-location" src="/assets/icons/location-{{iconPalette||'prism'}}.png" mode="aspectFit" aria-hidden="true"/><text class="query-label">{{cityCode?cityLabel:'选择城市'}}</text><view class="filter-chevron" aria-hidden="true"/></button>
+   <picker mode="selector" range="{{types}}" range-key="name" value="{{typeIndex}}" bindchange="changeType" aria-label="选择搜索频道"><view class="query-chip filter {{type!=='all'?'is-selected':''}}" hover-class="query-chip-pressed"><text class="query-label">{{type==='all'?'全部频道':type==='community'?'历史社区':types[typeIndex].name}}</text><view class="filter-chevron" aria-hidden="true"/></view></picker>
+   <picker mode="selector" range="{{sortNames}}" value="{{sortIndex}}" bindchange="chooseSort" aria-label="选择排序方式"><view class="query-chip filter {{sort!=='recommended'?'is-selected':''}}" hover-class="query-chip-pressed"><text class="query-label">{{sort==='price_low'?'价格升序':sort==='price_high'?'价格降序':sortNames[sortIndex]}}</text><view class="filter-chevron" aria-hidden="true"/></view></picker>
+   <button class="query-chip advanced-button {{categoryId||districtCode||days||radiusKm||images!=='all'||publisher==='verified'||hasRefinements?'filtered':''}}" bindtap="toggleAdvanced" hover-class="query-chip-pressed" aria-label="高级筛选" aria-expanded="{{advancedOpen}}"><view class="sliders" aria-hidden="true"><view></view><view></view><view></view></view><text>筛选</text></button>
   </view>
+  <active-conditions wx:if="{{searched}}" channel="{{type}}" horizontal="{{true}}" refinements="{{refinements}}" id="active-conditions" keyword="{{submittedQ}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{days}}" images="{{images}}" radius-km="{{radiusKm}}" publisher="{{publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="clear"/>
  </view>
  <scroll-view class="search-content" scroll-y="true" enhanced="true" show-scrollbar="{{false}}" scroll-into-view="{{scrollAnchor}}" scroll-with-animation="{{false}}" lower-threshold="120" bindscrolltolower="more">
   <view id="{{scrollAnchor}}" class="scroll-origin"></view>
   <view class="search-body">
-   <browse-filters id="browse-refinements" category-id="{{categoryId}}" city-code="{{cityCode}}" district-code="{{districtCode}}" large-text="{{displayPreferences.largeText}}" bind:category="categoryChanged" bind:district="districtChanged"/>
    <view wx:if="{{historyNotice}}" class="notice history-notice" role="status">{{historyNotice}}</view>
    <block wx:if="{{!searched}}">
     <view class="landing-section"><view class="landing-heading"><text class="section-title">最近搜索</text><button class="clear-recent" wx:if="{{recentTerms.length}}" bindtap="clearHistory" aria-label="清空最近搜索"><view class="trash-mark" aria-hidden="true"></view></button></view><view class="recent-list" wx:if="{{recentTerms.length}}"><button wx:for="{{recentTerms}}" wx:key="*this" data-term="{{item}}" bindtap="chooseTerm">{{item}}</button></view><view wx:else class="landing-empty">暂无搜索记录</view></view>
@@ -20,10 +20,9 @@
     <view wx:if="{{landingError||error}}" class="landing-retry" role="alert"><text>{{landingError||error}}</text><button bindtap="retryLanding">重试</button></view>
    </block>
    <block wx:else>
-    <active-conditions refinements="{{refinements}}" id="active-conditions" keyword="{{submittedQ}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{days}}" images="{{images}}" radius-km="{{radiusKm}}" publisher="{{publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="clear"/>
     <view wx:if="{{publicOnly}}" class="notice">{{mapScoped?'当前地图视野内 · 仅展示可公开定位的商家与服务':'公开位置范围 · 仅展示可公开定位的商家与服务'}}</view>
     <view wx:if="{{filterNotice}}" class="notice">{{filterNotice}}</view>
-    <view wx:if="{{!queryDirty&&memorials.length}}" class="memorial-search-results"><view class="section-title">悼念专区</view><button wx:for="{{memorials}}" wx:key="id" class="memorial-search-card" data-id="{{item.id}}" bindtap="openMemorial"><text>{{item.name}}</text><text class="memorial-search-dates">{{item.birthDate}}{{item.birthDate&&item.deathDate?' — ':''}}{{item.deathDate}}</text><text class="memorial-search-link">进入纪念馆 ›</text></button></view>
+    <view wx:if="{{!queryDirty&&memorials.length}}" class="memorial-search-results"><view class="section-title">纪念馆</view><button wx:for="{{memorials}}" wx:key="id" class="memorial-search-card" data-id="{{item.id}}" bindtap="openMemorial"><text>{{item.name}}</text><text class="memorial-search-dates">{{item.birthDate}}{{item.birthDate&&item.deathDate?' — ':''}}{{item.deathDate}}</text><text class="memorial-search-link">进入纪念馆 ›</text></button></view>
     <view wx:if="{{queryDirty}}" class="state-panel" role="status"><text>关键词已修改，点击搜索或选择条件查看结果。</text><button class="btn light" bindtap="search">搜索当前条件</button></view>
     <feedback-state wx:elif="{{loading&&!items.length}}" kind="loading" description="正在查找相关信息…"/>
     <feedback-state wx:elif="{{error&&!items.length}}" kind="error" title="搜索暂时无法完成" description="{{error}}" action-text="重新加载" bind:action="retry"/>
@@ -37,15 +36,21 @@
    </block>
   </view>
  </scroll-view>
- <bottom-sheet open="{{advancedOpen&&searched}}" label="高级筛选" dismissible="{{true}}" bind:close="closeAdvanced">
-  <view class="landing-heading"><text class="section-title">高级筛选</text><button class="sheet-close" bindtap="closeAdvanced" aria-label="关闭高级筛选">关闭</button></view>
+ <bottom-sheet id="search-filter-sheet" structured="{{true}}" open="{{advancedOpen}}" label="筛选搜索结果" dismissible="{{true}}" bind:close="closeAdvanced">
+  <view slot="header" class="landing-heading sheet-heading"><text class="section-title">筛选搜索结果</text><button class="sheet-close" bindtap="closeAdvanced" aria-label="关闭筛选">关闭</button></view>
   <view class="advanced-scroll">
+   <browse-filters id="browse-refinements" channel="{{type}}" category-id="{{draftCategoryId}}" city-code="{{cityCode}}" district-code="{{draftDistrictCode}}" disabled="{{filterBusy}}" large-text="{{displayPreferences.largeText}}" bind:category="draftCategory" bind:district="draftDistrict"/>
+   <view wx:for="{{businessFilters}}" wx:for-item="group" wx:key="key" class="filter-section">
+    <view class="field-label">{{group.label}}</view>
+    <text wx:if="{{group.hint}}" class="filter-hint">{{group.hint}}</text>
+    <view class="filter-options"><button wx:for="{{group.options}}" wx:key="value" class="filter-chip {{item.selected?'selected':''}}" data-key="{{group.key}}" data-value="{{item.value}}" disabled="{{filterBusy||item.disabled}}" bindtap="chooseBusinessFilter" aria-pressed="{{item.selected}}">{{item.label}}</button></view>
+   </view>
    <view class="filter-section"><view class="field-label">发布时间</view><view class="filter-options"><button wx:for="{{dateOptions}}" wx:key="value" class="filter-chip {{draftDays===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseDate" disabled="{{filterBusy}}" aria-pressed="{{draftDays===item.value}}">{{item.label}}</button></view></view>
    <view class="filter-section"><view class="field-label">图片条件</view><view class="filter-options"><button wx:for="{{imageOptions}}" wx:key="value" class="filter-chip {{draftImages===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseImages" disabled="{{filterBusy}}" aria-pressed="{{draftImages===item.value}}">{{item.label}}</button></view></view>
    <view wx:if="{{mapScoped}}" class="filter-section"><view class="field-label">发布者</view><view class="filter-options"><button class="filter-chip {{draftPublisher==='all'?'selected':''}}" data-value="all" bindtap="choosePublisher">全部</button><button class="filter-chip {{draftPublisher==='verified'?'selected':''}}" data-value="verified" bindtap="choosePublisher">已核验主体</button></view></view>
    <view wx:if="{{!mapScoped&&canFilterDistance}}" class="filter-section"><view class="field-label">距离范围</view><view class="filter-options"><button wx:for="{{radiusOptions}}" wx:key="value" class="filter-chip {{draftRadius===item.value?'selected':''}}" data-value="{{item.value}}" bindtap="chooseRadius" disabled="{{filterBusy}}" aria-pressed="{{draftRadius===item.value}}">{{item.label}}</button></view><view class="notice">以授权定位为中心，仅筛选所选地区内具有公开位置的商家与可预约服务。</view></view>
    <feedback-state wx:if="{{filterError}}" kind="error" description="{{filterError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
   </view>
-  <view class="filter-actions"><button class="btn light" bindtap="resetAdvanced" disabled="{{filterBusy}}">重置</button><button class="btn" bindtap="applyAdvanced" loading="{{filterBusy}}" disabled="{{filterBusy}}">{{filterBusy?'正在定位…':'查看结果'}}</button></view>
+  <view slot="footer" class="filter-actions"><button class="btn light" bindtap="resetAdvanced" disabled="{{filterBusy}}">重置</button><button class="btn" bindtap="applyAdvanced" loading="{{filterBusy}}" disabled="{{filterBusy}}">{{filterBusy?'正在定位…':'查看结果'}}</button></view>
  </bottom-sheet>
 </view>

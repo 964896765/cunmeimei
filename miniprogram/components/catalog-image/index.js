@@ -5,6 +5,8 @@ Component({
     assetId: { type: String, value: "" },
     fallbackSrc: { type: String, value: "" },
     preferFallback: { type: Boolean, value: false },
+    lazyLoad: { type: Boolean, value: true },
+    neon: { type: Boolean, value: false },
     muted: { type: Boolean, value: false },
     blendMatte: { type: Boolean, value: false },
     dark: { type: Boolean, value: false },

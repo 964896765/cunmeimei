@@ -1,6 +1,7 @@
 {
   "component": true,
   "usingComponents": {
-    "feedback-state": "/components/feedback-state/index"
+    "feedback-state": "/components/feedback-state/index",
+    "sms-code-form": "/components/sms-code-form/index"
   }
 }

@@ -8,6 +8,7 @@ function attachMaintenance(repo,pool){
   unavailable_industry_bookings:()=>repo.endUnavailableIndustryBookings(),
   expired_points_holds:()=>repo.releaseExpiredPointsHolds(),
   expired_ads:()=>repo.expireAdCampaigns(),
+  ...(repo.purgeSms?{expired_sms:()=>repo.purgeSms()}:{}),
   points_reconciliation:async()=>{const mismatches=await repo.reconcilePoints();if(mismatches.length)throw new ApiError(503,'POINTS_RECONCILIATION_FAILED','积分账本核对异常');return {mismatches:0};}
  };
  repo.runMaintenance=async()=>{

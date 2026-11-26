@@ -33,6 +33,22 @@
 .large-text .wechat-button { font-size:38rpx; }.large-text .login-heading { font-size:36rpx; }
 .login-feedback { margin:-10rpx 0 28rpx; padding:0 8rpx; color:var(--muted); font-size:24rpx; line-height:1.6; }
 .large-text .login-feedback { font-size:29rpx; }
+.login-methods { display:flex; gap:10rpx; padding:6rpx; margin:0 0 24rpx; border:1px solid var(--border); border-radius:20rpx; background:var(--background); }
+.login-methods button { flex:1; min-height:78rpx; margin:0; padding:12rpx 6rpx; border:0; border-radius:16rpx; color:var(--muted); background:transparent; font-size:28rpx; line-height:1.5; }
+.login-methods button.selected { font-weight:650; color:var(--link); background:var(--soft); }
+.login-methods button::after,.sms-privacy-button::after { border:0; }
+.sms-login-note { margin:0 0 20rpx; text-align:left; color:var(--muted); font-size:25rpx; line-height:1.6; }
+.sms-privacy-button { margin:0 0 18rpx; color:var(--link); background:var(--soft); font-size:28rpx; }
+sms-code-form + .login-feedback { margin:18rpx 0 0; text-align:left; }
+.large-text .login-methods button,.large-text .sms-login-note { font-size:30rpx; }
+.auth-panel.is-sms { display:flex; flex-direction:column; }
+.is-sms .auth-brand { order:0; padding-bottom:10rpx; }
+.is-sms .auth-logo-frame { width:100rpx; height:124rpx; margin-bottom:10rpx; }
+.is-sms .agreement { order:1; margin-bottom:14rpx; }
+.is-sms .login-card { order:2; }
+.is-sms .guest-button { order:3; }
 
 
 .wechat-mark>view::before { content:''; position:absolute; left:10rpx; top:12rpx; width:4rpx; height:4rpx; border-radius:50%; background:var(--action); box-shadow:12rpx 0 0 var(--action); }
+.login-card .agreement { margin:14rpx 0 20rpx; }
+.sms-availability { margin-top:14rpx; color:var(--muted); font-size:23rpx; }

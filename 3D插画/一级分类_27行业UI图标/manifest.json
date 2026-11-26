@@ -1,0 +1,179 @@
+{
+  "name": "村美美一级行业图标",
+  "version": "1.0.0",
+  "style": {
+    "type": "outline-line-icon",
+    "stroke_width": 3.2,
+    "viewBox": "0 0 64 64",
+    "brand_gradient": [
+      "#D95B9B",
+      "#A94E83"
+    ],
+    "selected_color": "#C43F82",
+    "unselected_color": "#A78A9B"
+  },
+  "display_order": [
+    {
+      "sort": 1,
+      "id": "C01",
+      "name": "美食餐饮",
+      "icon": "C01_01-food.svg"
+    },
+    {
+      "sort": 2,
+      "id": "C02",
+      "name": "招聘求职",
+      "icon": "C02_02-jobs.svg"
+    },
+    {
+      "sort": 3,
+      "id": "C03",
+      "name": "家政维修",
+      "icon": "C03_03-home-services.svg"
+    },
+    {
+      "sort": 4,
+      "id": "C04",
+      "name": "二手闲置",
+      "icon": "C04_04-secondhand.svg"
+    },
+    {
+      "sort": 5,
+      "id": "C05",
+      "name": "房屋租售",
+      "icon": "C05_05-housing.svg"
+    },
+    {
+      "sort": 6,
+      "id": "C06",
+      "name": "玩乐休闲",
+      "icon": "C06_06-leisure.svg"
+    },
+    {
+      "sort": 7,
+      "id": "C07",
+      "name": "商场购物",
+      "icon": "C07_07-shopping.svg"
+    },
+    {
+      "sort": 8,
+      "id": "C11",
+      "name": "丽人美业",
+      "icon": "C11_11-beauty.svg"
+    },
+    {
+      "sort": 9,
+      "id": "C12",
+      "name": "亲子母婴",
+      "icon": "C12_12-parenting.svg"
+    },
+    {
+      "sort": 10,
+      "id": "C13",
+      "name": "教育培训",
+      "icon": "C13_13-education.svg"
+    },
+    {
+      "sort": 11,
+      "id": "C14",
+      "name": "家居家装",
+      "icon": "C14_14-home-decor.svg"
+    },
+    {
+      "sort": 12,
+      "id": "C15",
+      "name": "健康医疗",
+      "icon": "C15_15-health.svg"
+    },
+    {
+      "sort": 13,
+      "id": "C16",
+      "name": "旅游度假",
+      "icon": "C16_16-travel.svg"
+    },
+    {
+      "sort": 14,
+      "id": "C17",
+      "name": "酒店住宿",
+      "icon": "C17_17-hotel.svg"
+    },
+    {
+      "sort": 15,
+      "id": "C18",
+      "name": "运动健身",
+      "icon": "C18_18-fitness.svg"
+    },
+    {
+      "sort": 16,
+      "id": "C19",
+      "name": "婚庆婚恋",
+      "icon": "C19_19-wedding.svg"
+    },
+    {
+      "sort": 17,
+      "id": "C20",
+      "name": "企业商务",
+      "icon": "C20_20-business.svg"
+    },
+    {
+      "sort": 18,
+      "id": "C21",
+      "name": "宠物服务",
+      "icon": "C21_21-pets.svg"
+    },
+    {
+      "sort": 19,
+      "id": "C22",
+      "name": "养老助残",
+      "icon": "C22_22-elder-care.svg"
+    },
+    {
+      "sort": 20,
+      "id": "C24",
+      "name": "快递物流",
+      "icon": "C24_24-logistics.svg"
+    },
+    {
+      "sort": 21,
+      "id": "C25",
+      "name": "农业农村",
+      "icon": "C25_25-agriculture.svg"
+    },
+    {
+      "sort": 22,
+      "id": "C26",
+      "name": "政务便民",
+      "icon": "C26_26-public-service.svg"
+    },
+    {
+      "sort": 23,
+      "id": "C27",
+      "name": "金融保险",
+      "icon": "C27_27-finance.svg"
+    },
+    {
+      "sort": 24,
+      "id": "C08",
+      "name": "同城信息",
+      "icon": "C08_08-community.svg"
+    },
+    {
+      "sort": 25,
+      "id": "C09",
+      "name": "交通出行",
+      "icon": "C09_09-transport.svg"
+    },
+    {
+      "sort": 26,
+      "id": "C10",
+      "name": "汽车用车",
+      "icon": "C10_10-auto.svg"
+    },
+    {
+      "sort": 27,
+      "id": "C23",
+      "name": "殡葬服务",
+      "icon": "C23_23-memorial.svg"
+    }
+  ]
+}

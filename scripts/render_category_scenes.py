@@ -10,10 +10,11 @@ from mathutils import Vector
 
 
 PALETTE = {
-    'cream': '#F5E9D9', 'white': '#FFF9F5', 'rose': '#BB7E99',
-    'pink': '#EAC0CD', 'lilac': '#BEB0D2', 'plum': '#745568',
-    'silver': '#B9B9C4', 'ink': '#3B3543', 'gold': '#DBBC87',
-    'blue': '#A5B8CE', 'wood': '#BC967E', 'brown': '#826550',
+    'cream': '#FFE1B4', 'white': '#FFF5EE', 'rose': '#F66A80',
+    'pink': '#FFAAAD', 'lilac': '#AA93E7', 'plum': '#744DA6',
+    'silver': '#D3C7E5', 'ink': '#3F3455', 'gold': '#FFB94E',
+    'blue': '#79BDDA', 'wood': '#DF9A65', 'brown': '#99574F',
+    'green': '#8BBE66', 'teal': '#50B9B3',
 }
 
 
@@ -31,8 +32,11 @@ def material(name):
     output = mat.node_tree.nodes.new('ShaderNodeOutputMaterial')
     mat.node_tree.links.new(node.outputs['BSDF'], output.inputs['Surface'])
     node.inputs['Base Color'].default_value = (*rgb, 1)
-    node.inputs['Roughness'].default_value = 0.38 if name == 'silver' else 0.62
-    node.inputs['Metallic'].default_value = 0.35 if name in ('silver', 'gold') else 0
+    metallic = name in ('silver', 'gold')
+    node.inputs['Roughness'].default_value = 0.31 if metallic else 0.36
+    node.inputs['Metallic'].default_value = 0.36 if metallic else 0
+    node.inputs['Coat Weight'].default_value = 0.22
+    node.inputs['Coat Roughness'].default_value = 0.25
     return mat
 
 
@@ -51,7 +55,7 @@ def box(x, y, z, w, d, h, color='cream', bevel=0.08):
     if bevel:
         modifier = obj.modifiers.new('soft edges', 'BEVEL')
         modifier.width = min(bevel, w / 3, d / 3, h / 3)
-        modifier.segments = 3
+        modifier.segments = 4
         obj.modifiers.new('weighted face normals', 'WEIGHTED_NORMAL')
     return finish(obj, color)
 
@@ -179,6 +183,11 @@ def house(tower=False, warehouse=False):
         for x,angle in [(-.31,-.6),(.31,.6)]:
             obj=box(x,0,1.13,.78,1,.12,'rose')
             obj.rotation_euler[1]=angle
+            for y in [-.36,-.12,.12,.36]:
+                trim=box(x,y,1.22,.73,.055,.035,'pink')
+                trim.rotation_euler[1]=angle
+        box(.27,.2,1.36,.17,.18,.42,'wood')
+        box(.27,.2,1.59,.23,.25,.08,'pink')
     box(0,-.415,.38,.26,.045,.55,'wood')
     if warehouse:
         box(.05,-.43,.45,.75,.04,.62,'silver')
@@ -186,8 +195,12 @@ def house(tower=False, warehouse=False):
     else:
         for x in [-.31,.31]:
             for z in ([.4,.9,1.3] if tower else [.65]):
-                box(x,-.42,z,.23,.03,.24,'blue',.025)
+                box(x,-.42,z,.23,.03,.24,'gold' if not tower else 'blue',.025)
                 box(x,-.445,z,.02,.02,.24,'white',0)
+                box(x,-.45,z,.25,.03,.022,'white',0)
+        if not tower:
+            for x in [-.53,.53]:
+                ball(x,-.36,.17,.16,.14,.13,'green')
 
 
 def book(opened=False):
@@ -238,9 +251,9 @@ def screen(laptop=False, atm=False):
         box(0,-.02,.16,.65,.4,.07,'silver')
 
 
-def car(truck=False,bus=False):
+def car(truck=False,bus=False,body='rose',cabin='pink',taxi=False):
     w,d=1.35, .72
-    box(0,0,.45,w,d,.4,'rose')
+    box(0,0,.45,w,d,.4,body,.13)
     if truck:
         box(-.4,0,.79,.5,.68,.52,'pink')
         box(.4,0,.9,.95,.78,.85,'cream')
@@ -249,8 +262,16 @@ def car(truck=False,bus=False):
         box(0,0,.87,1.45,.75,.8,'lilac')
         for x in [-.48,-.15,.18,.5]: box(x,-.39,1.02,.26,.035,.3,'blue')
     else:
-        box(0,0,.81,.8,.66,.42,'pink')
+        box(0,0,.81,.8,.66,.42,cabin,.12)
         for x in [-.23,.23]: box(x,-.34,.84,.34,.035,.25,'blue')
+        box(-.415,0,.84,.035,.51,.23,'blue')
+        if taxi:
+            box(0,0,1.07,.36,.20,.15,'gold')
+            for x in [-.10,0,.10]:
+                box(x,-.105,1.08,.06,.02,.044,'cream')
+    for y in [-.24,.24]:
+        box(-w/2,y,.53,.035,.13,.095,'cream')
+        box(w/2,y,.53,.035,.12,.079,'pink')
     for x in [-.45,.45]:
         for y in [-.38,.38]:
             cylinder(x,y,.29,.21,.13,'ink',(math.pi/2,0,0))
@@ -294,6 +315,76 @@ def paper(sealed=False):
         for x in [.16,.29]: box(x,-.07,.2,.1,.03,.25,'rose')
 
 
+def checklist(accent='rose'):
+    box(0,0,.83,1.04,.23,1.54,accent,.11)
+    box(0,-.14,.83,.9,.055,1.34,'white')
+    box(0,-.18,1.55,.46,.13,.19,'gold')
+    for z in [.42,.75,1.08]:
+        curve([(-.34,-.19,z),(-.26,-.20,z-.07),(-.13,-.19,z+.08)],.028,'green')
+        box(.16,-.185,z,.39,.045,.044,'pink')
+
+
+def tag(color='rose'):
+    box(0,0,.65,.85,.20,1.05,color,.15)
+    ring(0,-.115,1.10,.08,'white',tube=.023)
+    for z in [.39,.56,.73]:
+        box(0,-.116,z,.5,.04,.044,'cream')
+
+
+def delivery_locker():
+    box(0,0,.9,1.2,.53,1.75,'lilac',.11)
+    for x in [-.28,.28]:
+        for z in [.3,.82,1.34]:
+            box(x,-.293,z,.48,.055,.43,'pink' if (x,z)==(.28,.82) else 'cream')
+            box(x+.14,-.334,z,.047,.045,.13,'gold')
+    box(.25,-.33,.82,.37,.025,.29,'plum')
+    box(.31,-.47,.88,.30,.34,.24,'wood')
+    box(.31,-.65,.88,.10,.03,.24,'cream')
+
+
+def smart_hub():
+    cylinder(0,0,.47,.51,.79,'lilac')
+    cylinder(0,0,.89,.52,.09,'rose')
+    cylinder(0,0,.955,.47,.08,'cream')
+    for spread,z in [(.42,1.41),(.28,1.23)]:
+        curve([(-spread,0,z),(0,0,z+.12),(spread,0,z)],.046,'blue')
+    ball(0,0,1.15,.067,color='gold')
+    for x in [-.23,0,.23]:
+        ball(x,-.49,.49,.045,.025,.045,'white')
+
+
+def train_nose(metro=False):
+    if metro:
+        box(0,0,.65,1.04,1.75,.96,'lilac',.18)
+        box(0,-.85,.73,.83,.17,.75,'cream',.15)
+        box(0,-.95,.84,.68,.065,.33,'plum',.1)
+        box(0,-.98,.54,.56,.04,.08,'teal')
+        for y in [-.3,.31,.66]:
+            box(.535,y,.77,.05,.28,.33,'blue')
+    else:
+        box(0,.17,.54,.89,1.45,.64,'cream',.2)
+        ball(0,-.37,.53,.44,.83,.28,'white')
+        ball(0,-.48,.67,.36,.44,.19,'blue')
+        box(0,.19,.48,.96,1.4,.10,'rose')
+        for y in [-.04,.32,.64]:
+            box(.46,y,.63,.045,.23,.17,'plum')
+    for x in [-.34,.34]:
+        box(x,0,.08,.06,2.53,.10,'silver')
+    for y in [-.96,-.53,-.1,.33,.76]:
+        box(0,y,.05,.93,.10,.08,'wood')
+
+
+def car_lift():
+    car()
+    for y in [-.36,.36]:
+        box(0,y,.12,1.57,.18,.10,'gold')
+        for x in [-.5,.5]:
+            box(x,y,.12,.11,.21,.14,'plum')
+    for x in [-.82,.82]:
+        box(x,.34,.72,.15,.18,1.45,'plum')
+        box(x,.34,1.44,.20,.22,.11,'rose')
+
+
 def model(name):
     if name in ('dog','cat'): dog(name=='cat')
     elif name in ('adult','child','seated'): person(name=='child',name=='seated')
@@ -311,10 +402,353 @@ def model(name):
     elif name in ('camera','video'): camera(name=='video')
     elif name in ('screen','laptop','atm'): screen(name=='laptop',name=='atm')
     elif name in ('car','truck','bus'): car(name=='truck',name=='bus')
+    elif name=='city-taxi': car(body='gold',cabin='cream',taxi=True)
+    elif name=='rental-car': car(body='lilac',cabin='white')
+    elif name=='resale-car': car(body='teal',cabin='cream')
+    elif name=='new-car': car(body='rose',cabin='white')
+    elif name=='commuter-coach': car(bus=True,body='teal')
     elif name in ('chair','wheelchair'): chair(name=='wheelchair')
     elif name in ('flower','lily'): flower(name=='lily')
     elif name=='magnifier': magnifier()
     elif name in ('paper','certificate'): paper(name=='certificate')
+    elif name in ('inspection-board','vehicle-checklist'): checklist('rose' if name=='inspection-board' else 'blue')
+    elif name in ('rental-tag','resale-tag'): tag('lilac' if name=='rental-tag' else 'rose')
+    elif name=='pickup-locker': delivery_locker()
+    elif name=='connected-home-hub': smart_hub()
+    elif name=='parking-meter':
+        cylinder(0,0,.63,.083,1.22,'silver')
+        cylinder(0,0,.095,.31,.12,'plum')
+        box(0,0,1.28,.60,.32,.67,'teal',.13)
+        box(0,-.18,1.38,.45,.048,.27,'white')
+        box(0,-.185,1.18,.22,.05,.04,'plum')
+        ball(.19,-.19,1.05,.049,color='gold')
+    elif name=='locker-keypad':
+        box(0,0,.71,.69,.24,1.29,'plum')
+        box(0,-.14,1.08,.5,.05,.34,'blue')
+        for x in [-.17,0,.17]:
+            for z in [.25,.46,.67]:
+                box(x,-.145,z,.1,.04,.11,'cream')
+    elif name in ('metro-front','rail-bullet'): train_nose(name=='metro-front')
+    elif name=='workshop-lift': car_lift()
+    elif name=='roof-renovation':
+        for i in range(4):
+            for j in range(3):
+                tile=box((j-1)*.36, (i-1.5)*.29, .72+i*.12, .35,.33,.13,'rose' if (i+j)%2 else 'pink')
+                tile.rotation_euler[0]=.35
+        box(0,.08,.57,1.06,1.12,.18,'wood')
+    elif name=='survey-tripod':
+        for step in range(3):
+            angle=step*math.tau/3
+            curve([(0,0,1.03),(.34*math.cos(angle),.34*math.sin(angle),.49),(.62*math.cos(angle),.62*math.sin(angle),.06)],.052,'gold')
+        box(0,0,1.13,.61,.41,.21,'plum')
+        box(0,0,1.39,.51,.37,.30,'rose')
+        cylinder(0,-.225,1.4,.115,.16,'silver',(math.pi/2,0,0))
+        cylinder(0,-.318,1.4,.08,.035,'blue',(math.pi/2,0,0))
+    elif name=='ice-crate':
+        box(0,0,.59,1.28,.93,.94,'blue',.14)
+        box(0,0,1.08,1.32,.98,.17,'white')
+        for x in [-.4,.4]:
+            box(x,-.48,.97,.11,.055,.22,'teal')
+        ring(0,-.482,.61,.24,'white',tube=.026)
+        for i in range(3):
+            angle=i*math.tau/6
+            blade=box(0,-.51,.61,.051,.035,.37,'white')
+            blade.rotation_euler[1]=angle
+    elif name=='village-fields':
+        box(0,0,.12,1.46,1.16,.22,'green',.12)
+        for x in [-.53,-.29,-.05,.19]:
+            box(x,0,.25,.11,1.0,.11,'gold' if x==-.29 else 'teal')
+        for x,y,z in [(.49,.36,.61),(.40,.08,.47),(.49,-.26,.40)]:
+            cylinder(x,y,.33,.041,.3,'wood')
+            ball(x,y,z,.16,.16,.22,'green')
+    elif name=='guesthouse-door':
+        box(0,0,.73,1.22,.58,1.4,'cream',.14)
+        box(-.22,-.32,.57,.5,.07,1.0,'teal',.16)
+        ball(-.08,-.38,.59,.055,color='gold')
+        box(.34,-.32,.94,.38,.07,.34,'blue')
+        for x in [-.47,-.23,0,.23,.47]:
+            box(x,-.18,1.39,.24,.56,.14,'rose' if x in [-.47,0,.47] else 'pink')
+        box(.31,-.41,.18,.46,.32,.23,'wood')
+        for x in [.17,.32,.46]:
+            ball(x,-.4,.34,.095,.1,.12,'green')
+    elif name=='route-map':
+        for x,a,c in [(-.49,-.16,'cream'),(0,.16,'white'),(.49,-.16,'cream')]:
+            page=box(x,0,.73,.52,.078,1.22,c)
+            page.rotation_euler[2]=a
+        curve([(-.53,-.08,.48),(-.21,-.08,.69),(.07,-.08,.55),(.33,-.08,.91),(.56,-.08,1.03)],.039,'teal')
+        for x,z in [(-.53,.48),(.56,1.03)]:
+            ball(x,-.12,z,.085,.055,.085,'rose')
+    elif name=='roadside-beacon':
+        for a in range(3):
+            alpha=a*math.tau/3+math.pi/2
+            beta=alpha+math.tau/3
+            curve([(.65*math.cos(alpha),0,.63+.65*math.sin(alpha)),(.65*math.cos(beta),0,.63+.65*math.sin(beta))],.06,'rose')
+        box(0,.12,.23,1.23,.27,.1,'plum')
+        cylinder(0,-.02,.58,.16,.23,'gold')
+        ball(0,-.02,.69,.155,.155,.12,'gold')
+    elif name=='price-chart':
+        box(0,0,.16,1.31,.8,.16,'cream')
+        for x,h,c in [(-.4,.49,'pink'),(0,.79,'rose'),(.4,1.09,'lilac')]:
+            box(x,.10,.25+h/2,.29,.38,h,c)
+        curve([(-.48,-.22,.56),(-.13,-.22,.82),(.13,-.22,.79),(.5,-.22,1.25)],.039,'gold')
+    elif name=='steering-wheel':
+        ring(0,0,.79,.55,'plum',tube=.075)
+        cylinder(0,-.04,.79,.19,.17,'rose',(math.pi/2,0,0))
+        for angle in [0, math.tau/3, 2*math.tau/3]:
+            curve([(0,0,.79),(.5*math.cos(angle),0,.79+.5*math.sin(angle))],.047,'pink')
+    elif name=='gold-star':
+        vertices=[]
+        for depth in [-.09,.09]:
+            for i in range(10):
+                angle=math.pi/2+i*math.tau/10
+                radius=.55 if i%2==0 else .26
+                vertices.append((radius*math.cos(angle),depth,.67+radius*math.sin(angle)))
+        faces=[tuple(reversed(range(10))),tuple(range(10,20))]
+        faces.extend((i,(i+1)%10,(i+1)%10+10,i+10) for i in range(10))
+        mesh=bpy.data.meshes.new('star charm');mesh.from_pydata(vertices,[],faces)
+        star=bpy.data.objects.new('star charm',mesh);bpy.context.collection.objects.link(star)
+        bevel=star.modifiers.new('polished edges','BEVEL');bevel.width=.06;bevel.segments=4
+        star.modifiers.new('weighted face normals','WEIGHTED_NORMAL')
+        finish(star,'gold')
+    elif name=='shuttlecock':
+        bpy.ops.mesh.primitive_cone_add(vertices=32,radius1=.18,radius2=.41,depth=.65,location=(0,0,.63))
+        finish(bpy.context.object,'white')
+        ball(0,0,.24,.19,.19,.16,'wood')
+        ring(0,0,.48,.25,'lilac',(0,0,0),.032)
+    elif name=='house-savings':
+        box(0,0,.58,1.2,.84,.91,'pink',.15)
+        for x,a in [(-.31,-.55),(.31,.55)]:
+            roof=box(x,0,1.12,.76,.92,.13,'rose')
+            roof.rotation_euler[1]=a
+        ring(0,-.44,.58,.30,'gold',tube=.054)
+        cylinder(0,-.45,.58,.26,.08,'cream',(math.pi/2,0,0))
+        box(0,-.50,.58,.21,.02,.047,'gold')
+    elif name=='shipping-chute':
+        box(0,.24,.75,1.0,.55,1.5,'lilac',.13)
+        box(0,-.055,.96,.76,.05,.34,'plum')
+        box(0,-.21,.76,.79,.36,.10,'pink')
+        box(0,-.34,.90,.35,.30,.26,'wood')
+        box(0,-.50,.91,.09,.025,.25,'cream')
+        box(0,-.053,.43,.58,.045,.10,'gold')
+    elif name=='hiking-boot':
+        box(0,0,.21,1.27,.49,.20,'plum',.09)
+        box(-.18,0,.48,.92,.44,.45,'wood',.15)
+        box(.23,0,.71,.56,.45,.78,'rose',.15)
+        box(.23,0,1.08,.58,.46,.14,'plum')
+        for x,z in [(-.19,.57),(-.06,.66),(.05,.75)]:
+            box(x,-.02,z,.058,.4,.045,'gold')
+        for x in [-.45,-.20,.05,.3,.49]:
+            box(x,-.241,.20,.07,.03,.09,'silver')
+    elif name=='spa-bench':
+        box(0,0,.66,1.62,.65,.18,'teal',.10)
+        for x in [-.66,.66]:
+            box(x,0,.35,.12,.54,.58,'wood')
+        box(0,0,.79,1.39,.58,.14,'cream')
+        cylinder(-.49,0,.9,.14,.48,'pink',(math.pi/2,0,0))
+        curve([(-.2,-.31,.77),(.24,-.31,.77),(.33,-.28,.68),(.33,.27,.68)],.044,'pink')
+    elif name=='hot-spring-tub':
+        cylinder(0,0,.38,.61,.63,'wood')
+        ring(0,0,.72,.59,'cream',(0,0,0),.064)
+        cylinder(0,0,.70,.54,.04,'teal')
+        for z in [.26,.53]:
+            ring(0,0,z,.61,'gold',(0,0,0),.035)
+        for x in [-.25,.22]:
+            curve([(x,-.08,.86),(x-.075,-.08,1.07),(x+.05,-.08,1.23),(x-.02,-.08,1.45)],.025,'white')
+    elif name=='pingpong-table':
+        box(0,0,.76,1.58,1.06,.14,'teal')
+        for x in [-.63,.63]:
+            for y in [-.38,.38]:
+                box(x,y,.36,.105,.105,.71,'plum')
+        for y in [-.47,.47]:
+            box(0,y,.845,1.48,.035,.024,'white')
+        box(0,0,.99,.038,1.07,.23,'lilac')
+        for y in [-.53,.53]:
+            cylinder(0,y,1.0,.03,.34,'silver')
+        ball(-.48,-.10,.93,.088,color='gold')
+    elif name=='fitness-reformer':
+        box(0,0,.25,1.66,.54,.21,'wood')
+        box(-.23,0,.41,.88,.48,.16,'plum')
+        box(-.55,0,.52,.24,.31,.08,'pink')
+        for y in [-.24,.24]:
+            box(.24,y,.39,1.20,.045,.045,'silver')
+        curve([(.65,-.24,.34),(.66,-.24,.81),(.66,.24,.81),(.65,.24,.34)],.056,'rose')
+    elif name=='exam-desk':
+        box(0,0,.83,1.26,.83,.14,'wood')
+        for x in [-.53,.53]:
+            for y in [-.30,.30]:
+                box(x,y,.44,.09,.09,.79,'plum')
+        box(-.12,-.08,.92,.60,.54,.035,'white')
+        for y in [-.22,-.06,.10]:
+            box(-.26,y,.96,.10,.06,.035,'green')
+            box(-.05,y,.96,.18,.035,.021,'pink')
+        pencil=box(.36,-.13,.95,.065,.48,.055,'gold')
+        pencil.rotation_euler[2]=-.34
+    elif name=='oral-herb-bowl':
+        ball(0,0,.47,.57,.48,.33,'teal')
+        cylinder(0,0,.58,.49,.17,'teal')
+        ring(0,0,.68,.46,'cream',(0,0,0),.053)
+        cylinder(0,0,.67,.42,.06,'brown')
+        curve([(-.14,0,.67),(.12,0,1.01),(.40,0,1.43)],.117,'wood')
+        for x in [-.24,-.06,.16]:
+            leaf=ball(x,-.13,.74,.115,.06,.16,'green')
+            leaf.rotation_euler[1]=.5
+    elif name=='land-survey-map':
+        box(0,0,.16,1.49,1.17,.24,'wood')
+        for x,y,c in [(-.31,-.25,'green'),(-.31,.25,'gold'),(.31,-.25,'teal'),(.31,.25,'green')]:
+            box(x,y,.32,.54,.40,.11,c)
+        for x,y in [(-.25,.19),(.36,-.31)]:
+            cylinder(x,y,.57,.04,.51,'silver')
+            ball(x,y,.84,.11,color='rose')
+    elif name=='graduation-cap':
+        cylinder(0,0,.58,.42,.35,'plum')
+        lid=box(0,0,.8,1.15,1.15,.12,'lilac')
+        lid.rotation_euler[2]=math.pi/4
+        ball(0,0,.92,.067,color='gold')
+        curve([(0,0,.91),(.53,-.08,.87),(.68,-.19,.46)],.034,'gold')
+        ball(.68,-.19,.43,.055,.055,.12,'gold')
+    elif name=='exhibition-booth':
+        box(0,0,.1,1.73,1.24,.14,'lilac')
+        for x in [-.65,.65]:
+            box(x,.4,.89,.15,.23,1.52,'plum')
+        box(0,.4,1.52,1.54,.24,.24,'rose')
+        box(0,.41,.94,1.05,.12,.69,'cream')
+        for x,c in [(-.28,'lilac'),(.02,'pink'),(.30,'teal')]:
+            box(x,.33,.96,.24,.06,.36,c)
+        box(.26,-.28,.38,.73,.49,.43,'teal')
+        box(.26,-.28,.62,.79,.55,.10,'white')
+    elif name=='hotel-canopy':
+        box(0,0,.14,1.42,.85,.20,'cream')
+        for x in [-.47,.47]:
+            cylinder(x,0,.7,.095,1.18,'gold')
+            cylinder(x,0,.2,.16,.12,'plum')
+        curve([(-.48,0,1.22),(-.30,0,1.43),(0,0,1.52),(.30,0,1.43),(.48,0,1.22)],.095,'gold')
+        box(0,.16,.68,.72,.16,.87,'plum',.13)
+        for x in [-.18,.18]:
+            box(x,.055,.72,.26,.055,.67,'lilac',.075)
+        cylinder(0,0,1.30,.11,.21,'rose')
+    elif name=='charter-van':
+        box(0,0,.47,1.56,.77,.49,'rose',.17)
+        box(.14,0,.80,1.21,.72,.48,'cream',.15)
+        box(-.49,0,.83,.09,.58,.29,'blue',.04)
+        for x in [-.28,.16,.52]:
+            box(x,-.37,.84,.28,.055,.25,'teal',.04)
+        box(-.785,0,.48,.05,.57,.09,'gold')
+        for x in [-.50,.53]:
+            for y in [-.4,.4]:
+                cylinder(x,y,.28,.21,.15,'ink',(math.pi/2,0,0))
+                cylinder(x,y*1.19,.28,.11,.03,'silver',(math.pi/2,0,0))
+    elif name=='utility-meter':
+        box(0,0,.81,.99,.31,1.48,'teal',.12)
+        box(0,-.18,1.13,.76,.075,.42,'cream',.07)
+        for x,h in [(-.20,.11),(0,.17),(.20,.21)]:
+            box(x,-.227,1.12,.09,.025,h,'plum')
+        ring(0,-.184,.54,.2,'lilac',tube=.034)
+        ball(0,-.217,.54,.082,.047,.082,'gold')
+    elif name=='switched-outlet':
+        box(0,0,.79,1.14,.32,1.14,'cream',.16)
+        box(0,-.18,.79,.84,.065,.83,'white',.12)
+        for x in [-.19,.19]:
+            box(x,-.22,.84,.11,.03,.24,'plum')
+        box(0,-.23,.59,.10,.03,.11,'plum')
+        curve([(.5,.10,.36),(.58,-.12,.09),(.87,-.32,.20),(.92,-.44,.69)],.056,'blue')
+        box(.92,-.45,.70,.25,.11,.28,'teal')
+    elif name=='watering-can':
+        ball(0,0,.59,.50,.37,.46,'green')
+        cylinder(0,0,1.01,.25,.10,'teal')
+        ring(.46,0,.64,.28,'gold',tube=.058)
+        curve([(-.32,0,.58),(-.60,0,.63),(-.85,0,.97)],.102,'teal')
+        sprinkle=cylinder(-.89,0,1.02,.158,.095,'cream')
+        sprinkle.rotation_euler[1]=-.6
+    elif name=='desk-easel':
+        for x in [-.46,.46]:
+            curve([(x,-.17,.08),(x*.74,.06,.94),(x*.42,.12,1.52)],.044,'wood')
+        box(0,0,.87,1.22,.13,1.0,'pink',.10)
+        box(0,-.08,.87,1.07,.044,.85,'cream')
+        for z,w in [(.65,.75),(.86,.62),(1.07,.78)]:
+            box(-.06,-.115,z,w,.025,.048,'lilac')
+        box(0,-.14,.39,1.29,.24,.10,'wood')
+    elif name=='award-podium':
+        box(0,0,.10,1.38,.86,.15,'plum')
+        for x,h,c in [(-.42,.58,'pink'),(0,.89,'lilac'),(.42,.41,'rose')]:
+            box(x,0,.16+h/2,.41,.68,h,c)
+        cylinder(0,0,1.14,.12,.14,'gold')
+        ball(0,0,1.36,.22,.17,.20,'gold')
+    elif name=='vigil-candle':
+        cylinder(0,0,.13,.48,.13,'silver')
+        cylinder(0,0,.56,.31,.77,'white')
+        cylinder(0,0,.98,.036,.13,'ink')
+        flame=ball(.025,0,1.16,.115,.09,.2,'gold')
+        flame.rotation_euler[1]=.21
+    elif name=='farm-produce-crate':
+        box(0,0,.35,1.38,.95,.56,'wood')
+        for x in [-.6,.6]:
+            box(x,-.49,.4,.09,.08,.59,'cream')
+        for z in [.26,.49]:
+            box(0,-.50,z,1.35,.087,.092,'gold')
+        for x,y,c in [(-.43,-.21,'rose'),(.0,-.17,'gold'),(.41,-.12,'green'),(-.29,.22,'pink'),(.24,.27,'teal')]:
+            ball(x,y,.70,.218,.20,.21,c)
+            leaf=ball(x+.07,y,.92,.085,.04,.07,'green')
+            leaf.rotation_euler[1]=.7
+    elif name=='public-service-counter':
+        box(0,0,.38,1.45,.65,.61,'teal',.12)
+        box(0,-.35,.37,.90,.06,.32,'lilac')
+        box(0,0,.75,1.54,.73,.14,'cream')
+        box(-.37,.11,1.07,.64,.105,.39,'plum')
+        box(-.37,.049,1.07,.55,.024,.31,'blue')
+        box(.43,0,.89,.30,.28,.14,'gold')
+        ball(.43,-.12,.99,.064,color='rose')
+    elif name=='parcel-shop-canopy':
+        box(0,.10,.62,1.33,.67,1.18,'cream',.12)
+        box(0,-.27,.53,.91,.075,.64,'plum')
+        box(0,-.51,.25,1.08,.54,.11,'teal')
+        for i in range(5):
+            stripe=box((i-2)*.26,-.41,1.13,.26,.65,.12,'teal' if i%2 else 'white')
+            stripe.rotation_euler[0]=.14
+        box(.16,-.49,.48,.42,.36,.35,'gold')
+        box(.16,-.68,.48,.12,.04,.35,'cream')
+    elif name=='wardrobe-display':
+        box(0,0,.83,1.34,.57,1.58,'wood',.11)
+        box(0,-.31,.83,1.21,.07,1.43,'cream')
+        box(-.32,-.36,.86,.47,.045,1.25,'plum')
+        box(.32,-.36,.86,.47,.045,1.25,'pink')
+        for x in [-.17,.17]:
+            box(x,-.40,.88,.05,.055,.26,'gold')
+        box(0,-.39,.31,1.06,.04,.10,'teal')
+    elif name=='baby-bath-seat':
+        ball(0,0,.40,.64,.49,.26,'pink')
+        ring(0,0,.57,.48,'cream',(0,0,0),.085)
+        cylinder(0,0,.515,.43,.045,'teal')
+        ball(-.33,.04,.65,.13,.13,.09,'white')
+        ball(.36,.10,.67,.09,.09,.08,'white')
+        ball(.12,-.13,.71,.16,.11,.11,'gold')
+        ball(.22,-.15,.81,.095,.08,.094,'gold')
+        ball(.30,-.16,.794,.07,.045,.032,'rose')
+    elif name=='family-hotel-bunk':
+        for x in [-.52,.52]:
+            for y in [-.50,.50]:
+                box(x,y,.71,.11,.11,1.32,'wood')
+        for z in [.38,1.03]:
+            box(0,0,z,1.08,1.04,.15,'rose' if z>1 else 'teal')
+            box(0,0,z+.10,.99,.94,.10,'white')
+            box(0,-.18,z+.17,.98,.52,.10,'pink' if z>1 else 'blue')
+            box(0,.26,z+.17,.71,.30,.13,'cream')
+        box(-.53,0,1.28,.10,1.10,.105,'gold')
+        for z in [.25,.51,.77,1.02]:
+            box(.57,-.40,z,.12,.30,.07,'gold')
+    elif name=='desktop-tower-and-monitor':
+        screen()
+        box(.78,.06,.65,.45,.51,1.15,'plum',.10)
+        box(.78,-.21,.93,.26,.045,.13,'teal')
+        for z in [.34,.49,.64]:
+            box(.78,-.22,z,.19,.04,.045,'lilac')
+    elif name=='community-care-chair':
+        for x in [-.45,.45]:
+            curve([(x,-.52,.06),(x,-.18,.39),(x,.30,.43),(x,.53,.17)],.052,'wood')
+        box(0,0,.52,.84,.59,.18,'gold',.09)
+        back=box(0,.24,.96,.81,.24,.80,'teal',.15)
+        back.rotation_euler[0]=-.17
+        for x in [-.43,.43]:
+            curve([(x,-.36,.48),(x,-.39,.79),(x,.27,.80)],.050,'wood')
     elif name=='heart': heart(0,0,.8)
     elif name=='paw': paw(0,0,.65)
     elif name=='cross': cross(0,0,.8)
@@ -333,6 +767,43 @@ def model(name):
         cylinder(0,-.12,.8,.46,.04,'white',(math.pi/2,0,0))
         box(0,-.16,.96,.035,.03,.34,'plum')
         box(.13,-.17,.8,.28,.03,.035,'plum')
+    elif name=='reception-bell':
+        cylinder(0,0,.13,.62,.22,'plum')
+        cylinder(0,0,.27,.58,.09,'gold')
+        ball(0,0,.34,.54,.54,.43,'gold')
+        cylinder(0,0,.82,.075,.15,'silver')
+        cylinder(0,0,.9,.16,.07,'silver')
+    elif name=='bunk-bed':
+        for x in [-.56,.56]:
+            for y in [-.65,.65]:
+                box(x,y,.83,.10,.10,1.66,'plum')
+        for z in [.37,1.3]:
+            box(0,0,z,1.12,1.34,.13,'rose')
+            box(0,0,z+.09,1.01,1.23,.13,'white')
+            box(0,-.21,z+.18,.99,.67,.09,'lilac' if z<1 else 'blue')
+            box(0,.39,z+.18,.68,.31,.13,'cream')
+        box(.54,0,1.52,.09,1.38,.1,'plum')
+        for y in [-.65,-.24]:
+            box(.62,y,.75,.075,.075,1.5,'wood')
+        for z in [.26,.54,.82,1.10,1.38]:
+            box(.63,-.44,z,.08,.48,.075,'gold')
+    elif name=='farm-wheel':
+        cylinder(0,0,.61,.58,.34,'ink',(math.pi/2,0,0))
+        cylinder(0,-.18,.61,.32,.06,'gold',(math.pi/2,0,0))
+        cylinder(0,-.22,.61,.18,.07,'plum',(math.pi/2,0,0))
+        for step in range(12):
+            angle=step*math.tau/12
+            lug=box(.56*math.sin(angle),0,.61+.56*math.cos(angle),.18,.39,.09,'plum',.025)
+            lug.rotation_euler[1]=angle
+    elif name=='booking-calendar':
+        box(0,0,.70,1.12,.26,1.3,'lilac')
+        box(0,-.16,.64,.99,.07,1.04,'white')
+        box(0,-.20,1.15,1.0,.08,.25,'rose')
+        for x in [-.30,.30]:
+            ring(x,-.02,1.33,.13,'silver',(0,math.pi/2,0),.045)
+        for z in [.34,.57,.80]:
+            for x in [-.28,0,.28]:
+                box(x,-.21,z,.14,.05,.13,'pink' if (x,z)!=(0,.57) else 'gold')
     elif name=='bed':
         box(0,0,.37,1.15,1.3,.22,'wood')
         box(0,0,.55,1.1,1.22,.2,'white')
@@ -564,7 +1035,7 @@ def place(name,position,scale=1,rotation=0):
 def setup():
     scene=bpy.context.scene
     scene.render.engine='CYCLES'
-    scene.cycles.samples=24
+    scene.cycles.samples=20
     scene.cycles.use_denoising=True
     scene.render.resolution_x=scene.render.resolution_y=256
     scene.render.resolution_percentage=100
@@ -572,9 +1043,8 @@ def setup():
     scene.render.image_settings.file_format='PNG'
     scene.render.image_settings.color_mode='RGBA'
     scene.world.color=(.7,.7,.7)
-    scene.view_settings.view_transform='AgX'
-    scene.view_settings.look='AgX - Medium High Contrast'
-    scene.view_settings.exposure=.65
+    scene.view_settings.view_transform='Khronos PBR Neutral'
+    scene.view_settings.exposure=.08
     bpy.ops.object.camera_add(location=(3.2,-5.5,3.4))
     camera=bpy.context.object
     camera.name='studio camera'
@@ -582,11 +1052,16 @@ def setup():
     camera.data.type='ORTHO'
     camera.data.ortho_scale=2.8
     scene.camera=camera
-    for name,position,power,size in [('key',(-3,-4,6),420,4),('fill',(4,-1,3),180,3),('rim',(1,4,4),250,3)]:
+    for name,position,power,size,tint in [
+            ('key',(-3,-4,6),510,3.3,(1,.91,.78)),
+            ('fill',(4,-1,3),155,3,(.83,.83,1)),
+            ('rim',(1,4,4),300,2.1,(1,.82,.91))]:
         bpy.ops.object.light_add(type='AREA',location=position)
         light=bpy.context.object
         light.name=name
         light.data.energy=power
+        light.data.color=tint
+        light['studio_tint']=tint
         light.data.shape='DISK'
         light.data.size=size
         light.rotation_euler=(Vector((0,0,.6))-light.location).to_track_quat('-Z','Y').to_euler()
@@ -615,7 +1090,7 @@ def main():
     bpy.ops.object.delete(use_global=False)
     setup()
     permanent=set(bpy.data.objects)
-    output=Path(args.out)
+    output=Path(args.out).resolve()
     output.mkdir(parents=True,exist_ok=True)
     specs=json.loads(Path(args.specs).read_text(encoding='utf-8'))
     for spec in specs:
@@ -624,16 +1099,16 @@ def main():
             if obj not in permanent: bpy.data.objects.remove(obj,do_unlink=True)
         for part in spec['parts']:
             place(part['model'],part.get('position',[0,0,0]),part.get('scale',1),part.get('rotation',0))
-        if spec['id'].startswith('C23') or spec['id']=='C21G03S03':
-            for mat in bpy.data.materials:
-                if not mat.node_tree or not mat.node_tree.nodes.get('Principled BSDF'): continue
-                rgb=mat.diffuse_color[:3]
-                lum=.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]
-                mat.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=(lum,lum,lum,1)
-        else:
-            for mat in bpy.data.materials:
-                if not mat.node_tree or not mat.node_tree.nodes.get('Principled BSDF'): continue
-                mat.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=mat.diffuse_color
+        monochrome=spec['id'].startswith('C23') or spec['id']=='C21G03S03'
+        for mat in bpy.data.materials:
+            if not mat.node_tree: continue
+            shader=next((node for node in mat.node_tree.nodes if node.type=='BSDF_PRINCIPLED'), None)
+            if shader is None: continue
+            rgb=mat.diffuse_color[:3]
+            luminance=.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]
+            shader.inputs['Base Color'].default_value=(*((luminance,)*3 if monochrome else rgb),1)
+        for light in (obj for obj in permanent if obj.type=='LIGHT'):
+            light.data.color=(1,1,1) if monochrome else light['studio_tint']
         frame_subject()
         bpy.context.scene.render.filepath=str(output/(spec['id']+'.png'))
         bpy.ops.render.render(write_still=True)

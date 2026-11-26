@@ -16,12 +16,13 @@ Page({
  onReady(){pageLayout.measure(this);},
  onResize(){pageLayout.measure(this);},
 
- data: {layoutStyle:'',pageCompact:false,selectedConditions:[],filterTitle:'招聘筛选',panelFilters:refinementDefinitions.panel('job'),refinements:{},quickFilters:refinementDefinitions.chips('job'),quickShowsDays:true,refinementCategories:browse.categoryColumns('','job').columns,refinementCategoryValue:[0,0,0],quickOpen:false,quickKey:'',quickTitle:'',quickHint:'',quickOptions:[],quickBusy:false,quickError:'',
+ data: {layoutStyle:'',pageCompact:false,heroImageFailed:false,selectedConditions:[],filterTitle:'招聘筛选',panelFilters:refinementDefinitions.panel('job'),refinements:{},quickFilters:refinementDefinitions.chips('job'),quickShowsDays:true,refinementCategories:browse.categoryColumns('','job').columns,refinementCategoryValue:[0,0,0],quickOpen:false,quickKey:'',quickTitle:'',quickHint:'',quickOptions:[],quickBusy:false,quickError:'',
   dateOptions:require('../../utils/search-filters').dateOptions,dateLabels:require('../../utils/search-filters').dateOptions.map(x=>x.label),dateIndex:0,limitReached:false,days:0,images:'all',publicOnly:false,
   headerHeight:88,channels:registry.channels||[],immersed:false,unavailable:'',categoryId:'',categoryName:'',types: catalog.groupOptions, type: 'job', areas: ['全部地区'], area: '全部地区', q: '',
   filtered: [], count: 0, hasMore: false, loading: false, error: '', sortIndex: 0,
   sortNames: ['最新发布', '价格从低到高', '价格从高到低'],sortCode:'latest',sortLabel:'最新发布',sortOpen:false,filterOpen:false,sortBusy:false,sortError:'',sortOptions:discoverySorts.options('job'), online: api.online()
  },
+ heroImageFailed(){this.setData({heroImageFailed:true});},
  onShow() {
   require('../../utils/theme').apply(this);
   pageLayout.show(this,{tabBar:true,sentinel:'.discover-sticky-sentinel',dock:'.discover-sticky'});this.active=true;this.restoreNavigation();
@@ -114,7 +115,7 @@ Page({
   const quickFilters=refinementDefinitions.chips(this.data.type,refinements,this.data);
   const panelFilters=refinementDefinitions.panel(this.data.type,refinements,this.data);
   const filterTitle=(registry.channels.find(item=>item.id===this.data.type)?.name||'信息')+'筛选';
-  const selectedConditions=[...(this.data.categoryId?[{key:'categoryId',label:this.data.categoryName}]:[]),...(this.data.districtCode?[{key:'districtCode',label:this.data.area}]:[]),...browse.extras({...this.data,refinements})];
+  const selectedConditions=browse.conditions({...this.data,refinements});
   this.setData({refinements,quickFilters,panelFilters,filterTitle,selectedConditions,quickShowsDays:quickFilters.some(item=>item.key==='days'),refinementCategories:categories.columns,refinementCategoryValue:categories.value},()=>pageLayout.measure(this));
  },
  refinementCategoryColumn(e) {
@@ -173,12 +174,10 @@ Page({
   if (this.unloaded || attempt !== this.quickAttempt || scope !== currentContext()) return;
   if (key === 'days') this.setData({days:Number(value), dateIndex:this.data.dateOptions.findIndex(option => option.value === Number(value))});
   else if (key === 'radiusKm') this.setData({radiusKm:Number(value)});
+  else if (key === 'images') this.setData({images:value||'all'});
   else {
-   const refinements = {...this.data.refinements};
-   if (value) refinements[key] = value;
-   else delete refinements[key];
-   if (key === 'intent' && value !== this.data.refinements.intent) delete refinements.price;
-   this.setData({refinements:refinementDefinitions.normalize(refinements, type)});
+   const refinements=refinementDefinitions.selectBusiness(type,this.data.refinements,key,value);
+   if(refinements)this.setData({refinements});
   }
   this.setData({quickBusy:false, quickError:''});
   if (!inPanel) this.closeQuickFilter();

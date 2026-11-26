@@ -2,6 +2,7 @@
 <view class="page-header {{collapsed?'header-collapsed':''}} {{continuous?'continuous-header':''}} {{transparent?'transparent-header':''}} {{largeText?'header-large-text':''}}" style="padding-top:{{statusHeight}}px">
  <view class="nav-row" style="height:{{rowHeight}}px">
   <button wx:if="{{back}}" class="nav-back" bindtap="goBack" aria-label="{{backLabel}}"><view class="nav-back-icon" aria-hidden="true"></view></button>
+  <view class="nav-leading"><slot name="leading"/></view>
   <view class="nav-title {{align==='start'?'title-start':''}} {{logoSrc?'logo-title':''}}" style="left:{{align==='start'&&!back?16:titleInset}}px;right:{{titleInset+(actionText?44:0)}}px"><view wx:if="{{logoSrc}}" class="nav-logo-frame"><image class="nav-logo" src="{{logoSrc}}" mode="aspectFit" aria-label="{{title}}"/></view><view wx:if="{{logoSrc&&!logoOnly}}" class="brand-copy"><view class="brand-name">{{title}}</view><text wx:if="{{subtitle}}" class="brand-subtitle">{{subtitle}}</text></view><block wx:elif="{{!logoSrc&&!logoOnly}}">{{title}}</block></view>
   <button wx:if="{{actionText}}" class="nav-action" style="right:{{titleInset}}px" bindtap="act" disabled="{{actionDisabled}}">{{actionText}}</button>
  </view>

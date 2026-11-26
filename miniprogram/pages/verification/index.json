@@ -1,1 +1,1 @@
-{"navigationBarTitleText":"发布身份验证","navigationStyle":"custom","usingComponents":{"page-header":"/components/page-header/index"}}
+{"navigationBarTitleText":"手机号验证","navigationStyle":"custom","usingComponents":{"page-header":"/components/page-header/index","sms-code-form":"/components/sms-code-form/index"}}

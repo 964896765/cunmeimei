@@ -6,6 +6,7 @@ Component({
     actionText: { type: String, value: '' },
     actionDisabled: Boolean,
     compact: Boolean,
+    embedded: Boolean,
     largeText: Boolean
   },
   data: { heading: '' },

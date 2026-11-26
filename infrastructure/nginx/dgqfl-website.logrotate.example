@@ -1,0 +1,15 @@
+/var/log/dgqfl-website/access.log /var/log/dgqfl-website/error.log {
+    daily
+    rotate 186
+    maxage 186
+    dateext
+    ifempty
+    missingok
+    compress
+    delaycompress
+    create 0600 root root
+    sharedscripts
+    postrotate
+        /usr/sbin/nginx -s reopen
+    endscript
+}

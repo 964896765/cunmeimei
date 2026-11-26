@@ -2,6 +2,7 @@ const pageLayout=require('../../utils/page-layout');
 const api=require('../../utils/api');
 const tabs=require('../../utils/tab-bar');
 const view=require('../../utils/message-view');
+const nav=require('../../utils/navigation');
 function contactTask(page,id){
  const owner=tabs.context(),uid=owner.split(':')[0],task={};page.contactTask=task;page.setData({contactBusyId:id,contactError:''});
  const active=()=>!page.disposed&&page.contactTask===task&&uid===tabs.context().split(':')[0];
@@ -21,7 +22,24 @@ Page({
  async refreshList(){this.setData({refreshing:true});try{await this.refresh();}finally{if(!this.disposed)this.setData({refreshing:false});}},
  async signin(){try{await api.login();return this.refresh();}catch(e){api.showError(e);}},
  valid(version,owner){return !this.disposed&&version===this.version&&owner===tabs.context();},
- filter(){this.setData({visibleContacts:view.filterContacts(this.data.contacts,this.data.query,this.data.contactFilter),visibleNotices:this.data.items.filter(x=>this.data.noticeFilter==='all'||x.category===this.data.noticeFilter)});},
+ filter(){
+  const {items,contacts,query,contactFilter,noticeFilter}=this.data;
+  const unreadContacts=new Map();
+  for(const item of items){
+   if(item.targetKind==='contact'&&!item.readAt)unreadContacts.set(item.targetId,(unreadContacts.get(item.targetId)||0)+1);
+  }
+  this.setData({
+   visibleContacts:view.filterContacts(contacts,query,contactFilter).map(item=>({...item,unreadCount:unreadContacts.get(item.id)||0})),
+   visibleNotices:items.filter(item=>noticeFilter==='all'||item.category===noticeFilter)
+  });
+ },
+ openNoticeShortcut(e){
+  this.setData({noticeFilter:e.currentTarget.dataset.category==='booking'?'booking':'all'});
+  this.switchTab('notices',true);
+  this.filter();
+ },
+ openSaved(){nav.personalCenter('saved');},
+ openEvents(){nav.discover('event');},
  async refresh(){
   const version=this.version=(this.version||0)+1,owner=tabs.context();
   if(this.owner!==owner){this._listPositionVersion=(this._listPositionVersion||0)+1;this._messageOffsets={};this.owner=owner;this.contactTask=null;this.contactResponse=null;this.setData({listScrollTop:0,contactPage:0,contactsHasMore:false,contactsLoading:false,items:[],contacts:[],visibleContacts:[],visibleNotices:[],unread:0,pendingContacts:0,expandedId:'',query:'',searchOpen:false,page:0,hasMore:false,reading:false,contactBusyId:'',contactError:''});}
@@ -35,10 +53,10 @@ Page({
    this.filter();tabs.setUnread(r.unread,this,owner);
   }catch(e){if(this.valid(version,owner))this.setData({loading:false,error:e.message});}
  },
- tab(e){
-  const tab=e.currentTarget.dataset.tab;
-  if(!['contacts','notices'].includes(tab)||tab===this.data.tab)return;
-  const top=this._messageOffsets?.[tab]||0,version=this._listPositionVersion=(this._listPositionVersion||0)+1;
+ tab(e){this.switchTab(e.currentTarget.dataset.tab);},
+ switchTab(tab,fromStart=false){
+  if(!['contacts','notices'].includes(tab)||(!fromStart&&tab===this.data.tab))return;
+  const top=fromStart?0:this._messageOffsets?.[tab]||0,version=this._listPositionVersion=(this._listPositionVersion||0)+1;
   this.setData({tab,listScrollTop:top+1},()=>{if(!this.disposed&&this.data.tab===tab&&version===this._listPositionVersion)this.setData({listScrollTop:top});});
  },
  toggleSearch(){this.setData({searchOpen:!this.data.searchOpen,query:''});this.filter();},
@@ -50,6 +68,11 @@ Page({
   try{const result=await api.request('GET','/api/v1/me/contacts?page='+page,null,true);if(!this.valid(version,owner))return;const rows=new Map(this.data.contacts.map(x=>[x.id,x]));for(const item of result.items)rows.set(item.id,view.contact(item));this.setData({contacts:[...rows.values()],contactPage:page,contactsHasMore:!!result.hasMore});this.filter();}catch(e){if(this.valid(version,owner))this.setData({error:e.message});}finally{if(this.valid(version,owner))this.setData({contactsLoading:false});}
  },
  toggleContact(e){const id=e.currentTarget.dataset.id;if(this.data.contacts.some(x=>x.id===id))this.setData({expandedId:this.data.expandedId===id?'':id});},
+ contactImageFailed(e){
+  const {id,src}=e.currentTarget.dataset;
+  this.setData({contacts:this.data.contacts.map(item=>item.id===id&&item.cover===src?{...item,cover:''}:item)});
+  this.filter();
+ },
  filterNotices(e){
   const category=e.currentTarget.dataset.category;
   if(!['all','review','booking','business','merchant','points'].includes(category))return;

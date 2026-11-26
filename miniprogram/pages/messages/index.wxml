@@ -9,7 +9,7 @@
    <button wx:if="{{tab==='contacts'}}" class="toolbar-action search-action" bindtap="toggleSearch" aria-label="{{searchOpen?'关闭消息搜索':'搜索联系记录'}}"><view class="search-glyph"></view></button>
    <button wx:else class="toolbar-action read-all" disabled="{{!hasSession||!unread||reading}}" bindtap="readAll">{{reading?'处理中':'全部已读'}}</button>
   </view>
-  <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><search-bar value="{{query}}" placeholder="搜索当前联系记录" focused="{{true}}" max-length="{{100}}" bind:input="search" bind:search="filter"/></view>
+  <view wx:if="{{tab==='contacts'&&searchOpen&&hasSession}}" class="contact-search"><search-bar id="message-search" value="{{query}}" placeholder="搜索当前联系记录" focused="{{true}}" max-length="{{100}}" bind:input="search" bind:search="filter"/></view>
   <scroll-view class="message-list-scroll layout-scroll" scroll-y="{{true}}" scroll-top="{{listScrollTop}}" show-scrollbar="{{false}}" enhanced="{{true}}" bindscroll="onListScroll" refresher-enabled="{{hasSession}}" refresher-triggered="{{refreshing}}" bindrefresherrefresh="refreshList"><view class="message-scroll-content">
   <view wx:if="{{!hasSession}}" class="state-panel message-login"><brand-scene class="message-art" variant="chat"/><view class="section-title">登录后查看消息</view><text>审核结果、预约动态和联系申请都在这里。</text><button class="btn" bindtap="signin">登录查看</button></view>
   <block wx:else>
@@ -17,12 +17,19 @@
    <feedback-state wx:if="{{contactError}}" kind="error" description="{{contactError}} 请先核对联系状态；回复内容已保留。" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="刷新联系状态" bind:action="refresh" action-disabled="{{loading||contactBusyId}}"/>
    <feedback-state wx:if="{{loading}}" kind="loading" description="正在更新消息…" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
    <block wx:if="{{tab==='contacts'}}">
+    <view wx:if="{{!searchOpen}}" class="message-hub">
+     <button class="message-hub-item" data-category="all" bindtap="openNoticeShortcut"><view class="message-hub-icon"><image src="/assets/icons/center-notifications-{{iconPalette||'prism'}}.png" mode="aspectFit"/><view wx:if="{{unread}}" class="hub-unread" aria-label="有未读通知"/></view><text>系统通知</text></button>
+     <button class="message-hub-item" data-category="booking" bindtap="openNoticeShortcut"><view class="message-hub-icon"><image src="/assets/icons/center-booking-{{iconPalette||'prism'}}.png" mode="aspectFit"/></view><text>预约消息</text></button>
+     <button class="message-hub-item" bindtap="openSaved"><view class="message-hub-icon"><image src="/assets/icons/center-saved-{{iconPalette||'prism'}}.png" mode="aspectFit"/></view><text>我的收藏</text></button>
+     <button class="message-hub-item" bindtap="openEvents"><view class="message-hub-icon"><image src="/assets/icons/home-news-{{iconPalette||'prism'}}.png" mode="aspectFit"/></view><text>同城活动</text></button>
+    </view>
     <view wx:if="{{pendingContacts||contactFilter==='pending'}}" class="contact-filter"><text>{{contactFilter==='pending'?'待我回复':'待回复 '+pendingContacts+' 条'}}</text><button class="filter-link" wx:if="{{contactFilter==='pending'}}" bindtap="showAllContacts">查看全部</button><button class="filter-link" wx:else bindtap="showPending">只看待处理</button></view>
+    <view wx:if="{{visibleContacts.length}}" class="contact-panel">
     <view class="contact-entry" wx:for="{{visibleContacts}}" wx:key="id">
      <view class="message-row contact-row" data-id="{{item.id}}" bindtap="toggleContact" role="button" aria-expanded="{{expandedId===item.id}}" aria-label="{{item.title}}，{{item.statusText}}，点击查看联系申请">
-      <view class="message-icon contact-avatar"><text>{{item.avatarInitial}}</text></view>
-      <view class="message-copy"><view class="message-name">{{item.title}}</view><view class="message-preview">{{item.message||item.preview}}</view></view>
-      <view class="message-meta"><text class="message-time">{{item.dateText}}</text><text class="message-status">{{item.statusText}}</text><text wx:if="{{item.needsReply}}" class="pending-dot" aria-label="待回复"></text></view>
+      <view class="message-icon contact-avatar"><image wx:if="{{item.cover}}" class="contact-photo" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" binderror="contactImageFailed" data-id="{{item.id}}" data-src="{{item.cover}}"/><image wx:elif="{{item.topicIcon&&iconPalette==='prism'}}" src="/assets/home-icons/{{item.topicIcon}}.png" mode="aspectFit"/><text wx:else class="avatar-initial">{{item.avatarInitial}}</text><text wx:if="{{item.unreadCount}}" class="contact-unread" aria-label="{{item.unreadCount}}条未读通知">{{item.unreadCount>99?'99+':item.unreadCount}}</text><view wx:elif="{{item.needsReply}}" class="hub-unread" aria-label="待回复"/></view>
+      <view class="message-copy"><view class="message-name">{{item.title}}</view><view class="message-preview">{{item.response||item.message||item.preview}}</view></view>
+      <view class="message-meta"><text class="message-time">{{item.dateText}}</text><text class="message-status">{{item.needsReply?'待回复':item.topic||item.statusText}}</text></view>
      </view>
      <view wx:if="{{expandedId===item.id}}" class="contact-detail">
       <button wx:if="{{item.status==='accepted'}}" class="btn" data-id="{{item.id}}" bindtap="openChat">进入站内会话</button><button wx:if="{{item.businessCaseId||(item.status==='accepted'&&!item.endedAt&&!item.blocked)}}" class="btn light" id="message-business-{{item.id}}" data-id="{{item.id}}" bindtap="openBusiness">查看业务处理进度</button><view class="field-label">申请内容</view><view class="body-copy" selectable="true">{{item.message}}</view>
@@ -31,6 +38,7 @@
       <button wx:elif="{{item.status==='pending'}}" class="btn light" disabled="{{contactBusyId||loading}}" data-id="{{item.id}}" data-action="withdraw" bindtap="contactAction">撤回申请</button>
       <button wx:if="{{!item.outgoing}}" class="block-contact filter-link" disabled="{{contactBusyId||loading}}" data-id="{{item.id}}" bindtap="block">{{item.blocked?'解除屏蔽':'屏蔽此申请者'}}</button>
      </view>
+    </view>
     </view>
     <view wx:if="{{!loading&&!error&&!visibleContacts.length}}" class="state-panel"><view class="section-title">{{query?'没有找到相关联系':contactFilter==='pending'?'没有待回复申请':'还没有联系记录'}}</view><text>{{query?'试试信息标题或申请中的关键词。':'从信息详情发起联系，收到的申请和回复会显示在这里。'}}</text></view>
     <button wx:if="{{contactsHasMore}}" class="load-notices filter-link" disabled="{{loading||contactsLoading||contactBusyId}}" bindtap="moreContacts">{{contactsLoading?'正在加载…':'加载更早联系记录'}}</button>

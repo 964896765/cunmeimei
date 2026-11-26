@@ -11,8 +11,18 @@ function validateDeployment(env,root=path.resolve(__dirname,'../..'),{requirePro
  if(requireProduction)add(env.NODE_ENV==='production','PRODUCTION_MODE_REQUIRED');
  if(env.DATA_DRIVER!==undefined)add(['postgres','memory'].includes(env.DATA_DRIVER),'DATA_DRIVER_INVALID');
  if(env.NODE_ENV!=='production'&&env.HOST)add(['127.0.0.1','::1','localhost'].includes(env.HOST),'DEV_LOOPBACK_REQUIRED');
- for(const key of ['ALLOW_DEV_LOGIN','PLATFORM_PUBLISH_APPROVED','PLATFORM_CONTACT_APPROVED']){
+ for(const key of ['ALLOW_DEV_LOGIN','PLATFORM_PUBLISH_APPROVED','PLATFORM_CONTACT_APPROVED','SMS_AUTH_ENABLED']){
   if(env[key]!==undefined)add(['true','false'].includes(env[key]),key+'_INVALID');
+ }
+ if(env.SMS_AUTH_ENABLED==='true'){
+  add((env.DATA_DRIVER||'postgres')==='postgres','SMS_POSTGRES_REQUIRED');
+  add(!!env.WECHAT_APPID&&!!env.WECHAT_SECRET,'SMS_WECHAT_REQUIRED');
+  add(Buffer.from(env.PHONE_ENCRYPTION_KEY||'','base64').length===32,'SMS_PHONE_STORAGE_REQUIRED');
+  add(Buffer.from(env.SMS_CODE_PEPPER||'','base64').length===32&&env.SMS_CODE_PEPPER!==env.PHONE_ENCRYPTION_KEY,'SMS_SEPARATE_PEPPER_REQUIRED');
+  add(!!env.ALIBABA_CLOUD_ACCESS_KEY_ID?.trim()&&!!env.ALIBABA_CLOUD_ACCESS_KEY_SECRET?.trim(),'SMS_RAM_CREDENTIALS_REQUIRED');
+  add((env.ALIBABA_CLOUD_SMS_ENDPOINT||'dysmsapi.aliyuncs.com')==='dysmsapi.aliyuncs.com','SMS_ENDPOINT_INVALID');
+  add(/^SMS_\d+$/.test(env.ALIBABA_CLOUD_SMS_TEMPLATE_CODE||'SMS_512583575'),'SMS_TEMPLATE_INVALID');
+  add(require('./legal-documents').documents({operatorName:env.PLATFORM_OPERATOR_NAME||' ',contactEmail:env.PRIVACY_CONTACT_EMAIL||' '}).configured,'SMS_PRIVACY_CONTACT_REQUIRED');
  }
  for(const key of ['OPERATOR_ADMIN_PERMISSIONS','VERIFIER_ADMIN_PERMISSIONS']){
   const grants=(env[key]||'').split(',').filter(Boolean);

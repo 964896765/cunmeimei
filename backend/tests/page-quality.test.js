@@ -18,6 +18,7 @@ function client(name, request, session = true) {
   setTimeout(fn) { timers.set(++timerId, fn); return timerId; }, clearTimeout(id) { timers.delete(id); },
   wx: {navigateTo:options=>routes.push(options.url),getLocation:options=>{locationRequest=options;},getStorageSync: key => storage.get(key) || '',setStorageSync:(key,value)=>storage.set(key,value),removeStorageSync:key=>storage.delete(key), setNavigationBarTitle() {}, showToast() {}, stopPullDownRefresh() {}},
   require(name) {
+   if (name.endsWith('/discovery-channels')) return require('../../miniprogram/utils/discovery-channels');
    if (name.endsWith('/discovery-refinements')) return require('../../miniprogram/utils/discovery-refinements');
    if (name.endsWith('/public-cache')) return require('../../miniprogram/utils/public-cache');
    if (name.endsWith('/browse-query')) return require('../../miniprogram/utils/browse-query');
@@ -179,10 +180,17 @@ test('map drawer accepts vertical drags, bounds its three states and ignores sho
  page.dragStart({touches:[{clientY:400}]});page.dragEnd({changedTouches:[{clientY:600}]});assert.equal(page.data.drawer,'collapsed');
 });
 
-test('map defaults to half view, shares eight business channels and supports explicit search without implicit GPS',()=>{
+test('map defaults to half view, uses the seven shared channels and searches without implicit GPS',()=>{
  const {page}=client('map',async()=>({}));assert.equal(page.data.drawer,'half');
  page.dragStart({touches:[{clientY:600}]});page.dragEnd({changedTouches:[{clientY:300}]});assert.equal(page.data.drawer,'expanded');
- assert.equal(typeof page.openSearch,'function');assert.equal(page.data.channels.length,8);assert.equal(page.data.channels[0].name,'全部');assert.equal(page.data.channels[1].name,'招聘');assert.equal(page.data.moreChannels,undefined);assert.equal(page.locate,undefined);
+ assert.equal(typeof page.openSearch,'function');
+ const labels=require('../../miniprogram/utils/discovery-channels').definitions.map(channel=>{
+  page.changeType({detail:{type:channel.id}});
+  return page.data.channelName;
+ });
+ assert.deepEqual(labels,['招聘','房产','闲置','商家','服务','活动','便民']);
+ assert.match(fs.readFileSync(path.join(__dirname,'../../miniprogram/pages/map/index.wxml'),'utf8'),/<channel-tabs[^>]+bind:change="changeType"/);
+ assert.equal(page.locate,undefined);
 });
 
 test('map city switches immediately recenter and never query an old viewport response',async()=>{
@@ -198,6 +206,49 @@ test('map city switches immediately recenter and never query an old viewport res
 test('home retains the manually chosen city when configuration is offline',async()=>{
  const {page,storage}=client('home',async()=>{throw Error('offline');});storage.set('city_life_browse_city',{cityCode:'441900',label:'东莞市'});
  await page.onShow();assert.equal(page.data.region,'东莞市');assert.equal(page.data.error,'offline');
+});
+
+test('home dock only shows newly listed public merchants from the selected city', async () => {
+ const calls=[];
+ const {page,storage}=client('home',async(method,url)=>{
+  calls.push(new URL(url,'http://local').searchParams);
+  return {items:[{id:'m-1',kind:'merchant',title:'已入驻商家'},{id:'p-1',kind:'listing',title:'普通发布'}]};
+ },false);
+ page.visible=true;
+ await page.toggleDock({currentTarget:{dataset:{panel:'news'}}});
+ assert.equal(calls.length,0);
+ storage.set('city_life_browse_city',{cityCode:'420600',label:'襄阳市'});
+ await page.toggleDock({currentTarget:{dataset:{panel:'merchant'}}});
+ assert.equal(calls[0].get('cityCode'),'420600');
+ assert.equal(calls[0].get('type'),'merchant');
+ assert.equal(calls[0].get('sort'),'latest');
+ assert.equal(calls[0].get('days'),'30');
+ assert.equal(page.data.recentMerchants.length,1);
+ assert.equal(page.data.recentMerchants[0].id,'m-1');
+});
+
+test('home nearby feed uses the selected district without asking for GPS', async () => {
+ const requests=[];
+ const {page,storage,gps}=client('home',async(method,url)=>{
+  if (url.startsWith('/api/v1/feed?')) requests.push(new URL(url,'http://test').searchParams);
+  return {items:[]};
+ },false);
+ await page.changeFeed({currentTarget:{dataset:{id:'nearby'}}});
+ assert.equal(page.data.nearbyNeedsCity,true);
+ assert.equal(requests.length,0);
+
+ storage.set('city_life_browse_city',{cityCode:'420600',districtCode:'420602',label:'襄阳市 · 襄城区'});
+ await page.onShow();
+ assert.equal(page.data.cityName,'襄阳');
+ assert.equal(page.data.showCityScene,true);
+ assert.equal(page.data.nearbyNeedsCity,false);
+ assert.equal(requests[0].get('cityCode'),'420600');
+ assert.equal(requests[0].get('districtCode'),'420602');
+ assert.equal(gps(),undefined);
+
+ await page.changeFeed({currentTarget:{dataset:{id:'latest'}}});
+ assert.equal(requests[1].get('districtCode'),'');
+ assert.equal(requests[1].get('sort'),'latest');
 });
 
 test('discovery industry targets preserve city, apply category to queries and survive map/detail round trips',async()=>{
@@ -219,10 +270,23 @@ test('map gestures invalidate an older viewport response and synchronize native 
 });
 
 test('map channel switches cancel stale results and keep markers aligned to the new query',async()=>{
- const old=deferred();const {page}=client('map',()=>old.promise);page.version=1;page.bounds={west:112,east:114,south:22,north:24};page.setData({cityCode:'441900'});
+ const old=deferred(),requests=[];
+ const {page}=client('map',(_,url)=>{
+  const type=new URL(url,'http://test').searchParams.get('type');
+  requests.push(type);
+  return type==='service'?old.promise:{items:[{id:'new',latitude:23,longitude:113,type:'merchant'}]};
+ });
+ page.onLoad({type:'service'});
+ page.version=1;page.bounds={west:112,east:114,south:22,north:24};page.setData({cityCode:'441900'});
  const pending=page.fetchPage(1,1);page.ready=true;page.map={getRegion:({success})=>success({southwest:{longitude:112,latitude:22},northeast:{longitude:114,latitude:24}})};
- const next=page.changeType({currentTarget:{dataset:{type:'merchant'}}});old.resolve({items:[{id:'old',latitude:23,longitude:113,type:'service'}]});await Promise.all([pending,next]);
- assert.equal(page.data.type,'merchant');assert.equal(page.data.loading,false);assert.equal(page.data.markers.length,page.data.items.length);
+ await page.changeType({currentTarget:{dataset:{type:'merchant'}}});
+ old.resolve({items:[{id:'old',latitude:23,longitude:113,type:'service'}]});
+ await pending;
+ assert.deepEqual(requests,['service','merchant']);
+ assert.equal(page.data.type,'merchant');
+ assert.equal(page.data.loading,false);
+ assert.deepEqual(Array.from(page.data.items,x=>x.id),['new']);
+ assert.equal(page.data.markers.length,1);
 });
 
 test('discovery context enters map and only explicitly applied filters replace results',async()=>{

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="快递物流">
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D95B9B"/>
+      <stop offset="1" stop-color="#A94E83"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#brand)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 20h31v27H7zM38 29h10l9 10v8H38z"/><circle cx="19" cy="49" r="5"/><circle cx="46" cy="49" r="5"/>
+  </g>
+</svg>

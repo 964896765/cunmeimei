@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="交通出行">
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D95B9B"/>
+      <stop offset="1" stop-color="#A94E83"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#brand)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 8c-12 0-20 9-20 20 0 15 20 29 20 29s20-14 20-29C52 17 44 8 32 8z"/><circle cx="32" cy="28" r="7"/><path d="M32 21v14M25 28h14"/>
+  </g>
+</svg>

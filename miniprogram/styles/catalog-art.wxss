@@ -18,3 +18,8 @@
 .is-blended.is-dark .frame-food,.is-blended.is-dark .frame-profession,.is-blended.is-dark .frame-service,.is-blended.is-dark .frame-goods,.is-blended.is-dark .frame-symbol { background:#f9f3f7; filter:brightness(.72) saturate(.88); }
 .missing-art { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
 .missing-art>view { width:34%; height:34%; border:2rpx solid var(--muted,#777); border-radius:12rpx; }
+.is-neon .catalog-image { filter:contrast(1.06) saturate(1.48) brightness(1.07); }
+.is-neon .frame-transparent,.is-neon .frame-plain { overflow:visible; }
+.is-neon .frame-transparent .catalog-image,.is-neon .frame-plain .catalog-image {
+ filter:contrast(1.06) saturate(1.48) brightness(1.07) drop-shadow(0 2rpx 3rpx var(--art-glow,#d8449e55));
+}

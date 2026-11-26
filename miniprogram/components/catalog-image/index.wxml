@@ -1,4 +1,4 @@
-<view class="catalog-frame {{blendMatte?'is-blended':''}} {{dark?'is-dark':''}} {{muted?'is-muted':''}}">
- <view wx:if="{{src}}" class="subject-window frame-{{usingFallback?'plain':frame}}"><image class="catalog-image" src="{{src}}" mode="aspectFit" lazy-load="{{true}}" bindload="imageLoaded" binderror="imageFailed" aria-hidden="true"/></view>
+<view class="catalog-frame {{blendMatte?'is-blended':''}} {{dark?'is-dark':''}} {{muted?'is-muted':neon?'is-neon':''}}">
+ <view wx:if="{{src}}" class="subject-window frame-{{usingFallback?'plain':frame}}"><image class="catalog-image" src="{{src}}" mode="aspectFit" lazy-load="{{lazyLoad}}" bindload="imageLoaded" binderror="imageFailed" aria-hidden="true"/></view>
  <view wx:else class="missing-art" aria-hidden="true"><view></view></view>
 </view>

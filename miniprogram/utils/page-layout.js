@@ -1,5 +1,9 @@
 "use strict";
 
+// Match the fixed dock geometry before its component has rendered.
+const TAB_DOCK_HEIGHT = 60;
+const TAB_DOCK_GAP = 9;
+
 function measure(page) {
   const state = page._pageLayout;
   if (!state?.active) return;
@@ -17,9 +21,15 @@ function measure(page) {
     const style = `--page-viewport:${height}px;--page-bottom:${bottom}px;--page-header:${header.height}px;--page-status:${header.statusHeight}px;--page-nav:${header.rowHeight}px;--page-capsule:${header.titleInset}px;--page-safe-bottom:${state.keyboardHeight?0:safeBottom}px;--page-dock:${state.dockHeight||0}px`;
     if (page.data.layoutStyle !== style) page.setData({ layoutStyle: style });
   };
-  apply(state.tabBar ? 56 + safeBottom : 0);
+  const tabInset = TAB_DOCK_GAP + safeBottom;
+  apply(state.tabBar ? TAB_DOCK_HEIGHT + tabInset : 0);
   const bar = state.tabBar && page.getTabBar?.();
-  if (bar?.createSelectorQuery) bar.createSelectorQuery().select(".curved-tabs").boundingClientRect((rect) => { if (rect?.height) apply(rect.height); }).exec();
+  if (bar?.createSelectorQuery) bar.createSelectorQuery().select(".curved-tabs").boundingClientRect((rect) => {
+    if (!rect?.height) return;
+    const measuredInset = height - rect.bottom;
+    const bottomInset = measuredInset >= 0 && measuredInset <= tabInset + 2 ? measuredInset : tabInset;
+    apply(rect.height + bottomInset);
+  }).exec();
   if (state.dock && page.createSelectorQuery) page.createSelectorQuery().select(state.dock).boundingClientRect((rect) => {
     if (!rect || !state.active || version !== state.version) return;
     state.dockHeight = rect.height;

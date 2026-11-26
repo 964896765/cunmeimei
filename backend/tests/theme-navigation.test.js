@@ -2,7 +2,8 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 test('theme navigation waits until after page show and does not rebuild native tabs on every route',()=>{
  const storage=new Map(),timers=new Map(),calls=[];let timerId=0;
- const context={module:{exports:{}},require:name=>name==='./page-accent-route'?require('../../miniprogram/utils/page-accent-route'):name==='./design-system'?require('../../miniprogram/utils/design-system'):name==='./palettes'?require('../../miniprogram/utils/palettes'):({online:()=>false,hasSession:()=>false}),setTimeout:fn=>{timers.set(++timerId,fn);return timerId;},clearTimeout:id=>timers.delete(id),wx:{getStorageSync:k=>storage.get(k)||'',setStorageSync:(k,v)=>storage.set(k,v),setNavigationBarColor:x=>calls.push(['nav',x]),setBackgroundColor:()=>{},setTabBarItem:x=>calls.push(['tab',x]),setTabBarStyle:x=>calls.push(['bar',x])}};
+ const realModules=new Set(['./page-accent-route','./design-system','./palettes','./memorial-theme']);
+ const context={module:{exports:{}},require:name=>realModules.has(name)?require('../../miniprogram/utils/'+name.slice(2)):({online:()=>false,hasSession:()=>false}),setTimeout:fn=>{timers.set(++timerId,fn);return timerId;},clearTimeout:id=>timers.delete(id),wx:{getStorageSync:k=>storage.get(k)||'',setStorageSync:(k,v)=>storage.set(k,v),setNavigationBarColor:x=>calls.push(['nav',x]),setBackgroundColor:()=>{},setTabBarItem:x=>calls.push(['tab',x]),setTabBarStyle:x=>calls.push(['bar',x])}};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../../miniprogram/utils/theme.js'),'utf8'),context);
  const theme=context.module.exports,run=()=>{const pending=[...timers.values()];timers.clear();pending.forEach(fn=>fn());};
  let rendered;const page={setData(value){rendered=value;}};
@@ -18,6 +19,7 @@ test('theme navigation waits until after page show and does not rebuild native t
   page.route='pages/'+route+'/index';theme.apply(page);run();
   selected.push(calls.filter(x=>x[0]==='bar').slice(-1)[0][1].selectedColor);
   assert.equal(selected.at(-1),palette.resolvePalette('prism',page.route).link);
+  if(route==='publish')assert.ok(rendered.funeralThemeStyle.includes('--action:#4A4A4A'));
  }
  assert.deepEqual([...new Set(selected)],[theme.palettes.prism.link],'five tabs share the Pearl Sunset active text color');
  assert.equal(calls.filter(x=>x[0]==='tab').length,5,'route accents must not reconstruct native tab items');
@@ -55,4 +57,8 @@ test('selected navigation artwork stays within the normal icon bounds across all
  assert.doesNotMatch(css,/\.tab-item\.selected \.tab-icon\s*\{/,'selection must not create an expanded background frame');
  const publish=css.match(/\.tab-publish\.selected \.tab-icon\s*\{([^}]*)\}/)[1];
  assert.doesNotMatch(publish,/width|height|border-radius/,'publish keeps the same outline when selected');
+ const idlePrism=css.match(/\.prism-tabs \.tab-publish \.tab-icon\s*\{([^}]*)\}/)[1];
+ const selectedPrism=css.match(/\.prism-tabs \.tab-publish\.selected \.tab-icon\s*\{([^}]*)\}/)[1];
+ assert.doesNotMatch(idlePrism,/gradient\(|--tab-active/,'idle publish does not carry the selected fill');
+ assert.match(selectedPrism,/linear-gradient\(/,'publish gets the brand fill when selected');
 });

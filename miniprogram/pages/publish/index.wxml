@@ -1,14 +1,17 @@
-<view class="theme-root publish-root {{themeClass}}" style="{{themeStyle}};{{layoutStyle}}">
+<view class="theme-root publish-root {{themeClass}} {{selectedCategory==='C23'&&!searchHasQuery?'funeral-scope':''}}" style="{{selectedCategory==='C23'&&!searchHasQuery?funeralThemeStyle:themeStyle}};{{layoutStyle}}">
 <page-header id="navigation-header" transparent="{{true}}" bind:measure="headerMeasured" title="发布内容" large-text="{{displayPreferences.largeText}}"/>
 <view class="container publish-page">
 <block>
  <view class="publish-hero-slot {{heroCollapsed?'is-collapsed':''}}" data-region="hero" bindtouchstart="onBrowseTouchStart" bindtouchmove="onBrowseTouchMove" bindtouchend="onBrowseTouchEnd" bindtouchcancel="onBrowseTouchCancel">
-  <view class="publish-hero"><view class="publish-hero-copy"><view>发布本地信息</view><text>27个行业 · 418个细分类目</text></view><image src="/assets/publish-checklist.png" mode="aspectFit" aria-hidden="true"/></view>
+  <view class="publish-hero"><view class="publish-hero-copy"><view>发布本地信息</view><text>27个行业 · 418个细分类目</text></view><image src="/assets/publish-checklist.webp" mode="aspectFit" aria-hidden="true"/></view>
  </view>
  <view class="publish-toolbar {{toolsOpen?'has-menu':''}} {{heroCollapsed?'pinned-surface':''}}">
   <view class="publish-search-row {{projectSearchOpen?'project-search-panel':''}}">
-   <button wx:if="{{!projectSearchOpen}}" class="publish-search-entry" bindtap="toggleProjectSearch"><view class="search-dot"></view><text>搜索418个分类，例如：二手手机、房屋出租</text></button>
+   <button wx:if="{{!projectSearchOpen}}" class="publish-search-entry" bindtap="toggleProjectSearch"><view class="search-dot"></view><text>搜索分类，如二手手机、房屋出租</text></button>
    <view wx:else class="project-search-box"><view class="search-dot" aria-hidden="true"></view><input class="project-search-input" adjust-position="{{false}}" value="{{projectQuery}}" focus="{{projectSearchFocused}}" maxlength="80" placeholder="搜索项目名称或别名" bindinput="searchProjects" aria-label="搜索发布项目名称或别名"/><button wx:if="{{projectQuery}}" class="project-search-clear" bindtap="clearProjectSearch" aria-label="清空项目搜索">×</button></view>
+   <button wx:if="{{!projectSearchOpen}}" class="publish-map-entry" bindtap="openMap" hover-class="publish-map-pressed" aria-label="地图找信息">
+    <image src="/assets/publish-map-entry.png" mode="aspectFit" aria-hidden="true"/>
+   </button>
    <button class="publish-tools-toggle {{toolsOpen?'is-open':''}}" bindtap="toggleTools" aria-label="发布工具" aria-haspopup="menu" aria-expanded="{{toolsOpen}}"><view></view><view></view><view></view><view></view></button>
    <button wx:if="{{projectSearchOpen}}" class="project-search-cancel" bindtap="closeProjectSearch">取消</button>
   </view>
@@ -19,18 +22,50 @@
  <view wx:if="{{searchHasQuery}}" class="project-search-results">
   <view class="project-search-summary" aria-live="polite">找到 {{projects.length}} 个相关项目</view>
   <scroll-view class="project-results-scroll" scroll-y="true" scroll-top="{{searchScrollTop}}" enhanced="true" show-scrollbar="{{false}}">
-   <view wx:for="{{projects}}" wx:key="id" class="project-result-row" data-id="{{item.id}}" bindtap="chooseProject" role="button" aria-label="{{item.name}}，{{configReady?item.readiness.label:'待核对'}}"><catalog-image class="project-result-art" asset-id="{{item.id}}" fallback-src="{{item.art?'/assets/publish/'+item.art+'.png':'/assets/icons/'+item.icon+'-'+iconPalette+'.png'}}" prefer-fallback="{{item.art?true:false}}" blend-matte="{{true}}" dark="{{displayPreferences.theme==='dark'}}"/><view class="project-result-copy"><view class="project-result-name">{{item.name}}</view><view class="project-result-path">{{item.categoryName}} · {{item.group}}</view></view><text class="project-status {{configReady&&item.readiness.canStart?'available':''}}">{{configReady?(item.readiness.canStart?'填写':item.readiness.label):'待核对'}}</text><text class="project-arrow" aria-hidden="true">›</text></view>
+   <view wx:for="{{projects}}" wx:key="id" class="project-result-row {{item.categoryId==='C23'?'funeral-result':''}}" data-id="{{item.id}}" bindtap="chooseProject" role="button" aria-label="{{item.name}}，{{item.categoryName}} · {{item.group}}">
+    <catalog-image class="project-result-art" asset-id="{{item.id}}" fallback-src="/assets/icons/{{item.icon}}-{{iconPalette}}.png" blend-matte="{{true}}" muted="{{item.categoryId==='C23'}}" dark="{{displayPreferences.theme==='dark'}}"/>
+    <view class="project-result-copy"><view class="project-result-name">{{item.name}}</view><view class="project-result-path">{{item.categoryName}} · {{item.group}}</view></view>
+    <text class="project-arrow" aria-hidden="true">›</text>
+   </view>
    <feedback-state wx:if="{{!projects.length}}" kind="empty" description="没有匹配项目，试试其他名称或简称。" compact="{{false}}" large-text="{{displayPreferences.largeText}}"/>
   </scroll-view>
  </view>
  <view wx:else class="project-browser {{projectSearchOpen?'with-search':''}}">
-  <view class="industry-column" data-region="industry" bindtouchstart="onBrowseTouchStart" bindtouchmove="onBrowseTouchMove" bindtouchend="onBrowseTouchEnd" bindtouchcancel="onBrowseTouchCancel"><scroll-view class="industry-sidebar" scroll-y="true" scroll-top="{{industryScrollTop}}" scroll-into-view="{{industryAnchor}}" bindscroll="onIndustryScroll" bindscrolltolower="industryEnd" enhanced="true" show-scrollbar="{{false}}"><view wx:for="{{categories}}" wx:key="id" id="industry-{{item.id}}" class="industry-choice {{selectedCategory===item.id?'active':''}}" data-id="{{item.id}}" bindtap="selectCategory" role="button" aria-selected="{{selectedCategory===item.id}}"><image class="industry-icon" src="/assets/icons/{{item.icon}}-{{iconPalette}}.png" mode="aspectFit" aria-hidden="true"/><text>{{item.name}}</text></view><view wx:if="{{memorialPublic}}" class="industry-choice memorial-access" bindtap="openMemorial" role="button" aria-label="悼念专区，独立业务专区"><text class="memorial-access-icon" aria-hidden="true">✾</text><text>悼念专区</text></view></scroll-view><button class="industry-more" disabled="{{industryAtEnd}}" bindtap="scrollIndustryDown" aria-label="向下浏览更多行业"><view></view></button></view>
+  <view class="industry-column" data-region="industry" bindtouchstart="onBrowseTouchStart" bindtouchmove="onBrowseTouchMove" bindtouchend="onBrowseTouchEnd" bindtouchcancel="onBrowseTouchCancel">
+   <scroll-view class="industry-sidebar" scroll-y="true" scroll-top="{{industryScrollTop}}" scroll-into-view="{{industryAnchor}}" bindscroll="onIndustryScroll" enhanced="true" show-scrollbar="{{false}}">
+    <view wx:for="{{categories}}" wx:key="id" id="industry-{{item.id}}" class="industry-choice {{item.id==='C23'?'funeral-choice':''}} {{selectedCategory===item.id?'active':''}}" data-id="{{item.id}}" bindtap="selectCategory" role="button" aria-selected="{{selectedCategory===item.id}}"><image class="industry-icon" src="/assets/publish-industry/{{item.id}}.png" mode="aspectFit" aria-hidden="true"/><text>{{item.name}}</text></view>
+   </scroll-view>
+  </view>
   <view class="project-column" data-region="project" bindtouchstart="onBrowseTouchStart" bindtouchmove="onBrowseTouchMove" bindtouchend="onBrowseTouchEnd" bindtouchcancel="onBrowseTouchCancel"><scroll-view class="project-content" scroll-y="true" scroll-top="{{projectScrollTop}}" bindscroll="onProjectScroll" enhanced="true" show-scrollbar="{{false}}">
-    <view wx:for="{{groups}}" wx:key="id" wx:for-item="group" class="project-group-section">
-     <view class="project-group" data-id="{{group.id}}" bindtap="toggleGroup" role="button" aria-expanded="{{expandedGroupId===group.id}}" aria-label="{{group.name}}，共{{group.items.length}}项，{{group.availableCount}}项已接入发布"><image class="group-icon" src="/assets/icons/{{group.icon}}-{{iconPalette}}.png" mode="aspectFit" aria-hidden="true"/><view class="project-group-copy"><text class="project-group-title">{{group.name}}</text><text wx:if="{{expandedGroupId!==group.id}}" class="group-summary">{{group.summary}}</text></view><text class="group-count">{{group.items.length}}个分类</text><view class="group-chevron {{expandedGroupId===group.id?'expanded':''}}" aria-hidden="true"></view></view>
-     <view wx:if="{{expandedGroupId===group.id}}" class="project-grid"><view wx:for="{{group.items}}" wx:key="id" class="project-row {{focusedProjectId===item.id?'project-focused':''}}" id="publish-project-{{item.id}}" data-id="{{item.id}}" bindtap="chooseProject" role="button" aria-label="{{item.name}}，{{configReady?item.readiness.label:'待核对'}}"><view class="project-visual {{item.art?'has-art':'has-resource'}}"><catalog-image class="{{item.art?'project-art':'project-asset'}}" asset-id="{{item.id}}" fallback-src="{{item.art?'/assets/publish/'+item.art+'.png':'/assets/icons/'+item.icon+'-'+iconPalette+'.png'}}" prefer-fallback="{{item.art?true:false}}" blend-matte="{{true}}" dark="{{displayPreferences.theme==='dark'}}"/></view><view class="project-row-copy"><text class="project-name">{{item.name}}</text><text class="project-summary">{{item.summary}}</text><text wx:if="{{!configReady||!item.readiness.canStart}}" class="project-status">{{configReady?item.readiness.label:'待核对'}}</text></view><view class="project-row-end"><text class="project-arrow" aria-hidden="true">›</text></view></view></view>
+    <button wx:if="{{selectedCategory==='C23'}}" class="funeral-banner" bindtap="toggleFuneralGroups" aria-expanded="{{funeralGroupsOpen}}">
+     <image class="funeral-banner-art" src="/assets/memorial-landscape.jpg" mode="aspectFill" aria-hidden="true"/>
+     <text>殡葬服务</text><view class="funeral-toggle"><text>{{funeralGroupsOpen?'收起分类':'展开分类'}}</text><view class="group-chevron {{funeralGroupsOpen?'expanded':''}}"/></view>
+    </button>
+    <block wx:if="{{selectedCategory!=='C23'||funeralGroupsOpen}}"><view wx:for="{{groups}}" wx:key="id" wx:for-item="group" class="project-group-section">
+     <view class="project-group {{(selectedCategory==='C23'?!collapsedFuneralGroups[group.id]:expandedGroupId===group.id)?'is-expanded':''}}" data-id="{{group.id}}" bindtap="toggleGroup" role="button" aria-expanded="{{selectedCategory==='C23'?!collapsedFuneralGroups[group.id]:expandedGroupId===group.id}}" aria-label="{{group.name}}，共{{group.items.length}}项，{{group.availableCount}}项已接入发布">
+      <view class="group-marker" aria-hidden="true"></view>
+      <text class="project-group-title">{{group.name}}</text>
+      <view class="group-meta"><text class="group-count">{{group.items.length}}项</text><view class="group-chevron {{(selectedCategory==='C23'?!collapsedFuneralGroups[group.id]:expandedGroupId===group.id)?'expanded':''}}" aria-hidden="true"></view></view>
+     </view>
+     <view wx:if="{{selectedCategory==='C23'?!collapsedFuneralGroups[group.id]:expandedGroupId===group.id}}" class="project-grid">
+      <view wx:for="{{group.items}}" wx:key="id" class="project-row {{focusedProjectId===item.id?'project-focused':''}}" id="publish-project-{{item.id}}" data-id="{{item.id}}" bindtap="chooseProject" role="button" aria-label="{{item.name}}，{{item.summary}}">
+       <view class="project-visual">
+        <catalog-image lazy-load="{{false}}" class="project-asset" asset-id="{{item.id}}" fallback-src="/assets/icons/{{item.icon}}-{{iconPalette}}.png" blend-matte="{{true}}" muted="{{item.categoryId==='C23'}}" dark="{{displayPreferences.theme==='dark'}}"/>
+       </view>
+       <view class="project-row-copy">
+        <text class="project-name">{{item.name}}</text>
+        <text wx:if="{{item.summary}}" class="project-summary">{{item.summary}}</text>
+        <text class="project-card-arrow" aria-hidden="true">›</text>
+       </view>
+      </view>
+     </view>
     </view>
-    <view wx:if="{{!groups.length}}" class="notice">该分类暂无项目。</view>
+    <view wx:if="{{!groups.length}}" class="notice">该分类暂无项目。</view></block>
+    <button wx:if="{{selectedCategory==='C23'}}" class="memorial-access" hover-class="memorial-access-pressed" bindtap="openMemorial" aria-label="进入时光纪念馆">
+     <text class="memorial-access-icon" aria-hidden="true">✾</text>
+     <view class="memorial-access-copy"><text class="memorial-access-title">纪念馆</text><text class="memorial-access-subtitle">让思念有处安放</text></view>
+     <view class="memorial-access-arrow" aria-hidden="true"/>
+    </button>
    </scroll-view>
   </view>
  </view>

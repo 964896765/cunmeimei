@@ -543,22 +543,31 @@
     "name": "品牌折扣店",
     "parts": [
       {
-        "model": "shop",
+        "model": "resale-tag",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "ticket",
+        "model": "shop",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
+      },
+      {
+        "model": "bag",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -783,22 +792,31 @@
     "name": "图书文具",
     "parts": [
       {
-        "model": "open-book",
+        "model": "book",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
+      },
+      {
+        "model": "case",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
       },
       {
         "model": "brush",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.73,
+          -0.25,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.49
       }
     ]
   },
@@ -855,32 +873,31 @@
     "name": "社区互助",
     "parts": [
       {
-        "model": "adult",
+        "model": "heart",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
+      },
+      {
+        "model": "adult",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
       },
       {
         "model": "child",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.73,
+          -0.25,
+          0
         ],
-        "scale": 0.5
-      },
-      {
-        "model": "heart",
-        "position": [
-          -0.7,
-          -0.1,
-          0.02
-        ],
-        "scale": 0.42,
-        "rotation": -0.1
+        "scale": 0.49
       }
     ]
   },
@@ -995,32 +1012,31 @@
     "name": "邻里社群",
     "parts": [
       {
-        "model": "adult",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
-        "model": "adult",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
-      },
-      {
         "model": "envelope",
         "position": [
-          -0.7,
-          -0.1,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.42,
-        "rotation": -0.1
+        "scale": 1
+      },
+      {
+        "model": "house",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
+      },
+      {
+        "model": "adult",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -1053,22 +1069,31 @@
     "name": "公共设施指引",
     "parts": [
       {
-        "model": "signpost",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "tower",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "signpost",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "screen",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -1077,22 +1102,31 @@
     "name": "闲置租借信息",
     "parts": [
       {
-        "model": "tools",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "clock",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "parcel",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "key",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -1101,22 +1135,31 @@
     "name": "生活经验分享",
     "parts": [
       {
-        "model": "open-book",
+        "model": "envelope",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "adult",
+        "model": "open-book",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
+      },
+      {
+        "model": "heart",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -1125,22 +1168,13 @@
     "name": "公交地铁",
     "parts": [
       {
-        "model": "subway",
+        "model": "metro-front",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "ticket",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -1149,22 +1183,13 @@
     "name": "出租车",
     "parts": [
       {
-        "model": "car",
+        "model": "city-taxi",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "parking",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -1173,22 +1198,22 @@
     "name": "网约车",
     "parts": [
       {
-        "model": "car",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "phone",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.15,
+          0.12,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "rental-car",
+        "position": [
+          0.63,
+          -0.33,
+          0
+        ],
+        "scale": 0.66
       }
     ]
   },
@@ -1245,22 +1270,13 @@
     "name": "火车出行",
     "parts": [
       {
-        "model": "train",
+        "model": "rail-bullet",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "case",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -1271,20 +1287,20 @@
       {
         "model": "plane",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "passport",
+        "model": "case",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -1293,22 +1309,22 @@
     "name": "城际包车",
     "parts": [
       {
-        "model": "bus",
+        "model": "charter-van",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "clock",
+        "model": "key",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
       }
     ]
   },
@@ -1317,22 +1333,22 @@
     "name": "代驾服务",
     "parts": [
       {
-        "model": "car",
+        "model": "steering-wheel",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "adult",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -1365,22 +1381,22 @@
     "name": "洗车美容",
     "parts": [
       {
-        "model": "car",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "bath",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.15,
+          0.12,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "car",
+        "position": [
+          0.63,
+          -0.33,
+          0
+        ],
+        "scale": 0.66
       }
     ]
   },
@@ -1389,22 +1405,13 @@
     "name": "车辆保养",
     "parts": [
       {
-        "model": "car",
+        "model": "workshop-lift",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "cosmetic",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -1461,22 +1468,22 @@
     "name": "汽车贴膜",
     "parts": [
       {
-        "model": "car",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "lens",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.15,
+          0.12,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "resale-car",
+        "position": [
+          0.63,
+          -0.33,
+          0
+        ],
+        "scale": 0.66
       }
     ]
   },
@@ -1485,22 +1492,22 @@
     "name": "汽车改装",
     "parts": [
       {
-        "model": "car",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "gear",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.15,
+          0.12,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "rental-car",
+        "position": [
+          0.63,
+          -0.33,
+          0
+        ],
+        "scale": 0.66
       }
     ]
   },
@@ -1509,22 +1516,22 @@
     "name": "新能源汽车维修",
     "parts": [
       {
-        "model": "engine",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "battery",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.15,
+          0.12,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "engine",
+        "position": [
+          0.63,
+          -0.33,
+          0
+        ],
+        "scale": 0.66
       }
     ]
   },
@@ -1581,22 +1588,22 @@
     "name": "道路救援",
     "parts": [
       {
-        "model": "truck",
+        "model": "roadside-beacon",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "tools",
+        "model": "truck",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -1605,22 +1612,22 @@
     "name": "车辆年检代办",
     "parts": [
       {
-        "model": "car",
+        "model": "vehicle-checklist",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "certificate",
+        "model": "new-car",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -1653,22 +1660,22 @@
     "name": "二手车买卖",
     "parts": [
       {
-        "model": "car",
+        "model": "resale-tag",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "key",
+        "model": "resale-car",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -1727,20 +1734,29 @@
       {
         "model": "cosmetic",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "flower",
+        "model": "bottle",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
+      },
+      {
+        "model": "lens",
+        "position": [
+          -0.74,
+          -0.31,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -1845,22 +1861,31 @@
     "name": "个人形象设计",
     "parts": [
       {
-        "model": "dress",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "lens",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "lipstick",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "scissors",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -1893,22 +1918,22 @@
     "name": "美体护理",
     "parts": [
       {
-        "model": "mat",
+        "model": "spa-bench",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "cosmetic",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.62
       }
     ]
   },
@@ -1991,20 +2016,20 @@
       {
         "model": "tools",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "certificate",
+        "model": "open-book",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -2013,22 +2038,22 @@
     "name": "学历提升",
     "parts": [
       {
-        "model": "book",
+        "model": "graduation-cap",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "certificate",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.62
       }
     ]
   },
@@ -2037,22 +2062,22 @@
     "name": "考试培训",
     "parts": [
       {
-        "model": "open-book",
+        "model": "exam-desk",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "clock",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.62
       }
     ]
   },
@@ -2087,20 +2112,20 @@
       {
         "model": "racket",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "ball",
+        "model": "mat",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -2133,22 +2158,22 @@
     "name": "老房翻新",
     "parts": [
       {
-        "model": "house",
+        "model": "roof-renovation",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "brush",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -2253,22 +2278,22 @@
     "name": "全屋定制",
     "parts": [
       {
-        "model": "locker",
+        "model": "wardrobe-display",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "blueprint",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
       }
     ]
   },
@@ -2373,22 +2398,22 @@
     "name": "中医诊疗",
     "parts": [
       {
-        "model": "plant",
+        "model": "oral-herb-bowl",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "medical",
+        "model": "plant",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.62
       }
     ]
   },
@@ -2445,22 +2470,31 @@
     "name": "药店药房",
     "parts": [
       {
-        "model": "medical",
+        "model": "cosmetic",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "certificate",
+        "model": "medical",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
+      },
+      {
+        "model": "bottle",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -2493,22 +2527,22 @@
     "name": "周边短途游",
     "parts": [
       {
-        "model": "bus",
+        "model": "route-map",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "backpack",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -2517,22 +2551,22 @@
     "name": "乡村旅游",
     "parts": [
       {
-        "model": "house",
+        "model": "village-fields",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "plant",
+        "model": "signpost",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -2565,22 +2599,22 @@
     "name": "户外徒步",
     "parts": [
       {
-        "model": "mountain",
+        "model": "hiking-boot",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "shoe",
+        "model": "backpack",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -2589,22 +2623,31 @@
     "name": "当地导览",
     "parts": [
       {
-        "model": "signpost",
+        "model": "route-map",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "globe",
+        "model": "signpost",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
+      },
+      {
+        "model": "magnifier",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -2661,22 +2704,22 @@
     "name": "高端酒店",
     "parts": [
       {
-        "model": "hotel-luxury",
+        "model": "hotel-canopy",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "case",
+        "model": "reception-bell",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
       }
     ]
   },
@@ -2709,22 +2752,13 @@
     "name": "普拉提",
     "parts": [
       {
-        "model": "mat",
+        "model": "fitness-reformer",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "hoop",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -2757,22 +2791,31 @@
     "name": "体能训练",
     "parts": [
       {
-        "model": "dumbbell",
+        "model": "mat",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
+      },
+      {
+        "model": "dumbbell",
+        "position": [
+          0.63,
+          -0.33,
+          0
+        ],
+        "scale": 0.66
       },
       {
         "model": "clock",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.74,
+          -0.31,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.49
       }
     ]
   },
@@ -2877,22 +2920,13 @@
     "name": "乒乓球馆",
     "parts": [
       {
-        "model": "pingpong",
+        "model": "pingpong-table",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "ball",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -2997,22 +3031,31 @@
     "name": "婚庆主持",
     "parts": [
       {
-        "model": "mic",
+        "model": "curtain",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
+      },
+      {
+        "model": "mic",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
       },
       {
         "model": "ring",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.73,
+          -0.25,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.48
       }
     ]
   },
@@ -3021,22 +3064,31 @@
     "name": "婚宴酒店",
     "parts": [
       {
-        "model": "hotel-luxury",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "cake",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "ring",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "flower",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -3093,32 +3145,31 @@
     "name": "婚介机构",
     "parts": [
       {
-        "model": "adult",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
-        "model": "adult",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
-      },
-      {
         "model": "ring",
         "position": [
-          -0.7,
-          -0.1,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.42,
-        "rotation": -0.1
+        "scale": 1
+      },
+      {
+        "model": "heart",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
+      },
+      {
+        "model": "certificate",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -3329,22 +3380,13 @@
     "name": "会展服务",
     "parts": [
       {
-        "model": "mall",
+        "model": "exhibition-booth",
         "position": [
-          -0.12,
-          0.08,
+          0,
+          0,
           0
         ],
-        "scale": 0.95
-      },
-      {
-        "model": "notice",
-        "position": [
-          0.65,
-          -0.35,
-          0.02
-        ],
-        "scale": 0.5
+        "scale": 1
       }
     ]
   },
@@ -3377,22 +3419,31 @@
     "name": "长者活动中心",
     "parts": [
       {
-        "model": "seated",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "mahjong",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "sofa",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
+      },
+      {
+        "model": "plant",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -3449,22 +3500,31 @@
     "name": "失能照护",
     "parts": [
       {
-        "model": "bed",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "wheelchair",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "medical",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "shield",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -3473,22 +3533,31 @@
     "name": "护理陪护",
     "parts": [
       {
-        "model": "seated",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "medical",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "chair",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
+      },
+      {
+        "model": "heart",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -3545,22 +3614,22 @@
     "name": "遗体接运",
     "parts": [
       {
-        "model": "car",
+        "model": "charter-van",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "lily",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
       }
     ]
   },
@@ -3737,22 +3806,31 @@
     "name": "丧事鲜花布置",
     "parts": [
       {
-        "model": "lily",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "flower",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "lily",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "plant",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -3763,20 +3841,29 @@
       {
         "model": "open-book",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "lily",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.62
+      },
+      {
+        "model": "candle",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -3785,22 +3872,22 @@
     "name": "快递寄件",
     "parts": [
       {
-        "model": "parcel",
+        "model": "shipping-chute",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "envelope",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -3809,22 +3896,31 @@
     "name": "居民搬家",
     "parts": [
       {
-        "model": "truck",
+        "model": "parcel",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "house",
+        "model": "truck",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
+      },
+      {
+        "model": "sofa",
+        "position": [
+          -0.74,
+          -0.31,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -3833,22 +3929,31 @@
     "name": "家具运输",
     "parts": [
       {
-        "model": "truck",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "sofa",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "truck",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "key",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   },
@@ -3881,22 +3986,22 @@
     "name": "冷链物流",
     "parts": [
       {
-        "model": "truck",
+        "model": "ice-crate",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "snowflake",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -3977,22 +4082,31 @@
     "name": "病虫害防治服务",
     "parts": [
       {
-        "model": "plant",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "shield",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "sprinkler",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.62
+      },
+      {
+        "model": "plant",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -4121,22 +4235,22 @@
     "name": "不动产登记指引",
     "parts": [
       {
-        "model": "house",
+        "model": "survey-tripod",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "certificate",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
       }
     ]
   },
@@ -4145,22 +4259,22 @@
     "name": "生活缴费指引",
     "parts": [
       {
-        "model": "calculator",
+        "model": "utility-meter",
         "position": [
-          -0.12,
-          0.08,
+          -0.14,
+          0.13,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
         "model": "faucet",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.66,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.59
       }
     ]
   },
@@ -4241,22 +4355,31 @@
     "name": "理赔服务网点",
     "parts": [
       {
-        "model": "shield",
+        "model": "certificate",
         "position": [
-          -0.12,
-          0.08,
+          -0.15,
+          0.12,
           0
         ],
-        "scale": 0.95
+        "scale": 1
       },
       {
-        "model": "paper",
+        "model": "shield",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          0.63,
+          -0.33,
+          0
         ],
-        "scale": 0.5
+        "scale": 0.66
+      },
+      {
+        "model": "heart",
+        "position": [
+          -0.74,
+          -0.31,
+          0
+        ],
+        "scale": 0.49
       }
     ]
   },
@@ -4265,22 +4388,31 @@
     "name": "金融消费者权益指引",
     "parts": [
       {
-        "model": "scales",
-        "position": [
-          -0.12,
-          0.08,
-          0
-        ],
-        "scale": 0.95
-      },
-      {
         "model": "shield",
         "position": [
-          0.65,
-          -0.35,
-          0.02
+          -0.14,
+          0.13,
+          0
         ],
-        "scale": 0.5
+        "scale": 1
+      },
+      {
+        "model": "scales",
+        "position": [
+          0.66,
+          -0.33,
+          0
+        ],
+        "scale": 0.59
+      },
+      {
+        "model": "certificate",
+        "position": [
+          -0.73,
+          -0.25,
+          0
+        ],
+        "scale": 0.48
       }
     ]
   }

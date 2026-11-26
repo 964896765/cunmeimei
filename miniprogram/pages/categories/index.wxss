@@ -9,3 +9,9 @@
 .shortcut-state { font-size:28rpx; }
 .count { color:var(--muted); font-size:26rpx; font-weight:400; }
 .shortcut-save { padding-top:28rpx; }
+.shortcuts-page .shortcut-option { gap:10rpx; border-color:var(--glass-line); border-radius:26rpx; background:var(--glass-surface); box-shadow:var(--glass-shadow); }
+.shortcuts-page .shortcut-option.chosen { border-color:var(--brand); background:var(--glass-tile); color:var(--link); }
+.category-icon-frame { display:grid; flex-shrink:0; place-items:center; width:61rpx; height:61rpx; border-radius:18rpx; background:var(--glass-tile); }
+.category-icon-frame .shortcut-icon { width:38rpx; height:38rpx; margin:0; }
+.category-icon-frame .art { width:55rpx; height:55rpx; }
+.shortcut-save { background:var(--glass-surface); border-color:var(--glass-line); box-shadow:var(--glass-shadow); }

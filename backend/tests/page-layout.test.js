@@ -20,10 +20,10 @@ function fixture() {
 
 test("layout measures capsule header and actual footer with stable scroll thresholds", () => {
   const { layout, page } = fixture();
-  page.getTabBar = () => ({ createSelectorQuery: () => ({ select() { return this; }, boundingClientRect(fn) { fn({ height: 90 }); return this; }, exec() {} }) });
+  page.getTabBar = () => ({ createSelectorQuery: () => ({ select() { return this; }, boundingClientRect(fn) { fn({ height: 60, bottom: 801 }); return this; }, exec() {} }) });
   layout.show(page, { tabBar: true });
   layout.header(page, { detail: { height: 107, statusHeight: 47, rowHeight: 60, titleInset: 104 } });
-  assert.match(page.data.layoutStyle, /--page-bottom:90px/);
+  assert.match(page.data.layoutStyle, /--page-bottom:103px/);
   assert.match(page.data.layoutStyle, /--page-header:107px/);
   assert.match(page.data.layoutStyle, /--page-capsule:104px/);
   page.updates = [];
@@ -70,12 +70,12 @@ test("late measurements cannot overwrite a hidden or resized page", () => {
   assert.equal(page.data.layoutStyle, previous);
 });
 
-test("a window without a bottom safe inset reserves only the actual tab row", () => {
+test("a window without a bottom safe inset reserves the tab row and its gap", () => {
   const { layout, page, info } = fixture();
   Object.assign(info, { windowHeight: 780, screenHeight: 820, statusBarHeight: 24, safeArea: { bottom: 820 } });
   layout.show(page, { tabBar: true });
   assert.match(page.data.layoutStyle, /--page-viewport:780px/);
-  assert.match(page.data.layoutStyle, /--page-bottom:56px/);
+  assert.match(page.data.layoutStyle, /--page-bottom:69px/);
   assert.match(page.data.layoutStyle, /--page-status:24px/);
 });
 

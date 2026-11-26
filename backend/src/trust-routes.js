@@ -1,8 +1,8 @@
 'use strict';
 const {ApiError,text,uuid}=require('./rules'),policy=require('./trust-policy');
 const fail=(code,message,status=400)=>{throw new ApiError(status,code,message);};
-async function trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerifier,phoneConfigured}){
- if(p==='/api/v1/me/trust'&&m==='GET'){const uid=await user(req);return json(res,200,{...await repo.trustStatus(uid),phoneProviderAvailable:phoneConfigured,identityMode:'unavailable_pending_compliant_provider'}),true;}
+async function trustRoutes({req,res,p,m,url,repo,user,admin,body,json,phoneVerifier,phoneConfigured,smsConfigured=false}){
+ if(p==='/api/v1/me/trust'&&m==='GET'){const uid=await user(req);return json(res,200,{...await repo.trustStatus(uid),phoneProviderAvailable:phoneConfigured,smsAvailable:smsConfigured,identityMode:'unavailable_pending_compliant_provider'}),true;}
  if(p==='/api/v1/me/trust/request'&&m==='POST'){await repo.requestIdentity(await user(req));return json(res,200,{ok:true}),true;}
  if(p==='/api/v1/me/phone'&&m==='DELETE'){await repo.revokePhone(await user(req));return json(res,200,{ok:true}),true;}
  if(p==='/api/v1/me/phone/wechat'&&m==='POST'){const uid=await user(req),v=await body(req);if(!phoneConfigured)fail('PHONE_PROVIDER_NOT_READY','微信手机号验证尚未配置',503);if(!await repo.hasWechatIdentity(uid))fail('WECHAT_IDENTITY_REQUIRED','需要微信登录身份',403);const number=await phoneVerifier(text(v.code,512,4));await repo.verifyPhone(uid,number,'wechat_phone','wechat-phone-api');return json(res,200,{ok:true}),true;}

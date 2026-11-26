@@ -5,6 +5,28 @@ const {createMerchantApplication}=require('./merchant-application-pg');
 const {literalSearchPattern}=require('./search-pattern');
 const {toPublicItem}=require('./public-item');
 const {isBookableSlot,isValidSlotInstant}=require('./booking-window');
+const {randomBytes,createHash}=require('node:crypto');
+const {ApiError}=require('./rules');
+const {transaction}=require('./points-repository');
+
+async function findOrCreateIdentity(client,provider,openid){
+ await client.query('SELECT pg_advisory_xact_lock(hashtext($1))',[provider+':'+openid]);
+ const fingerprint=require('./account-lifecycle').identityFingerprint(provider,openid);
+ if((await client.query('SELECT 1 FROM closed_identity_fingerprints WHERE fingerprint=$1',[fingerprint])).rowCount){
+  throw new ApiError(403,'ACCOUNT_CLOSED','该登录身份对应的账号已注销，无法自动恢复');
+ }
+ const existing=(await client.query('SELECT user_id FROM app_identities WHERE provider=$1 AND provider_id=$2',[provider,openid])).rows[0];
+ if(existing)return existing.user_id;
+ const {id}=(await client.query('INSERT INTO app_users DEFAULT VALUES RETURNING id')).rows[0];
+ await client.query('INSERT INTO app_identities(provider,provider_id,user_id) VALUES($1,$2,$3)',[provider,openid,id]);
+ return id;
+}
+async function insertSession(client,uid,hash,expiry,consent,method='wechat_miniapp'){
+ const account=(await client.query('SELECT status FROM app_users WHERE id=$1 FOR SHARE',[uid])).rows[0];
+ if(account?.status!=='active')throw new ApiError(403,'ACCOUNT_INACTIVE','账号已关闭或受限');
+ await client.query('INSERT INTO app_sessions(token_sha256,user_id,expires_at) VALUES($1,$2,$3)',[hash,uid,expiry]);
+ if(consent)await client.query('INSERT INTO login_consent_events(user_id,terms_version,privacy_version,document_hash,login_method) VALUES($1,$2,$3,$4,$5)',[uid,consent.termsVersion,consent.privacyVersion,consent.hash,method]);
+}
 function createPgRepository(connectionString, options={}){
  if(!connectionString)throw Error('DATABASE_URL required for PostgreSQL mode');
  const pool=new Pool({connectionString,max:10,connectionTimeoutMillis:5000,...options});
@@ -30,12 +52,8 @@ function createPgRepository(connectionString, options={}){
  async setCategoryEnabled(id,enabled){const c=await pool.connect();try{await c.query('BEGIN');const r=(await c.query('UPDATE business_categories SET enabled=$2,updated_at=now() WHERE id=$1 AND NOT (restricted AND $2=true) RETURNING id,name,enabled,restricted',[id,enabled])).rows[0];if(r)await c.query('INSERT INTO configuration_audit(action,item_key,detail) VALUES($1,$2,$3)',['category_status',id,'enabled='+enabled]);await c.query('COMMIT');return r||null;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
 
  async verifySchema(){const {checkMigrations}=require('./schema-migrations');const status=await checkMigrations(pool);if(!status.ok)throw Error('Database migrations missing or drifted: '+JSON.stringify(status));return status;},
- async upsertIdentity(provider,openid){const c=await pool.connect();try{await c.query('BEGIN');
-   // Serialize first-time login per provider identity, preventing orphan app_users on concurrent login.
-   await c.query('SELECT pg_advisory_xact_lock(hashtext($1))',[provider+':'+openid]);
-   if((await c.query('SELECT 1 FROM closed_identity_fingerprints WHERE fingerprint=$1',[require('./account-lifecycle').identityFingerprint(provider,openid)])).rows.length)throw new (require('./rules').ApiError)(403,'ACCOUNT_CLOSED','该登录身份对应的账号已注销，无法自动恢复');
-   const existing=await c.query('SELECT user_id FROM app_identities WHERE provider=$1 AND provider_id=$2',[provider,openid]);if(existing.rows[0]){await c.query('COMMIT');return existing.rows[0].user_id;}const user=await c.query('INSERT INTO app_users DEFAULT VALUES RETURNING id');const r=await c.query('INSERT INTO app_identities(provider,provider_id,user_id) VALUES($1,$2,$3) ON CONFLICT(provider,provider_id) DO NOTHING RETURNING user_id',[provider,openid,user.rows[0].id]);const actual=r.rows[0]?.user_id||(await c.query('SELECT user_id FROM app_identities WHERE provider=$1 AND provider_id=$2',[provider,openid])).rows[0].user_id;await c.query('COMMIT');return actual;}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}},
- async newSession(uid,hash,expire,consent=null){return require('./points-repository').transaction(pool,async c=>{const account=(await c.query('SELECT status FROM app_users WHERE id=$1 FOR SHARE',[uid])).rows[0];if(account?.status!=='active')throw new (require('./rules').ApiError)(403,'ACCOUNT_INACTIVE','账号已关闭或受限');await c.query('INSERT INTO app_sessions(token_sha256,user_id,expires_at) VALUES($1,$2,$3)',[hash,uid,expire]);if(consent)await c.query('INSERT INTO login_consent_events(user_id,terms_version,privacy_version,document_hash) VALUES($1,$2,$3,$4)',[uid,consent.termsVersion,consent.privacyVersion,consent.hash]);});},
+ upsertIdentity(provider,openid){return transaction(pool,c=>findOrCreateIdentity(c,provider,openid));},
+ newSession(uid,hash,expire,consent=null){return transaction(pool,c=>insertSession(c,uid,hash,expire,consent));},
  async authenticate(hash){const r=await one("SELECT s.user_id FROM app_sessions s JOIN app_users u ON u.id=s.user_id WHERE s.token_sha256=$1 AND s.expires_at>now() AND u.status='active'",[hash]);return r?.user_id||null;},
  async revokeSession(hash){return !!(await one('DELETE FROM app_sessions WHERE token_sha256=$1 RETURNING token_sha256',[hash]));},
  async ping(){await pool.query('SELECT 1');return true;},
@@ -144,6 +162,24 @@ function createPgRepository(connectionString, options={}){
  async close(){await pool.end();}
  };
  const trusted=require('./trust-repository').attachTrustRepository(require('./geo-repository').attachGeoRepository(require('./product-repository').attachProductRepository(repository,pool),pool),pool);
+ require('./sms-repository').attachSmsRepository(trusted,pool);
+ trusted.smsMatchesPhone=async(uid,number)=>{
+  const {hmac}=require('./trust-policy').sealPhone(number,trusted.trustOptions.phoneKey);
+  return !!await one('SELECT 1 FROM verified_phones WHERE user_id=$1 AND number_hmac=$2',[uid,hmac]);
+ };
+ trusted.completeSmsBind=async(c,session,number,previousPhone)=>{
+  await c.query('SELECT id FROM app_users WHERE id=$1 FOR UPDATE',[session.uid]);
+  const active=await c.query('SELECT 1 FROM app_sessions WHERE user_id=$1 AND token_sha256=$2 AND expires_at>now() FOR SHARE',[session.uid,session.hash]);
+  if(!active.rowCount)throw new ApiError(401,'SESSION_EXPIRED','登录已过期，请重新登录后验证');
+  await trusted.verifyPhoneInTransaction(c,session.uid,number,'sms_otp','sms-code',{previousPhone});
+ };
+ trusted.completeSmsSignIn=async(c,openid,number,consent)=>{
+  const userId=await findOrCreateIdentity(c,'wechat_miniapp',openid);
+  await trusted.verifyPhoneInTransaction(c,userId,number,'sms_otp','sms-code',{keepVerified:true});
+  const token=randomBytes(32).toString('base64url'),expiresIn=604800;
+  await insertSession(c,userId,createHash('sha256').update(token).digest('hex'),new Date(Date.now()+expiresIn*1000),consent,'sms_otp');
+  return {token,expiresIn,userId};
+ };
  require('./review-workbench').attachWorkbench(trusted,pool);
  require('./points-repository').attachPoints(trusted,pool);
  require('./contribution-rewards').attachContributionRewards(trusted,pool);

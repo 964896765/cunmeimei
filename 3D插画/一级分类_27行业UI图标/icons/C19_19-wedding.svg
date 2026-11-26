@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="婚庆婚恋">
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D95B9B"/>
+      <stop offset="1" stop-color="#A94E83"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#brand)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 53S10 39 10 24a11 11 0 0 1 22-3 11 11 0 0 1 22 3c0 15-22 29-22 29z"/><path d="M24 32h16M32 24v16"/>
+  </g>
+</svg>

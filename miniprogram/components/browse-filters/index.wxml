@@ -1,1 +1,12 @@
-<view class="browse-filters {{largeText?'large':''}}"><picker id="browse-category" mode="multiSelector" range="{{columns}}" range-key="name" value="{{value}}" disabled="{{disabled}}" bindcolumnchange="column" bindchange="selectCategory" bindcancel="cancel"><view class="choice {{categoryId?'selected':''}}" aria-label="筛选行业及项目"><text>{{categoryLabel}}</text><text class="chevron">⌄</text></view></picker><picker id="browse-district" range="{{districts}}" range-key="name" value="{{districtIndex}}" disabled="{{disabled||!cityCode}}" bindchange="selectDistrict"><view class="choice {{districtCode?'selected':''}}" aria-label="筛选区县或街镇"><text>{{cityCode?districtLabel:'先选择城市'}}</text><text class="chevron">⌄</text></view></picker></view>
+<view class="browse-filters {{largeText?'large':''}}">
+ <picker id="browse-category" mode="multiSelector" range="{{columns}}" range-key="name" value="{{value}}" disabled="{{disabled}}" bindcolumnchange="column" bindchange="selectCategory" bindcancel="cancel">
+  <view class="choice {{categoryId?'selected':''}} {{disabled?'disabled':''}}" aria-label="筛选行业及项目，{{categoryLabel}}">
+   <view class="choice-copy"><text class="choice-label">行业与项目</text><text class="choice-value">{{categoryLabel}}</text></view><view class="chevron" aria-hidden="true"></view>
+  </view>
+ </picker>
+ <picker id="browse-district" range="{{districts}}" range-key="name" value="{{districtIndex}}" disabled="{{disabled||!cityCode}}" bindchange="selectDistrict">
+  <view class="choice {{districtCode?'selected':''}} {{disabled||!cityCode?'disabled':''}}" aria-label="筛选区县或街镇，{{cityCode?districtLabel:'请先选择城市'}}">
+   <view class="choice-copy"><text class="choice-label">区县与街镇</text><text class="choice-value">{{cityCode?districtLabel:'请先选择城市'}}</text></view><view class="chevron" aria-hidden="true"></view>
+  </view>
+ </picker>
+</view>

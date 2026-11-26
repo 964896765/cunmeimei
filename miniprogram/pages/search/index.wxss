@@ -1,20 +1,28 @@
 page { height:100%; overflow:hidden; }
 .theme-root.search-root { display:flex; flex-direction:column; height:100vh; min-height:0; overflow:hidden; }
+.theme-root.search-root.theme-prism:not(.material-clear) { background-color:#f6f8fd; background-size:100% 100%; --page-wash:linear-gradient(162deg,#fff 3%,#f1f4ff 62%,#faf8fc); }
 .search-root>page-header { display:block; flex-shrink:0; }
-.search-fixed-header { flex-shrink:0; padding:24rpx 32rpx 0; border-bottom:1rpx solid var(--border); background:var(--surface); }
-.query-filters { display:flex; align-items:center; gap:16rpx; min-height:96rpx; margin-top:16rpx; }
-.query-filters>picker { flex:1; min-width:0; }
-.city-filter,.filter { display:flex; align-items:center; justify-content:space-between; gap:12rpx; min-height:88rpx; padding:12rpx 0; margin:0; border:0; background:transparent; color:var(--text); font-size:26rpx; line-height:1.5; }
-.city-filter { flex:1; min-width:0; }
-.city-filter text,.filter text { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.search-fixed-header { flex-shrink:0; padding:12rpx 22rpx 8rpx; border-bottom:1rpx solid var(--border); background:var(--glass-surface); box-shadow:0 4rpx 15rpx #47375b0b; }
+.search-fixed-header search-bar {
+ --search-radius:34rpx; --search-shadow:var(--elevation); --search-gap:15rpx;
+ --search-submit-height:34px; --search-submit-fill:var(--soft); --search-submit-radius:24rpx; --search-submit-padding:2rpx 18rpx;
+}
+.query-filters { display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr) minmax(0,1fr) auto; align-items:center; gap:8rpx; margin:14rpx 0 6rpx; }
+.query-filters>picker { width:100%; min-width:0; }
+.query-chip { box-sizing:border-box; display:flex; align-items:center; gap:7rpx; width:100%; min-width:0; min-height:36px; margin:0; padding:0 13rpx; border:1rpx solid var(--border); border-radius:18px; background:var(--soft); color:var(--text); font-size:24rpx; line-height:1.3; }
+.query-chip.is-selected { border-color:var(--control-border); background:var(--surface); color:var(--link); font-weight:650; }
+.query-chip.city-filter { border-color:var(--border); color:var(--ink); font-weight:650; }
+.query-chip-pressed { opacity:.76; }
+.query-label { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
+.query-location { flex:none; width:22rpx; height:22rpx; }
 .city-filter::after,.advanced-button::after,.clear-recent::after { border:0; }
-.filter-chevron { flex-shrink:0; width:10rpx; height:10rpx; border-right:2rpx solid var(--muted); border-bottom:2rpx solid var(--muted); transform:rotate(45deg); margin-top:-6rpx; }
-.advanced-button { display:flex; align-items:center; justify-content:center; flex-shrink:0; width:88rpx; height:88rpx; margin:0; padding:0; border:0; background:transparent; }
-.advanced-button.filtered { background:var(--soft); border-radius:12rpx; }
-.sliders { display:flex; flex-direction:column; gap:8rpx; width:32rpx; }
-.sliders view { position:relative; height:2rpx; background:var(--link); }
-.sliders view::after { content:''; position:absolute; left:7rpx; top:-3rpx; width:7rpx; height:7rpx; border:2rpx solid var(--link); border-radius:50%; background:var(--surface); }
-.sliders view:nth-child(2)::after { left:21rpx; }
+.filter-chevron { flex:none; width:9rpx; height:9rpx; margin-top:-5rpx; border:solid currentColor; border-width:0 2rpx 2rpx 0; transform:rotate(45deg); opacity:.72; }
+.advanced-button { justify-content:center; padding:0 18rpx; background:var(--surface); color:var(--link); font-weight:650; white-space:nowrap; }
+.advanced-button.filtered { background-color:var(--action); background-image:var(--button-fill); color:var(--on-action); border-color:transparent; }
+.sliders { display:flex; flex:none; flex-direction:column; gap:7rpx; width:22rpx; }
+.sliders view { position:relative; height:2rpx; background:currentColor; }
+.sliders view::after { content:''; position:absolute; left:4rpx; top:-2rpx; width:6rpx; height:6rpx; border-radius:50%; background:currentColor; }
+.sliders view:nth-child(2)::after { left:13rpx; }
 .search-content { flex:1; height:0; min-height:0; width:100%; }
 .search-body { padding:24rpx 32rpx calc(40rpx + env(safe-area-inset-bottom)); }
 .scroll-origin { height:1rpx; }
@@ -43,9 +51,20 @@ page { height:100%; overflow:hidden; }
 .filter-actions { display:flex; gap:20rpx; padding-top:28rpx; }
 .filter-actions .btn { flex:1; margin:0; }
 .sheet-close { min-height:88rpx; margin:0; padding:18rpx 0 18rpx 20rpx; border:0; background:transparent; color:var(--link); font-size:28rpx; }
-.large-text .city-filter,.large-text .filter,.large-text .recent-list button,.large-text .filter-chip { font-size:30rpx; }
-.large-text .query-filters { flex-wrap:wrap; }
+.large-text .query-chip,.large-text .recent-list button,.large-text .filter-chip { font-size:30rpx; }
 
 .memorial-search-results { margin:28rpx 0; padding:24rpx; border:1rpx solid #e2e2dd; border-radius:24rpx; background:#f5f5f3; color:#30302d; }
 .memorial-search-card { display:flex; flex-direction:column; gap:10rpx; margin:18rpx 0 0; padding:24rpx; min-height:100rpx; border:1rpx solid #e2e2dd; border-radius:20rpx; background:#fff; color:#30302d; text-align:left; font-size:30rpx; line-height:1.6; }
 .memorial-search-card::after { border:0; }.memorial-search-dates,.memorial-search-link { color:#73736e; font-size:25rpx; }
+
+.sheet-heading { padding-bottom:18rpx; border-bottom:1rpx solid var(--border); }
+.advanced-scroll { padding:20rpx 0 16rpx; }
+.filter-chip { min-height:72rpx; padding:12rpx 22rpx; border-radius:36rpx; background:var(--soft); }
+.filter-actions { padding-top:18rpx; border-top:1rpx solid var(--border); }
+.filter-actions .btn:last-child { flex:2; }
+.large-text .query-filters { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.filter-hint { display:block; margin-top:6rpx; color:var(--muted); font-size:24rpx; line-height:1.55; }
+.filter-chip[disabled] { opacity:.54; }
+.filter-chip.selected { background:var(--button-fill,var(--action)); color:var(--on-action); border-color:transparent; }
+.search-body { padding-left:20rpx; padding-right:20rpx; }
+.search-root .filter-chip:not(.selected) { background:var(--glass-tile); border-color:var(--glass-line); }

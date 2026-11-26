@@ -57,17 +57,43 @@ test('a blocked search result keeps the query and does not open a fallback form'
  const {page,modals}=publish();page.toggleProjectSearch();page.searchProjects({detail:{value:'殡仪馆'}});await page.chooseProject({currentTarget:{dataset:{id:'C23G01S01'}}});assert.equal(page.data.showForm,undefined);assert.equal(page.data.projectSearchOpen,true);assert.equal(page.data.projectQuery,'殡仪馆');assert.ok(modals[0].content.includes('不接受个人代办发布'));
 });
 
-test('directory keeps all 27 categories / 83 groups / 418 projects with one available group expanded',()=>{
+test('directory keeps all 27 categories / 83 groups / 418 projects',()=>{
  const {page}=publish();let groupCount=0,projectCount=0;
  assert.equal(page.data.categories.length,27);
  for(const category of page.data.categories){
   page.selectCategory({currentTarget:{dataset:{id:category.id}}});
   groupCount+=page.data.groups.length;projectCount+=page.data.groups.reduce((n,x)=>n+x.items.length,0);
   assert.equal(page.data.projectScrollTop,0);
-  const first=page.data.groups.find(x=>x.availableCount)||page.data.groups[0];assert.equal(page.data.expandedGroupId,first.id);
+  const first=page.data.groups.find(x=>x.availableCount)||page.data.groups[0];assert.equal(page.data.expandedGroupId,category.id==='C23'?'':first.id);
   for(const group of page.data.groups){let closed=false;for(const item of group.items){if(!item.kinds.length)closed=true;else assert.equal(closed,false,'available items precede closed ones');assert.deepEqual(item.kinds,registry.kindsFor(item.id));}}
  }
  assert.equal(groupCount,83);assert.equal(projectCount,418);
+});
+
+test("publish opens the existing map as a page that can return to the category browser", () => {
+ const {page,routes}=publish();
+ page.openMap();
+ assert.deepEqual(routes, ["/pages/map/index"]);
+ assert.equal(page.data.selectedCategory, "C04");
+});
+
+test('all three funeral groups open by default and can be closed independently',()=>{
+ const {page}=publish();
+ const select=id=>page.selectCategory({currentTarget:{dataset:{id}}});
+ select('C23');
+ const ids=page.data.groups.map(group=>group.id);
+ assert.deepEqual(Array.from(ids),['C23G01','C23G02','C23G03']);
+ assert.equal(page.data.funeralGroupsOpen,true);
+ assert.ok(ids.every(id=>!page.data.collapsedFuneralGroups[id]));
+ page.toggleGroup({currentTarget:{dataset:{id:ids[1]}}});
+ assert.deepEqual(Array.from(ids.filter(id=>page.data.collapsedFuneralGroups[id])),[ids[1]]);
+ page.toggleProjectSearch();page.closeProjectSearch();
+ assert.equal(page.data.collapsedFuneralGroups[ids[1]],true);
+ page.toggleFuneralGroups();
+ assert.equal(page.data.funeralGroupsOpen,false);
+ select('C04');select('C23');
+ assert.equal(page.data.funeralGroupsOpen,true);
+ assert.ok(ids.every(id=>!page.data.collapsedFuneralGroups[id]));
 });
 
 test('group headings only toggle the single expansion and search dismissal restores the selected group',()=>{

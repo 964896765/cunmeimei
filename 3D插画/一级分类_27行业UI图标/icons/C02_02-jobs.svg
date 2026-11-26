@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="招聘求职">
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D95B9B"/>
+      <stop offset="1" stop-color="#A94E83"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#brand)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="12" y="23" width="40" height="29" rx="5"/><path d="M22 23v-5a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v5M12 34h40M26 34v5h12v-5"/>
+  </g>
+</svg>

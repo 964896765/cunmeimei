@@ -1,40 +1,82 @@
-<view class="theme-root {{themeClass}} map-page" style="{{themeStyle}};--channel-header-height:{{headerHeight}}px">
- <page-header id="navigation-header" title="地图" transparent="{{true}}" back="{{true}}" back-label="返回发现页" large-text="{{displayPreferences.largeText}}" bind:back="goBack" bind:measure="headerMeasured"/>
- <view class="map-head-scrim"></view>
- <view class="map-tab-bar"><channel-tabs id="business-channels" scope="map" value="{{type}}" theme="{{displayPreferences.theme}}" large-text="{{displayPreferences.largeText}}" reduce-motion="{{displayPreferences.reduceMotion}}" bind:change="changeType"/></view>
- <view class="map-stage">
- <map id="information-map" class="information-map" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}" markers="{{markers}}" show-location="{{false}}" enable-scroll="true" enable-zoom="true" bindmarkertap="markerTap" bindcallouttap="markerTap" bindregionchange="regionChanged"/>
- <view wx:if="{{mapUnavailable}}" class="map-unavailable"><view class="map-state-title">地图暂未就绪</view><text>可以重新加载，或先浏览当前地区的信息列表。</text><button bindtap="returnToList">浏览信息列表 ›</button></view>
- <view wx:if="{{dirty&&cityCode&&drawer!=='expanded'}}" class="search-region"><button bindtap="searchArea" loading="{{loading}}" disabled="{{loading}}">搜索此区域</button></view>
- <view class="map-drawer drawer-{{drawer}}">
-  <view class="drawer-header" bindtouchstart="dragStart" bindtouchend="dragEnd" bindtouchcancel="cancelDrag">
-   <view class="drawer-handle" bindtap="toggleDrawer" role="button" aria-expanded="{{drawer!=='collapsed'}}" aria-label="向上拖动或点击展开当前区域信息"><view class="drawer-grip"></view></view>
-   <view class="drawer-heading"><view class="drawer-heading-copy"><view class="drawer-title-row"><text class="drawer-title">当前区域信息</text><text class="map-count">{{loading?'查询中':dirty?'待更新':total+' 条'}}</text></view><view class="map-summary">{{cityLabel}} · {{rangeMode==='city'?'城市视野':'当前地图范围'}} · {{filters.sort==='latest'?'最新发布':'推荐排序'}}</view></view><button class="map-filter-button" catchtap="openFilters" aria-label="筛选当前区域信息" aria-expanded="{{filterOpen}}"><view class="filter-glyph" aria-hidden="true"><view></view><view></view><view></view></view><text>筛选</text></button></view>
-  </view>
-  <view wx:if="{{drawer!=='collapsed'}}" class="map-browse-controls"><button id="map-keyword-search" class="map-search" bindtap="openSearch" aria-label="搜索当前地图范围"><view class="search-placeholder">{{q||'在当前地图范围搜索名称或关键词'}}</view><text>搜索</text></button><browse-filters id="browse-refinements" category-id="{{categoryId}}" city-code="{{cityCode}}" district-code="{{districtCode}}" large-text="{{displayPreferences.largeText}}" bind:category="categoryChanged" bind:district="districtChanged"/></view>
-  <view wx:if="{{drawer==='collapsed'}}" class="drawer-peek">
-   <view wx:if="{{error||geoError}}" class="map-feedback"><text>{{error||geoError}}</text><button wx:if="{{cityCode}}" bindtap="retry">重试</button><button wx:else bindtap="chooseCity">选择地区</button></view>
-   <text wx:elif="{{loading}}">正在查找当前区域…</text><text wx:elif="{{dirty}}">移动已结束，点击“搜索此区域”更新</text><text wx:elif="{{!items.length}}">当前区域暂无公开信息</text><text wx:else>上拉查看地图标记对应的信息</text>
-  </view>
-  <scroll-view wx:else class="map-results" scroll-y="true" enhanced="true" show-scrollbar="{{false}}" scroll-into-view="{{anchor}}" scroll-with-animation="{{!displayPreferences.reduceMotion}}" bindscrolltolower="more">
-   <view wx:if="{{scopeNotice}}" class="map-inline-note">{{scopeNotice}}<button class="map-load-more" bindtap="returnToList">返回原频道列表</button></view>
-   <active-conditions refinements="{{refinements}}" id="active-conditions" keyword="{{q}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{filters.days}}" images="{{filters.images}}" publisher="{{filters.publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="resetConditions"/>
-   <view wx:if="{{dirty}}" class="map-inline-note">地图范围已变化，当前为上次查询结果。</view>
-   <view wx:if="{{error||geoError}}" class="map-feedback"><text>{{error||geoError}}</text><button wx:if="{{cityCode}}" bindtap="retry">重试</button><button wx:else bindtap="chooseCity">选择地区</button></view>
-   <view wx:if="{{loading&&!items.length}}" class="map-inline-note">正在查找当前区域…</view>
-   <feedback-state wx:elif="{{!items.length&&!error&&!geoError}}" kind="empty" description="当前区域暂无公开信息，可以移动地图或切换分类。" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
-   <view wx:for="{{items}}" wx:key="id" id="map-item-{{item.id}}" class="map-result {{selectedId===item.id?'selected':''}}" data-id="{{item.id}}" bindtap="selectRow" role="button" aria-label="{{item.title}}，查看详情">
-    <image wx:if="{{item.cover}}" class="map-result-image" src="{{item.cover}}" mode="aspectFill"/><view wx:else class="map-result-placeholder"><image src="{{item.icon}}" mode="aspectFit" aria-hidden="true"/></view>
-    <view class="map-result-copy"><view class="map-result-title">{{item.title}}</view><view class="map-result-meta">{{item.typeName}} · {{item.district}}</view><view class="map-result-meta">{{item.precision==='approximate'?'公开近似区域':'公开经营位置'}}</view><view wx:if="{{item.distanceText}}" class="map-result-meta">{{item.distanceText}}</view><view wx:if="{{item.dateText}}" class="map-result-meta">{{item.dateText}}</view></view><text class="map-result-arrow" aria-hidden="true">›</text>
-   </view>
-   <button wx:if="{{hasMore}}" class="map-load-more" bindtap="more" disabled="{{loading||dirty}}">{{loading?'正在加载…':'加载更多区域信息'}}</button>
-  </scroll-view>
+<view class="theme-root {{themeClass}} map-page" style="{{themeStyle}}">
+ <page-header id="navigation-header" title="地图找信息" back="{{true}}" back-label="返回上一页" large-text="{{displayPreferences.largeText}}" bind:back="goBack"/>
+ <view class="map-tab-bar">
+  <channel-tabs id="business-channels" variant="underline" value="{{type}}" theme="{{displayPreferences.theme}}" large-text="{{displayPreferences.largeText}}" reduce-motion="{{displayPreferences.reduceMotion}}" bind:change="changeType"/>
  </view>
- <view wx:if="{{drawer!=='expanded'}}" class="map-tools tools-{{drawer}}"><button bindtap="returnToCenter" aria-label="回到浏览城市中心"><view class="center-glyph" aria-hidden="true"></view></button><button bindtap="expandResults" aria-label="展开当前区域结果列表"><view class="list-glyph" aria-hidden="true"><view></view><view></view><view></view></view></button></view>
- <bottom-sheet id="map-filter-sheet" open="{{filterOpen}}" label="筛选当前区域信息" dismissible="{{true}}" bind:close="closeFilters">
-  <view class="filter-heading"><text>筛选</text><button bindtap="closeFilters" aria-label="关闭筛选">关闭</button></view>
-  <view class="filter-body"><view class="filter-scope"><view class="filter-group-title">浏览城市</view><button class="filter-city" bindtap="chooseCity">{{cityLabel}}<text>更换 ›</text></button><view class="filter-group-title">地图范围</view><view class="filter-options"><button class="filter-option {{draftRange==='current'?'selected':''}}" data-value="current" bindtap="chooseDraftRange">当前地图范围</button><button class="filter-option {{draftRange==='city'?'selected':''}}" data-value="city" bindtap="chooseDraftRange">城市视野</button></view></view><view wx:for="{{filterOptions}}" wx:key="key" wx:for-item="group" class="filter-group"><view class="filter-group-title">{{group.name}}</view><view class="filter-options"><button wx:for="{{group.values}}" wx:key="value" class="filter-option {{draftFilters[group.key]===item.value?'selected':''}}" data-key="{{group.key}}" data-value="{{item.value}}" bindtap="chooseFilter" aria-pressed="{{draftFilters[group.key]===item.value}}">{{item.name}}</button></view></view><view class="filter-note">已核验发布者按有效的商家主体核验记录筛选；手机号验证不等于身份核验。</view></view>
-  <view class="filter-footer"><button class="filter-reset" bindtap="resetFilters">重置</button><button class="filter-apply" bindtap="applyFilters">查看结果</button></view>
+ <view class="map-browse-controls">
+  <button class="map-city map-control" bindtap="chooseCity" aria-label="更换浏览城市，{{cityLabel}}"><text>{{cityLabel}}</text><view class="map-chevron" aria-hidden="true"></view></button>
+  <button id="map-keyword-search" class="map-search map-control" bindtap="openSearch" aria-label="{{spatial?'搜索当前地图范围':'搜索当前频道'}}"><view class="map-magnifier" aria-hidden="true"></view><text>{{q||'搜索'+channelName}}</text></button>
+  <button class="map-filter-button map-control {{filterCount||categoryId||districtCode||rangeMode==='city'?'chosen':''}}" bindtap="openFilters" aria-expanded="{{filterOpen}}">筛选{{filterCount||categoryId||districtCode?' '+(filterCount+(categoryId?1:0)+(districtCode?1:0)):''}}</button>
+ </view>
+ <view wx:if="{{pinChannel}}" class="map-view-controls">
+  <view class="map-view-segment">
+   <button class="{{spatial?'selected':''}}" bindtap="toggleMapMode" disabled="{{spatial}}" aria-pressed="{{spatial}}">地图</button>
+   <button class="{{!spatial?'selected':''}}" bindtap="toggleMapMode" disabled="{{!spatial}}" aria-pressed="{{!spatial}}">列表</button>
+  </view>
+  <view wx:if="{{spatial&&cityCode}}" class="map-tools">
+   <button class="map-recenter" bindtap="returnToCenter" aria-label="返回浏览城市中心">回市区</button>
+   <button class="map-center" bindtap="locateHere" disabled="{{locating}}" aria-label="定位到我所在位置"><view class="center-glyph" aria-hidden="true"></view></button>
+  </view>
+ </view>
+ <view wx:if="{{scopeNotice}}" class="map-scope-notice">{{scopeNotice}}</view>
+ <view class="map-stage {{spatial?'':'list-mode'}}">
+  <view class="map-canvas" wx:if="{{spatial}}">
+   <map id="information-map" class="information-map" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}" markers="{{markers}}" show-location="{{false}}" enable-scroll="true" enable-zoom="true" bindmarkertap="markerTap" bindcallouttap="markerTap" bindregionchange="regionChanged"/>
+  </view>
+  <view class="map-drawer drawer-{{drawer}}">
+   <view class="drawer-header" bindtouchstart="dragStart" bindtouchend="dragEnd" bindtouchcancel="cancelDrag">
+    <view wx:if="{{spatial}}" class="drawer-handle" bindtap="toggleDrawer" role="button" aria-expanded="{{drawer!=='collapsed'}}" aria-label="拖动或点击切换结果列表高度"><view class="drawer-grip"></view></view>
+    <view class="drawer-heading">
+     <view class="drawer-heading-copy"><view class="drawer-title">{{spatial?channelName+'点位':channelName+'信息'}}</view><text class="map-summary">{{!cityCode?'选择城市后查看':loading?'正在加载':dirty?'地图范围已变更':error||geoError?'暂未加载':total+' 条信息'}}{{cityCode?(spatial?' · 公开点位':' · 按地区查看'):''}}</text></view>
+     <button wx:if="{{spatial&&dirty}}" class="search-region update-drawer" bindtap="searchArea" disabled="{{loading}}">搜索此区域</button>
+    </view>
+   </view>
+   <block wx:if="{{drawer!=='collapsed'||!spatial}}">
+    <scroll-view class="map-results" scroll-y="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-into-view="{{anchor}}" scroll-with-animation="{{!displayPreferences.reduceMotion}}" bindscrolltolower="more">
+     <active-conditions id="active-conditions" refinements="{{refinements}}" keyword="{{q}}" category-id="{{categoryId}}" district-code="{{districtCode}}" days="{{filters.days}}" images="{{filters.images}}" publisher="{{filters.publisher}}" hide="q" large-text="{{displayPreferences.largeText}}" bind:remove="removeCondition" bind:reset="resetConditions"/>
+     <view wx:if="{{clusterItems.length}}" class="map-inline-note"><text>此点位有 {{clusterItems.length}} 条信息</text><button class="update-drawer" bindtap="clearCluster">显示全部</button></view>
+     <view wx:elif="{{dirty&&items.length}}" class="map-inline-note">正在显示上一次查询的结果</view>
+     <feedback-state wx:if="{{!cityCode}}" kind="empty" title="选择浏览城市" description="可按城市与区镇查看公开信息。" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="选择城市" bind:action="chooseCity"/>
+     <feedback-state wx:elif="{{loading&&!items.length}}" kind="loading" description="正在查找信息…" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
+     <feedback-state wx:elif="{{error||geoError}}" kind="error" title="{{mapUnavailable?'暂时无法读取地图范围':'信息暂未加载'}}" description="{{error||geoError}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}" action-text="重试" bind:action="retry"/>
+     <feedback-state wx:elif="{{!items.length}}" kind="empty" title="{{dirty?'地图范围已变化':spatial?'此范围暂无公开点位':'暂无匹配信息'}}" description="{{spatial?'可移动地图后搜索此区域，或切换列表按地区查看。':'可以更换区镇或清除筛选条件。'}}" compact="{{true}}" large-text="{{displayPreferences.largeText}}"/>
+     <button wx:if="{{mapUnavailable}}" class="map-load-more" bindtap="toggleMapMode">改用列表浏览</button>
+     <view wx:for="{{clusterItems.length?clusterItems:items}}" wx:key="id" id="map-item-{{item.id}}" class="map-result {{selectedId===item.id?'selected':''}}" data-id="{{item.id}}" bindtap="selectRow" role="button" aria-label="{{item.title}}，查看详情">
+      <image wx:if="{{item.cover}}" class="map-result-image" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}"/><view wx:else class="map-result-placeholder"><image src="{{item.icon}}" mode="aspectFit" aria-hidden="true"/></view>
+      <view class="map-result-copy">
+       <view class="map-result-title">{{item.title}}</view>
+       <view wx:if="{{item.priceText}}" class="map-result-fact">{{item.priceText}}</view>
+       <view class="map-result-meta">{{item.typeName}}{{item.district?' · '+item.district:''}}{{item.dateText?' · '+item.dateText:''}}</view>
+       <view wx:if="{{spatial}}" class="map-result-meta">{{item.precision==='approximate'?'公开近似区域':'公开经营位置'}}{{item.distanceText?' · '+item.distanceText:''}}</view>
+      </view>
+      <button wx:if="{{spatial}}" class="map-result-locate" data-id="{{item.id}}" catchtap="showOnMap" aria-label="在地图定位{{item.title}}"><image src="/assets/icons/discover-map-pin.png" mode="aspectFit" aria-hidden="true"/></button>
+      <text wx:else class="map-result-arrow" aria-hidden="true">›</text>
+     </view>
+     <button wx:if="{{hasMore&&!error&&!clusterItems.length}}" class="map-load-more" bindtap="more" disabled="{{loading||dirty}}">{{loading?'正在加载…':'加载更多信息'}}</button>
+    </scroll-view>
+   </block>
+  </view>
+ </view>
+ <bottom-sheet id="map-filter-sheet" structured="{{true}}" open="{{filterOpen}}" label="筛选当前频道" dismissible="{{true}}" bind:close="closeFilters">
+  <view slot="header" class="filter-heading"><text>筛选{{channelName}}</text><button bindtap="closeFilters" aria-label="关闭筛选">关闭</button></view>
+  <view class="filter-body">
+   <browse-filters id="browse-refinements" channel="{{type}}" category-id="{{draftCategoryId}}" city-code="{{cityCode}}" district-code="{{draftDistrictCode}}" large-text="{{displayPreferences.largeText}}" bind:category="draftCategory" bind:district="draftDistrict"/>
+   <view wx:if="{{spatial}}" class="filter-group">
+    <view class="filter-group-title">地图范围</view>
+    <view class="filter-options"><button class="filter-option {{draftRange==='current'?'selected':''}}" data-value="current" bindtap="chooseDraftRange">当前视野</button><button class="filter-option {{draftRange==='city'?'selected':''}}" data-value="city" bindtap="chooseDraftRange">城市中心附近</button></view>
+   </view>
+   <view wx:for="{{businessFilters}}" wx:for-item="group" wx:key="key" class="filter-group">
+    <view class="filter-group-title">{{group.label}}</view>
+    <text wx:if="{{group.hint}}" class="filter-hint">{{group.hint}}</text>
+    <view class="filter-options"><button wx:for="{{group.options}}" wx:key="value" class="filter-option {{item.selected?'selected':''}}" data-key="{{group.key}}" data-value="{{item.value}}" disabled="{{item.disabled}}" bindtap="chooseBusinessFilter" aria-pressed="{{item.selected}}">{{item.label}}</button></view>
+   </view>
+   <block wx:for="{{filterOptions}}" wx:key="key" wx:for-item="group">
+    <view class="filter-group">
+     <view class="filter-group-title">{{group.name}}</view>
+     <view class="filter-options"><button wx:for="{{group.values}}" wx:key="value" class="filter-option {{draftFilters[group.key]===item.value?'selected':''}}" data-key="{{group.key}}" data-value="{{item.value}}" bindtap="chooseFilter" aria-pressed="{{draftFilters[group.key]===item.value}}">{{item.name}}</button></view>
+    </view>
+   </block>
+  </view>
+  <view slot="footer" class="filter-footer"><button class="filter-reset" bindtap="resetFilters">重置</button><button class="filter-apply" bindtap="applyFilters">查看结果</button></view>
  </bottom-sheet>
-</view>
 </view>

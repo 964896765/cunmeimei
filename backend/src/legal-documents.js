@@ -6,7 +6,7 @@ const {ApiError} = require('./rules');
 const BRAND = '青方睐村美美';
 const OPERATOR = '东莞市石排青方睐软件中心（个体工商户）';
 const TERMS = 'terms-1.0-20261113';
-const PRIVACY = 'privacy-1.0-20261113';
+const PRIVACY = 'privacy-1.1-20261124';
 const termsTemplate = fs.readFileSync(path.join(__dirname,'../legal/user-service-agreement.md'),'utf8');
 const privacyTemplate = fs.readFileSync(path.join(__dirname,'../legal/privacy-policy.md'),'utf8');
 

@@ -1,0 +1,13 @@
+<view class="sms-form {{largeText?'sms-large':''}}">
+ <view wx:for="{{change?['previous','current']:['current']}}" wx:key="*this" wx:for-item="field" class="sms-fields">
+  <text class="sms-label">{{change?(field==='previous'?'原手机号':'新手机号'):'手机号'}}</text>
+  <input class="sms-input" type="number" maxlength="11" value="{{fields[field].phone}}" placeholder="请输入中国大陆手机号" data-field="{{field}}" data-name="phone" bindinput="input" disabled="{{busy||!!sending}}" aria-label="{{change?(field==='previous'?'原手机号':'新手机号'):'手机号'}}"/>
+  <text class="sms-label">{{change?(field==='previous'?'原号码验证码':'新号码验证码'):'短信验证码'}}</text>
+  <view class="sms-code-row">
+   <input class="sms-input" type="number" maxlength="6" value="{{fields[field].code}}" placeholder="6 位数字" data-field="{{field}}" data-name="code" bindinput="input" disabled="{{busy}}" aria-label="短信验证码"/>
+   <button class="sms-send" data-field="{{field}}" bindtap="send" disabled="{{!enabled||busy||!!sending||fields[field].remaining>0||fields[field].phone.length!==11}}">{{sending===field?'发送中':fields[field].remaining>0?fields[field].remaining+' 秒后重发':'获取验证码'}}</button>
+  </view>
+ </view>
+ <text wx:if="{{message}}" class="sms-status {{isError?'sms-error':''}}" role="status">{{message}}</text>
+ <button class="sms-submit" bindtap="confirm" disabled="{{!enabled||busy||!!sending}}" loading="{{busy}}">{{purpose==='signin'?'验证并登录':change?'确认更换手机号':'验证并绑定手机号'}}</button>
+</view>

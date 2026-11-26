@@ -118,13 +118,23 @@ async function main() {
     let page = await go("/pages/publish/index");
     check(
       (await page.data()).memorialPublic === false,
-      "default-off configuration hides the public entrance",
+      "default-off configuration keeps public memorial browsing disabled",
     );
     check(
       (await page.$$(".memorial-access")).length === 0,
-      "no hidden-disabled memorial sidebar row is displayed",
+      "the memorial entry is absent outside funeral services",
+    );
+    await (await page.$('.industry-sidebar')).scrollTo(0, 99999);
+    await (await page.$('#industry-C23')).trigger('tap');
+    check(
+      !!(await page.$('.project-content .memorial-access')),
+      "funeral services show the memorial entry while public browsing is closed",
     );
     await capture("publish-default-off.png");
+    await (await page.$(".memorial-access")).trigger("tap");
+    page = await poll(() => mini.currentPage(), p => p?.path === "pages/memorial/index", "closed memorial portal");
+    await poll(() => page.data(), data => !data.loading && !data.publicEnabled, "public memorial browsing stays closed");
+    check(!!await page.$(".memorial-status"), "closed portal explains its availability");
     cleanup = await session.restore();
     session = null;
     check(
@@ -143,6 +153,7 @@ async function main() {
       "sidebar ends with local information, transport, cars and funeral services",
     );
     await (await page.$('.industry-sidebar')).scrollTo(0, 99999);
+    await (await page.$('#industry-C23')).trigger('tap');
     await capture('publish-memorial-entry.png');
     await (await page.$(".memorial-access")).trigger("tap");
     page = await poll(
@@ -156,8 +167,8 @@ async function main() {
       "portal configuration",
     );
     check(
-      (await page.$$(".memorial-entry")).length === 3,
-      "portal has creation, remembrance and management entrances",
+      (await page.$$(".memorial-entry")).length === 4,
+      "portal has management, public search, memories and creation entrances",
     );
     check(
       (await page.data()).themeStyle.includes("#F5F5F3"),
@@ -171,7 +182,7 @@ async function main() {
       "shared header reserves the status bar and native capsule area",
     );
     await capture("memorial-portal.png");
-    await (await page.$$(".memorial-entry"))[0].trigger("tap");
+    await (await page.$(".memorial-create-entry")).trigger("tap");
     page = await poll(
       () => mini.currentPage(),
       (page) => page?.query?.mode === "create",

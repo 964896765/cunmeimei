@@ -12,3 +12,7 @@ backend/.env.local
 backend/.local-server.json
 backend/.local-*.json
 project.private.config.json
+
+/.codex-attachments/
+/.codex-remote-attachments/
+/docs/audit/2026-11-21-production-v1/evidence/
