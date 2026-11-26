@@ -1,8 +1,0 @@
-{
-  "source": "https://get.enterprisedb.com/postgresql/postgresql-16.9-1-windows-x64-binaries.zip",
-  "version": "16.9-1",
-  "directory": "C:\\Users\\chejun\\AppData\\Local\\Temp\\citylife-navigation-pg-azOPn3",
-  "archiveBytes": 314500604,
-  "sha256": "304eb7dab70717015c4fd09986122e470d53a57a3a2b443d31e2c1d83d88db88",
-  "downloadedAt": "2026-11-05T01:59:09.368Z"
-}
